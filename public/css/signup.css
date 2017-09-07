@@ -21,8 +21,8 @@ body {
 	/*background-color: green;*/
 	text-align: center;
 	border: 1px solid #b57eb5;
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
+	/*-webkit-border-radius: 20px;*/
+	/*border-radius: 20px;*/
 
 }
 .signup-form {
@@ -39,22 +39,30 @@ body {
 	color:#999;
 }
 
+input[type="text"], input[type="password"], input[type="email"] {
+	width: 100%;
+}
+
 input {
-	border: 0;
+	/*border: 0;*/
+	border: 1px solid #543b63;
 	height: 50px;
 	background: #F5F5F5;
-	width: 100%;
+	/*width: 100%;*/
 	font-size: 1.5em;
 	/*color:#777;*/
-	padding:5px 10px 5px 10px;
+	padding: 5px 10px 5px 10px;
+	outline: none;
 }
 
 .green-btn {
-	background: #7f91b5;
+	/*background: #7f91b5;*/
+	background: #a07fb8;
 	border: 0;
 	font-size: 15px;
 	font-weight: bold;
-	color: #181532;
+	/*color: #181532;*/
+	color: #543b63;
 	width: 30% !important;
 	height: 50% !important;
 	border: 0 !important;
@@ -65,9 +73,25 @@ input {
 	display: block;
 }
 
-/* Palette:
-#252d40 #181532 #694a83 #352540
-#352540	#23233b #643b65 #543b63
-#543b63	#543b63	#814a83 #694a83
-#7f91b5 #504e76 #b57eb5 #a07fb8
-*/
+.button {
+	padding: 10px 70px;
+	box-shadow: 0 5px 0 rgba(0,0,0,.5);
+}
+
+/*TODO: default button active/hover*/
+
+.button:active {
+	box-shadow: 0 0 20px rgba(0,0,0,.8);
+}
+
+.button.purple {
+	background: #a07fb8;
+	/*color: #543b63;*/
+	color: #352540;
+}
+
+.button.purple:hover {
+	background: #543b63;
+	color: #a07fb8;
+	transition: 1s;
+}
