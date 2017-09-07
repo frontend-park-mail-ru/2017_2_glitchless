@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Registration</title>
+	<link rel="stylesheet" href="main.css">
+	<link rel="stylesheet" href="signup.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h2>Modal Example</h2>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content signup-block">
+       
+        <div class="modal-body">
+
+      		<div class="signup-block" id="first">
+      			<form action="handler" class='signup-form'>
+        				<h1>Sign Up</h1>
+        				<span class='form-elem'>
+        					<input type="text" name="answer" placeholder="E-mail">
+        				</span>
+        				<span class='form-elem'>
+        					<input type="text" id='nickname' name="answer" placeholder="Nickname">
+        				</span>
+        				<span class='form-elem'>
+        					<input type="password" name="password" placeholder="Password">
+        				</span>
+        				<span class='form-elem'>
+        					<input type="password" name="password-conf" placeholder="Confirm password">
+        				</span>
+        				<p><input type="submit" class="green-btn" value="Submit"></p>
+      			</form>
+      			<p>Already registered? <a href="./login.html" class="redirect">Sign in</a>
+      		</div>
+          <button type="button" class="btn btn-default green-btn" data-dismiss="modal">Close</button>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+</body>
+</html>

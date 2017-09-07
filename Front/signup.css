@@ -1,0 +1,58 @@
+.wrapper {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 10px;
+	grid-auto-rows: minmax(100px, auto);
+}
+
+.signup-block {
+	background: #367ABD !important;
+ 	grid-row: 3 / 7;
+	grid-column: 2;
+	/*background-color: green;*/
+	text-align: center;
+	border: 1px solid #367ABD !important;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+
+}
+.signup-form {
+	display:block;
+	/*margin: 20px auto;*/
+	/*max-width: 350px;*/
+	/*padding: 30px;*/
+}
+
+.signup-form p label {
+	clear:both;
+	display:block;
+	font-size:20px;
+	color:#999;
+}
+
+.signup-form input {
+	border: 0;
+	height: 50px;
+	background: #F5F5F5;
+	width: 100%;
+	font-size: 1.5em;
+	/*color:#777;*/
+	padding:5px 10px 5px 10px;
+}
+
+.green-btn {
+	background: #2ECC71 !important;
+	border: 0;
+	font-size: 15px;
+	font-weight: bold;
+	color: white !important;
+	width: 30% !important;
+	height: 50% !important;
+	border: 0 !important;
+	padding: 10px 20px;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	margin: 0 auto;
+	margin-top: 10px;
+	display: block;
+}
