@@ -1,0 +1,9 @@
+language: node_js
+deploy:
+  provider: heroku
+  api_key:
+    secure: vYEu0VKCYwcirAG5PMex0MV2KZV0HifDY31nagzcyQ/74KDbwAZQLsMwO9LOw6EwlWQMrrfehSXWPoYy/6KT9BWl5GoJti0imnqJIFPMhfL1gnY8hNd1U6P5ZRTItqXJCYWJPJyH9yhjgoh+xD5MZXQhXbkyY6DxfJgBpfYXER3Gy+BknJsH2aQ+Jm8Jt0jNy40EEsON7FoNRdHWuUbvBQuJS/CKgd5U6lb1Fohhzdx9EtDA8mEH44wR9TPsA+3qZXK3AI9PNc+YeO2KFjvVR809uCWHKWNm2+3/k+JfzIQelLoikhfXMQmTH7nEK2bF2QXllYGrCWl0ZQpBRBBJhDg20bnofgcj+Pn08HCjim1Bs7Hp0IEh5V+kV7MDMVt3M+ONvh3xeuwR8ume9ohluLfnTjtACkW2oFfxiJh75K4f5HbYqnavFWNcP61ZbwpXtyUUxhxo93TaJS11LUUkNM35C10Ignm3OJjeiPTiu2RL0HCWeHZoUSSrYeGlRkXGg+3VzuFUbj3wQhX6S1t8If3/5t5x5vSjMsX7Dzw25PH2x2KplGA+cuVUM64aNzd4jG7NimiiTpww3o4pecWn11mg7DXKFG3ua0Ve6bGQ2zCqa+o3SMU0QyrAEwirkel16KKH7u+5MKm15umxTwebk/2qYrf261dSgsQzpcR33j4=
+  app: glitchless
+  on:
+    repo: frontend-park-mail-ru/2017_2_glitchless
+    branch: site-base
