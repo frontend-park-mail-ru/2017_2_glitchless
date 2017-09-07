@@ -24,6 +24,6 @@ form>span {
     position: relative;
 }
 
-a.redirect {
-	color: green;
+.redirect {
+	color: red !important;
 }
