@@ -8,6 +8,7 @@ cache:
     - node_modules
 
 before_install:
+  - sudo apt-get install -y -qq tree
   - gem install sass
 
 script:
@@ -15,7 +16,7 @@ script:
   - pug public/pug/ -o public/
   - pwd # Debug info
   - tree # Debug info
-  - git add ./public/
+  - git add -A
   - git commit -m "Add file for heroku"
   - npm run lint
 
