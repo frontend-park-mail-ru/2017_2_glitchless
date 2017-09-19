@@ -18,7 +18,7 @@ script:
 
 before_deploy:
   - ls ./public/css/ # Debug
-  - git checkout -b site-base
+  - git checkout site-base
   - git add .
   - git commit --message "Add file for heroku"
 
