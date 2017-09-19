@@ -14,11 +14,13 @@ before_install:
 script:
   - sass --update public/sass:public/css
   - pug public/pug/ -o public/
-  - git status # Debug
-  - git add -A
-  - git status # Debug
-  - git commit -m "Add file for heroku"
   - npm run lint
+
+before_deploy:
+  - ls ./public/css/ # Debug
+  - git checkout -b site-base
+  - git add .
+  - git commit --message "Add file for heroku"
 
 deploy:
   skip_cleanup: true
