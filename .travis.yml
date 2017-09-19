@@ -14,6 +14,7 @@ script:
   - sass --update public/sass:public/css
   - pug public/pug/ -o public/
   - pwd # Debug info
+  - tree # Debug info
   - git add ./public/
   - git commit -m "Add file for heroku"
   - npm run lint
