@@ -17,8 +17,8 @@ script:
   - npm run lint
 
 before_deploy:
+  - git branch # Debug
   - ls ./public/css/ # Debug
-  - git checkout -b heroku-branch
   - git add .
   - git commit --message "Add file for heroku"
 
@@ -30,4 +30,4 @@ deploy:
   app: glitchless
   on:
     repo: frontend-park-mail-ru/2017_2_glitchless
-    branch: heroku-branch
+    branch: site-base
