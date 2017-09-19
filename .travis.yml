@@ -1,4 +1,20 @@
 language: node_js
+
+node_js:
+  - '6'
+
+before_install:
+  - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+  - gem install sass
+
+cache:
+  directories:
+    - node_modules
+
+script:
+  - sass --update public/sass:public/css
+  - npm run lint
+
 deploy:
   provider: heroku
   api_key:

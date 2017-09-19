@@ -80,7 +80,7 @@ body {
 	color:#999;
 }
 
-input {
+.form-elem {
 	&[type="text"], &[type="password"], &[type="email"] {
 		min-width: 400px;
 		width: 70%;

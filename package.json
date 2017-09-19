@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "./node_modules/.bin/eslint .",
     "start": "node server"
   },
   "author": "Glitchless",
@@ -14,5 +15,12 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/frontend-park-mail-ru/2017_2_glitchless.git"
+  },
+  "devDependencies": {
+    "eslint": "^4.7.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-json": "^1.2.0",
+    "eslint-plugin-markdown": "^1.0.0-beta.6"
   }
 }
+
