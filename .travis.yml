@@ -16,6 +16,7 @@ cache:
 script:
   - sass --update public/sass:public/css
   - pug public/pug/ -o public/
+  - git add ./public/ && git commit -m "Add file for heroku"
   - npm run lint
 
 deploy:
