@@ -3,15 +3,12 @@ language: node_js
 node_js:
   - '6'
 
-before_install:
-  - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
-  - gem install sass
-  - npm install pug
-  - npm install pug-cli
-
 cache:
   directories:
     - node_modules
+
+before_install:
+  - gem install sass
 
 script:
   - sass --update public/sass:public/css
