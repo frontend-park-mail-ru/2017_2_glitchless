@@ -6,6 +6,8 @@ node_js:
 before_install:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - gem install sass
+  - npm install pug
+  - npm install pug-cli
 
 cache:
   directories:
@@ -13,6 +15,7 @@ cache:
 
 script:
   - sass --update public/sass:public/css
+  - pug public/pug/ -o public/
   - npm run lint
 
 deploy:
