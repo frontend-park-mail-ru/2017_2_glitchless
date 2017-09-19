@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Sign In
+    link(rel='stylesheet', href='css/login.css')
+    link(rel='stylesheet', href='css/main.css')
+  body
+    .wrapper
+      .login-block
+        form.login-form(action='')
+          h1 Sign In
+          - 
+            var input_fields = [{type:'text', name:'answer', placeholder:'Nickname'}, 
+                                {type:'password', name:'password', placeholder:'Password'}];
+          each field in input_fields
+            span.form-elem
+              input(type=field['type'], name=field['name'], placeholder=field['placeholder'])
+          p
+            input(type='submit')
+        p
+          | Don't have an account? 
+          a(href='./signup.html') Sign up

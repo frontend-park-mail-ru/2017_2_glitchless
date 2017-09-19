@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title
+    link(type='text/css', rel='stylesheet', href='css/modal.css')
+  body
+    // Trigger/Open The Modal
+    button.modal-open Open Modal
+    // The Modal
+    .modal
+      // Modal content
+      .modal__content
+        .modal__header
+          span.modal-close ×
+          h2 Modal Header
+        .modal__body
+          p Some text in the Modal Body
+          p Some other text...
+        .modal__footer
+          h3 Modal Footer
+      script(type='text/javascript', src='js/modal.js')
