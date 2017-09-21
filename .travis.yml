@@ -19,7 +19,7 @@ script:
 before_deploy:
   - git branch # Debug
   - ls ./public/css/ # Debug
-  - git add -f ':/:'
+  - git add --all
   - git commit --message "Add file for heroku"
 
 deploy:
