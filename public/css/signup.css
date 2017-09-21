@@ -1,3 +1,9 @@
+/* Palette:
+#252D40 #181532 #3F2540 #352540
+#352540	#23233B #643B65 #543B63
+#4A5D85	#33304D	#814A83 #694A83
+#7F91B5 #504E76 #B57EB5 #A07FB8
+*/
 @media screen and (min-width: 1200px) {
   .wrapper {
     display: grid;
@@ -22,7 +28,7 @@
     grid-gap: 10px;
     grid-auto-rows: minmax(100px, auto); }
 
-  .signup {
+  .signup-block {
     background: #252d40;
     /*linear-gradient(to bottom, #814a83 0%, #181532 100%);*/
     grid-row: 3 / 7;
@@ -58,29 +64,28 @@ body {
   font-family: 'Open Sans', sans-serif; }
 
 .signup-form {
+  text-align: center;
   display: block;
   /*margin: 20px auto;*/
   /*max-width: 350px;*/
   /*padding: 30px;*/ }
+  .signup-form__field {
+    margin-top: 10px;
+    min-width: 400px;
+    width: 70%;
+    border: 1px solid #543b63;
+    height: 50px;
+    background: #F5F5F5;
+    font-size: 1.5em;
+    /*color:#777;*/
+    padding: 5px 10px 5px 10px;
+    outline: none; }
 
 .signup-form p label {
   clear: both;
   display: block;
   font-size: 20px;
   color: #999; }
-
-input {
-  /*border: 0;*/
-  border: 1px solid #543b63;
-  height: 50px;
-  background: #F5F5F5;
-  font-size: 1.5em;
-  /*color:#777;*/
-  padding: 5px 10px 5px 10px;
-  outline: none; }
-  input[type="text"], input[type="password"], input[type="email"] {
-    min-width: 400px;
-    width: 70%; }
 
 a {
   color: blue; }

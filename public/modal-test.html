@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+
+<style>
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#prompt-form {
+  display: inline-block;
+  padding: 5px 5px 5px 70px;
+  width: 200px;
+  border: 1px solid black;
+  background: white url(https://js.cx/clipart/prompt.png) no-repeat left 5px;
+  vertical-align: middle;
+}
+
+#prompt-form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#prompt-form-container:before {
+  display: inline-block;
+  height: 100%;
+  content: '';
+  vertical-align: middle;
+}
+
+#prompt-form input[name="text"] {
+  display: block;
+  margin: 5px;
+  width: 180px;
+}
+
+</style>
+</head>
+
+<body>
+  <h1>Модальное окно</h1>
+  <button name="modal" type="button">push me!</button>
+
+  <div id="prompt-form-container" hidden>
+    <form id="prompt-form">
+      <div id="prompt-message">Введите, пожалуйста...<br>Что-то..</div>
+      <input name="text" type="text">
+      <input type="submit" name="ok" value="Ок">
+      <input type="button" name="cancel" value="Отмена">
+    </form>
+  </div>
+
+<script>
+
+'use strict';
+
+let push = document.querySelector('button[name="modal"]');
+
+const showOverlay = e => {
+  let overlay = document.querySelector('#prompt-form-container');
+  let answer = overlay.querySelector('input[name="text"]');
+  overlay.hidden = false;
+  answer.focus();
+};
+
+push.addEventListener('click', showOverlay);
+
+const showPrompt = (text, callback) => {
+  let form = document.querySelector('#prompt-form');
+  let question = form.querySelector('#prompt-message');
+  question.innerHTML = text;
+  let answer = form.text;
+  let btnSubmit = form.ok;
+  let btnCancel = form.cancel;
+  let count = 0;
+
+  const doSubmit = e => {
+    //console.log('submit');
+    e.preventDefault();
+    if (form.parentElement.hidden) return;
+
+    form.parentElement.hidden = true;
+    //let str = answer.value || 'нет ответа :(';
+    callback(answer.value || 'нет ответа :(');
+  };
+
+  const doCancel = e => {
+    if (!form.parentElement.hidden &&
+       (e.keyCode === 27 || e.target === btnCancel) ) {
+      form.parentElement.hidden = true;
+      callback(null);
+
+    } else if (!form.parentElement.hidden && e.keyCode === 9) {
+      e.preventDefault();
+      let focusArr = [answer, btnSubmit, btnCancel];
+      // console.log(count);
+      focusArr[count].focus();
+      // console.log(focusArr[count]);
+      count++;
+      if (count > 1) count = 0;
+
+    } else return;
+  };
+
+  btnSubmit.addEventListener('click', doSubmit);
+  btnCancel.addEventListener('click', doCancel);
+  form.addEventListener('submit', e => { e.preventDefault(); });
+  document.addEventListener('keydown', doCancel);
+};
+
+showPrompt("Введите что-нибудь<br>... умное :)", function(value) {
+  alert( value );
+});
+
+</script>
+</body>
+</html>

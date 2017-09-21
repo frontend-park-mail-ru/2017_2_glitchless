@@ -1,56 +1,30 @@
-.wrapper {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-gap: 10px;
-	grid-auto-rows: minmax(100px, auto);
-}
+/* Palette:
+#252D40 #181532 #3F2540 #352540
+#352540	#23233B #643B65 #543B63
+#4A5D85	#33304D	#814A83 #694A83
+#7F91B5 #504E76 #B57EB5 #A07FB8
+*/
+.login-form {
+  text-align: center;
+  display: block; }
+  .login-form__field {
+    margin-top: 10px;
+    min-width: 400px;
+    width: 70%;
+    border: 1px solid #543b63;
+    height: 50px;
+    background: #F5F5F5;
+    font-size: 1.5em;
+    /*color:#777;*/
+    padding: 5px 10px 5px 10px;
+    outline: none; }
 
-#login-form {
-	display:block;
-	/*margin: 20px auto;*/
-	/*max-width: 350px;*/
-	/*padding: 30px;*/
-}
+body {
+  min-height: 450px;
+  height: 100vh;
+  margin: 0;
+  background: radial-gradient(ellipse farthest-corner at center top, #4a5d85 -50%, #643b65 150%);
+  color: #fff;
+  font-family: 'Open Sans', sans-serif; }
 
-.login-block {
-	background: #367ABD;
- 	grid-row: 3 / 6;
-	grid-column: 2;
-	/*background-color: green;*/
-	text-align: center;
-	border: 1px solid #cecece;
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
-}
-
-#login-form input {
-	border: 0;
-	height: 50px;
-	background: #F5F5F5;
-	width: 100%;
-	font-size: 1.5em;
-	/*color:#777;*/
-	padding:5px 10px 5px 10px;
-}
-
-#login-form p label {
-	clear:both;
-	display:block;
-	font-size:20px;
-	color:#999;
-}
-
-#login-form input[type="submit"] {
-	background: #2ECC71;
-	border: 0;
-	font-size: 15px;
-	font-weight: bold;
-	color: white;
-	width: 30%;
-	height: 50%;
-	padding: 10px 20px;
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
-	margin:0 auto;
-	display: block;
-}
+/*# sourceMappingURL=login.css.map */

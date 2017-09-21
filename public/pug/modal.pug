@@ -3,6 +3,7 @@ html
   head
     title
     link(type='text/css', rel='stylesheet', href='css/modal.css')
+    block styles
   body
     // Trigger/Open The Modal
     button.modal-open Open Modal
@@ -12,10 +13,11 @@ html
       .modal__content
         .modal__header
           span.modal-close ×
-          h2 Modal Header
+          block modal__header
+            h2 Modal Header
         .modal__body
-          p Some text in the Modal Body
-          p Some other text...
+           block modal__body
         .modal__footer
-          h3 Modal Footer
+          block modal__footer
+            h3 Modal Footer
       script(type='text/javascript', src='js/modal.js')

@@ -1,3 +1,5 @@
+@import 'palette';
+@import 'form';
 @media screen and (min-width: 1200px) {
 	.wrapper {
 		display: grid;
@@ -67,7 +69,7 @@ body {
 
 
 .signup-form {
-	display:block;
+	@include form-styling;
 	/*margin: 20px auto;*/
 	/*max-width: 350px;*/
 	/*padding: 30px;*/
@@ -80,22 +82,6 @@ body {
 	color:#999;
 }
 
-.form-elem {
-	&[type="text"], &[type="password"], &[type="email"] {
-		min-width: 400px;
-		width: 70%;
-	}
-	/*border: 0;*/
-	border: 1px solid #543b63;
-	height: 50px;
-	background: #F5F5F5;
-	//width: 1000px;
-	font-size: 1.5em;
-	/*color:#777;*/
-	padding: 5px 10px 5px 10px;
-	outline: none;
-}
-
 a {
 	color: blue;
 }
@@ -103,6 +89,8 @@ a {
 /*TODO: default button active/hover*/
 
 .button {
+	// border: 1px solid #543b63;
+	// font-size: 1.5em;
 	padding: 10px 70px;
 	box-shadow: 0 5px 0 rgba(0,0,0,.5);
 	&:active {

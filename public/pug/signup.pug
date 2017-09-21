@@ -1,26 +1,19 @@
-doctype html
-html
-  head
-    meta(charset='utf-8')
-    title Registration
-    link(rel='stylesheet', href='css/main.css')
-    link(rel='stylesheet', href='css/signup.css')
-  body
-    .wrapper
-      test.test  
-      .signup-block
-        form.signup-form(action='')
-          h1 Sign Up
-          - 
-            var input_fields = [{type:'text', name:'answer', placeholder:'E-mail'}, 
-                                {type:'text', name:'answer', placeholder:'Nickname'}, 
-                                {type:'password', name:'password', placeholder:'Password'},  
-                                {type:'password', name:'password-conf', placeholder:'Confirm password'}];
-          each field in input_fields
-            span.form-elem
-              input(type=field['type'], name=field['name'], placeholder=field['placeholder'])
-          p
-            input.button.purple(type='submit', value='Submit')
-        p
-          | Already registered? 
-          a(href='./login.html') Sign in
+extends modal.pug
+block styles
+  link(type='text/css', rel='stylesheet', href='css/signup.css')
+block modal__body
+  form.signup-form(action='')
+    h1 Sign Up
+    - 
+      var input_fields = [{type:'text', name:'answer', placeholder:'E-mail'}, 
+                          {type:'text', name:'answer', placeholder:'Nickname'}, 
+                          {type:'password', name:'password', placeholder:'Password'},  
+                          {type:'password', name:'password-conf', placeholder:'Confirm password'}];
+    each field in input_fields
+      span.form-elem
+        input.signup-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
+    p
+      input.button.purple(type='submit', value='Submit')
+    p
+    | Already registered? 
+    a(href='./login.html') Sign in

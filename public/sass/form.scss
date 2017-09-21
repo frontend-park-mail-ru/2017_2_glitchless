@@ -1,0 +1,17 @@
+@mixin form-styling {
+	text-align: center;
+	display:block;
+	&__field {
+		margin-top: 10px;
+	    min-width: 400px;
+		width: 70%;
+		border: 1px solid #543b63;
+		height: 50px;
+		background: #F5F5F5;
+		//width: 1000px;
+		font-size: 1.5em;
+		/*color:#777;*/
+		padding: 5px 10px 5px 10px;
+		outline: none;
+    }
+}
