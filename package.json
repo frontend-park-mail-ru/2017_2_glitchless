@@ -4,24 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint .",
-    "start": "node server"
+    "start": "node server",
+    "postinstall": "npm run build",
+    "lint": "eslint .",
+    "build": "node-sass public/sass/ -o public/css/ && pug public/pug/ -o public/"
   },
   "author": "Glitchless",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.15.4",
-    "pug": "^2.0.0-rc.4",
-    "pug-cli": "^1.0.0-alpha6"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/frontend-park-mail-ru/2017_2_glitchless.git"
+  },
+  "dependencies": {
+    "express": "^4.15.4"
   },
   "devDependencies": {
     "eslint": "^4.7.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-json": "^1.2.0",
-    "eslint-plugin-markdown": "^1.0.0-beta.6"
+    "eslint-plugin-markdown": "^1.0.0-beta.6",
+    "node-sass": "^4.5.3",
+    "pug": "^2.0.0-rc.4",
+    "pug-cli": "^1.0.0-alpha6"
   }
 }

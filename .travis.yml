@@ -7,20 +7,9 @@ cache:
   directories:
     - node_modules
 
-before_install:
-  - sudo apt-get install -y -qq tree
-  - gem install sass
-
 script:
-  - sass --update public/sass:public/css
-  - pug public/pug/ -o public/
+  - npm run build
   - npm run lint
-
-before_deploy:
-  - git branch # Debug
-  - ls ./public/css/ # Debug
-  - git add .
-  - git commit --message "Add file for heroku"
 
 deploy:
   skip_cleanup: true
