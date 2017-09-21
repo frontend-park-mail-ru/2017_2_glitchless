@@ -1,6 +1,3 @@
-extends modal.pug
-block styles
-  link(rel='stylesheet', href='css/login.css')
 block modal__body
   form.login-form(action='')
     h1 Sign In
@@ -8,10 +5,9 @@ block modal__body
       var input_fields = [{type:'text', name:'answer', placeholder:'Nickname'}, 
                           {type:'password', name:'password', placeholder:'Password'}];
     each field in input_fields
-      span.form-elem
-        input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
+      input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
     p
       input(type='submit')
-  p
-    | Don't have an account? 
-    a(href='./signup.html') Sign up
+    p
+      | Don't have an account? 
+      a(href='./signup.html') Sign up

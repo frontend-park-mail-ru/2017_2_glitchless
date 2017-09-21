@@ -1,7 +1,7 @@
 @import 'palette';
 .modal {
   display: none;
-
+  margin-top: 10%;
 /* Modal Header */
   &__header {
     padding: 2px 16px;
@@ -24,7 +24,6 @@
 /* Modal Content */
   &__content {
     position: relative;
-    margin-top: 30%;
     background-color: $c1r1;
     margin: auto;
     padding: 0;
