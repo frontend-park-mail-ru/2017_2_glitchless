@@ -1,52 +1,55 @@
+'use strict';
+
 // Get the modal
 let modal = document.getElementsByClassName('modal')[0];
-let modal__body = document.getElementsByClassName('modal__body')[0];
+
+function getCurrentModal() {
+    return modal;
+}
+
+// function getActiveComponent() {
+//     return;
+// }
+
+// function getPromisedComponent(name, requireNew = false) {
+//     let dict = {
+//         loginBlock: requestLoginBlock,
+//         signupBlock: requestSignupBlock,
+//         aboutBlock: requestAboutBlock,
+//         leadersBlock: requestLeadersBlock
+//     }
+//     if (dict[name]) {
+//         if (!requireNew) {
+//             return 
+//         }
+//     }
+// }
+
+// function requestLoginBlock() {
+//     loginBlockURL = 'login.html';
+//     return new Promise(function (resolve, reject) {
+
+//     });
+// }
+
+
+modal.body = document.getElementsByClassName('modal__body')[0];
+
 // Get the button that opens the modal
-let triggers = document.getElementsByClassName('modal-trigger');
+let triggers = document.getElementsByClassName('menu__modal-trigger');
 
+// Get the element that closes the modal
+let modalCloser = document.getElementsByClassName('modal-close')[0];
 
-// Get the <span> element that closes the modal
-let span = document.getElementsByClassName('modal-close')[0];
+// Setup the button event functions
+Array.prototype.forEach.call(triggers, setModalOpener);
 
-Array.prototype.forEach.call(triggers, function (button) {
-	button.onclick = function () {
-    modal.style.display = 'block';
-    let xhr = new XMLHttpRequest();
-    let target = button.getAttribute('modal-trigger');
-    xhr.open('GET', target + '.html', false);
-    xhr.send();
-    if (xhr.status != 200) {
-  	// обработать ошибку
-	  alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
-	} else {
-	  // вывести результат
-	  modal__body.innerHTML = xhr.responseText; // responseText -- текст ответа.
-	}
-    modal.focus();
-	};
-});
-
-// // When the user clicks on the button, open the modal 
-// btn.onclick = function () {
-//     modal.style.display = 'block';
-//     let xhr = new XMLHttpRequest();
-//     let loading_page = this.getAttribute('modal-trigger');
-//     xhr.open('GET', 'login.html', false);
-//     xhr.send();
-//     if (xhr.status != 200) {
-//   	// обработать ошибку
-// 	  alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
-// 	} else {
-// 	  // вывести результат
-// 	  modal__body.innerHTML = xhr.responseText; // responseText -- текст ответа.
-// 	}
-//     modal.focus();
-// };
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+modalCloser.onclick = function() {
     modal.style.display = 'none';
 };
+
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -55,12 +58,41 @@ window.onclick = function(event) {
     }
 };
 
-const doSubmit = e => {
-    //console.log('submit');
-    e.preventDefault();
-    if (form.parentElement.hidden) return;
 
-    form.parentElement.hidden = true;
-    //let str = answer.value || 'нет ответа :(';
-    callback(answer.value || 'нет ответа :(');
-};
+function setModalOpener(button) {
+    modal = getCurrentModal();
+    button.onclick = function () {
+        modal.style.display = 'block';
+
+        let target = button.getAttribute('modal-trigger');
+
+        let modalRequest = new Request(target + '.html');
+
+        getResponseText(modalRequest)
+            .then(function (modalHTML) {
+                modal.body.innerHTML = modalHTML;
+            })
+            .catch(function (response) {
+                alert(response.status + ': ' + response.statusText); 
+                // пример вывода: 404: Not Found
+            });
+    // modal.focus();
+    };
+}
+
+function getResponseText(request) {
+    return new Promise(function (resolve, reject) {
+        fetch(request)
+            .then(function (response) {
+                if (response.ok) {
+                    return response.text();
+                }
+                else {
+                    reject(response);
+                }
+            })
+            .then(function (text) {
+                resolve(text);
+            });
+    });
+}

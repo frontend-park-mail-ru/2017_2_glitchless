@@ -57,17 +57,6 @@
 	}
 }
 
-
-body {
-  min-height: 450px;
-  height: 100vh;
-  margin: 0;  
-  background: radial-gradient(ellipse farthest-corner at center top, #4a5d85 -50%, #643b65 150%);
-  color: #fff;
-  font-family: 'Open Sans', sans-serif;  
-}
-
-
 .signup-form {
 	@include form-styling;
 	/*margin: 20px auto;*/
@@ -75,35 +64,8 @@ body {
 	/*padding: 30px;*/
 }
 
-.signup-form p label {
-	clear:both;
-	display:block;
-	font-size:20px;
-	color:#999;
-}
-
 a {
 	color: blue;
 }
 
 /*TODO: default button active/hover*/
-
-.button {
-	// border: 1px solid #543b63;
-	// font-size: 1.5em;
-	padding: 10px 70px;
-	box-shadow: 0 5px 0 rgba(0,0,0,.5);
-	&:active {
-		box-shadow: 0 0 20px rgba(0,0,0,.8);
-	}
-	&.purple {
-		background: #a07fb8;
-		/*color: #543b63;*/
-		color: #352540;
-		&:hover {
-			background: #543b63;
-			color: #a07fb8;
-			transition: 1s;
-		}
-	}
-}

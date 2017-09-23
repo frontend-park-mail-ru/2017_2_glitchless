@@ -7,7 +7,7 @@ block modal__body
     each field in input_fields
       input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
     p
-      input(type='submit')
+      input.login-form__button(type='submit')
     p
       | Don't have an account? 
       a(href='./signup.html') Sign up
