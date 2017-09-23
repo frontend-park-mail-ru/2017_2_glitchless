@@ -7,7 +7,7 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     res.redirect('/signup.html');
-})
+});
 
 app.get('*', (req, res) => {
     res.send('404');
