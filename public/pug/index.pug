@@ -6,43 +6,24 @@ html
     link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto')
     block styles
   body
-    // Trigger/Open The Modal
     .menu
+      .centered.bumper
+        img(src='images/rhythm_blast_v1a.png')
       -
-        var page_names = ['signup', 'login', 'about', 'leaders']
-      each page in page_names
-        button.menu__modal-trigger(modal-trigger=page) #{page}
-    // The Modal
+        var pages = [{trigger: 'signup', label: 'Sign Up'}, {trigger: 'login', label: 'Login'},
+                          {trigger: 'about', label: 'About'}, {trigger:'login', label: 'Leaders'}]
+      .centered
+        each page in pages
+          button.menu__modal-trigger(modal-trigger=page['trigger']).btn.fixed #{page['label']}
     .modal
-      // Modal content
       .modal__content
-        //.modal__header
-        //  span.modal-close ×
-        //  block modal__header
-        //    h2 Modal Header
-        //.modal__body
-        //   block modal__body
-        //.modal__footer
-        //  block modal__footer
-        //    h3 Modal Footer
         .modal__header
           span.modal-close
           block modal__header
-            h2 Rhythm Blast
         .modal__body
           block modal__body
         .modal__footer
           block modal__footer
-            //h3 Modal Footer
 
-        //.modal__header
-        //  block modal__header
-        //    h2 Rhythm Blast
-        //.modal__body
-        //  block modal__body
-        //.modal__footer
-        //  block modal__footer
-        //    h2 Copyright glitchless (c) 2017
-
-      script(type='text/javascript', src='js/utility.js')
-      script(type='text/javascript', src='js/dynamic.js')
+    script(type='text/javascript', src='js/utility.js')
+    script(type='text/javascript', src='js/dynamic.js')

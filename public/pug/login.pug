@@ -1,15 +1,18 @@
+extends modal.pug
+block modal__header
+  h2 Sign In
 block modal__body
   form.login-form(action='')
-    h1 Sign In
     - 
       var input_fields = [{type:'text', name:'login', placeholder:'Nickname'}, 
                           {type:'password', name:'password', placeholder:'Password'}];
     each field in input_fields
       input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
+      .field_errors(id=field['name']) #{field['placeholder']} errors placeholder
+
+    input.login-form__button(type='submit').bumper
     p
-      input.login-form__button(type='submit')
-    p
-      | Don't have an account? 
+      | Don't have an account yet?
       a(href='./signup.html') Sign up
-script(type='text/javascript')
-  include ../js/login.js
+  script(type='text/javascript')
+    include ../js/login.js

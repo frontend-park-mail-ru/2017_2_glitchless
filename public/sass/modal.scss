@@ -1,14 +1,13 @@
 @import 'palette';
 .modal {
   display: none;
+
   /* Modal Header */
   &__header {
     padding: 2px 16px;
-    //background-color: $c1r2;
     background-color: $colour_main2;
-
-    //color: white;
     color: $colour_main1;
+    border-radius: 3px 3px 0 0;
   }
 
 /* Modal Body */
@@ -20,10 +19,9 @@
 /* Modal Footer */
   &__footer {
     padding: 2px 16px;
-    //background-color: $c1r2;
     background-color: $colour_main2;
-
-    //color: white;
+    font-size: 10pt;
+    border-radius: 0 0 3px 3px;
     color: $colour_main1;
   }
 
@@ -31,12 +29,14 @@
   &__content {
     display: block;
     position: relative;
-    //background-color: $c1r1;
     background-color: $colour_main3;
-
+    min-width: 500px;
     margin: auto;
     padding: 0;
-    border: 1px solid #888;
+
+    border: 1px solid $colour_main1;
+    border-radius: 3px;
+
     width: 35%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: slideFromTop;

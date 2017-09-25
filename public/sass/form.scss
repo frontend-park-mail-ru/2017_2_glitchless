@@ -4,23 +4,19 @@
 
 	&__field {
 		margin-top: 10px;
-	    min-width: 400px;
-		width: 70%;
-		border: 1px solid #543b63;
+        width: 90%;
+		border: 1px solid $colour_main1;
 		height: 50px;
 		background: #F5F5F5;
-		//width: 1000px;
-		font-size: 1.5em;
-		/*color:#777;*/
+		font-size: 12pt;
+        color: $colour_main1;
 		padding: 5px 10px 5px 10px;
 		outline: none;
     }
 
     &__button {
-		// border: 1px solid #543b63;
-		// font-size: 1.5em;
-		padding: 15px 30px;
-		box-shadow: 0 7px 0 $colour_main4;
+		padding: 15px 50px;
+		box-shadow: 0 5px 0 $colour_main4;
 
 		border: 0;
 
@@ -29,14 +25,11 @@
 		}
 
 		background: $colour_main1;
-		/*color: #543b63;*/
 		color: $colour_main2;
         font-size: 14pt;
         transition: .5s;
 
 		&:hover {
-			//background: #543b63;
-			//color: #a07fb8;
             background: $colour_main4;
             color: $colour_main3;
             box-shadow: none;

@@ -8,14 +8,11 @@
 		grid-auto-rows: minmax(100px, auto);
 	}
 	.signup-block {
-		background: #252d40; /*linear-gradient(to bottom, #814a83 0%, #181532 100%);*/
+		background: $colour_main2; /*linear-gradient(to bottom, #814a83 0%, #181532 100%);*/
 	 	grid-row: 3 / 7;
 		grid-column: 2;
-		/*background-color: green;*/
 		text-align: center;
-		border: 1px solid #b57eb5;
-		/*-webkit-border-radius: 20px;*/
-		/*border-radius: 20px;*/
+		border: 1px solid $colour_main1;
 	}
 }
 
@@ -26,15 +23,13 @@
 		grid-gap: 10px;
 		grid-auto-rows: minmax(100px, auto);
 	}
+
 	.signup-block {
-		background: #252d40; /*linear-gradient(to bottom, #814a83 0%, #181532 100%);*/
+		background: $colour_main2; /*linear-gradient(to bottom, #814a83 0%, #181532 100%);*/
 	 	grid-row: 3 / 7;
 		grid-column: 2;
-		/*background-color: green;*/
 		text-align: center;
-		border: 1px solid #b57eb5;
-		/*-webkit-border-radius: 20px;*/
-		/*border-radius: 20px;*/
+		border: 1px solid $colour_main1;
 	}
 }
 
@@ -45,27 +40,18 @@
 		grid-gap: 10px;
 		grid-auto-rows: minmax(100px, auto);
 	}
+
 	.signup-block {
 		background: #252d40; /*linear-gradient(to bottom, #814a83 0%, #181532 100%);*/
 	 	grid-row: 3 / 7;
-		grid-column: 1s;
-		/*background-color: green;*/
+		grid-column: 1;
 		text-align: center;
-		border: 1px solid #b57eb5;
-		/*-webkit-border-radius: 20px;*/
-		/*border-radius: 20px;*/
+		border: 1px solid $colour_main1;
 	}
 }
 
 .signup-form {
 	@include form-styling;
-	/*margin: 20px auto;*/
-	/*max-width: 350px;*/
-	/*padding: 30px;*/
-}
-
-a {
-	color: blue;
 }
 
 /*TODO: default button active/hover*/
