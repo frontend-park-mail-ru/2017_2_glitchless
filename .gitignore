@@ -67,5 +67,5 @@ public/css
 .sass-cache/
 
 
-public/*.html
+public/**/*.html
 public/css/
