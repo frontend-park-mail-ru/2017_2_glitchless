@@ -25,7 +25,7 @@ function fetchData(blocks) {
 }
 
 
-modal.body = modal.getElementsByClassName('modal__body')[0];
+modal.content = modal.getElementsByClassName('modal__content')[0];
 
 // Get the button that opens the modal
 let triggers = document.getElementsByClassName('menu__modal-trigger');
@@ -59,7 +59,7 @@ function setModalOpener(button) {
         let target = button.getAttribute('modal-trigger');
         blocks[target].promisedData
             .then(function (data) {
-                setContent(modal, data);
+                setContent(modal.content, data);
             })
             .then(function () {
                 const innerScripts = modal.getElementsByTagName('script');
