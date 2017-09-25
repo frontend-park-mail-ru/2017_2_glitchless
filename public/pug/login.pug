@@ -2,7 +2,7 @@ block modal__body
   form.login-form(action='')
     h1 Sign In
     - 
-      var input_fields = [{type:'text', name:'answer', placeholder:'Nickname'}, 
+      var input_fields = [{type:'text', name:'login', placeholder:'Nickname'}, 
                           {type:'password', name:'password', placeholder:'Password'}];
     each field in input_fields
       input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
@@ -11,3 +11,5 @@ block modal__body
     p
       | Don't have an account? 
       a(href='./signup.html') Sign up
+script(type='text/javascript')
+  include ../js/login.js

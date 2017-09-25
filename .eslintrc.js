@@ -56,7 +56,6 @@ module.exports = {
         "indent-legacy": 2,
         "linebreak-style": 2,
         "max-len": 2,
-        "no-eval": 2,
         "no-tabs": 2
     },
     "env": {
