@@ -59,7 +59,7 @@ function setModalOpener(button) {
         let target = button.getAttribute('modal-trigger');
         blocks[target].promisedData
             .then(function (data) {
-                setContent(modal.body, data);
+                setContent(modal, data);
             })
             .then(function () {
                 const innerScripts = modal.getElementsByTagName('script');

@@ -4,27 +4,36 @@
   /* Modal Header */
   &__header {
     padding: 2px 16px;
-    background-color: $c1r2;
-    color: white;
-    }
+    //background-color: $c1r2;
+    background-color: $colour_main2;
+
+    //color: white;
+    color: $colour_main1;
+  }
 
 /* Modal Body */
   &__body { 
     padding: 2px 16px;
+    color: $colour_main1;
   }
 
 /* Modal Footer */
   &__footer {
     padding: 2px 16px;
-    background-color: $c1r2;
-    color: white;
+    //background-color: $c1r2;
+    background-color: $colour_main2;
+
+    //color: white;
+    color: $colour_main1;
   }
 
 /* Modal Content */
   &__content {
     display: block;
     position: relative;
-    background-color: $c1r1;
+    //background-color: $c1r1;
+    background-color: $colour_main3;
+
     margin: auto;
     padding: 0;
     border: 1px solid #888;

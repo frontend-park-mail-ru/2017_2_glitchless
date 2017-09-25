@@ -1,6 +1,7 @@
 @mixin form-styling {
 	text-align: center;
 	display: block;
+
 	&__field {
 		margin-top: 10px;
 	    min-width: 400px;
@@ -16,20 +17,29 @@
     }
 
     &__button {
-	// border: 1px solid #543b63;
-	// font-size: 1.5em;
-	padding: 10px 70px;
-	box-shadow: 0 5px 0 rgba(0,0,0,.5);
-	&:active {
-		box-shadow: 0 0 20px rgba(0,0,0,.8);
+		// border: 1px solid #543b63;
+		// font-size: 1.5em;
+		padding: 15px 30px;
+		box-shadow: 0 7px 0 $colour_main4;
+
+		border: 0;
+
+		&:active {
+			box-shadow: 0 0 20px rgba(0,0,0,.8);
+		}
+
+		background: $colour_main1;
+		/*color: #543b63;*/
+		color: $colour_main2;
+        font-size: 14pt;
+        transition: .5s;
+
+		&:hover {
+			//background: #543b63;
+			//color: #a07fb8;
+            background: $colour_main4;
+            color: $colour_main3;
+            box-shadow: none;
+		}
 	}
-	background: #a07fb8;
-	/*color: #543b63;*/
-	color: #352540;
-	&:hover {
-		background: #543b63;
-		color: #a07fb8;
-		transition: 1s;
-	}
-}
 }
