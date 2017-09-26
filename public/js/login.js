@@ -16,17 +16,37 @@ loginForm.addEventListener('submit', function (event) {
 	const password = loginForm.elements['password'].value;
 
 	const error = checkPassword(password);
-	if (error) 
+	if (error) {
 		alert(error);
 		return; //TODO: UI error display
-
-	const requestOptions = { body: JSON.stringify({ "login": login , "password" : password}),
-		method: 'GET'};
+	}
+	const requestOptions = { body: JSON.stringify({"login": login , "password" : password}),
+		headers : headersApi,
+		method: 'POST'};
+	console.log('1');
+	console.log(requestOptions['body']);
 	const authRequest = new Request(loginApiUrl, requestOptions);
+	console.log('2');
+	console.log(headersApi);
 	console.log(authRequest.headers);
+	fetch( 
+	           'https://glitchless-java.herokuapp.com/api/login', 
+	           {mode: 'cors',
+	           	body: "{ \"login\": \"string\", \"email\": \"string\", \"password\": \"stringasd\"}",
+//requestOptions['body'],
+				credentials: 'include',
+	           	headers:{"Accept":"application/json;charset=UTF-8","Content-Type":"application/json;charset=UTF-8",},
+	           method:'POST'}
+	          )
+	          .then(console.log)
+	          .catch(console.error);
+
 	getResponseText(authRequest)
 		.then(function (text) {
 			console.log(text);
+		})
+		.catch(function (resp) {
+			console.log(resp.json())
 		});
 });
 
