@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server",
     "postinstall": "npm run build",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "gulp build",
+    "watch": "gulp watch"
   },
   "author": "Glitchless",
   "license": "MIT",

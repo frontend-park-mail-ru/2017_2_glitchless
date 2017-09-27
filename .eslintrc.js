@@ -55,7 +55,7 @@ module.exports = {
         "semi": 2,
         "indent-legacy": 2,
         "linebreak-style": 2,
-        "max-len": 2,
+        "max-len": [2, 120],
         "no-eval": 2,
         "no-tabs": 2
     },

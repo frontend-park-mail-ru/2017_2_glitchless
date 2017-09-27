@@ -1,0 +1,17 @@
+doctype html
+html
+    head
+        link(type='text/css', rel='stylesheet', href='app.css')
+        script(type='text/javascript', src='app.js', defer=true)
+
+    body
+        include menu/index
+
+        #page_block_login.page_block
+            include page_block_login/index
+        #page_block_signup.page_block
+            include page_block_signup/index
+        #page_block_about.page_block
+            include page_block_about/index
+        #page_block_leaders.page_block
+            include page_block_leaders/index
