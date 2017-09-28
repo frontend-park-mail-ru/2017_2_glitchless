@@ -1,4 +1,5 @@
 const LoginForm = require('../../models/LoginForm.js');
+const UserModel = require('./models/UserModel.js');
 
 function init(serviceLocator) {
     const loginForm = document.getElementById('login-form');
@@ -21,8 +22,12 @@ function init(serviceLocator) {
         const validationResult = model.validate();
         if (validationResult.ok === true) {
             model.send()
-                .then((res) => console.log(res.json()))
-                .then((res) => console.error(res.json()));
+                .then((res) => res.json())
+                .then((json) => {
+                    serviceLocator.user = UserModel.fromJson(json);
+                    serviceLocator.user.saveInLocalStorage();
+                })
+                .catch((res) => console.error(res.json()));
             // TODO: сделать норм ответ
         } else {
             // alert(validationResult.errors);
