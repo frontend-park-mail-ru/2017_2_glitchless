@@ -18,15 +18,15 @@ const webpackConfig = {
 
 gulp.task('js:build', () => {
     return gulp.src('src/index.js')
-      .pipe(plumber())
-      .pipe(webpack(webpackConfig))
-      .pipe(gulp.dest('dist/'));
+        .pipe(plumber())
+        .pipe(webpack(webpackConfig))
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('js:watch', () => {
     return gulp.src('src/index.js')
-      .pipe(webpack(Object.assign({}, webpackConfig, {watch: true})))
-      .pipe(gulp.dest('dist/'));
+        .pipe(webpack(Object.assign({}, webpackConfig, {watch: true})))
+        .pipe(gulp.dest('dist/'));
 });
 
 
@@ -39,17 +39,17 @@ gulp.task('css:build', () => {
 
 gulp.task('css:build-dev', () => {
     const p = gulp.src('src/views/index.scss')
-      .pipe(plumber());
+        .pipe(plumber());
     return cssPipe(p);
 });
 
 const cssPipe = (p) => {
     return p
-      .pipe(sourcemaps.init())
-      .pipe(sass())
-      .pipe(rename('app.css'))
-      .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest('dist'));
+        .pipe(sourcemaps.init())
+        .pipe(sass())
+        .pipe(rename('app.css'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('dist'));
 };
 
 gulp.task('css:watch', () => {
@@ -61,15 +61,15 @@ gulp.task('css:watch', () => {
 
 gulp.task('html:build', () => {
     return gulp.src('src/views/index.pug')
-      .pipe(pug())
-      .pipe(gulp.dest('dist/'));
+        .pipe(pug())
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('html:build-dev', () => {
     return gulp.src('src/views/index.pug')
-      .pipe(plumber())
-      .pipe(pug())
-      .pipe(gulp.dest('dist/'));
+        .pipe(plumber())
+        .pipe(pug())
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('html:watch', () => {
@@ -77,9 +77,21 @@ gulp.task('html:watch', () => {
 });
 
 
+// other files
+gulp.task('images:build', () => {
+    return gulp.src('src/**/*.{png,jpg,gif}')
+        .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('images:watch', () => {
+    return gulp.watch('src/**/*.{png,jpg,gif}', ['images:build']);
+});
+
+
 // main
 
-gulp.task('build', ['js:build', 'css:build', 'html:build']);
-gulp.task('watch', ['js:watch', 'css:watch', 'css:build-dev', 'html:watch', 'html:build-dev']);
+gulp.task('build', ['js:build', 'css:build', 'html:build', 'images:build']);
+gulp.task('watch', ['js:watch', 'css:watch', 'css:build-dev', 'html:watch', 'html:build-dev',
+    'images:watch', 'images:build']);
 
 gulp.task('default', ['build']);
