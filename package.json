@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server",
     "postinstall": "npm run build",
-    "lint": "eslint .",
+    "lint": "eslint src",
     "build": "gulp build",
     "watch": "gulp watch"
   },
