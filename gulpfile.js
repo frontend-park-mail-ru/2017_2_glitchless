@@ -78,20 +78,21 @@ gulp.task('html:watch', () => {
 
 
 // other files
-gulp.task('images:build', () => {
+
+gulp.task('other:build', () => {
     return gulp.src('src/**/*.{png,jpg,gif}')
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('images:watch', () => {
-    return gulp.watch('src/**/*.{png,jpg,gif}', ['images:build']);
+gulp.task('other:watch', () => {
+    return gulp.watch('src/**/*.{png,jpg,gif}', ['other:build']);
 });
 
 
 // main
 
-gulp.task('build', ['js:build', 'css:build', 'html:build', 'images:build']);
+gulp.task('build', ['js:build', 'css:build', 'html:build', 'other:build']);
 gulp.task('watch', ['js:watch', 'css:watch', 'css:build-dev', 'html:watch', 'html:build-dev',
-    'images:watch', 'images:build']);
+    'other:watch', 'other:build']);
 
 gulp.task('default', ['build']);
