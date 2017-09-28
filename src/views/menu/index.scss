@@ -12,7 +12,7 @@
     background: rgba($colour_main2, .8);
     color: $colour_main1;
     border-radius: 2px;
-    
+
     &__bumper {
         &--centered {
             @include centered;
@@ -28,6 +28,11 @@
         }
     }
 
+    &__user{
+        &--centered {
+          @include centered;
+        }
+    }
     &__buttons {
         &--centered {
             @include centered;
@@ -56,7 +61,7 @@
         }
     }
 
-    
+
     img {
         width: 350px;
         opacity: .8;

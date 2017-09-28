@@ -21,6 +21,7 @@ function init(serviceLocator) {
                 .then((json) => {
                     serviceLocator.user = UserModel.fromJson(json);
                     serviceLocator.user.saveInLocalStorage();
+                    serviceLocator.events.emitEvent("auth", serviceLocator.user);
                 })
                 .catch((res) => console.error(res.json()));
             // TODO: сделать норм ответ
