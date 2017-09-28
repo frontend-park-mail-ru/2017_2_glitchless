@@ -1,8 +1,9 @@
-function init() {
-    Array.from(document.getElementsByClassName('menu__modal-trigger')).forEach((el) => {
+function init(serviceLocator) {
+    const menuButtons = Array.from(document.getElementsByClassName('menu__modal-trigger'));
+    menuButtons.forEach((el) => {
         el.addEventListener('click', () => {
             const page = el.getAttribute('modal-trigger');
-            location.hash = '#' + page;
+            serviceLocator.changePage(page);
         });
     });
 }
