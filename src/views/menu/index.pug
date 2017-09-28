@@ -1,5 +1,10 @@
 .menu
+  .menu__bumper.menu__bumper--centered
+    img(src='images/rhythm_blast_v1a.png')
+  .menu__bumper.menu__buttons--centered
     -
-        var page_names = ['signup', 'login', 'about', 'leaders']
-    each page in page_names
-        button.menu__modal-trigger(modal-trigger=page) #{page}
+      var pages = [{trigger: 'signup', label: 'Sign Up'}, {trigger: 'login', label: 'Login'},
+                      {trigger: 'about', label: 'About'}, {trigger:'leaders', label: 'Leaders'}]
+    each page in pages
+      button.menu__modal-trigger--fixed-width.menu__modal-trigger(modal-trigger=page['trigger']) #{page['label']}
+      //- button.menu__modal-trigger.btn.fixed(modal-trigger=page['trigger']) #{page['label']}

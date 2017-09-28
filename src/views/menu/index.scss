@@ -1,0 +1,86 @@
+@mixin centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu {
+    min-width: 25%;
+
+    position: absolute;
+    padding: 15px;
+    background: rgba($colour_main2, .8);
+    color: $colour_main1;
+    border-radius: 2px;
+    
+    &__bumper {
+        &--centered {
+            @include centered;
+        }
+        margin: 20px 0;
+        &-top {
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+        &-bottom {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+    }
+
+    &__buttons {
+        &--centered {
+            @include centered;
+        }
+    }
+
+    &__modal-trigger {
+        display: block;
+        background: $colour_main1;
+        padding: 15px 30px;
+        margin-bottom: 15px;
+        box-shadow: 0 5px 0 $colour_main4;
+        color: $colour_main3;
+        outline: none;
+        border: 0;
+        transition: .5s;
+
+        &--fixed-width {
+            width: 150px;
+        }
+
+        &:hover {
+            background: $colour_main4;
+            color: $colour_main3;
+            box-shadow: none;
+        }
+    }
+
+    
+    img {
+        width: 350px;
+        opacity: .8;
+    }
+}
+// p {
+//     margin: 15px 0;
+// }
+
+a {
+    margin: 0 5px;
+    padding: 5px;
+    background: $colour_main4;
+    text-decoration: none;
+    color: $colour_main3;
+    border-radius: 2px;
+    transition: .5s;
+
+    &:hover {
+        opacity: .7;
+    }
+}
+
+.field_errors {
+    margin-top: 10px;
+    color: darkred;
+}
