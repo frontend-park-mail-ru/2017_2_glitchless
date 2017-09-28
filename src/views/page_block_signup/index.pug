@@ -7,7 +7,7 @@ include ../_modal/index
             var input_fields = [{type:'text', name:'email', placeholder:'E-mail'},
                                 {type:'text', name:'login', placeholder:'Nickname'},
                                 {type:'password', name:'password', placeholder:'Password'},
-                                {type:'password', name:'password-conf', placeholder:'Confirm password'}];
+                                {type:'password', name:'passwordConfirmation', placeholder:'Confirm password'}];
         each field in input_fields
             input.signup-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
             //- .field_errors(id='signup-form__'+field['name'], style='visibility: hidden;') #{field['placeholder']} errors placeholder
