@@ -19,7 +19,7 @@ function init(serviceLocator) {
             model.send()
                 .then((res) => res.json())
                 .then((json) => {
-                    serviceLocator.user = UserModel.fromJson(json);
+                    serviceLocator.user = UserModel.fromApiJson(json);
                     serviceLocator.user.saveInLocalStorage();
                     serviceLocator.events.emitEvent("auth", serviceLocator.user);
                 })

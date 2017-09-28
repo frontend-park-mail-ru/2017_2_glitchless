@@ -6,7 +6,9 @@
 function initFormForDisplayErrors(form) {
     for (let i = 0; i < form.elements.length; i++) {
         const node = form.elements.item(i);
-        node.oninput = () => { this.setCustomValidity(''); };
+        node.oninput = (event) => {
+            event.target.setCustomValidity(''); 
+        };
     }
 }
 
