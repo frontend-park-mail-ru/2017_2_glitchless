@@ -17,6 +17,7 @@
         &--centered {
             @include centered;
         }
+
         margin: 20px 0;
         &-top {
             margin-top: 20px;
@@ -25,6 +26,12 @@
         &-bottom {
             margin-top: 0;
             margin-bottom: 20px;
+        }
+
+
+        &__img {
+            width: 350px;
+            opacity: .8;
         }
     }
 
@@ -59,12 +66,6 @@
             color: $colour_main3;
             box-shadow: none;
         }
-    }
-
-
-    img {
-        width: 350px;
-        opacity: .8;
     }
 }
 // p {

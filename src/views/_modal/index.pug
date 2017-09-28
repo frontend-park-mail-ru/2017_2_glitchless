@@ -2,7 +2,7 @@ mixin modal(title, footer)
     .modal
         .modal__content
             .modal__header
-                span.modal-close ×
+                a.modal__closer(href='#') ×
                 h2 #{title}
 
             .modal__body
