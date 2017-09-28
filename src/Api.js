@@ -13,7 +13,7 @@ class Api {
      * @param {Object} data Object to send. It will be serialized to json
      * @return {Promise} Promise of `fetch` function.
      */
-    post(path, data) {
+    post(path, data = {}) {
         return fetch(`${this.baseUrl}/${path}`, {
             method: 'POST',
             headers: {
