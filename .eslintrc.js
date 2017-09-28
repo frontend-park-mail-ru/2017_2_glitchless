@@ -10,7 +10,6 @@ module.exports = {
         "no-class-assign": 2,
         "no-compare-neg-zero": 2,
         "no-cond-assign": 2,
-        "no-console": 2,
         "no-const-assign": 2,
         "no-constant-condition": 2,
         "no-control-regex": 2,
@@ -55,7 +54,7 @@ module.exports = {
         "semi": 2,
         "indent-legacy": 2,
         "linebreak-style": 2,
-        "max-len": 2,
+        "max-len": [2, 120],
         "no-tabs": 2
     },
     "env": {
