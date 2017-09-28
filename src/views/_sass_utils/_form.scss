@@ -1,7 +1,7 @@
 @mixin form-styling {
     text-align: center;
     display: block;
-
+    
     &__field {
         margin-top: 10px;
         width: 90%;
@@ -33,6 +33,19 @@
             background: $colour_main4;
             color: $colour_main3;
             box-shadow: none;
+        }
+    }
+    &__redirect-btn {
+        margin: 0 5px;
+        padding: 5px;
+        background: $colour_main4;
+        text-decoration: none;
+        color: $colour_main3;
+        border-radius: 2px;
+        transition: .5s;
+
+        &:hover {
+            opacity: .7;
         }
     }
 }
