@@ -21,7 +21,7 @@ function init(serviceLocator) {
             model.send()
                 .then((res) => console.log(res.json()))
                 .then((json) => {
-                    serviceLocator.user = UserModel.fromJson(json);
+                    serviceLocator.user = UserModel.fromApiJson(json);
                     serviceLocator.user.saveInLocalStorage();
                 })
                 .catch((res) => console.error(res.json()));
