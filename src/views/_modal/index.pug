@@ -1,0 +1,9 @@
+mixin modal(title)
+    .modal
+        .modal__content
+            .modal__header
+                span.modal-close ×
+                h2 #{title}
+
+            .modal__body
+                block

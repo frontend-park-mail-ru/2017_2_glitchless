@@ -1,0 +1,61 @@
+@import '../_/_palette';
+
+.modal {
+    /* Modal Header */
+    &__header {
+        padding: 2px 16px;
+        background-color: $c1r2;
+        color: white;
+    }
+
+    /* Modal Body */
+    &__body {
+        padding: 2px 16px;
+    }
+
+    /* Modal Footer */
+    &__footer {
+        padding: 2px 16px;
+        background-color: $c1r2;
+        color: white;
+    }
+
+    /* Modal Content */
+    &__content {
+        display: block;
+        position: relative;
+        background-color: $c1r1;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 35%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-animation-name: slideFromTop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: slideFromTop;
+        animation-duration: 0.4s
+    }
+}
+
+/* Add Animation */
+@-webkit-keyframes slideFromTop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes slideFromTop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}

@@ -1,0 +1,72 @@
+@import '../_/_palette';
+@import '../_/_form';
+
+@media screen and (min-width: 1200px) {
+    .wrapper {
+        display: grid;
+        grid-template-columns: 30% auto 30%;
+        grid-gap: 10px;
+        grid-auto-rows: minmax(100px, auto);
+    }
+    .signup-block {
+        background: #252d40; /*linear-gradient(to bottom, #814a83 0%, #181532 100%);*/
+        grid-row: 3 / 7;
+        grid-column: 2;
+        /*background-color: green;*/
+        text-align: center;
+        border: 1px solid #b57eb5;
+        /*-webkit-border-radius: 20px;*/
+        /*border-radius: 20px;*/
+    }
+}
+
+@media (min-width: 800px) and (max-width: 1200px) {
+    .wrapper {
+        display: grid;
+        grid-template-columns: 20% auto 20%;
+        grid-gap: 10px;
+        grid-auto-rows: minmax(100px, auto);
+    }
+    .signup-block {
+        background: #252d40; /*linear-gradient(to bottom, #814a83 0%, #181532 100%);*/
+        grid-row: 3 / 7;
+        grid-column: 2;
+        /*background-color: green;*/
+        text-align: center;
+        border: 1px solid #b57eb5;
+        /*-webkit-border-radius: 20px;*/
+        /*border-radius: 20px;*/
+    }
+}
+
+@media (max-width: 800px) {
+    .wrapper {
+        display: grid;
+        grid-template-columns: auto;
+        grid-gap: 10px;
+        grid-auto-rows: minmax(100px, auto);
+    }
+    .signup-block {
+        background: #252d40; /*linear-gradient(to bottom, #814a83 0%, #181532 100%);*/
+        grid-row: 3 / 7;
+        grid-column: 1s;
+        /*background-color: green;*/
+        text-align: center;
+        border: 1px solid #b57eb5;
+        /*-webkit-border-radius: 20px;*/
+        /*border-radius: 20px;*/
+    }
+}
+
+.signup-form {
+    @include form-styling;
+    /*margin: 20px auto;*/
+    /*max-width: 350px;*/
+    /*padding: 30px;*/
+}
+
+a {
+    color: blue;
+}
+
+/*TODO: default button active/hover*/
