@@ -1,6 +1,6 @@
 const LoginForm = require('../../models/LoginForm.js');
 const displayErrorsUtils = require('../_form_utils/displayErrors.js');
-const UserModel = require('./models/UserModel.js');
+const UserModel = require('../../models/UserModel.js');
 
 function init(serviceLocator) {
     const loginForm = document.getElementById('login-form');
