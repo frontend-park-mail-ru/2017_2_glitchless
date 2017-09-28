@@ -60,12 +60,8 @@ typings/
 # .idea IDE files
 .idea/
 
-# css files (build automatically by travis)
-public/css
+# built files
+/dist/
 
 # SASS cache files
 .sass-cache/
-
-
-public/**/*.html
-public/css/
