@@ -13,7 +13,18 @@ function initFormForDisplayErrors(form) {
 }
 
 /**
- * Shows errors on form.
+ * Shows server response-related errors on form.
+ *
+ * @param errorField {Node} DOM node of error field
+ * @param error {Array} String, containing error description
+ */
+function displayServerError(errorField, error) {
+    errorField.innerText = error;
+    errorField.style.visibility = 'visible';
+}
+
+/**
+ * Shows client-side/input-related errors on form.
  *
  * Spec of error object:
  * {
@@ -32,5 +43,6 @@ function displayErrors(form, errors) {
 
 module.exports = {
     initFormForDisplayErrors,
-    displayErrors
+    displayErrors,
+    displayServerError
 };

@@ -9,7 +9,7 @@ function init(serviceLocator) {
 
     loginForm.addEventListener('submit', function (event) {
         event.preventDefault();
-
+        const serverErrorField = login.getElementById('login-form__server-errors')
         const model = new LoginForm(serviceLocator);
         model.login = loginForm.elements['login'].value;
         model.password = loginForm.elements['password'].value;
