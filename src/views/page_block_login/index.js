@@ -6,9 +6,17 @@ function init(serviceLocator) {
     loginForm.addEventListener('submit', function (event) {
         event.preventDefault();
 
+        const fields = {};
+        fields['login'] = loginForm.elements['login'];
+        fields['password'] = loginForm.elements['password'];
+        for (let field in fields) {
+            fields[field].oninput = function () { this.setCustomValidity(''); };
+        }
+
         const model = new LoginForm(serviceLocator);
-        model.login = loginForm.elements['login'].value;
-        model.password = loginForm.elements['password'].value;
+        model.login = fields['login'].value;
+        model.password = fields['password'].value;
+
 
         const validationResult = model.validate();
         if (validationResult.ok === true) {
@@ -17,11 +25,19 @@ function init(serviceLocator) {
                 .then((res) => console.error(res.json()));
             // TODO: сделать норм ответ
         } else {
-            alert(validationResult.errors);
+            // alert(validationResult.errors);
+            displayErrors(validationResult.errors, fields);
             console.error(validationResult.errors);
             // TODO: сделать чтоб прям в формочке ошибки были
         }
     });
 }
 
+function displayErrors(errors, fields) {
+    errors.forEach(function (error) {
+        // fields[error.field].nextSibling.innerHTML = error.message;
+        fields[error.field].setCustomValidity(error.message);
+    });
+}
+ 
 module.exports = init;

@@ -1,4 +1,4 @@
-mixin modal(title)
+mixin modal(title, footer)
     .modal
         .modal__content
             .modal__header
@@ -7,3 +7,5 @@ mixin modal(title)
 
             .modal__body
                 block
+            .modal__footer
+                h3 #{footer}
