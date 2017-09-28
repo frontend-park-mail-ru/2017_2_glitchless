@@ -10,7 +10,7 @@ block modal__body
       input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
       .field_errors(id=field['name']) #{field['placeholder']} errors placeholder
 
-    input.login-form__button(type='submit').bumper
+    input.login-form__button(type='submit', value='Submit').bumper
     p
       | Don't have an account yet?
       a(href='./signup.html') Sign up
