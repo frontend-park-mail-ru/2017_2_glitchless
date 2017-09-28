@@ -19,8 +19,9 @@ function init(serviceLocator) {
                 .catch(console.error);
             // TODO: сделать норм ответ
         } else {
-            // TODO: сделать чтоб прям в формочке ошибки были
             alert(validationResult.errors);
+            console.error(validationResult.errors);
+            // TODO: сделать чтоб прям в формочке ошибки были
         }
     });
 }

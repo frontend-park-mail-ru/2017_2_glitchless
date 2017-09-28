@@ -3,7 +3,7 @@ include ../_modal/index
 +modal('Sign in')
     form#login-form.login-form(action='')
         -
-            var input_fields = [{type: 'text', name:'answer', placeholder:'Nickname'}, {type: 'password', name:'password', placeholder:'Password'}];
+            var input_fields = [{type: 'text', name:'login', placeholder:'Nickname'}, {type: 'password', name:'password', placeholder:'Password'}];
         each field in input_fields
             input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
         p

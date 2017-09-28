@@ -18,6 +18,7 @@ function init(serviceLocator) {
             // TODO: сделать норм ответ
         } else {
             alert(validationResult.errors);
+            console.error(validationResult.errors);
             // TODO: сделать чтоб прям в формочке ошибки были
         }
     });
