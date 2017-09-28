@@ -32,6 +32,10 @@ class LoginForm {
     validate() {
         let errors = [];
 
+        if (this.login.length === 0) {
+            errors.push({field: 'login', message: 'Login can\'t be empty'});
+        }
+
         const passwordValidation = validations.validatePassword(this.password);
         if (passwordValidation !== true) {
             errors.push({field: 'password', message: passwordValidation});

@@ -14,7 +14,7 @@ class Api {
      * @return {Promise} Promise of `fetch` function.
      */
     post(path, data) {
-        return fetch(`#{baseUrl}/#{path}`, {
+        return fetch(`${this.baseUrl}/${path}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain, */*',

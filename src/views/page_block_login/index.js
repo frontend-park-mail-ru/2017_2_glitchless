@@ -13,8 +13,8 @@ function init(serviceLocator) {
         const validationResult = model.validate();
         if (validationResult.ok === true) {
             model.send()
-                .then(console.log)
-                .catch(console.error);
+                .then((res) => console.log(res.json()))
+                .then((res) => console.error(res.json()));
             // TODO: сделать норм ответ
         } else {
             alert(validationResult.errors);

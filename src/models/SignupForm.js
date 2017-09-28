@@ -34,6 +34,10 @@ class SignupForm {
     validate() {
         let errors = [];
 
+        if (this.login.length === 0) {
+            errors.push({field: 'login', message: 'Login can\'t be empty'});
+        }
+
         const emailValidation = validations.validateEmail(this.email);
         if (emailValidation !== true) {
             errors.push({field: 'email', message: emailValidation});
