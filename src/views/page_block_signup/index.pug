@@ -9,8 +9,8 @@ include ../_modal/index
                                 {type:'password', name:'password', placeholder:'Password'},
                                 {type:'password', name:'password-conf', placeholder:'Confirm password'}];
         each field in input_fields
-            span.form-elem
-                input.signup-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
+            input.signup-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
+            //- .field_errors(id='signup-form__'+field['name'], style='visibility: hidden;') #{field['placeholder']} errors placeholder
         p
             input.signup-form__button(type='submit', value='Submit')
         p

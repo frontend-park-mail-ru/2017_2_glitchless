@@ -19,7 +19,7 @@ function validatePassword(password) {
  * @returns {Boolean|String} True if ok else message
  */
 function validateEmail(email) {
-    if (!email.contains('@')) {
+    if (!email.includes('@')) {
         return 'Wrong email format';
     }
     return true;
