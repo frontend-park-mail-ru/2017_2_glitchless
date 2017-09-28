@@ -3,7 +3,7 @@ function init(serviceLocator) {
     menuButtons.forEach((el) => {
         el.addEventListener('click', () => {
             const page = el.getAttribute('modal-trigger');
-            serviceLocator.changePage(page);
+            serviceLocator.router.changePage(page);
         });
     });
 }
