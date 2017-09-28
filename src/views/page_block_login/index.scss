@@ -1,5 +1,5 @@
-@import '../_/_form';
-@import '../_/_palette';
+@import '../_sass_utils/_form';
+@import '../_sass_utils/_palette';
 
 .login-form {
     @include form-styling;
