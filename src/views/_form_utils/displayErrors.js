@@ -7,8 +7,8 @@ function initFormForDisplayErrors(form) {
     for (let i = 0; i < form.elements.length; i++) {
         const node = form.elements.item(i);
         node.oninput = (event) => {
-	        event.target.setCustomValidity(''); 
-	    };
+            event.target.setCustomValidity(''); 
+        };
     }
 }
 
