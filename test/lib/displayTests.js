@@ -1,3 +1,9 @@
+/**
+ * Renders test results on page.
+ *
+ * @param rootEl {Node} DOM element to render in
+ * @param results {Array} Test results
+ */
 function displayTests(rootEl, results) {
     const templateEl = document.getElementById('template-test').firstElementChild;
 
