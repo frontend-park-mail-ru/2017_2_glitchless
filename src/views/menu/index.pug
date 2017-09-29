@@ -8,5 +8,5 @@
       var pages = [{trigger: 'signup', label: 'Sign Up'}, {trigger: 'login', label: 'Login'},
                       {trigger: 'about', label: 'About'}, {trigger:'leaders', label: 'Leaders'}]
     each page in pages
-      button.menu__button--fixed-width.menu__button(modal-trigger=page['trigger']) #{page['label']}
+      button.menu__button--fixed-width.menu__button.modal-trigger(modal-trigger=page['trigger']) #{page['label']}
     button.menu__button--fixed-width.menu__button(id='logout-button') Log Out
