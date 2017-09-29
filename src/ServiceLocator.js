@@ -10,7 +10,7 @@ class ServiceLocator {
     constructor() {
         this.api = new Api('https://glitchless-java.herokuapp.com/api');
         this.router = new Router();
-        this.user = UserModel.getAuth();
+        // this.user = UserModel.getAuth();
         this.eventBus = new EventBus();
     }
 }
