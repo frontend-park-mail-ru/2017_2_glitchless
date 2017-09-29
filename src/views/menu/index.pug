@@ -9,4 +9,4 @@
                       {trigger: 'about', label: 'About'}, {trigger:'leaders', label: 'Leaders'}]
     each page in pages
       button.menu__button--fixed-width.menu__button.modal-trigger(modal-trigger=page['trigger']) #{page['label']}
-    button.menu__button--fixed-width.menu__button(id='logout-button') Log Out
+    button.menu__button--fixed-width.menu__button(id='logout-button', style='display:none;') Log Out
