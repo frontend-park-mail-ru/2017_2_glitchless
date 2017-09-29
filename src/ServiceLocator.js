@@ -1,6 +1,5 @@
 const Api = require('./Api.js');
 const Router = require('./Router.js');
-// const UserModel = require('./models/UserModel.js');
 const EventBus = require('./utils/EventBus.js');
 
 /**
@@ -10,7 +9,7 @@ class ServiceLocator {
     constructor() {
         this.api = new Api('https://glitchless-java.herokuapp.com/api');
         this.router = new Router();
-        // this.user = UserModel.getAuth();
+        this.user = null;
         this.eventBus = new EventBus();
     }
 }

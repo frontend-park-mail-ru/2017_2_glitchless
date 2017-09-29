@@ -24,20 +24,20 @@ class UserModel {
                     return UserModel.fromApiJson(json);
                 });
         } else {
-            return new Promise(function (resolve, reject) {
+            return new Promise((resolve, reject) => {
                 let model = localStorage.getItem('user');
                 if (model !== undefined) {
                     resolve(model);
-                } else {
-                    reject();
+                    return;
                 }
+                reject();
             });
         }
     }
 
     /**
      * Parses server API response and creates model instance.
-     * 
+     *
      * @param json {Object} JSON object from server API
      * @return {UserModel} New model instance
      */
