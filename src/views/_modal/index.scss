@@ -1,0 +1,60 @@
+@import '../_sass_utils/_palette';
+
+.modal {
+    &__closer {
+        padding: 2px 16px;
+        background-color: $colour_main2;
+        color: $colour_main1;
+        border-radius: 3px 3px 0 0;
+    }
+
+    &__header {
+        padding: 2px 16px;
+        background-color: $colour_main2;
+        color: $colour_main1;
+        border-radius: 3px 3px 0 0;
+    }
+
+    &__body { 
+        padding: 2px 16px;
+        color: $colour_main1;
+    }
+
+    &__footer {
+        padding: 2px 16px;
+        background-color: $colour_main2;
+        font-size: 10pt;
+        border-radius: 0 0 3px 3px;
+        color: $colour_main1;
+    }
+
+    &__content {
+        display: block;
+        position: relative;
+        background-color: $colour_main3;
+        min-width: 500px;
+        margin: auto;
+        padding: 0;
+
+        border: 1px solid $colour_main1;
+        border-radius: 3px;
+
+        width: 35%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        -webkit-animation-name: slideFromTop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: slideFromTop;
+        animation-duration: 0.4s
+    }
+}
+
+/* Add Animation */
+@-webkit-keyframes slideFromTop {
+    from {top: -300px; opacity: 0} 
+    to {top: 0; opacity: 1}
+}
+
+@keyframes slideFromTop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}

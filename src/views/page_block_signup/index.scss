@@ -1,0 +1,11 @@
+@import '../_sass_utils/_palette';
+@import '../_sass_utils/_form';
+
+.signup-form {
+    @include form-styling;
+    /*margin: 20px auto;*/
+    /*max-width: 350px;*/
+    /*padding: 30px;*/
+}
+
+/*TODO: default button active/hover*/

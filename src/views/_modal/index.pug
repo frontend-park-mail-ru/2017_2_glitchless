@@ -1,0 +1,12 @@
+mixin modal(title, footer)
+    .modal
+        .modal__content
+            .modal__header
+                a.modal__closer(href='#') ×
+                h2 #{title}
+
+            .modal__body
+                block
+
+            .modal__footer
+                h3 #{footer}

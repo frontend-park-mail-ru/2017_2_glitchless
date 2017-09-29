@@ -1,0 +1,51 @@
+@mixin form-styling {
+    text-align: center;
+    display: block;
+    
+    &__field {
+        margin-top: 10px;
+        width: 90%;
+        border: 1px solid $colour_main1;
+        height: 50px;
+        background: #F5F5F5;
+        font-size: 12pt;
+        color: $colour_main1;
+        padding: 5px 10px 5px 10px;
+        outline: none;
+    }
+
+    &__button {
+        padding: 15px 50px;
+        box-shadow: 0 5px 0 $colour_main4;
+
+        border: 0;
+
+        &:active {
+            box-shadow: 0 0 20px rgba(0,0,0,.8);
+        }
+
+        background: $colour_main1;
+        color: $colour_main2;
+        font-size: 14pt;
+        transition: .5s;
+
+        &:hover {
+            background: $colour_main4;
+            color: $colour_main3;
+            box-shadow: none;
+        }
+    }
+    &__redirect-btn {
+        margin: 0 5px;
+        padding: 5px;
+        background: $colour_main4;
+        text-decoration: none;
+        color: $colour_main3;
+        border-radius: 2px;
+        transition: .5s;
+
+        &:hover {
+            opacity: .7;
+        }
+    }
+}

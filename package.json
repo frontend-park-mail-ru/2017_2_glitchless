@@ -1,0 +1,41 @@
+{
+  "name": "GlitchlessNodeServer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "postinstall": "npm run build",
+    "lint": "eslint src",
+    "build": "gulp build",
+    "watch": "gulp watch"
+  },
+  "author": "Glitchless",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/frontend-park-mail-ru/2017_2_glitchless.git"
+  },
+  "dependencies": {
+    "express": "^4.15.4"
+  },
+  "devDependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "eslint": "^4.7.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-json": "^1.2.0",
+    "eslint-plugin-markdown": "^1.0.0-beta.6",
+    "gulp": "^3.9.1",
+    "gulp-if": "^2.0.2",
+    "gulp-insert": "^0.5.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-pug": "^3.3.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.1",
+    "node-sass": "^4.5.3",
+    "pug": "^2.0.0-rc.4",
+    "webpack-stream": "^4.0.0"
+  }
+}

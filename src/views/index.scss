@@ -1,0 +1,20 @@
+@import "page_block_login/index";
+@import "page_block_signup/index";
+@import "page_block_about/index";
+@import "page_block_leaders/index";
+@import "menu/index";
+@import "_modal/index";
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 450px;
+    height: 100vh;
+    margin: 0;
+    background: radial-gradient(ellipse farthest-corner at center top, $colour_main1 -50%, $colour_main1 150%);
+
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+}
