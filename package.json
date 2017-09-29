@@ -8,7 +8,8 @@
     "postinstall": "npm run build",
     "lint": "eslint src",
     "build": "gulp build",
-    "watch": "gulp watch"
+    "watch": "gulp watch",
+    "test": "gulp test"
   },
   "author": "Glitchless",
   "license": "MIT",

@@ -20,7 +20,6 @@ const webpackConfig = {
 
 gulp.task('js:build', () => {
     return gulp.src('src/index.js')
-        .pipe(plumber())
         .pipe(webpack(webpackConfig))
         .pipe(gulpif((file) => file.path.endsWith('.js'), insert.prepend('"use strict";\n')))
         .pipe(gulp.dest('dist/'));
@@ -93,10 +92,39 @@ gulp.task('other:watch', () => {
 });
 
 
+// test
+
+const webpackTestConfig = {
+    devtool: 'source-map',
+    output: {
+        filename: 'test.js'
+    },
+    watch: true
+};
+
+gulp.task('test-js:watch', () => {
+    return gulp.src('test/lib/index.js')
+        .pipe(plumber())
+        .pipe(webpack(webpackTestConfig))
+        .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('test-html:build-dev', () => {
+    return gulp.src('test/lib/**/*.{html,css}')
+        .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('test-html:watch', () => {
+    return gulp.watch('test/lib/**/*.{html,css}', ['test-html:build-dev']);
+});
+
+
 // main
 
 gulp.task('build', ['js:build', 'css:build', 'html:build', 'other:build']);
 gulp.task('watch', ['js:watch', 'css:watch', 'css:build-dev', 'html:watch', 'html:build-dev',
     'other:watch', 'other:build']);
+
+gulp.task('test', ['test-js:watch', 'test-html:watch', 'test-html:build-dev']);
 
 gulp.task('default', ['build']);
