@@ -50,6 +50,10 @@ class UserModel {
     saveInLocalStorage() {
         localStorage.setItem('user', JSON.stringify(this));
     }
+
+    static clearInLocalStorage() {
+        localStorage.removeItem('user');
+    }
 }
 
 module.exports = UserModel;

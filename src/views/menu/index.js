@@ -1,3 +1,5 @@
+const UserModel = require('../../models/UserModel.js');
+
 function init(serviceLocator) {
     const menuOpenerButtons = Array.from(document.getElementsByClassName('modal-trigger'));
     menuOpenerButtons.forEach((el) => {
@@ -9,7 +11,15 @@ function init(serviceLocator) {
 
     const logoutButton = document.getElementById('logout-button');
     logoutButton.addEventListener('click', () => {
-        serviceLocator.api.post('logout');
+        serviceLocator.api.post('logout')
+            .then((answer) => answer.json())
+            .then((json) => {
+                console.log(json);
+                if (json.successful) {
+                    serviceLocator.eventBus.emitEvent('auth', null);
+                    UserModel.clearInLocalStorage();
+                }
+            });
     });
     serviceLocator.eventBus.subscribeOn('auth', (userModel) => {
         if (userModel.login) {
