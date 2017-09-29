@@ -9,7 +9,7 @@ function init(serviceLocator) {
 
     signupForm.addEventListener('submit', function (event) {
         event.preventDefault();
-
+        const serverErrorField = document.getElementById('login-form__server-errors');
         const model = new SignupForm(serviceLocator);
         model.login = signupForm.elements['login'].value;
         model.email = signupForm.elements['email'].value;
@@ -17,19 +17,21 @@ function init(serviceLocator) {
         model.passwordConfirmation = signupForm.elements['passwordConfirmation'].value;
 
         const validationResult = model.validate();
-        if (validationResult.ok === true) {
+        if (validationResult.ok) {
             model.send()
                 .then((res) => res.json())
-                .then((json) => json.message)
                 .then((json) => {
                     console.log(json);
-                    serviceLocator.user = UserModel.fromApiJson(json);
-                    serviceLocator.user.saveInLocalStorage();
-                    serviceLocator.router.changePage('');
-                    serviceLocator.eventBus.emitEvent("auth", serviceLocator.user);
+                    if (json.successful) {
+                        serviceLocator.user = UserModel.fromApiJson(json.message);
+                        serviceLocator.user.saveInLocalStorage();
+                        serviceLocator.router.changePage('');
+                        serviceLocator.eventBus.emitEvent("auth", serviceLocator.user);
+                        return;
+                    }
+                    displayErrorsUtils.displayServerError(serverErrorField, json.message);
                 })
                 .catch((res) => console.error(res));
-            // TODO: сделать норм ответ
         } else {
             displayErrorsUtils.displayErrors(signupForm, validationResult.errors);
         }

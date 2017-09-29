@@ -38,7 +38,7 @@ class UserModel {
      * @return {UserModel} New model instance
      */
     static fromApiJson(json) {
-        let model = new UserModel();
+        const model = new UserModel();
         model.login = json.login;
         model.email = json.email;
         return model;

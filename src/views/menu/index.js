@@ -7,14 +7,14 @@ function init(serviceLocator) {
         });
     });
     serviceLocator.eventBus.subscribeOn('auth', (userModel) => {
-        if (userModel.login !== undefined) {
-            Array.from(document.getElementsByClassName('menu__user--centered__email')).forEach((el) => {
+        if (userModel.login) {
+            Array.from(document.getElementsByClassName('menu__user__name--centered')).forEach((el) => {
                 el.innerText = userModel.login;
             });
         }
-        if (userModel.login === undefined) {
-            Array.from(document.getElementsByClassName('menu__user--centered__email')).forEach((el) => {
-                el.innerText = 'Unauth User';
+        if (!userModel.login) {
+            Array.from(document.getElementsByClassName('menu__user__name--centered')).forEach((el) => {
+                el.innerText = ' Unauth User';
             });
         }
     });

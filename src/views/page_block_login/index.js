@@ -9,7 +9,7 @@ function init(serviceLocator) {
 
     loginForm.addEventListener('submit', function (event) {
         event.preventDefault();
-        // const serverErrorField = loginForm.getElementById('login-form__server-errors');
+        const serverErrorField = document.getElementById('login-form__server-errors');
         const model = new LoginForm(serviceLocator);
         model.login = loginForm.elements['login'].value;
         model.password = loginForm.elements['password'].value;
@@ -18,13 +18,16 @@ function init(serviceLocator) {
         if (validationResult.ok === true) {
             model.send()
                 .then((res) => res.json())
-                .then((json) => json.message)
                 .then((json) => {
                     console.log(json);
-                    serviceLocator.user = UserModel.fromApiJson(json);
-                    serviceLocator.user.saveInLocalStorage();
-                    serviceLocator.router.changePage('');
-                    serviceLocator.eventBus.emitEvent("auth", serviceLocator.user);
+                    if (json.successful) {
+                        serviceLocator.user = UserModel.fromApiJson(json.message);
+                        serviceLocator.user.saveInLocalStorage();
+                        serviceLocator.router.changePage('');
+                        serviceLocator.eventBus.emitEvent("auth", serviceLocator.user);
+                        return;
+                    }
+                    displayErrorsUtils.displayServerError(serverErrorField, json.message);
                 })
                 .catch((res) => console.error(res));
             // TODO: сделать норм ответ
