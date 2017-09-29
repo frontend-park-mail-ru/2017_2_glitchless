@@ -11,6 +11,10 @@ function init(serviceLocator) {
 
     const logoutButton = document.getElementById('logout-button');
     logoutButton.addEventListener('click', () => {
+
+        serviceLocator.eventBus.emitEvent('auth', null);
+        UserModel.clearInLocalStorage();
+        /* TODO fix server
         serviceLocator.api.post('logout')
             .then((answer) => answer.json())
             .then((json) => {
@@ -19,7 +23,7 @@ function init(serviceLocator) {
                     serviceLocator.eventBus.emitEvent('auth', null);
                     UserModel.clearInLocalStorage();
                 }
-            });
+            });*/
     });
     serviceLocator.eventBus.subscribeOn('auth', (userModel) => {
         if (userModel.login) {

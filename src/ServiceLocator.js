@@ -7,7 +7,7 @@ const EventBus = require('./utils/EventBus.js');
  */
 class ServiceLocator {
     constructor() {
-        this.api = new Api('http://localhost:8080/api');
+        this.api = new Api('https://glitchless-java.herokuapp.com/api');
         this.router = new Router();
         this.user = null;
         this.eventBus = new EventBus();
