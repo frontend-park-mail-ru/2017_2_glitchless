@@ -6,6 +6,7 @@ function init(serviceLocator) {
             serviceLocator.router.changePage(page);
         });
     });
+
 }
 
 module.exports = init;
