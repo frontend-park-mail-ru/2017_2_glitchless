@@ -26,14 +26,14 @@ function init(serviceLocator) {
             });*/
     });
     serviceLocator.eventBus.subscribeOn('auth', (userModel) => {
-        if (userModel.login) {
+        if (userModel & userModel.login) {
             console.log(userModel.login);
             Array.from(document.getElementsByClassName('menu__user__name')).forEach((el) => {
                 el.innerText = userModel.login;
             });
             logoutButton.style.display = 'block';
         }
-        if (!userModel.login) {
+        if (!userModel || !userModel.login) {
             Array.from(document.getElementsByClassName('menu__user__name')).forEach((el) => {
                 el.innerText = 'Unauth User';
             });
