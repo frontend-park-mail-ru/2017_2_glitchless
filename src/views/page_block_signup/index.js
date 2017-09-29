@@ -5,7 +5,7 @@ const UserModel = require('../../models/UserModel.js');
 function init(serviceLocator) {
     const signupForm = document.getElementById('signup-form');
 
-    displayErrorsUtils.initFormForDisplayErrors(signupForm);
+    displayErrorsUtils.initForm(signupForm);
 
     signupForm.addEventListener('submit', function (event) {
         event.preventDefault();

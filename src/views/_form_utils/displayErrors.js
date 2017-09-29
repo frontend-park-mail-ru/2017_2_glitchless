@@ -3,7 +3,7 @@
  *
  * @param form {Node} DOM node of form
  */
-function initFormForDisplayErrors(form) {
+function initForm(form) {
     for (let i = 0; i < form.elements.length; i++) {
         const node = form.elements.item(i);
         node.oninput = (event) => {
@@ -42,7 +42,7 @@ function displayErrors(form, errors) {
 }
 
 module.exports = {
-    initFormForDisplayErrors,
+    initForm,
     displayErrors,
     displayServerError
 };
