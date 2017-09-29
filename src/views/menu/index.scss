@@ -36,10 +36,12 @@
     }
 
     &__user{
+        margin-bottom: 15px;
         &--centered {
           @include centered;
         }
     }
+
     &__buttons {
         &--centered {
             @include centered;
@@ -68,6 +70,3 @@
         }
     }
 }
-// p {
-//     margin: 15px 0;
-// }
