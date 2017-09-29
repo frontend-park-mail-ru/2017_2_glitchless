@@ -19,13 +19,15 @@ function init(serviceLocator) {
         const validationResult = model.validate();
         if (validationResult.ok === true) {
             model.send()
-                .then((res) => console.log(res.json()))
+                .then((res) => res.json())
+                .then((json) => json.message)
                 .then((json) => {
+                    console.log(json);
                     serviceLocator.user = UserModel.fromApiJson(json);
                     serviceLocator.user.saveInLocalStorage();
-                    serviceLocator.events.emitEvent("auth", serviceLocator.user);
+                    serviceLocator.eventBus.emitEvent("auth", serviceLocator.user);
                 })
-                .catch((res) => console.error(res.json()));
+                .catch((res) => console.error(res));
             // TODO: сделать норм ответ
         } else {
             displayErrorsUtils.displayErrors(signupForm, validationResult.errors);

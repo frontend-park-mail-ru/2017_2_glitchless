@@ -17,15 +17,11 @@ class UserModel {
     static loadCurrent(loadFromServer = false, serviceLocator = null) {
         if (loadFromServer) {
             return serviceLocator.api.post('user')
-                .then((dataFromServer) => {
-                    return dataFromServer.json();
-                })
-                .then((json) => {
-                    return UserModel.fromApiJson(json);
-                });
+                .then((dataFromServer) => dataFromServer.json())
+                .then((json) => UserModel.fromApiJson(json));
         } else {
             return new Promise((resolve, reject) => {
-                let model = localStorage.getItem('user');
+                let model = JSON.parse(localStorage.getItem('user'));
                 if (model !== undefined) {
                     resolve(model);
                     return;
@@ -52,7 +48,7 @@ class UserModel {
      * Saves current object in localStorage
      */
     saveInLocalStorage() {
-        localStorage.setItem('user', this);
+        localStorage.setItem('user', JSON.stringify(this));
     }
 }
 

@@ -10,6 +10,9 @@ class EventBus {
     }
 
     subscribeOn(key, callback) {
+        if(this.events[key] === undefined){
+            this.events[key] = [];
+        }
         this.events[key].push(callback);
         return () => {
             EventBus.this.subscribeOff(key, callback);

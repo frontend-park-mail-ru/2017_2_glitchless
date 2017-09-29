@@ -6,7 +6,13 @@ function init(serviceLocator) {
             serviceLocator.router.changePage(page);
         });
     });
-
+    serviceLocator.eventBus.subscribeOn('auth', (userModel) => {
+        if (userModel.login !== undefined) {
+            Array.from(document.getElementsByClassName('menu__user--centered__email')).forEach((el) => {
+                el.innerText = userModel.login;
+            });
+        }
+    });
 }
 
 module.exports = init;
