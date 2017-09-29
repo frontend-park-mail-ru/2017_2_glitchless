@@ -6,6 +6,7 @@ const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
 const insert = require('gulp-insert');
+const gulpif = require('gulp-if');
 
 
 // js
@@ -21,14 +22,14 @@ gulp.task('js:build', () => {
     return gulp.src('src/index.js')
         .pipe(plumber())
         .pipe(webpack(webpackConfig))
-        .pipe(insert.prepend('"use strict";\n'))
+        .pipe(gulpif((file) => file.path.endsWith('.js'), insert.prepend('"use strict";\n')))
         .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('js:watch', () => {
     return gulp.src('src/index.js')
         .pipe(webpack(Object.assign({}, webpackConfig, {watch: true})))
-        .pipe(insert.prepend('"use strict";\n'))
+        .pipe(gulpif((file) => file.path.endsWith('.js'), insert.prepend('"use strict";\n')))
         .pipe(gulp.dest('dist/'));
 });
 
