@@ -15,7 +15,7 @@ class EventBus {
         }
         this.events[key].push(callback);
         return () => {
-            EventBus.this.subscribeOff(key, callback);
+            this.subscribeOff(key, callback);
         };
     }
 
