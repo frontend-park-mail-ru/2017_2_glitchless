@@ -6,8 +6,7 @@ Swagger: https://static.glitchless.ru/java-swagger.json
 Front: https://glitchless.herokuapp.com/
 Front [mirror]: https://glitchless.ru/
 
-
-#Команда:
+# Команда:
 - Волынов Михаил
 - Куликов Никита
 - Морозенков Олег
