@@ -23,6 +23,7 @@ function init(serviceLocator) {
                     console.log(json);
                     serviceLocator.user = UserModel.fromApiJson(json);
                     serviceLocator.user.saveInLocalStorage();
+                    serviceLocator.router.changePage('');
                     serviceLocator.eventBus.emitEvent("auth", serviceLocator.user);
                 })
                 .catch((res) => console.error(res));
