@@ -1,0 +1,15 @@
+html, body {
+    font-family: sans-serif;
+}
+
+#template-test {
+    display: none;
+}
+
+.test__header--success {
+    color: green;
+}
+
+.test__header--fail {
+    color: red;
+}
