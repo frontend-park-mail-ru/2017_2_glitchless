@@ -42,13 +42,13 @@
         }
     }
 
-    &__buttons {
+    &__button-space {
         &--centered {
             @include centered;
         }
     }
 
-    &__modal-trigger {
+    &__button {
         display: block;
         background: $colour_main1;
         padding: 15px 30px;

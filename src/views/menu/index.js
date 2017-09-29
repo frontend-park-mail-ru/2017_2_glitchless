@@ -1,10 +1,14 @@
 function init(serviceLocator) {
-    const menuButtons = Array.from(document.getElementsByClassName('menu__modal-trigger'));
-    menuButtons.forEach((el) => {
+    const menuOpenerButtons = Array.from(document.getElementsByClassName('menu__modal-trigger'));
+    menuOpenerButtons.forEach((el) => {
         el.addEventListener('click', () => {
             const page = el.getAttribute('modal-trigger');
             serviceLocator.router.changePage(page);
         });
+    });
+    const logoutButton = document.getElementById('logout-button');
+    logoutButton.addEventListener('click', () => {
+        serviceLocator.api.post('logout');
     });
     serviceLocator.eventBus.subscribeOn('auth', (userModel) => {
         if (userModel.login !== undefined) {
