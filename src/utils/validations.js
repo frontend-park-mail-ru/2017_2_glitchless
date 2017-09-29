@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /**
  * Validates password.
  *
@@ -19,7 +20,9 @@ function validatePassword(password) {
  * @returns {Boolean|String} True if ok else message
  */
 function validateEmail(email) {
-    if (!email.includes('@')) {
+    const re = new RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}' +
+        '\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/');
+    if (!re.test(email)) {
         return 'Wrong email format';
     }
     return true;

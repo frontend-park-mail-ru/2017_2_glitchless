@@ -30,7 +30,6 @@ function init(serviceLocator) {
                     displayErrorsUtils.displayServerError(serverErrorField, json.message);
                 })
                 .catch((res) => console.error(res));
-            // TODO: сделать норм ответ
         } else {
             displayErrorsUtils.displayErrors(loginForm, validationResult.errors);
         }
