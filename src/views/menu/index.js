@@ -12,6 +12,11 @@ function init(serviceLocator) {
                 el.innerText = userModel.login;
             });
         }
+        if (userModel.login === undefined) {
+            Array.from(document.getElementsByClassName('menu__user--centered__email')).forEach((el) => {
+                el.innerText = 'Unauth User';
+            });
+        }
     });
 }
 
