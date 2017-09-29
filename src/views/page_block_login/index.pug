@@ -6,9 +6,9 @@ include ../_modal/index
             var input_fields = [{type: 'text', name:'login', placeholder:'Nickname'}, {type: 'password', name:'password', placeholder:'Password'}];
         each field in input_fields
             input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
+        div(id='login-form__server-errors', style='visibility: hidden;') errors placeholder
         p
             input.login-form__button(type='submit')
-        div(id='login-form__server-errors', style='visibility: hidden;') errors placeholder
         p
             | Don't have an account? 
             a.login-form__redirect-btn(href='#signup') Sign up
