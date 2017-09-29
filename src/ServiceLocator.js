@@ -1,6 +1,6 @@
 const Api = require('./Api.js');
 const Router = require('./Router.js');
-const UserModel = require('./models/UserModel.js');
+// const UserModel = require('./models/UserModel.js');
 const EventBus = require('./utils/EventBus.js');
 
 /**
