@@ -1,5 +1,5 @@
 class EventBus {
-    
+
     /**
      * @return {EventBus} EventBus object with empty event list
      */
@@ -14,9 +14,10 @@ class EventBus {
      * @param {Object} args Argument with which the callbacks will be executed
      */
     emitEvent(key, args) {
-        this.events[key].forEach((callback) =>
-            callback(args)
-        );
+        this.events[key].forEach((callback) => {
+            console.log('Test');
+            callback(args);
+        });
     }
 
     /**
@@ -24,10 +25,10 @@ class EventBus {
      *
      * @param {String} key Name of the event
      * @param {Function} callback Function that's going to be executed on emmitting event
-     * @return {Function} Function that unsubscribes the callback from event 
+     * @return {Function} Function that unsubscribes the callback from event
      */
     subscribeOn(key, callback) {
-        if(this.events[key] == undefined){
+        if (this.events[key] == undefined) {
             this.events[key] = [];
         }
         this.events[key].push(callback);

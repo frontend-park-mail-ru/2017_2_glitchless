@@ -18,7 +18,8 @@
     "url": "git://github.com/frontend-park-mail-ru/2017_2_glitchless.git"
   },
   "dependencies": {
-    "express": "^4.15.4"
+    "express": "^4.15.4",
+    "swagger-client": "^3.1.2"
   },
   "devDependencies": {
     "body-parser": "^1.18.2",
