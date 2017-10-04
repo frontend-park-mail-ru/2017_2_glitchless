@@ -6,7 +6,7 @@
  * @returns {Boolean|String} True if ok else message
  */
 function validatePassword(password) {
-    const passwordMinLength = 8;
+    const passwordMinLength = 1;
     if (password.length < passwordMinLength) {
         return `Password's length can't be less than ${passwordMinLength} symbols`;
     }
