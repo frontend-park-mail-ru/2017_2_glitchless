@@ -17,8 +17,8 @@ mixin modal(title, footer, fullscreen)
                     a.modal__closer(href='#') ×
                     h2 #{title}
 
-                .modal__body
+                .modal__body.modal__body--fullscreen
                     block
 
-                .modal__footer
+                .modal__footer.modal__footer--fullscreen
                     h3 #{footer}

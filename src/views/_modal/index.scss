@@ -1,4 +1,8 @@
 @import '../_sass_utils/_palette';
+@mixin fullscreen {
+  width: 100%;
+  padding: 0;
+}
 
 .modal {
     &__closer {
@@ -13,11 +17,19 @@
         background-color: $colour_main2;
         color: $colour_main1;
         border-radius: 3px 3px 0 0;
+      
+        &--fullscreen {
+          @include fullscreen;
+        }
     }
 
-    &__body { 
+    &__body {
         padding: 2px 16px;
         color: $colour_main1;
+
+        &--fullscreen {
+          @include fullscreen;
+        }
     }
 
     &__footer {
@@ -26,6 +38,10 @@
         font-size: 13px;
         border-radius: 0 0 3px 3px;
         color: $colour_main1;
+
+        &--fullscreen {
+          @include fullscreen;
+        }
     }
 
     &__content {
@@ -47,7 +63,7 @@
         animation-duration: 0.4s;
 
         &--fullscreen {
-           width: 100%;
+           @include fullscreen;
         }
     }
 }
