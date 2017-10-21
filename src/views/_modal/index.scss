@@ -44,7 +44,11 @@
         -webkit-animation-name: slideFromTop;
         -webkit-animation-duration: 0.4s;
         animation-name: slideFromTop;
-        animation-duration: 0.4s
+        animation-duration: 0.4s;
+
+        &--fullscreen {
+           width: 100%;
+        }
     }
 }
 

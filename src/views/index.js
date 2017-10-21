@@ -1,4 +1,5 @@
 const views = [
+    require('./page_block_game/index.js'),
     require('./page_block_login/index.js'),
     require('./page_block_signup/index.js'),
     require('./menu/index.js')
