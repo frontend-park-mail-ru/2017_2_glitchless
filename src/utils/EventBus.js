@@ -11,7 +11,7 @@ class EventBus {
      * Executes all callbacks tied to the event
      *
      * @param {String} key Name of the event
-     * @param {Object} args Argument with which the callbacks will be executed
+     * @param {Object} [args=null] Argument with which the callbacks will be executed
      */
     emitEvent(key, args=null) {
         this.events[key].forEach((callback) => {
@@ -29,7 +29,7 @@ class EventBus {
      *
      * @param {Function} callback Callback to wrap
      * @param {Object} context Context in which callback will be executed
-     * @param {Iterable} args Arguments with which the callback will be executed
+     * @param {Iterable} [args=[]] Arguments with which the callback will be executed
      */
     proxy(callback, context=this, args=[]) {
         return callback.bind(context, ...args);
@@ -41,6 +41,7 @@ class EventBus {
      *
      * @param {String} key Name of the event
      * @param {Function} callback Function that's going to be executed on emmitting event
+     * @param {Object} [context=this] Context in which function will be executed
      * @return {Function} Function that unsubscribes the callback from event
      */
     subscribeOn(key, callback, context=this) {

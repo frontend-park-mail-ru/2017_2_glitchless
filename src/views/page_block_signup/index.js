@@ -17,7 +17,7 @@ function init(serviceLocator) {
         model.passwordConfirmation = signupForm.elements['passwordConfirmation'].value;
 
         const validationResult = model.validate();
-        if (validationResult.ok) {
+        if (!validationResult.ok) {
             displayErrorsUtils.displayErrors(signupForm, validationResult.errors);
             return;
         }

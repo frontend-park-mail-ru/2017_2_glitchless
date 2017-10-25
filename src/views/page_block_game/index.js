@@ -1,14 +1,30 @@
 const EventBusClass = require('../../utils/EventBus.js');
 const EventBus = new EventBusClass;
+const GameManager = require('../../game/GameManager.js');
+const PIXI = require('pixi.js');
+
 function init(serviceLocator) {
     let gameField = document.getElementById('game');
-    const PIXI = require('pixi.js');
     console.log(PIXI);
-    let app = new PIXI.Application(window.innerWidth, window.innerHeight * 0.89, { backgroundColor: 0x1099bb });
-    gameField.appendChild(app.view);
+
+    let appWidth = window.innerWidth * 0.8;
+    let appHeight = Math.round(appWidth * 9.0/16.0);
+    if (appHeight > window.innerHeight) {
+        appHeight = window.innerHeight * 0.8;
+        appWidth = Math.round(appHeight * 16.0/9.0);
+    }
+
+    const gameManager = new GameManager;
+
+    gameManager.setGameField(gameField);
+    gameManager.setResolution([appWidth, appHeight]);
+
+    // const app = new PIXI.Application(appWidth, appHeight, { backgroundColor: 0x1099bb });
+    // gameField.appendChild(app.view);
+    gameManager.initiateGame();
+    const app = gameManager.app;
     console.log(window.innerWidth, window.innerHeight);
 // Scale mode for all textures, will not retain pixelation
-    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
     let sprite = PIXI.Sprite.fromImage('./images/spacestation.png');
 
 // Set the initial position
@@ -30,7 +46,6 @@ function init(serviceLocator) {
 
 // Alternatively, use the mouse & touch events:
 // sprite.on('click', onClick); // mouse-only
-// sprite.on('tap', onClick); // touch-only
 
     app.stage.addChild(sprite);
 

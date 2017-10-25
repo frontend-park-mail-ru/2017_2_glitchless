@@ -18,8 +18,8 @@ class LoginForm {
      *
      * Spec of result object:
      * {
-     *   ok: {Boolean},  // True if validation is ok else false
-     *   errors: {Array},  // Empty array if validation is ok else array of errors
+     *   ok: {Boolean},  // True if validation is ok, else false
+     *   errors: {Array},  // Empty array if validation is ok, else array of errors
      * }
      * Spec of error object:
      * {
