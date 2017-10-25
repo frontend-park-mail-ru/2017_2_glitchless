@@ -18,23 +18,24 @@ function init(serviceLocator) {
 
         const validationResult = model.validate();
         if (validationResult.ok) {
-            model.send()
-                .then((res) => res.json())
-                .then((json) => {
-                    console.log(json);
-                    if (json.successful) {
-                        serviceLocator.user = UserModel.fromApiJson(json.message);
-                        serviceLocator.user.saveInLocalStorage();
-                        serviceLocator.router.changePage('');
-                        serviceLocator.eventBus.emitEvent("auth", serviceLocator.user);
-                        return;
-                    }
-                    displayErrorsUtils.displayServerError(serverErrorField, json.message);
-                })
-                .catch((res) => console.error(res));
-        } else {
             displayErrorsUtils.displayErrors(signupForm, validationResult.errors);
+            return;
         }
+
+        model.send()
+            .then((res) => res.json())
+            .then((json) => {
+                console.log(json);
+                if (json.successful) {
+                    serviceLocator.user = UserModel.fromApiJson(json.message);
+                    serviceLocator.user.saveInLocalStorage();
+                    serviceLocator.router.changePage('');
+                    serviceLocator.eventBus.emitEvent("auth", serviceLocator.user);
+                    return;
+                }
+                displayErrorsUtils.displayServerError(serverErrorField, json.message);
+            })
+            .catch((res) => console.error(res));
     });
 }
 
