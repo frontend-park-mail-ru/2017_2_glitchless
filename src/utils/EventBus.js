@@ -16,10 +16,11 @@ class EventBus {
     emitEvent(key, args=null) {
         this.events[key].forEach((callback) => {
             console.log('Test');
-            if (args)
+            if (args) {
                 callback(args);
-            else
-                callback();
+                return;
+            }
+            callback();
         });
     }
 
