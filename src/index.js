@@ -1,12 +1,10 @@
 const ServiceLocator = require('./ServiceLocator.js');
-const initViews = require('./views/index.js');
-const UserModel = require('./models/UserModel.js');
+const authUser = require('./authUser.js');
+
 
 window.onload = () => {
     const serviceLocator = new ServiceLocator();
-    initViews(serviceLocator);
-    UserModel.loadCurrent().then((user) => {
-        serviceLocator.eventBus.emitEvent("auth", user);
-    });
+
+    authUser(serviceLocator);
     serviceLocator.router.init();
 };

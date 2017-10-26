@@ -1,7 +1,6 @@
 const gulp = require('gulp');
 const webpack = require('webpack-stream');
 const sass = require('gulp-sass');
-const pug = require('gulp-pug');
 const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
@@ -13,6 +12,11 @@ const gulpif = require('gulp-if');
 
 const webpackConfig = {
     devtool: 'source-map',
+    module: {
+        rules: [
+            {test: /\.pug$/, use: 'pug-loader'},
+        ]
+    },
     output: {
         filename: 'app.js'
     }
@@ -63,20 +67,8 @@ gulp.task('css:watch', () => {
 // html
 
 gulp.task('html:build', () => {
-    return gulp.src('src/views/index.pug')
-        .pipe(pug())
+    return gulp.src('src/views/index.html')
         .pipe(gulp.dest('dist/'));
-});
-
-gulp.task('html:build-dev', () => {
-    return gulp.src('src/views/index.pug')
-        .pipe(plumber())
-        .pipe(pug())
-        .pipe(gulp.dest('dist/'));
-});
-
-gulp.task('html:watch', () => {
-    return gulp.watch('src/views/**/*.pug', ['html:build-dev']);
 });
 
 
@@ -122,8 +114,7 @@ gulp.task('test-html:watch', () => {
 // main
 
 gulp.task('build', ['js:build', 'css:build', 'html:build', 'other:build']);
-gulp.task('watch', ['js:watch', 'css:watch', 'css:build-dev', 'html:watch', 'html:build-dev',
-    'other:watch', 'other:build']);
+gulp.task('watch', ['js:watch', 'css:watch', 'css:build-dev', 'html:build', 'other:watch', 'other:build']);
 
 gulp.task('test', ['test-js:watch', 'test-html:watch', 'test-html:build-dev']);
 
