@@ -20,8 +20,9 @@ class EventBus {
      * @param {Object} [args=null] Argument with which the callbacks will be executed
      */
     emitEvent(key, args=null) {
-        this.events[key].forEach((callback) => {
-            console.log('Test');
+        this.events[key].forEach((item) => {
+            let callback = item[0].bind(item[1]);
+            // console.log('Test');
             if (args) {
                 callback(args);
                 return;
@@ -54,9 +55,9 @@ class EventBus {
         if (this.events[key] == undefined) {
             this.events[key] = [];
         }
-        this.events[key].push(callback.bind(context));
+        this.events[key].push([callback, context]);
         return () => {
-            this.subscribeOff(key, callback);
+            this.subscribeOff(key, callback, context);
         };
     }
 
@@ -66,9 +67,9 @@ class EventBus {
      * @param {String} key Name of the event
      * @param {Function} callback Function that's executed on emmitting event
      */
-    subscribeOff(key, callback) {
+    subscribeOff(key, callback, context) {
         this.events[key] = this.events[key].filter((it) => {
-            it != callback;
+            it[0] != callback || it[1] != context;
         });
     }
 }
