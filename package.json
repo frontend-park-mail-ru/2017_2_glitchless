@@ -18,17 +18,17 @@
     "url": "git://github.com/frontend-park-mail-ru/2017_2_glitchless.git"
   },
   "dependencies": {
-    "express": "^4.15.4",
-    "swagger-client": "^3.1.2",
-    "pixi.js": "^4.5.6"
+    "express": "^4.16.2",
+    "pixi.js": "^4.5.6",
+    "swagger-client": "^3.3.0"
   },
   "devDependencies": {
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
-    "eslint": "^4.7.0",
+    "eslint": "^4.9.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-json": "^1.2.0",
-    "eslint-plugin-markdown": "^1.0.0-beta.6",
+    "eslint-plugin-markdown": "^1.0.0-beta.7",
     "gulp": "^3.9.1",
     "gulp-if": "^2.0.2",
     "gulp-insert": "^0.5.0",
