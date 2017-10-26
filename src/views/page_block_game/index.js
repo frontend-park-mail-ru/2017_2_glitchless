@@ -19,12 +19,10 @@ function init(serviceLocator) {
     gameManager.setGameField(gameField);
     gameManager.setResolution([appWidth, appHeight]);
 
-    // const app = new PIXI.Application(appWidth, appHeight, { backgroundColor: 0x1099bb });
-    // gameField.appendChild(app.view);
     gameManager.initiateGame();
     const app = gameManager.app;
     console.log(window.innerWidth, window.innerHeight);
-// Scale mode for all textures, will not retain pixelation
+    // Scale mode for all textures, will not retain pixelation
     let sprite = PIXI.Sprite.fromImage('./images/spacestation.png');
 
 // Set the initial position
@@ -49,6 +47,8 @@ function init(serviceLocator) {
 
     app.stage.addChild(sprite);
 
+
+    
     function onClick () {
         // console.log(args);
         // console.log(this);

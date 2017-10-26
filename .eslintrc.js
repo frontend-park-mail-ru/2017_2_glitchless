@@ -5,7 +5,7 @@ module.exports = {
         "ecmaFeatures": {}
     },
     "rules": {
-        "brace-style": [1, "stroustrup"],
+        "brace-style": [1, "1tbs"],
         "constructor-super": 2,
         "curly": [1, "all"],
         "no-case-declarations": 2,
