@@ -9,7 +9,7 @@ class PhysicLoop {
     }
 
     _mainTick(gameManager) {
-
+        console.log("Tick!");
     }
 
     clearTick() {
@@ -21,3 +21,6 @@ class PhysicLoop {
         this.loopId = 0;
     }
 }
+
+
+module.exports = PhysicLoop;

@@ -1,6 +1,7 @@
 const EventBusClass = require('../../utils/EventBus.js');
 const EventBus = new EventBusClass;
 const GameManager = require('../../game/GameManager.js');
+const PhysicsObject = require('../../game/PhysicsObject.js');
 const PIXI = require('pixi.js');
 
 function init(serviceLocator) {
@@ -25,7 +26,8 @@ function init(serviceLocator) {
     // Scale mode for all textures, will not retain pixelation
     let sprite = PIXI.Sprite.fromImage('./images/spacestation.png');
 
-// Set the initial position
+    // Set the initial position
+
     sprite.anchor.set(0.5);
     sprite.x = getCenterX(app);
     sprite.y = getCenterY(app);
@@ -38,24 +40,9 @@ function init(serviceLocator) {
 // Shows hand cursor
     sprite.buttonMode = true;
 
-// Pointers normalize touch and mouse
-//     console.error(EventBus.proxy('pointerdown', onClick, sprite));
-    console.error(sprite.on('pointerdown', EventBus.proxy(onClick, sprite)));
-
 // Alternatively, use the mouse & touch events:
 // sprite.on('click', onClick); // mouse-only
-
-    app.stage.addChild(sprite);
-
-
-    
-    function onClick () {
-        // console.log(args);
-        // console.log(this);
-        sprite.scale.x *= 1.25;
-        sprite.scale.y *= 1.25;
-        sprite.rotation += 0.1;
-    }
+    gameManager.addObject(new PhysicsObject(sprite));
 }
 
 function getCenterX(app) {

@@ -4,6 +4,8 @@ const GameScene = require('./GameScene.js');
 const EventBusClass = require('../utils/EventBus.js');
 const EventBus = new EventBusClass;
 
+const PhysicLoop = require('./physics/PhysicLoop.js');
+
 let instance;
 
 class GameManager {
@@ -17,8 +19,11 @@ class GameManager {
 
 
     _init() {
+        this.physicsObject = [];
         this.scene = new GameScene();
         EventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
+        this.loopObj = new PhysicLoop();
+        this.loopObj.initTick(this);
     }
 
     /**
@@ -43,6 +48,11 @@ class GameManager {
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
+    }
+
+    addObject(physicObject){
+        this.physicsObject.push(physicObject);
+        this.app.stage.addChild(physicObject.sprite);
     }
 }
 

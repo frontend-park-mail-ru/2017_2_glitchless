@@ -1,4 +1,4 @@
-const PhysicsObject = require('../PhysicsObject.js');
+const PhysicsObject = require('../../PhysicsObject.js');
 
 const basicLazerSprite ='';
 class Laser extends PhysicsObject {
