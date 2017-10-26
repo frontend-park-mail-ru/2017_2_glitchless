@@ -1,4 +1,5 @@
 const View = require('../View.js');
+const templatedViewMixin = require('../TemplatedViewMixin.js');
 const template = require('./template.pug');
 const displayErrorsUtils = require('../_form_utils/displayErrors.js');
 
@@ -7,9 +8,7 @@ const UserModel = require('../../models/UserModel.js');
 
 
 class LoginModalView extends View {
-    open(root) {
-        root.innerHTML = template();
-
+    open(root, state) {
         const loginForm = document.getElementById('login-form');
 
         displayErrorsUtils.initForm(loginForm);
@@ -42,6 +41,10 @@ class LoginModalView extends View {
             }
         });
     }
+
+    get template() {
+        return template;
+    }
 }
 
-module.exports = LoginModalView;
+module.exports = templatedViewMixin(LoginModalView);

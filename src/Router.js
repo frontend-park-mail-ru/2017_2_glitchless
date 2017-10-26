@@ -1,4 +1,5 @@
 const DefaultView = require('./views/default/View.js');
+const GameView = require('./views/game/View.js');
 const AboutView = require('./views/about/View.js');
 const LeadersView = require('./views/leaders/View.js');
 const LoginView = require('./views/login/View.js');
@@ -19,6 +20,10 @@ class Router {
         this._routes = {
             '/': {
                 viewClass: DefaultView,
+                title: 'Glitchless'
+            },
+            '/play': {
+                viewClass: GameView,
                 title: 'Glitchless'
             },
             '/about': {
@@ -78,7 +83,6 @@ class Router {
             }
 
             if (!event.state || !event.state.viewId) {
-                document.body.innerHTML = '';
                 return;
             }
             this._currentView = this._viewCache[event.state.viewId];

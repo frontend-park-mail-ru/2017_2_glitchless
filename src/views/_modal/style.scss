@@ -1,7 +1,7 @@
 @import '../_sass_utils/_palette';
 @mixin fullscreen {
-  width: 100%;
-  padding: 0;
+    width: 100%;
+    padding: 0;
 }
 
 .modal {
@@ -18,9 +18,9 @@
         background-color: $colour_main2;
         color: $colour_main1;
         border-radius: 3px 3px 0 0;
-      
+
         &--fullscreen {
-          @include fullscreen;
+            @include fullscreen;
         }
     }
 
@@ -29,7 +29,7 @@
         color: $colour_main1;
 
         &--fullscreen {
-          @include fullscreen;
+            @include fullscreen;
         }
     }
 
@@ -41,7 +41,7 @@
         color: $colour_main1;
 
         &--fullscreen {
-          @include fullscreen;
+            @include fullscreen;
         }
     }
 
@@ -64,14 +64,14 @@
         animation-duration: 0.4s;
 
         &--fullscreen {
-           @include fullscreen;
+            @include fullscreen;
         }
     }
 }
 
 /* Add Animation */
 @-webkit-keyframes slideFromTop {
-    from {top: -300px; opacity: 0} 
+    from {top: -300px; opacity: 0}
     to {top: 0; opacity: 1}
 }
 

@@ -1,17 +1,21 @@
 const View = require('../View.js');
+const templatedViewMixin = require('../TemplatedViewMixin.js');
 const template = require('./template.pug');
 
 const UserModel = require('../../models/UserModel.js');
 
 
 class MenuView extends View {
-    open(root) {
+    open(root, state) {
         this.root = root;
-        this.root.innerHTML = template();
 
         this._setupChangePageOnClick();
         this._setupLogout();
         this._setupAuthListener();
+    }
+
+    get template() {
+        return template;
     }
 
     _setupChangePageOnClick() {
@@ -27,18 +31,15 @@ class MenuView extends View {
     _setupLogout() {
         const logoutButton = document.getElementById('logout-button');
         logoutButton.addEventListener('click', () => {
-            this.serviceLocator.eventBus.emitEvent('auth', null);
-            UserModel.clearInLocalStorage();
-            /* TODO fix server
-            serviceLocator.api.post('logout')
+            this.serviceLocator.api.post('logout')
                 .then((answer) => answer.json())
                 .then((json) => {
                     console.log(json);
                     if (json.successful) {
-                        serviceLocator.eventBus.emitEvent('auth', null);
+                        this.serviceLocator.eventBus.emitEvent('auth', null);
                         UserModel.clearInLocalStorage();
                     }
-                });*/
+                });
         });
     }
 
@@ -62,4 +63,4 @@ class MenuView extends View {
     }
 }
 
-module.exports = MenuView;
+module.exports = templatedViewMixin(MenuView);

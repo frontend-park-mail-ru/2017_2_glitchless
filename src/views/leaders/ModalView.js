@@ -1,11 +1,12 @@
 const View = require('../View.js');
+const templatedViewMixin = require('../TemplatedViewMixin.js');
 const template = require('./template.pug');
 
 
 class LeadersModalView extends View {
-    open(root) {
-        root.innerHTML = template();
+    get template() {
+        return template;
     }
 }
 
-module.exports = LeadersModalView;
+module.exports = templatedViewMixin(LeadersModalView);

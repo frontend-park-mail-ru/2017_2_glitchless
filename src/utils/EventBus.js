@@ -1,16 +1,9 @@
-let instance;
-
 class EventBus {
-
     /**
      * @return {EventBus} EventBus singleton
      */
     constructor() {
-        if(!instance){
-            this.events = {};
-            instance = this;
-        }
-        return instance;
+        this.events = {};
     }
 
     /**
