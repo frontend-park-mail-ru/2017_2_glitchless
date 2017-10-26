@@ -10,7 +10,7 @@ let instance;
 
 class GameManager {
     constructor() {
-        if(!instance){
+        if (!instance) {
             this._init();
             instance = this;
         }
@@ -19,7 +19,7 @@ class GameManager {
 
 
     _init() {
-        this.physicsObject = [];
+        this.physicsObject = {};
         this.scene = new GameScene();
         EventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
         this.loopObj = new PhysicLoop();
@@ -42,7 +42,7 @@ class GameManager {
     }
 
     initiateGame() {
-        this.app = new PIXI.Application(GameScene.width, GameScene.height, { backgroundColor: 0xFFFFFF});
+        this.app = new PIXI.Application(GameScene.width, GameScene.height, {backgroundColor: 0xFFFFFF});
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
 
@@ -50,8 +50,8 @@ class GameManager {
         setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
     }
 
-    addObject(physicObject){
-        this.physicsObject.push(physicObject);
+    addObject(tag, physicObject) {
+        this.physicsObject[tag] = physicObject;
         this.app.stage.addChild(physicObject.sprite);
     }
 }
