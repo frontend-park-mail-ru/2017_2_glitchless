@@ -1,10 +1,16 @@
+let instance;
+
 class EventBus {
 
     /**
-     * @return {EventBus} EventBus object with empty event list
+     * @return {EventBus} EventBus singleton
      */
     constructor() {
-        this.events = {};
+        if(!instance){
+            this.events = {};
+            instance = this;
+        }
+        return instance;
     }
 
     /**

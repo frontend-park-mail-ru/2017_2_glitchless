@@ -1,4 +1,8 @@
 const PIXI = require('pixi.js');
+const GameScene = require('./GameScene.js');
+
+const EventBusClass = require('../utils/EventBus.js');
+const EventBus = new EventBusClass;
 
 let instance;
 
@@ -13,28 +17,32 @@ class GameManager {
 
 
     _init() {
-
+        this.scene = new GameScene();
+        EventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
     }
 
     /**
      * @param {Element} field The field in which the game will be rendered.
      */
     setGameField(field) {
-        this.field = field;
+        this.scene.field = field;
     }
 
     /**
      * @param {Number[]} resolution Resolution in which the game will be rendered.
      */
     setResolution(resolution) {
-        this.width = resolution[0];
-        this.height = resolution[1];
+        this.scene.width = resolution[0];
+        this.scene.height = resolution[1];
     }
 
     initiateGame() {
-        this.app = new PIXI.Application(this.width, this.height, { backgroundColor: 0x1099bb });
-        this.field.appendChild(this.app.view);
+        this.app = new PIXI.Application(GameScene.width, GameScene.height, { backgroundColor: 0xFFFFFF});
+        this.scene.field.appendChild(this.app.view);
+        this.scene.stage = this.app.stage;
+
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+        setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
     }
 }
 

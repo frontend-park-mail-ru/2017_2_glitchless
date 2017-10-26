@@ -54,6 +54,7 @@ function init(serviceLocator) {
         // console.log(this);
         sprite.scale.x *= 1.25;
         sprite.scale.y *= 1.25;
+        sprite.rotation += 0.1;
     }
 }
 
@@ -65,4 +66,5 @@ function getCenterY(app) {
     return app.renderer.height / 2;
 }
 
-module.exports = init;
+module.exports.init = init;
+module.exports.EventBus = EventBus;
