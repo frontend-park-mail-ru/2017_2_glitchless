@@ -2,6 +2,7 @@ const EventBusClass = require('../../utils/EventBus.js');
 const EventBus = new EventBusClass;
 const GameManager = require('../../game/GameManager.js');
 const PhysicsObject = require('../../game/PhysicsObject.js');
+const Alien = require('../../game/physics/object/Alien.js');
 const PIXI = require('pixi.js');
 
 function init(serviceLocator) {
@@ -18,6 +19,7 @@ function init(serviceLocator) {
     const gameManager = new GameManager;
 
     gameManager.setGameField(gameField);
+    console.log([appWidth, appHeight]);
     gameManager.setResolution([appWidth, appHeight]);
 
     gameManager.initiateGame();
@@ -26,13 +28,13 @@ function init(serviceLocator) {
     // Scale mode for all textures, will not retain pixelation
     let sprite = PIXI.Sprite.fromImage('./images/spacestation.png');
 
-    // Set the initial position
+    // Set the initial positiong
 
     sprite.anchor.set(0.5);
     sprite.x = getCenterX(app);
     sprite.y = getCenterY(app);
 
-    sprite.height = sprite.width = app.renderer.width / 10;
+    // sprite.height = sprite.width = app.renderer.width / 10;
 
 // Opt-in to interactivity
     sprite.interactive = true;
@@ -42,7 +44,8 @@ function init(serviceLocator) {
 
 // Alternatively, use the mouse & touch events:
 // sprite.on('click', onClick); // mouse-only
-    gameManager.addObject(new PhysicsObject(sprite));
+    console.log([getCenterX(app), getCenterY(app)]);
+    gameManager.addObject(new Alien([getCenterX(app), getCenterY(app)]));
 }
 
 function getCenterX(app) {

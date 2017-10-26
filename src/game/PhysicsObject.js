@@ -4,13 +4,15 @@ class PhysicsObject {
     /**
      * @param {PIXI.Sprite} sprite The sprite with which the object will be rendered.
      */
-    constructor (sprite) {
+    constructor (sprite, coords = [0, 0]) {
         if (new.target === PhysicsObject) {
             throw new TypeError("Cannot construct abstract instances directly");
         }
         this.sprite = sprite;
         this.speed = 0;
+        this.sprite.anchor.set(0.5);
         this.rotationSpeed = 0;
+        this.setCoords(coords);
     }
 
     /**

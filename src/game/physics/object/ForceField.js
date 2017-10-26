@@ -7,3 +7,5 @@ class ForceField extends PhysicsObject {
         this.speed = speed;
     }
 }
+
+module.exports = ForceField;

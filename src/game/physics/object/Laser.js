@@ -7,3 +7,5 @@ class Laser extends PhysicsObject {
         this.speed = speed;
     }
 }
+
+module.exports = Lazer;

@@ -6,3 +6,5 @@ class Platform extends PhysicsObject {
         super(basicPlatformSprite);
     }
 }
+
+module.exports = Platform;
