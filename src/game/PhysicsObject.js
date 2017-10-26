@@ -9,6 +9,8 @@ class PhysicsObject {
             throw new TypeError("Cannot construct abstract instances directly");
         }
         this.sprite = sprite;
+        this.speed = 0;
+        this.rotationSpeed = 0;
     }
 
     /**
@@ -38,19 +40,19 @@ class PhysicsObject {
     }
 
     getRotation() {
-
+        return this.sprite.rotation * 360.0;
     }
 
-    setRotation() {
-
+    setRotation(rotation) {
+        this.sprite.rotation = rotation / 360.0;
     }
 
     getRotationSpeed() {
-
+        return this.sprite.rotationSpeed * 360.0;
     }
 
-    setRotationSpeed() {
-
+    setRotationSpeed(rotationSpeed) {
+        return this.sprite.rotationSpeed / 360.0;
     }
 }
 
