@@ -38,7 +38,7 @@ class PhysicsObject {
     }
 
     getRotation() {
-        this.sprite.rotate
+
     }
 
     setRotation() {
