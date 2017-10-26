@@ -20,6 +20,7 @@ class Api {
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             mode: 'cors',
             body: JSON.stringify(data)
         });
