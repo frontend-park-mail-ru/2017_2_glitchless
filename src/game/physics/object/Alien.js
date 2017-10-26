@@ -1,10 +1,9 @@
-const PhysicsObject = require('../PhysicsObject.js');
+const PhysicsObject = require('../../PhysicsObject.js');
 const PIXI = require('pixi.js');
 
 const basicAlienSprite = PIXI.Sprite.fromImage('./images/spacestation.png');
 class Alien extends PhysicsObject {
-    constructor(speed) {
+    constructor() {
         super(basicAlienSprite);
-        this.speed = speed;
     }
 }
