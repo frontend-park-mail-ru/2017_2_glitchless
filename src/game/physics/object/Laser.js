@@ -8,4 +8,4 @@ class Laser extends PhysicsObject {
     }
 }
 
-module.exports = Lazer;
+module.exports = Laser;
