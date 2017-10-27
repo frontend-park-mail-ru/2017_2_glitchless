@@ -22,8 +22,6 @@ class GameManager {
         this.physicsObject = {};
         this.scene = new GameScene();
         EventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
-        this.loopObj = new PhysicLoop();
-        this.loopObj.initTick(this);
     }
 
     /**
@@ -42,18 +40,25 @@ class GameManager {
     }
 
     initiateGame() {
-        this.app = new PIXI.Application(GameScene.width, GameScene.height, {backgroundColor: 0xFFFFFF});
+        this.app = new PIXI.Application(this.scene.width, this.scene.height, {backgroundColor: 0xFFFFFF});
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+        this.scene.initBackground(this.app);
+
         setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
+        this.loopObj = new PhysicLoop();
+        this.loopObj.initTick(this);
+
+
     }
 
     addObject(tag, physicObject) {
         this.physicsObject[tag] = physicObject;
         this.app.stage.addChild(physicObject.sprite);
     }
+
 }
 
 module.exports = GameManager;
