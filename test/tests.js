@@ -8,6 +8,7 @@ const suite = new TestSuite();
 suite.addTest('validateEmail accept right emails', () => {
     assert.equal(validations.validateEmail('wow@mail.ru'), true);
     assert.equal(validations.validateEmail('wow@corp.mail.ru'), true);
+    assert.equal(validations.validateEmail('artur.udalov@gmail.com'), true);
 });
 
 suite.addTest('validateEmail rejects wrong emails', () => {

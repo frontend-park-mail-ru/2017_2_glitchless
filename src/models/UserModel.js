@@ -19,16 +19,16 @@ class UserModel {
             return serviceLocator.api.post('user')
                 .then((dataFromServer) => dataFromServer.json())
                 .then((json) => UserModel.fromApiJson(json));
-        } else {
-            return new Promise((resolve, reject) => {
-                let model = JSON.parse(localStorage.getItem('user'));
-                if (model !== undefined) {
-                    resolve(model);
-                    return;
-                }
-                reject();
-            });
         }
+
+        return new Promise((resolve, reject) => {
+            let model = JSON.parse(localStorage.getItem('user'));
+            if (model !== undefined) {
+                resolve(model);
+                return;
+            }
+            reject();
+        });
     }
 
     /**

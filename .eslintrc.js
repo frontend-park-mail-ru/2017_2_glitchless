@@ -5,7 +5,9 @@ module.exports = {
         "ecmaFeatures": {}
     },
     "rules": {
+        "brace-style": [1, "1tbs"],
         "constructor-super": 2,
+        "curly": [1, "all"],
         "no-case-declarations": 2,
         "no-class-assign": 2,
         "no-compare-neg-zero": 2,
@@ -46,13 +48,13 @@ module.exports = {
         "no-unsafe-finally": 2,
         "no-unsafe-negation": 2,
         "no-unused-labels": 2,
-        "no-unused-vars": 2,
+        "no-unused-vars": 1,
         "no-useless-escape": 2,
         "require-yield": 2,
         "use-isnan": 2,
         "valid-typeof": 2,
         "semi": 2,
-        "indent-legacy": 2,
+        "indent-legacy": 1,
         "linebreak-style": 2,
         "max-len": [2, 120],
         "no-tabs": 2
