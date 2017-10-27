@@ -1,15 +1,16 @@
 const PIXI = require('pixi.js');
+const Alien = require('./object/Alien.js');
+const GameUtils = require('../../utils/GameUtils.js');
 
 class PhysicLoop {
+    constructor(gameManager) {
+        this.gameManager = gameManager;
+    }
 
     initTick(gameManager) {
-        if (this.loopId !== 0 && this.loopId !== undefined) {
-            console.log("Previously remove current loop");
-            return;
-        }
-        this.gameManager = gameManager;
         console.log("Initializing tick...");
         gameManager.app.ticker.add(this._mainTick, this);
+        this._firstSetting();
     }
 
     _mainTick(deltaTime) {
@@ -19,19 +20,18 @@ class PhysicLoop {
         //console.log("Frame per second: " + (1000 / elapsedMS));
     }
 
-    clearTick() {
-        if (this.loopId === 0 || this.loopId === null) {
-            console.log("Previously add loop");
-            return;
-        }
-        clearInterval(this.loopId);
-        this.loopId = 0;
+    _firstSetting() {
+        let alien = new Alien([this._getCenterX(), this._getCenterY()]);
+        GameUtils.resizeSprite(alien.sprite, this.gameManager.scene.scaleCoords([100, 100]));
+        this.gameManager.addObject('alien', alien);
     }
-}
 
-function sleep(sleepDuration) {
-    var now = new Date().getTime();
-    while (new Date().getTime() < now + sleepDuration) { /* do nothing */
+    _getCenterX() {
+        return this.gameManager.app.renderer.width / 2;
+    }
+
+    _getCenterY() {
+        return this.gameManager.app.renderer.height / 2;
     }
 }
 

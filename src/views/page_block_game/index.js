@@ -1,9 +1,8 @@
 const EventBusClass = require('../../utils/EventBus.js');
-const EventBus = new EventBusClass;
 const GameManager = require('../../game/GameManager.js');
-const PhysicsObject = require('../../game/PhysicsObject.js');
-const Alien = require('../../game/physics/object/Alien.js');
 const PIXI = require('pixi.js');
+
+const EventBus = new EventBusClass;
 
 function init(serviceLocator) {
     let gameField = document.getElementById('game');
@@ -25,8 +24,6 @@ function init(serviceLocator) {
     gameManager.initiateGame();
 
     console.log(window.innerWidth, window.innerHeight);
-
-    gameManager.addObject('alien', new Alien());
 }
 
 function getCenterX(app) {

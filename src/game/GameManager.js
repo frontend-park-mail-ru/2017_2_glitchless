@@ -17,7 +17,6 @@ class GameManager {
         return instance;
     }
 
-
     _init() {
         this.physicsObject = {};
         this.scene = new GameScene();
@@ -48,14 +47,19 @@ class GameManager {
         this.scene.initBackground(this.app);
 
         setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
-        this.loopObj = new PhysicLoop();
+        this.loopObj = new PhysicLoop(this);
         this.loopObj.initTick(this);
 
 
     }
 
     addObject(tag, physicObject) {
-        this.physicsObject[tag] = physicObject;
+        if (!Array.isArray(this.physicsObject[tag])) {
+            this.physicsObject[tag] = [];
+        }
+
+        this.physicsObject[tag].push(physicObject);
+
         this.app.stage.addChild(physicObject.sprite);
     }
 

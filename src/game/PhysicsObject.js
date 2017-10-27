@@ -3,6 +3,7 @@ const utils = require('../utils/GameUtils.js');
 class PhysicsObject {
     /**
      * @param {PIXI.Sprite} sprite The sprite with which the object will be rendered.
+     * @param coords
      */
     constructor (sprite, coords = [0, 0]) {
         if (new.target === PhysicsObject) {
@@ -31,7 +32,6 @@ class PhysicsObject {
         this.sprite.x = coords[0];
         this.sprite.y = coords[1];
     }
-
 
     getSpeed() {
         return this.speed;
