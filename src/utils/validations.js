@@ -6,7 +6,10 @@
  * @returns {Boolean|String} True if ok else message
  */
 function validatePassword(password) {
-    return !password.isEmpty();
+    if (password.length > 0) {
+        return true;
+    }
+    return `Password can't be empty`;
 }
 
 /**
