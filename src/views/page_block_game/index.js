@@ -1,4 +1,6 @@
 const EventBusClass = require('../../utils/EventBus.js');
+const Constants = require('../../utils/Constants.js');
+
 const GameManager = require('../../game/GameManager.js');
 const PIXI = require('pixi.js');
 
@@ -8,11 +10,11 @@ function init(serviceLocator) {
     let gameField = document.getElementById('game');
     console.log(PIXI);
 
-    let appWidth = window.innerWidth * 0.8;
-    let appHeight = Math.round(appWidth * 9.0 / 16.0);
+    let appWidth = window.innerWidth * Constants.WINDOW_SCALE;
+    let appHeight = Math.round(appWidth * Constants.WINDOW_HD_RATIO_INVERSE);
     if (appHeight > window.innerHeight) {
-        appHeight = window.innerHeight * 0.8;
-        appWidth = Math.round(appHeight * 16.0 / 9.0);
+        appHeight = window.innerHeight * Constants.WINDOW_SCALE;
+        appWidth = Math.round(appHeight * Constants.WINDOW_HD_RATIO);
     }
 
     const gameManager = new GameManager;
@@ -24,14 +26,6 @@ function init(serviceLocator) {
     gameManager.initiateGame();
 
     console.log(window.innerWidth, window.innerHeight);
-}
-
-function getCenterX(app) {
-    return app.renderer.width / 2;
-}
-
-function getCenterY(app) {
-    return app.renderer.height / 2;
 }
 
 module.exports.init = init;

@@ -1,4 +1,5 @@
 const utils = require('../utils/GameUtils.js');
+const Constants = require('../utils/Constants.js');
 
 class PhysicsObject {
     /**
@@ -42,19 +43,19 @@ class PhysicsObject {
     }
 
     getRotation() {
-        return this.sprite.rotation * 360.0;
+        return this.sprite.rotation * Constants.GAME_ROTATION_FULL_CIRLE;
     }
 
     setRotation(rotation) {
-        this.sprite.rotation = rotation / 360.0;
+        this.sprite.rotation = rotation / Constants.GAME_ROTATION_FULL_CIRLE;
     }
 
     getRotationSpeed() {
-        return this.sprite.rotationSpeed * 360.0;
+        return this.sprite.rotationSpeed * Constants.GAME_ROTATION_FULL_CIRLE;
     }
 
     setRotationSpeed(rotationSpeed) {
-        return this.sprite.rotationSpeed / 360.0;
+        return this.sprite.rotationSpeed / Constants.GAME_ROTATION_FULL_CIRLE;
     }
 }
 

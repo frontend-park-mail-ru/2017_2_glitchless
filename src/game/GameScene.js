@@ -10,8 +10,8 @@ class GameScene {
 
     displayWinMessage() {
         let basicText = new PIXI.Text('You win!');
-        basicText.x = 30;
-        basicText.y = 90;
+        basicText.x = Constant.WINDOW_TEXT_X;
+        basicText.y = Constant.WINDOW_TEXT_Y;
         // this.stage.addChild(basicText);
     }
 

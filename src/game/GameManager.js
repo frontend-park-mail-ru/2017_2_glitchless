@@ -46,7 +46,7 @@ class GameManager {
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         this.scene.initBackground(this.app);
 
-        setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
+        //setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
         this.loopObj = new PhysicLoop(this);
         this.loopObj.initTick(this);
 

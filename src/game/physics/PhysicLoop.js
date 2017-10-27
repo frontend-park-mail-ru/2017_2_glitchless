@@ -1,6 +1,7 @@
 const PIXI = require('pixi.js');
 const Alien = require('./object/Alien.js');
 const GameUtils = require('../../utils/GameUtils.js');
+const Constants = require('../../utils/Constants.js');
 
 class PhysicLoop {
     constructor(gameManager) {
@@ -17,12 +18,11 @@ class PhysicLoop {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.gameManager.app.ticker.speed;
-        //console.log("Frame per second: " + (1000 / elapsedMS));
     }
 
     _firstSetting() {
         let alien = new Alien([this._getCenterX(), this._getCenterY()]);
-        GameUtils.resizeSprite(alien.sprite, this.gameManager.scene.scaleCoords([100, 100]));
+        GameUtils.resizeSprite(alien.sprite, this.gameManager.scene.scaleCoords(Constants.GAME_LASER_SIZE));
         this.gameManager.addObject('alien', alien);
     }
 
