@@ -18,7 +18,7 @@ class GameManager {
     }
 
     _init() {
-        this.physicsObject = {};
+        this.physicObject = {};
         this.scene = new GameScene();
         EventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
     }
@@ -54,11 +54,11 @@ class GameManager {
     }
 
     addObject(tag, physicObject) {
-        if (!Array.isArray(this.physicsObject[tag])) {
-            this.physicsObject[tag] = [];
+        if (!Array.isArray(this.physicObjects[tag])) {
+            this.physicObjects[tag] = [];
         }
 
-        this.physicsObject[tag].push(physicObject);
+        this.physicObjects[tag].push(physicObject);
 
         this.app.stage.addChild(physicObject.sprite);
     }

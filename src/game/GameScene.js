@@ -50,6 +50,19 @@ class GameScene {
 
         return [Math.round(x * xScale), Math.round(y * yScale)];
     }
+
+    /**
+     * Adds a new object to scene
+     *
+     * Coordinates format: [x, y]
+     *
+     * @param {Sprite} sprite Object's sprite
+     * @param {Number[]} coords Coordinates of the object
+     * @return {Number[]} Scaled coordinates
+     */
+    addObject(sprite, coords = [0, 0]) {
+        this.stage.addChild(sprite);
+    }
 }
 
 

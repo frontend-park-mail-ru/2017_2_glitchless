@@ -43,19 +43,19 @@ class PhysicsObject {
     }
 
     getRotation() {
-        return this.sprite.rotation * Constants.GAME_ROTATION_FULL_CIRLE;
+        return this.sprite.rotation * Constants.GAME_ROTATION_FULL_CIRCLE;
     }
 
     setRotation(rotation) {
-        this.sprite.rotation = rotation / Constants.GAME_ROTATION_FULL_CIRLE;
+        this.sprite.rotation = rotation / Constants.GAME_ROTATION_FULL_CIRCLE;
     }
 
     getRotationSpeed() {
-        return this.sprite.rotationSpeed * Constants.GAME_ROTATION_FULL_CIRLE;
+        return this.sprite.rotationSpeed * Constants.GAME_ROTATION_FULL_CIRCLE;
     }
 
     setRotationSpeed(rotationSpeed) {
-        return this.sprite.rotationSpeed / Constants.GAME_ROTATION_FULL_CIRLE;
+        return this.sprite.rotationSpeed / Constants.GAME_ROTATION_FULL_CIRCLE;
     }
 }
 
