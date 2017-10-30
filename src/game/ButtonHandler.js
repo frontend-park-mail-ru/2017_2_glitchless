@@ -38,3 +38,5 @@ function keyboard(keyCode) {
     );
     return key;
 }
+
+module.exports = keyboard;
