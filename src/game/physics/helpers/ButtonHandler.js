@@ -1,42 +1,41 @@
-function keyboard(keyCode) {
-    const key = {};
-    key.code = keyCode;
-    key.isDown = false;
-    key.isUp = true;
-    key.press = undefined;
-    key.release = undefined;
-    //The `downHandler`
-    key.downHandler = function(event) {
-        if (event.keyCode === key.code) {
-            if (key.isUp && key.press) {
-                key.press();
+class ButtonOnKeyboard {
+    constructor(keyCode) {
+        this.code = keyCode;
+        this.isDown = false;
+        this.isUp = true;
+        this.press = undefined;
+        this.release = undefined;
+
+        window.addEventListener(
+            "keydown", this._downHandler.bind(this), false
+        );
+
+        window.addEventListener(
+            "keyup", this._upHandler.bind(this), false
+        );
+    }
+
+    _downHandler(event) {
+        if (event.keyCode === this.code) {
+            if (this.isUp && this.press) {
+                this.press();
             }
-            key.isDown = true;
-            key.isUp = false;
+            this.isDown = true;
+            this.isUp = false;
         }
         event.preventDefault();
-    };
+    }
 
-    //The `upHandler`
-    key.upHandler = function(event) {
-        if (event.keyCode === key.code) {
-            if (key.isDown && key.release) {
-                key.release();
+    _upHandler(event) {
+        if (event.keyCode === this.code) {
+            if (this.isDown && this.release) {
+                this.release();
             }
-            key.isDown = false;
-            key.isUp = true;
+            this.isDown = false;
+            this.isUp = true;
         }
         event.preventDefault();
-    };
-
-    //Attach event listeners
-    window.addEventListener(
-        "keydown", key.downHandler.bind(key), false
-    );
-    window.addEventListener(
-        "keyup", key.upHandler.bind(key), false
-    );
-    return key;
+    }
 }
 
-module.exports = keyboard;
+module.exports = ButtonOnKeyboard;

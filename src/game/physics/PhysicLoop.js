@@ -1,15 +1,18 @@
 const PIXI = require('pixi.js');
 const Alien = require('./object/Alien.js');
-const GameUtils = require('../../utils/GameUtils.js');
+const SpriteStorage = require('./delegates/SpriteStorage.js');
 const Constants = require('../../utils/Constants.js');
 const VectorToPointLoop = require('./delegates/VectorToPointLoop.js');
+const PhysicVectorLoop = require('./delegates/PhysicVectorLoop.js');
 const Platform = require('./object/Platform.js');
 const Point = require('./object/primitive/Point.js');
 
 class PhysicLoop {
     constructor(gameManager) {
         this.gameManager = gameManager;
+        this.spriteStorage = new SpriteStorage();
         this.vectorToPointDelegate = new VectorToPointLoop();
+        this.physicDelegate = new PhysicVectorLoop();
         this.physicObjects = {};
         this.phisicEntities = [];
     }
@@ -26,17 +29,20 @@ class PhysicLoop {
             this.gameManager.app.ticker.speed;
 
         this.vectorToPointDelegate.processVector(this.phisicEntities, elapsedMS);
+        this.physicDelegate.processPhysicLoop(this.physicDelegate, elapsedMS);
     }
 
     _firstSetting() {
         const alien = new Alien(this._getCenterPoint());
         alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, this.gameManager);
         this.gameManager.addObject('alien', alien);
+        this.spriteStorage.alien = alien;
 
         const platform = new Platform();
         platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
         platform.setSpeed(new Point(0.1, 0.01));
         this.gameManager.addObject('platform', platform);
+        this.spriteStorage.userPlatform = platform;
     }
 
     _getCenterPoint() {
