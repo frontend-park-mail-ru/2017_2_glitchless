@@ -6,6 +6,8 @@ class PhysicsEntitiy extends PhysicsObject {
     constructor(sprite, coords = new Point(0, 0)) {
         super(sprite, coords);
         this.isStatic = false;
+        this.rotationSpeed = 0;
+        this.speed = new Point(0, 0);
     }
 
     getSpeed() {

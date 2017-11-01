@@ -63,10 +63,8 @@ class GameUtils {
         bgContainer.addChild(mask);
         bgContainer.addChild(sprite);
 
-        let sp = {x: sprite.width, y: sprite.height};
-        if (forceSize) {
-            sp = forceSize;
-        }
+        const sp = forceSize ? forceSize : {x: sprite.width, y: sprite.height};
+
         const winratio = bgSize.x / bgSize.y;
         const spratio = sp.x / sp.y;
         let scale = 1;

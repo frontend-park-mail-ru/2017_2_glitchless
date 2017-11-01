@@ -1,7 +1,6 @@
 const utils = require('../../../../utils/GameUtils.js');
 const Constants = require('../../../../utils/Constants.js');
 const Point = require('./Point.js');
-
 class PhysicsObject {
     /**
      * @param {PIXI.Sprite} sprite The sprite with which the object will be rendered.
@@ -12,11 +11,10 @@ class PhysicsObject {
             throw new TypeError("Cannot construct abstract instances directly");
         }
         this.sprite = sprite;
-        this.speed = 0;
         this.sprite.anchor.set(0.5);
-        this.rotationSpeed = 0;
         this.setCoords(coords);
         this.isStatic = true;
+        this.destroyListeners = [];
     }
 
     /**
@@ -29,7 +27,7 @@ class PhysicsObject {
     /**
      * Sets sprite's position
      *
-     * @param {Number[]} point New coordinates {x, y} of the object's sprite center.
+     * @param {Point} point New coordinates {x, y} of the object's sprite center.
      */
     setCoords(point) {
         this.sprite.x = point.x;
@@ -42,6 +40,28 @@ class PhysicsObject {
 
     setRotation(rotation) {
         this.sprite.rotation = rotation / Constants.GAME_ROTATION_FULL_CIRCLE;
+    }
+
+    subscribeToDestroy(callback, context = this) {
+        this.destroyListeners.push({cb: callback, ctx: context});
+    }
+
+    destroy() {
+        this.destroyListeners.forEach(emitObject =>
+            emitObject.cb.bind(
+                emitObject
+                    .ctx)(this));
+    }
+
+    //TODO сделать метод onMeasure и всю фигню к нему
+
+    setSpriteSize(size, gameManager) {
+        this.spriteSize = size;
+        utils.resizeSprite(this.sprite, gameManager.scene.scaleCoords(size));
+    }
+
+    getSpriteSize() {
+        return this.spriteSize;
     }
 }
 

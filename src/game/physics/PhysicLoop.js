@@ -3,7 +3,7 @@ const Alien = require('./object/Alien.js');
 const GameUtils = require('../../utils/GameUtils.js');
 const Constants = require('../../utils/Constants.js');
 const VectorToPointLoop = require('./delegates/VectorToPointLoop.js');
-const PhysicsEntitiy = require('./object/primitive/PhysicsEntitiy.js');
+const Platform = require('./object/Platform.js');
 const Point = require('./object/primitive/Point.js');
 
 class PhysicLoop {
@@ -29,9 +29,14 @@ class PhysicLoop {
     }
 
     _firstSetting() {
-        let alien = new Alien(this._getCenterPoint());
-        GameUtils.resizeSprite(alien.sprite, this.gameManager.scene.scaleCoords(Constants.GAME_LASER_SIZE));
+        const alien = new Alien(this._getCenterPoint());
+        alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, this.gameManager);
         this.gameManager.addObject('alien', alien);
+
+        const platform = new Platform();
+        platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
+        platform.setSpeed(new Point(0.1, 0.01));
+        this.gameManager.addObject('platform', platform);
     }
 
     _getCenterPoint() {
@@ -46,8 +51,21 @@ class PhysicLoop {
 
         this.physicObjects[tag].push(physicObject);
 
+        physicObject.subscribeToDestroy((item) => {
+            const pos = this.physicObjects[tag].indexOf(item);
+            if (pos > -1) {
+                this.physicObjects[tag].splice(pos, 1);
+            }
+        });
+
         if (!physicObject.isStatic) {
             this.phisicEntities.push(physicObject);
+            physicObject.subscribeToDestroy((item) => {
+                const pos = this.phisicEntities.indexOf(item);
+                if (pos > -1) {
+                    this.phisicEntities.splice(pos, 1);
+                }
+            });
         }
     }
 }
