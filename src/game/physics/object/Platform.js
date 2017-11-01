@@ -1,7 +1,7 @@
-const PhysicsObject = require('./primitive/PhysicsObject.js');
+const PhysicsEntitiy = require('./primitive/PhysicsEntitiy.js');
 
 const basicPlatformSprite ='';
-class Platform extends PhysicsObject {
+class Platform extends PhysicsEntitiy {
     constructor() {
         super(basicPlatformSprite);
     }

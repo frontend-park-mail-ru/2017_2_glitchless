@@ -1,12 +1,13 @@
 const utils = require('../../../../utils/GameUtils.js');
 const Constants = require('../../../../utils/Constants.js');
+const Point = require('./Point.js');
 
 class PhysicsObject {
     /**
      * @param {PIXI.Sprite} sprite The sprite with which the object will be rendered.
      * @param coords
      */
-    constructor(sprite, coords = [0, 0]) {
+    constructor(sprite, coords = new Point(0, 0)) {
         if (new.target === PhysicsObject) {
             throw new TypeError("Cannot construct abstract instances directly");
         }
@@ -19,20 +20,20 @@ class PhysicsObject {
     }
 
     /**
-     * @return {Number[]} Coordinates [x, y] of the object's sprite center.
+     * @return {Point} Coordinates [x, y] of the object's sprite center.
      */
     getCoords() {
-        return [this.sprite.x, this.sprite.y];
+        return new Point(this.sprite.x, this.sprite.y);
     }
 
     /**
      * Sets sprite's position
      *
-     * @param {Number[]} coords New coordinates [x, y] of the object's sprite center.
+     * @param {Number[]} point New coordinates {x, y} of the object's sprite center.
      */
-    setCoords(coords) {
-        this.sprite.x = coords[0];
-        this.sprite.y = coords[1];
+    setCoords(point) {
+        this.sprite.x = point.x;
+        this.sprite.y = point.y;
     }
 
     getRotation() {

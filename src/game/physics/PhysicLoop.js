@@ -4,6 +4,7 @@ const GameUtils = require('../../utils/GameUtils.js');
 const Constants = require('../../utils/Constants.js');
 const VectorToPointLoop = require('./delegates/VectorToPointLoop.js');
 const PhysicsEntitiy = require('./object/primitive/PhysicsEntitiy.js');
+const Point = require('./object/primitive/Point.js');
 
 class PhysicLoop {
     constructor(gameManager) {
@@ -28,17 +29,14 @@ class PhysicLoop {
     }
 
     _firstSetting() {
-        let alien = new Alien([this._getCenterX(), this._getCenterY()]);
+        let alien = new Alien(this._getCenterPoint());
         GameUtils.resizeSprite(alien.sprite, this.gameManager.scene.scaleCoords(Constants.GAME_LASER_SIZE));
         this.gameManager.addObject('alien', alien);
     }
 
-    _getCenterX() {
-        return this.gameManager.app.renderer.width / 2;
-    }
-
-    _getCenterY() {
-        return this.gameManager.app.renderer.height / 2;
+    _getCenterPoint() {
+        return new Point(this.gameManager.app.renderer.width / 2,
+            this.gameManager.app.renderer.height / 2);
     }
 
     addObjectToPhysic(tag, physicObject) {

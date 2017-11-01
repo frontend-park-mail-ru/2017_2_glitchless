@@ -1,8 +1,9 @@
 const PhysicsObject = require('./PhysicsObject');
 const Constants = require('../../../../utils/Constants.js');
+const Point = require('./Point.js');
 
 class PhysicsEntitiy extends PhysicsObject {
-    constructor(sprite, coords = [0, 0]) {
+    constructor(sprite, coords = new Point(0, 0)) {
         super(sprite, coords);
         this.isStatic = false;
     }
@@ -16,11 +17,11 @@ class PhysicsEntitiy extends PhysicsObject {
     }
 
     getRotationSpeed() {
-        return this.sprite.rotationSpeed * Constants.GAME_ROTATION_FULL_CIRCLE;
+        return this.rotationSpeed;
     }
 
     setRotationSpeed(rotationSpeed) {
-        return this.sprite.rotationSpeed / Constants.GAME_ROTATION_FULL_CIRCLE;
+        this.rotationSpeed = rotationSpeed;
     }
 }
 

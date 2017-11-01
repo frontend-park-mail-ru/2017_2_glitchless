@@ -1,11 +1,5 @@
 // const PIXI = require('pixi.js');
-
-class Point {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-}
+const Point = require('./object/primitive/Point.js');
 
 class Circle {
     /**
@@ -14,7 +8,7 @@ class Circle {
      *
      * @return {Circle}
      */
-    constructor(radius, center=new Point(0,0)) {
+    constructor(radius, center = new Point(0, 0)) {
         this.R = radius;
         this.center = center;
     }
@@ -47,7 +41,7 @@ class Circle {
         if (Math.abs(point3.x - point2.x) < Number.EPSILON) {
             console.log('2');
             [point2, point1] = [point1, point2];
-        } else if(Math.abs(point2.x - point1.x) < Number.EPSILON) {
+        } else if (Math.abs(point2.x - point1.x) < Number.EPSILON) {
             console.log('3');
             [point2, point3] = [point3, point2];
         }
@@ -56,7 +50,7 @@ class Circle {
         const centerX = (ma * mb * (point1.y - point3.y) + mb * (point1.x + point2.x) - ma * (point2.x + point3.x))
             / (2 * (mb - ma));
         const centerY = (-centerX + (point1.x + point2.x) / 2) / ma + (point1.y + point2.y) / 2;
-        console.log([centerX,centerY]);
+        console.log([centerX, centerY]);
         const R = Math.sqrt(Math.pow(centerX - point1.x, 2)) + Math.sqrt(Math.pow(centerY - point1.y, 2));
         return new Circle(R, new Point(centerX, centerY));
     }
@@ -73,7 +67,7 @@ class Arc extends Circle {
      *
      * @return {Arc}
      */
-    constructor(radius, boundingPoints, center=new Point(0,0)) {
+    constructor(radius, boundingPoints, center = new Point(0, 0)) {
         super(radius, center);
         this.bound1 = boundingPoints[0];
         this.bound2 = boundingPoints[1];
@@ -146,7 +140,7 @@ class Line {
      *
      * @return {Line}
      */
-    constructor(A, B, C=0, bounds=[]) {
+    constructor(A, B, C = 0, bounds = []) {
         this.A = A;
         this.B = B;
         this.C = C;
@@ -162,25 +156,25 @@ class Line {
      *
      * @return {Line}
      */
-    static createVertical(C, bounds=[]) {
+    static createVertical(C, bounds = []) {
         const line = new Line(0, 0, C, bounds);
         line.vertical = true;
         return line;
     }
 
     /**
-    * @return {Boolean}
-    */
+     * @return {Boolean}
+     */
     isVertical() {
         return this.vertical;
     }
 
     /**
-    * @param {Point} point
-    *
-    * @return {Boolean | undefined} True if point is located inside segment, defined by bounds,
-    *   false if it is not, undefined if bounds are not defined
-    */
+     * @param {Point} point
+     *
+     * @return {Boolean | undefined} True if point is located inside segment, defined by bounds,
+     *   false if it is not, undefined if bounds are not defined
+     */
     segmentContains(point) {
         if (!this.bounds) {
             return;
@@ -268,17 +262,17 @@ function findIntersection(line, circle) {
         console.log('vertical');
         const x0 = line.C;
         console.log(circle.center.x - line.C);
-        if (circle.R < Math.abs(circle.center.x - line.C)){
+        if (circle.R < Math.abs(circle.center.x - line.C)) {
             return [];
         }
         if (Math.abs(Math.abs(circle.center.x - line.C) - circle.R) < EPS) {
             return [new Point(line.C, circle.center.y)];
         }
-        const tmpSqrt = Math.sqrt(r*r - Math.pow((x0 - circle.center.x), 2));
+        const tmpSqrt = Math.sqrt(r * r - Math.pow((x0 - circle.center.x), 2));
         console.log(tmpSqrt);
         const y1 = circle.center.y + tmpSqrt;
         const y2 = circle.center.y - tmpSqrt;
-        return [new Point(x0, y1), new Point(x0,y2)];
+        return [new Point(x0, y1), new Point(x0, y2)];
     }
 
     line = Line.normalize(line);
@@ -349,7 +343,6 @@ function checkCollision(lineSegmentPoints, arc) {
 // console.log(checkCollision(points.slice(0,2), arc));
 
 module.exports = {
-    Point,
     Line,
     Circle,
     Arc,

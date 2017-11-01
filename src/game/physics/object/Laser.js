@@ -1,7 +1,7 @@
-const PhysicsObject = require('./primitive/PhysicsObject.js');
+const PhysicsEntitiy = require('./primitive/PhysicsEntitiy.js');
 
 const basicLazerSprite ='';
-class Laser extends PhysicsObject {
+class Laser extends PhysicsEntitiy {
     constructor(speed) {
         super(basicLazerSprite);
         this.speed = speed;
