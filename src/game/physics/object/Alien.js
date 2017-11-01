@@ -1,4 +1,4 @@
-const PhysicsObject = require('../../PhysicsObject.js');
+const PhysicsObject = require('./primitive/PhysicsObject.js');
 const PIXI = require('pixi.js');
 
 const basicAlienSprite = PIXI.Sprite.fromImage('./images/spacestation.png');

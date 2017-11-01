@@ -1,4 +1,4 @@
-const PhysicsObject = require('../../PhysicsObject.js');
+const PhysicsObject = require('./primitive/PhysicsObject.js');
 
 const basicForceFieldSprite ='';
 class ForceField extends PhysicsObject {
