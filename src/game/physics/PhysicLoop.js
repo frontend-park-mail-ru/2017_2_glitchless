@@ -29,7 +29,7 @@ class PhysicLoop {
             this.gameManager.app.ticker.speed;
 
         this.vectorToPointDelegate.processVector(this.phisicEntities, elapsedMS);
-        this.physicDelegate.processPhysicLoop(this.physicDelegate, elapsedMS);
+        this.physicDelegate.processPhysicLoop(this.spriteStorage, elapsedMS);
     }
 
     _firstSetting() {
