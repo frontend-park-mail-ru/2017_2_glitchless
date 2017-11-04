@@ -51,7 +51,7 @@ class Circle {
             / (2 * (mb - ma));
         const centerY = (-centerX + (point1.x + point2.x) / 2) / ma + (point1.y + point2.y) / 2;
         // console.log([centerX, centerY]);
-        const R = Math.sqrt(Math.pow(centerX - point1.x, 2)) + Math.sqrt(Math.pow(centerY - point1.y, 2));
+        const R = Math.sqrt(Math.pow(centerX - point1.x, 2) + Math.pow(centerY - point1.y, 2));
         return new Circle(R, new Point(centerX, centerY));
     }
 }

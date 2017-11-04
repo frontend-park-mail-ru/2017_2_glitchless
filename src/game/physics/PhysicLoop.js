@@ -40,7 +40,20 @@ class PhysicLoop {
         }
         const platform = this.physicObjects['platform'][0];
         const platformCircle = Circle.fromPoints(platform.getCoords(),...platform.getEdgePoints());
+        //DebugOnly
+        const graphics = this.graphics;
+        graphics.clear();
+        graphics.lineStyle(4, 0xffd900, 1);
+
+        platform.getEdgePoints().forEach(function(point) {
+            graphics.drawCircle(point.x, point.y, 3);
+        });
+
+        graphics.lineStyle(4, 0xfdd999, 1);
+        graphics.drawCircle(platformCircle.center.x, platformCircle.center.y, platformCircle.R);
+        this.gameManager.scene.stage.addChild(graphics);
         console.log(platformCircle);
+        //*DebugOnly
         this.vectorToPointDelegate.processVector(this.physicEntities, elapsedMS);
         this.physicDelegate.processPhysicLoop(this.spriteStorage, elapsedMS);
     }
@@ -57,6 +70,8 @@ class PhysicLoop {
         platform.setRotationSpeed(0.1);
         this.gameManager.addObject('platform', platform);
         this.spriteStorage.userPlatform = platform;
+        //DebugOnly
+        this.graphics = new PIXI.Graphics();
     }
 
     _getCenterPoint() {
