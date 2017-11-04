@@ -14,14 +14,17 @@ class Platform extends PhysicsEntitiy {
     getEdgePoints() {
         const coord = this.getCoords();
         const rotation = this.sprite.rotation;
+        const angel = 0.5;
         const lengthHypotenuse = this.sprite.width / 2;
-        const deltaX = lengthHypotenuse * Math.cos(rotation);
-        const deltaY = lengthHypotenuse * Math.sin(rotation);
+        const deltaXLeft = lengthHypotenuse * Math.cos(rotation + angel);
+        const deltaYLeft = lengthHypotenuse * Math.sin(rotation + angel);
+        const deltaXRight = lengthHypotenuse * Math.cos(rotation - angel);
+        const deltaYRight = lengthHypotenuse * Math.sin(rotation - angel);
 
-        const pointLeft = new Point(coord.x - deltaX,
-            coord.y - deltaY);
-        const pointRight = new Point(coord.x + deltaX,
-            coord.y + deltaY);
+        const pointLeft = new Point(coord.x - deltaXLeft,
+            coord.y - deltaYLeft);
+        const pointRight = new Point(coord.x + deltaXRight,
+            coord.y + deltaYRight);
 
         return [pointLeft, pointRight];
     }
