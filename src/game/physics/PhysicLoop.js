@@ -6,6 +6,7 @@ const VectorToPointLoop = require('./delegates/VectorToPointLoop.js');
 const PhysicVectorLoop = require('./delegates/PhysicVectorLoop.js');
 const Platform = require('./object/Platform.js');
 const Point = require('./object/primitive/Point.js');
+const CollisionManager = require('./CollisionManager.js');
 
 class PhysicLoop {
     constructor(gameManager) {
@@ -14,7 +15,7 @@ class PhysicLoop {
         this.vectorToPointDelegate = new VectorToPointLoop();
         this.physicDelegate = new PhysicVectorLoop();
         this.physicObjects = {};
-        this.phisicEntities = [];
+        this.physicEntities = [];
     }
 
     initTick(gameManager) {
@@ -27,8 +28,14 @@ class PhysicLoop {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.gameManager.app.ticker.speed;
-
-        this.vectorToPointDelegate.processVector(this.phisicEntities, elapsedMS);
+        console.log('elapsed '+elapsedMS);
+        for(let i = 0; i < 60; i++) {
+            if (i===1) {
+                console.log('it works');
+            }
+            CollisionManager.simpleTest();
+        }
+        this.vectorToPointDelegate.processVector(this.physicEntities, elapsedMS);
         this.physicDelegate.processPhysicLoop(this.spriteStorage, elapsedMS);
     }
 
@@ -65,11 +72,11 @@ class PhysicLoop {
         });
 
         if (!physicObject.isStatic) {
-            this.phisicEntities.push(physicObject);
+            this.physicEntities.push(physicObject);
             physicObject.subscribeToDestroy((item) => {
-                const pos = this.phisicEntities.indexOf(item);
+                const pos = this.physicEntities.indexOf(item);
                 if (pos > -1) {
-                    this.phisicEntities.splice(pos, 1);
+                    this.physicEntities.splice(pos, 1);
                 }
             });
         }

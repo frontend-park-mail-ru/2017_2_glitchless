@@ -62,19 +62,19 @@ function findIntersection(line, circle) {
  */
 function checkCollision(point, vector, arc, elapsedMS) {
     const speed = vector.getLength();
-    const initialPoint = { ...point };
+    const initialPoint = Object.assign({}, point);
 
     vector.mult(elapsedMS);
     const line = Line.fromPoints(initialPoint, point.apply(vector.x, vector.y), true);
-    console.log('collision line');
-    console.log(line);
+    // console.log('collision line');
+    // console.log(line);
     const intersections = findIntersection(line, arc);
     if (intersections.length === 0) {
         return null;
     }
     const collisions = intersections.map(function (intersectionPoint) {
         if (!line.segmentContains(intersectionPoint)) {
-            console.log(line);
+            // console.log(line);
             return;
         }
         if (!arc.contains(intersectionPoint)) {
@@ -88,7 +88,7 @@ function checkCollision(point, vector, arc, elapsedMS) {
     if (!collision) {
         return false;
     }
-    console.log(line.getSlope());
+    // console.log(line.getSlope());
 
     const relativeCollision = arc.centrate(collision);
     const angle = Math.atan2(relativeCollision.y, relativeCollision.x);
@@ -97,27 +97,30 @@ function checkCollision(point, vector, arc, elapsedMS) {
 
     const resultTrajectory = Line.fromSlopeAndPoint(reflectionAngle, collision);
     //TODO: check whether this is right, add support for strictly-vertical vectors
-    console.log('restraj');
-    console.log(resultTrajectory);
+    // console.log('restraj');
+    // console.log(resultTrajectory);
     return [collision, resultTrajectory.getVector(speed)];
 }
 
 
 function simpleTest() {
-    let points = [new Point(0, 2), new Point(3, -1), new Point (1, -1)];
-    let points2 = [new Point(1, -2), new Point(1, 2), new Point (3, 0)];
+    // let points = [new Point(0, 2), new Point(3, -1), new Point (1, -1)];
+    // let points2 = [new Point(1, -2), new Point(1, 2), new Point (3, 0)];
+
+    let points = [new Point(Math.random(), 2), new Point(3, Math.random()), new Point (1, -1)];
+    let points2 = [new Point(1, Math.random()), new Point(Math.random(), 2), new Point (3, 0)];
+
     const arc = Arc.fromPoints(...points2);
     const line = Line.fromPoints(...points.slice(0,2));
-
-    console.log(arc);
-    console.log(line);
-    console.log(findIntersection(line, arc));
-    console.log(checkCollision(points[0], new Point(3, -3), arc, 1));
+    //
+    // console.log(arc);
+    // console.log(line);
+    // findIntersection(line, arc);
+    checkCollision(points[0], new Point(3, -3), arc, 1);
 }
-
-simpleTest();
 
 module.exports = {
     findIntersection,
-    checkCollision
+    checkCollision,
+    simpleTest
 };

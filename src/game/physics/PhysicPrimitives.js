@@ -34,15 +34,15 @@ class Circle {
     static fromPoints(point1, point2, point3) {
         //To prevent cases where ma == 0
         if (Math.abs(point2.y - point1.y) < Number.EPSILON) {
-            console.log('1');
+            // console.log('1');
             [point3, point2] = [point2, point3];
         }
         //To prevent cases where ma == Infinity or mb == Infinity
         if (Math.abs(point3.x - point2.x) < Number.EPSILON) {
-            console.log('2');
+            // console.log('2');
             [point2, point1] = [point1, point2];
         } else if (Math.abs(point2.x - point1.x) < Number.EPSILON) {
-            console.log('3');
+            // console.log('3');
             [point2, point3] = [point3, point2];
         }
         const ma = (point2.y - point1.y) / (point2.x - point1.x);
@@ -50,7 +50,7 @@ class Circle {
         const centerX = (ma * mb * (point1.y - point3.y) + mb * (point1.x + point2.x) - ma * (point2.x + point3.x))
             / (2 * (mb - ma));
         const centerY = (-centerX + (point1.x + point2.x) / 2) / ma + (point1.y + point2.y) / 2;
-        console.log([centerX, centerY]);
+        // console.log([centerX, centerY]);
         const R = Math.sqrt(Math.pow(centerX - point1.x, 2)) + Math.sqrt(Math.pow(centerY - point1.y, 2));
         return new Circle(R, new Point(centerX, centerY));
     }
@@ -122,7 +122,7 @@ class Arc extends Circle {
     contains(point) {
         const relPoint = this.centrate(point);
         const anglePoint = Math.atan2(relPoint.y, relPoint.x);
-        console.log('agpoint' + anglePoint);
+        // console.log('agpoint' + anglePoint);
         if (!this.reversed) {
             return this.angleBound1 < anglePoint && this.angleBound2 > anglePoint;
         }
