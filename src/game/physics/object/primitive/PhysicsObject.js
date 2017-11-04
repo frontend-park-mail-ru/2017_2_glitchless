@@ -1,6 +1,7 @@
 const utils = require('../../../../utils/GameUtils.js');
 const Constants = require('../../../../utils/Constants.js');
 const Point = require('./Point.js');
+
 class PhysicsObject {
     /**
      * @param {PIXI.Sprite} sprite The sprite with which the object will be rendered.
@@ -35,11 +36,15 @@ class PhysicsObject {
     }
 
     getRotation() {
-        return this.sprite.rotation * Constants.GAME_ROTATION_FULL_CIRCLE;
+        return this.sprite.rotation * Constants.GAME_ROTATION_COEFFICIENT;
     }
 
     setRotation(rotation) {
-        this.sprite.rotation = rotation / Constants.GAME_ROTATION_FULL_CIRCLE;
+        if (rotation > 360) {
+            rotation = rotation - 360;
+        }
+        console.log(rotation);
+        this.sprite.rotation = rotation / Constants.GAME_ROTATION_COEFFICIENT;
     }
 
     subscribeToDestroy(callback, context = this) {
