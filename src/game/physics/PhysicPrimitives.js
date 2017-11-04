@@ -85,7 +85,7 @@ class Arc extends Circle {
         this.angleBound1 = Math.min(angleBound1, angleBound2);
         this.angleBound2 = Math.max(angleBound1, angleBound2);
 
-        this.reversed = this.angleMidPoint > angleBound1 && this.angleMidPoint < this.angleBound2;
+        this.reversed = !(this.angleMidPoint > this.angleBound1 && this.angleMidPoint < this.angleBound2);
     }
 
     /**

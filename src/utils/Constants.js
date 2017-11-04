@@ -7,6 +7,7 @@ module.exports = {
     WINDOW_SCALE: 1,
     GAME_ALIEN_SIZE: [100, 100],
     GAME_PLATFORM_SIZE: [105, 36],
+    GAME_LASER_SIZE: [25, 25],
     GAME_ROTATION_COEFFICIENT: (360 / (Math.PI * 2)),
     GAME_STATE_WIN: 1
 };

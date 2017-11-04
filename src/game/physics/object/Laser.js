@@ -1,9 +1,10 @@
-const PhysicsEntitiy = require('./primitive/PhysicsEntity.js');
+const PhysicsEntity = require('./primitive/PhysicsEntity.js');
 
-const basicLazerSprite ='';
-class Laser extends PhysicsEntitiy {
+const basicLaserTexture = PIXI.Texture.fromImage('./images/laser.png');;
+class Laser extends PhysicsEntity {
     constructor(speed) {
-        super(basicLazerSprite);
+    	const basicLaserSprite = new PIXI.Sprite(basicLaserTexture);
+        super(basicLaserSprite);
         this.speed = speed;
     }
 }

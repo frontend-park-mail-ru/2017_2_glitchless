@@ -63,9 +63,12 @@ function findIntersection(line, circle) {
 function checkCollision(point, vector, arc, elapsedMS) {
     const speed = vector.getLength();
     const initialPoint = Object.assign({}, point);
+    const tmpPoint = new Point(point.x, point.y);
 
-    vector.mult(elapsedMS);
-    const line = Line.fromPoints(initialPoint, point.apply(vector.x, vector.y), true);
+    const vectorCopy = new Point(vector.x, vector.y);
+    vectorCopy.mult(elapsedMS);
+
+    const line = Line.fromPoints(initialPoint, tmpPoint.apply(vectorCopy.x, vectorCopy.y), true);
     // console.log('collision line');
     // console.log(line);
     const intersections = findIntersection(line, arc);
