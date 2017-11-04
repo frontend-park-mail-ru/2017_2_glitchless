@@ -93,7 +93,7 @@ class Arc extends Circle {
      * @param {Point} boundingPoint2
      * @param {Point} midPoint
      *
-     * For details on parameters see {@link Arc#constructor}
+     * For details on parameters @see {@link Arc#constructor}
      *
      * @return {Arc}
      */
@@ -106,7 +106,7 @@ class Arc extends Circle {
      * @param {Circle} circle
      * @param {Point[]} boundingPoints
      *
-     * For details on parameters see {@link Arc#constructor}
+     * For details on parameters @see {@link Arc#constructor}
      *
      * @return {Arc}
      */
@@ -137,39 +137,50 @@ class Line {
      * @param {Number} A Coefficient A of line equation
      * @param {Number} B Coefficient B of line equation
      * @param {Number} C Coefficient C of line equation
+     * @param {Boolean} isVector
      *
      * @param {Point[]} bounds Bounds of line segment
      *
      * @return {Line}
      */
-    constructor(A, B, C = 0, bounds = []) {
+    constructor(A, B, C = 0, bounds = [], isVector=false) {
         this.A = A;
         this.B = B;
         this.C = C;
-        this.vertical = false;
-        if (bounds.length > 0) {
+        this.isVertical = false;
+        this.isVector = isVector;
+
+        if (bounds.length !== 0 && bounds.length !== 2) {
+            throw new Error("Lines must be either non-bounded, or bounded by 2 points");
+        }
+
+        if (isVector && bounds.length === 0) {
+            throw new Error("Cannot construct non-bounded vectors");
+        }
+
+        if (bounds.length > 1) {
             this.setBounds(bounds);
+        }
+
+        if (isVector) {
+            this.vectorDirectionByY = bounds[1].y > bounds[0].y;
+            this.vectorDirectionByX = bounds[1].x > bounds[0].x;
         }
     }
 
     /**
      * @param {Number} C Coefficient C of equation x=C
      * @param {Point[]} bounds Bounds of line segment
+     * @param {Boolean} isVector
      *
      * @return {Line}
      */
-    static createVertical(C, bounds = []) {
-        const line = new Line(0, 0, C, bounds);
-        line.vertical = true;
+    static createVertical(C, bounds = [], isVector=false) {
+        const line = new Line(0, 0, C, bounds, isVector);
+        line.isVertical = true;
         return line;
     }
 
-    /**
-     * @return {Boolean}
-     */
-    isVertical() {
-        return this.vertical;
-    }
 
     /**
      * @param {Point} point
@@ -209,6 +220,7 @@ class Line {
 
     /**
      * @param {Point[]} bounds Bounds of line segment
+     * @param {Boolean} isVector
      */
     setBounds(bounds) {
         this.bounds = bounds;
@@ -225,21 +237,44 @@ class Line {
     /**
      * @param {Point} point1
      * @param {Point} point2
+     * @param {Boolean} isVector Whether the line
      *
      * @return {Line} Line, passing through point1 and point2
      */
-    static fromPoints(point1, point2) {
+    static fromPoints(point1, point2, isVector=false) {
         if (Math.abs(point2.y - point1.y) < Number.EPSILON) {
-            return Line.createVertical(point1.x);
+            return Line.createVertical(point1.x, [point1, point2], isVector);
         }
         const A = 1;
         const B = (point1.x - point2.x) / (point2.y - point1.y);
         const C = point1.y * (point2.x - point1.x) / (point2.y - point1.y) - point1.x;
-        return new Line(A, B, C, [point1, point2]);
+        return new Line(A, B, C, [point1, point2], isVector);
+    }
+
+    static fromSlopeAndPoint(slope, point, isVector=true) {
+        const A = 1;
+        const B = -1 / Math.tan(slope);
+        const C = -(point.x + B * point.y);
+        if (isVector) {
+            this.vectorDirectionByY = slope >= -Math.PI / 2 && slope < Math.PI / 2;
+            this.vectorDirectionByX = slope >= 0;
+        }
+
+        return new Line(A, B, C, [point, new Point(point.x + 1, point.y - B)], isVector);
+    }
+
+    getYByX(x) {
+        //TODO: add strictly-vertical handling
+        return -(this.A  * x + this.C) / this.B;
+    }
+
+    getXByY(y) {
+        //TODO: add strictly-vertical handling
+        return -(this.B  * y + this.C) / this.A;
     }
 
     /**
-     * @return {Number} Radian representation (from -PI to +PI) of line's slope
+     * @return {Number} Angular representation (from -PI to +PI) of line's slope
      */
     getSlope() {
         if (this.vertical) {
@@ -247,7 +282,30 @@ class Line {
         }
         return Math.atan2(-this.A, this.B);
     }
+
+    getPointByDist(dist) {
+        return this.getVector(dist)
+            .apply(this.bounds[0].x, this.bounds[0].y);
+    }
+
+    getVector(length) {
+        if (!this.isVector) {
+            throw new Error('Ambiguous without direction');
+        }
+        let point = new Point(this.bounds[1].x - this.bounds[0].x, this.bounds[1].y - this.bounds[0].y);
+        point.divide(point.getLength());
+        return point.mult(length);
+    }
 }
+
+// const points = [new Point(1, 0), new Point(3, 2)];
+//
+// let line = Line.fromPoints(...points, true);
+// console.log(line);
+// line = Line.fromSlopeAndPoint(line.getSlope(), line.bounds[0]);
+// console.log(line);
+// console.log(line.getXByY(0));
+// console.log(line.getPointByDist());
 
 
 module.exports = {
