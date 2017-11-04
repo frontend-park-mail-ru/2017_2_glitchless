@@ -7,6 +7,9 @@ const PhysicVectorLoop = require('./delegates/PhysicVectorLoop.js');
 const Platform = require('./object/Platform.js');
 const Point = require('./object/primitive/Point.js');
 const CollisionManager = require('./CollisionManager.js');
+const primitives = require('./PhysicPrimitives.js');
+
+const Circle = primitives.Circle;
 
 class PhysicLoop {
     constructor(gameManager) {
@@ -35,6 +38,9 @@ class PhysicLoop {
             }
             CollisionManager.simpleTest();
         }
+        const platform = this.physicObjects['platform'][0];
+        const platformCircle = Circle.fromPoints(platform.getCoords(),...platform.getEdgePoints());
+        console.log(platformCircle);
         this.vectorToPointDelegate.processVector(this.physicEntities, elapsedMS);
         this.physicDelegate.processPhysicLoop(this.spriteStorage, elapsedMS);
     }
