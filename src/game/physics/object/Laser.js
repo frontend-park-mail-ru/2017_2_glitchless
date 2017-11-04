@@ -1,4 +1,4 @@
-const PhysicsEntitiy = require('./primitive/PhysicsEntitiy.js');
+const PhysicsEntitiy = require('./primitive/PhysicsEntity.js');
 
 const basicLazerSprite ='';
 class Laser extends PhysicsEntitiy {

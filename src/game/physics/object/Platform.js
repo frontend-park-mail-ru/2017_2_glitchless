@@ -1,4 +1,4 @@
-const PhysicsEntitiy = require('./primitive/PhysicsEntitiy.js');
+const PhysicsEntitiy = require('./primitive/PhysicsEntity.js');
 const PIXI = require('pixi.js');
 
 const basicPlatformSprite = PIXI.Sprite.fromImage('./images/platform.png');

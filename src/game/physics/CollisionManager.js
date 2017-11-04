@@ -1,7 +1,7 @@
 const primitives = require('./PhysicPrimitives.js');
+const Point = require('./object/primitive/Point.js');
 
-const Point = primitives.Point;
-const Line = primitives.line;
+const Line = primitives.Line;
 const Circle = primitives.Circle;
 const Arc = primitives.Arc;
 
@@ -16,9 +16,9 @@ function findIntersection(line, circle) {
     const r = circle.R;
     const EPS = Number.EPSILON;
 
-    if (line.isVertical()) {
+    if (line.isVertical) {
         const x0 = line.C;
-        console.log(circle.center.x - line.C);
+        // console.log(circle.center.x - line.C);
         if (circle.R < Math.abs(circle.center.x - line.C)){
             return [];
         }
@@ -26,7 +26,7 @@ function findIntersection(line, circle) {
             return [new Point(line.C, circle.center.y)];
         }
         const tmpSqrt = Math.sqrt(r*r - Math.pow((x0 - circle.center.x), 2));
-        console.log(tmpSqrt);
+        // console.log(tmpSqrt);
         const y1 = circle.center.y + tmpSqrt;
         const y2 = circle.center.y - tmpSqrt;
         return [new Point(x0, y1), new Point(x0,y2)];
@@ -53,14 +53,21 @@ function findIntersection(line, circle) {
 }
 
 /**
- * @param {Point[]} lineSegmentPoints 2 points defining a line segment
+ * @param {Point} point
+ * @param {Point} vector
  * @param {Arc} arc
+ * @param {Number} elapsedMS
  *
- * @return {[Point[], Number] | Boolean} Point of collision and new line angle if collision exists, else false
+ * @return {[Point, Point] | Boolean} Point of collision and new speed vector if collision exists, else false
  */
-function checkCollision(lineSegmentPoints, arc) {
-    const line = Line.fromPoints(...lineSegmentPoints);
+function checkCollision(point, vector, arc, elapsedMS) {
+    const speed = vector.getLength();
+    const initialPoint = { ...point };
 
+    vector.mult(elapsedMS);
+    const line = Line.fromPoints(initialPoint, point.apply(vector.x, vector.y), true);
+    console.log('collision line');
+    console.log(line);
     const intersections = findIntersection(line, arc);
     if (intersections.length === 0) {
         return null;
@@ -77,6 +84,7 @@ function checkCollision(lineSegmentPoints, arc) {
     });
 
     const collision = collisions.filter(Boolean)[0]; // There can't be more than 1 collision in our circumstances
+
     if (!collision) {
         return false;
     }
@@ -85,10 +93,13 @@ function checkCollision(lineSegmentPoints, arc) {
     const relativeCollision = arc.centrate(collision);
     const angle = Math.atan2(relativeCollision.y, relativeCollision.x);
 
-    const reflectionAngle = angle + (angle - line.getSlope());
-    //TODO: check whether this is right, add support for strictly-vertical vectors
+    const reflectionAngle = (angle + (angle - line.getSlope())) % Math.PI;
 
-    return [collision, reflectionAngle];
+    const resultTrajectory = Line.fromSlopeAndPoint(reflectionAngle, collision);
+    //TODO: check whether this is right, add support for strictly-vertical vectors
+    console.log('restraj');
+    console.log(resultTrajectory);
+    return [collision, resultTrajectory.getVector(speed)];
 }
 
 
@@ -101,9 +112,10 @@ function simpleTest() {
     console.log(arc);
     console.log(line);
     console.log(findIntersection(line, arc));
-    console.log(checkCollision(points.slice(0,2), arc));
+    console.log(checkCollision(points[0], new Point(3, -3), arc, 1));
 }
 
+simpleTest();
 
 module.exports = {
     findIntersection,
