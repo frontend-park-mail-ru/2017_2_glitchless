@@ -44,7 +44,7 @@ class PhysicsObject {
             rotation = rotation - 360;
         }
         console.log(rotation);
-        this.sprite.rotation = rotation / Constants.GAME_ROTATION_COEFFICIENT
+        this.sprite.rotation = rotation / Constants.GAME_ROTATION_COEFFICIENT;
     }
 
     subscribeToDestroy(callback, context = this) {
