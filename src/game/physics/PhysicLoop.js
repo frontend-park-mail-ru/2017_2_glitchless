@@ -41,6 +41,7 @@ class PhysicLoop {
         const platform = new Platform();
         platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
         platform.setSpeed(new Point(0.1, 0.01));
+        platform.setRotationSpeed(0.1);
         this.gameManager.addObject('platform', platform);
         this.spriteStorage.userPlatform = platform;
     }

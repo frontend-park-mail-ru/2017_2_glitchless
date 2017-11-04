@@ -7,6 +7,10 @@ class Platform extends PhysicsEntitiy {
     constructor() {
         super(basicPlatformSprite);
     }
+
+    getRightPoint() {
+
+    }
 }
 
 module.exports = Platform;
