@@ -49,7 +49,7 @@ class GameUtils {
     }
 
     static radianLimit(radian) {
-        if (radian => 0) {
+        if (radian >= 0) {
             if (radian <= Math.PI) {
                 return radian;
             }
@@ -59,7 +59,7 @@ class GameUtils {
         if (radian >= -Math.PI) {
             return radian;
         }
-        return Math.PI - radian % Math.PI;;
+        return Math.PI - radian % Math.PI;
     }
 
     static minDist(radian1, radian2) {
@@ -69,8 +69,7 @@ class GameUtils {
             let diffsign;
             if (radian2 > radian1) {
                 diffsign = -1;
-            }
-            else {
+            } else {
                 diffsign = 1;
             }
 

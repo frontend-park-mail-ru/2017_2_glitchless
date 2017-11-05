@@ -80,7 +80,8 @@ class PhysicLoop {
             const arcCenter = visiblePlatformArc.center;
             const arcRadius = visiblePlatformArc.R;
             const counterclockwise = visiblePlatformArc.reversed;
-            graphics.arc(arcCenter.x, arcCenter.y, arcRadius, visiblePlatformArc.angleBound1, visiblePlatformArc.angleBound2, counterclockwise);
+            graphics.arc(arcCenter.x, arcCenter.y, arcRadius, visiblePlatformArc.angleBound1, 
+                visiblePlatformArc.angleBound2, counterclockwise);
             this.gameManager.scene.stage.addChild(graphics);
         }
 
