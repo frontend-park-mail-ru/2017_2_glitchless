@@ -1,5 +1,7 @@
 const primitives = require('./PhysicPrimitives.js');
 const Point = require('./object/primitive/Point.js');
+const Constants = require('../../utils/Constants.js');
+const utils = require('../../utils/GameUtils.js');
 
 const Line = primitives.Line;
 const Circle = primitives.Circle;
@@ -18,7 +20,6 @@ function findIntersection(line, circle) {
 
     if (line.isVertical) {
         const x0 = line.C;
-        // console.log(circle.center.x - line.C);
         if (circle.R < Math.abs(circle.center.x - line.C)){
             return [];
         }
@@ -26,7 +27,6 @@ function findIntersection(line, circle) {
             return [new Point(line.C, circle.center.y)];
         }
         const tmpSqrt = Math.sqrt(r*r - Math.pow((x0 - circle.center.x), 2));
-        // console.log(tmpSqrt);
         const y1 = circle.center.y + tmpSqrt;
         const y2 = circle.center.y - tmpSqrt;
         return [new Point(x0, y1), new Point(x0,y2)];
@@ -40,7 +40,7 @@ function findIntersection(line, circle) {
         return [];
     }
     if (Math.abs(c * c - r * r * (a * a + b * b)) < EPS) {
-        return [x0 + endShift[0], y0 + endShift[1]];
+        return [x0 + endShift[0], y0 - endShift[1]];
     }
     const d = r * r - c * c / (a * a + b * b);
     const mult = Math.sqrt(d / (a * a + b * b));
@@ -49,7 +49,7 @@ function findIntersection(line, circle) {
     const bx = x0 - b * mult;
     const ay = y0 - a * mult;
     const by = y0 + a * mult;
-    return [new Point(ax + endShift[0], ay + endShift[1]), new Point(bx + endShift[0], by + endShift[1])];
+    return [new Point(ax + endShift[0], ay - endShift[1]), new Point(bx + endShift[0], by - endShift[1])];
 }
 
 /**
@@ -62,22 +62,21 @@ function findIntersection(line, circle) {
  */
 function checkCollision(point, vector, arc, elapsedMS) {
     const speed = vector.getLength();
-    const initialPoint = Object.assign({}, point);
-    const tmpPoint = new Point(point.x, point.y);
+    const initialPoint = point.copy();
+    const tmpPoint = point.copy();
 
     const vectorCopy = new Point(vector.x, vector.y);
     vectorCopy.mult(elapsedMS);
 
     const line = Line.fromPoints(initialPoint, tmpPoint.apply(vectorCopy.x, vectorCopy.y), true);
-    // console.log('collision line');
-    // console.log(line);
+
     const intersections = findIntersection(line, arc);
+
     if (intersections.length === 0) {
         return null;
     }
     const collisions = intersections.map(function (intersectionPoint) {
         if (!line.segmentContains(intersectionPoint)) {
-            // console.log(line);
             return;
         }
         if (!arc.contains(intersectionPoint)) {
@@ -91,17 +90,25 @@ function checkCollision(point, vector, arc, elapsedMS) {
     if (!collision) {
         return false;
     }
-    // console.log(line.getSlope());
 
     const relativeCollision = arc.centrate(collision);
-    const angle = Math.atan2(relativeCollision.y, relativeCollision.x);
-
-    const reflectionAngle = (angle + (angle - line.getSlope())) % Math.PI;
-
+    const angle = utils.radianLimit(-Math.atan2(relativeCollision.y, relativeCollision.x) + Math.PI/2);
+    const reflectionAngle = utils.radianLimit((angle - utils.minDist(line.getSlope(), angle)) + Math.PI);
     const resultTrajectory = Line.fromSlopeAndPoint(reflectionAngle, collision);
-    //TODO: check whether this is right, add support for strictly-vertical vectors
-    // console.log('restraj');
-    // console.log(resultTrajectory);
+    if (Constants.COLLISION_DEBUG) {
+        console.log('inittraj');
+        console.log(line.getSlope());
+        console.log(line);
+        console.log('angle ' + angle);
+        console.log('restraj');
+        console.log(resultTrajectory);
+
+        console.log('angle ' + angle);
+        console.log('slope ' + line.getSlope());
+        console.log(reflectionAngle);
+        console.log(utils.minDist(line.getSlope(), angle));
+    }
+
     return [collision, resultTrajectory.getVector(speed)];
 }
 

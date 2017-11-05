@@ -47,6 +47,38 @@ class GameUtils {
         inputSprite.scale.x = newResolution[0] / inputSprite.width;
         inputSprite.scale.y = newResolution[1] / inputSprite.height;
     }
+
+    static radianLimit(radian) {
+        if (radian => 0) {
+            if (radian <= Math.PI) {
+                return radian;
+            }
+            return -Math.PI + radian % Math.PI;
+        }
+
+        if (radian >= -Math.PI) {
+            return radian;
+        }
+        return Math.PI - radian % Math.PI;;
+    }
+
+    static minDist(radian1, radian2) {
+        const sign1 = Math.sign(radian1);
+        const sign2 = Math.sign(radian2);
+        if (Math.sign(radian1) === Math.sign(radian2)) {
+            let diffsign;
+            if (radian2 > radian1) {
+                diffsign = -1;
+            }
+            else {
+                diffsign = 1;
+            }
+
+            return Math.abs(radian2 - radian1) * diffsign % Math.PI;
+        }
+        return [Math.min(Math.abs(radian2 - radian1), 
+            Math.abs(radian1 - sign1 * Math.PI) + Math.abs(radian2 - sign2 * Math.PI))];
+    }
 }
 
 module.exports = GameUtils;

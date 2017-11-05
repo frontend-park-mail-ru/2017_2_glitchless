@@ -143,7 +143,7 @@ class Line {
      *
      * @return {Line}
      */
-    constructor(A, B, C = 0, bounds = [], isVector=false) {
+    constructor(A, B, C = 0, bounds = [], isVector=false, nocheck=false) {
         this.A = A;
         this.B = B;
         this.C = C;
@@ -162,7 +162,7 @@ class Line {
             this.setBounds(bounds);
         }
 
-        if (isVector) {
+        if (isVector && !nocheck) {
             this.vectorDirectionByY = bounds[1].y > bounds[0].y;
             this.vectorDirectionByX = bounds[1].x > bounds[0].x;
         }
@@ -256,11 +256,22 @@ class Line {
         const B = -1 / Math.tan(slope);
         const C = -(point.x + B * point.y);
         if (isVector) {
-            this.vectorDirectionByY = slope >= -Math.PI / 2 && slope < Math.PI / 2;
+            console.log('slope');
+            console.log(slope);
+            console.log(slope >= 0);
+            console.log(slope >= -Math.PI / 2 && slope < Math.PI / 2);
             this.vectorDirectionByX = slope >= 0;
+            this.vectorDirectionByY = slope >= -Math.PI / 2 && slope < Math.PI / 2;
         }
 
-        return new Line(A, B, C, [point, new Point(point.x + 1, point.y - B)], isVector);
+        let incrementX;
+        if (this.vectorDirectionByX) {
+            incrementX = 1;
+        } else {
+            incrementX = -1;
+        }
+
+        return new Line(A, B, C, [point, new Point(point.x + incrementX, point.y - B * incrementX)], isVector);
     }
 
     getYByX(x) {

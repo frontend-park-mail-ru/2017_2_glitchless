@@ -33,47 +33,57 @@ class PhysicLoop {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.gameManager.app.ticker.speed;
-        console.log('elapsed ' + elapsedMS);
-        // for(let i = 0; i < 60; i++) {
-        //     if (i===1) {
-        //         console.log('it works');
-        //     }
-        //     CollisionManager.simpleTest();
-        // }
         const graphics = this.graphics;
         graphics.clear();
         const platform = this.physicObjects['platform'][0];
         const platformArc = Arc.fromPoints(...platform.getEdgePoints(), platform.getCoords());
+
         this.physicObjects['laser'].forEach((laser) => {
-            const collision = CollisionManager.checkCollision(laser.getCoords(), laser.getSpeed(), platformArc, elapsedMS);
+            const collision = CollisionManager.checkCollision(laser.getCoords(),
+                laser.getSpeed(), platformArc, elapsedMS);
+            const laserPos = laser.getCoords().copy();
+            const laserSpd = laser.getSpeed();
+            const laserShifted = laserPos.apply(laserSpd.x, laserSpd.y);
+            console.log(laserShifted);
+            if (Constants.GAME_DEBUG) {
+                const laserGraph = this.gameManager.scene.scalePoint(laserShifted);
+                graphics.lineStyle(4, 0xffd900, 1);
+            }
+
+
             if (collision) {
-                const laserPos = laser.getCoords();
-                const laserSpd = laser.getSpeed();
-                graphics.drawCircle(laserPos.x + laserSpd.x, laserPos.y + laserSpd.y, 3);
-                console.log(collision[0]);
-                debugger;
+                if (Constants.COLLISION_DEBUG) {
+                    console.log('collided');
+                    console.log(collision);
+                }
                 laser.setSpeed(collision[1]);
             }
         });
 
-        platform.getEdgePoints().forEach(function (point) {
-            graphics.lineStyle(4, 0xffd900, 1);
-            graphics.drawCircle(point.x, point.y, 3);
-            graphics.lineStyle(4, 0xaaff00, 4);
-            const arcStart = platformArc.bound1;
-            const arcEnd = platformArc.bound2;
-            // graphics.arcTo(arcStart.x, arcStart.y, arcEnd.x, arcEnd.y, platformCircle.R);
-            const counterclockwise = platformArc.reversed;
-            graphics.arc(platformArc.center.x, platformArc.center.y, platformArc.R,
-                platformArc.angleBound1, platformArc.angleBound2, counterclockwise);
-            // console.log(arcStart, arcEnd);
-        });
+        if (Constants.GAME_DEBUG) {
+            platform.getEdgePoints().forEach(function (point) {
+                const graphicPoint = this.gameManager.scene.scalePoint(point);
+                graphics.lineStyle(4, 0xffd900, 1);
+                graphics.drawCircle(graphicPoint.x, graphicPoint.y, 3);
+                graphics.lineStyle(4, 0xaaff00, 4);
 
-        // graphics.lineStyle(4, 0xfdd999, 1);
-        // graphics.drawCircle(platformCircle.center.x, platformCircle.center.y, platformCircle.R);
-        this.gameManager.scene.stage.addChild(graphics);
-        // console.log(platformCircle);
-        //*DebugOnly
+                // console.log(arcStart, arcEnd);
+            }.bind(this));
+
+            const visiblePlatformArc = Arc.fromPoints(
+                ...platform.getEdgePoints().map(function (point) {
+                    return this.gameManager.scene.scalePoint(point);
+                }.bind(this)),
+                this.gameManager.scene.scalePoint(platform.getCoords())
+            );
+
+            const arcCenter = visiblePlatformArc.center;
+            const arcRadius = visiblePlatformArc.R;
+            const counterclockwise = visiblePlatformArc.reversed;
+            graphics.arc(arcCenter.x, arcCenter.y, arcRadius, visiblePlatformArc.angleBound1, visiblePlatformArc.angleBound2, counterclockwise);
+            this.gameManager.scene.stage.addChild(graphics);
+        }
+
         this.vectorToPointDelegate.processVector(this.physicEntities, this, elapsedMS);
         this.physicDelegate.processPhysicLoop(this.spriteStorage, elapsedMS);
     }
@@ -87,12 +97,12 @@ class PhysicLoop {
 
         const platform = new Platform(this);
         platform.setCoords(new Point(200, 200), this);
-        platform.setSpeed(new Point(0.1, 0.1));
+        platform.setSpeed(new Point(0, 0));
         platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
-        platform.setRotationSpeed(0.1);
+        platform.setRotation(180);
         this.gameManager.addObject('platform', platform);
         this.spriteStorage.userPlatform = platform;
-
+        
         const platform2 = new Platform(this);
         platform2.setCoords(new Point(400, 200), this);
         platform2.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
@@ -103,6 +113,11 @@ class PhysicLoop {
         laser.setCoords(new Point(400, 400), this);
         laser.setSpriteSize(Constants.GAME_LASER_SIZE, this.gameManager);
         this.gameManager.addObject('laser', laser);
+
+        const laser2 = new Laser(new Point(-0.1, -0.1), this);
+        laser2.setCoords(new Point(375, 400), this);
+        laser2.setSpriteSize(Constants.GAME_LASER_SIZE, this.gameManager);
+        this.gameManager.addObject('laser', laser2);
 
         //DebugOnly
         this.graphics = new PIXI.Graphics();

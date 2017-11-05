@@ -34,6 +34,20 @@ class GameScene {
     }
 
     /**
+     * Scales length from initial to final resolution, without rounding
+     *
+     * Coordinates / resolution format: [x, y] / [width, height]
+     *
+     * @param {Number} length Coordinates to scale
+     * @param {Number[]} [initialRes=[1920, 1080]] Initial resolution
+     * @return {Number} Scaled length
+     */
+    scaleLength(length, initialRes = Constant.INITIAL_RES) {
+        const scale = this.width / initialRes[0];
+        return length * scale;
+    }
+
+    /**
      * Scales coordinates from initial to final resolution, rounding to the nearest whole number
      *
      * Coordinates / resolution format: [x, y] / [width, height]
@@ -64,7 +78,6 @@ class GameScene {
     scalePoint(point, initialRes = Constant.INITIAL_RES) {
         const xScale = this.width / initialRes[0];
         const yScale = this.height / initialRes[1];
-
         return new Point(Math.round(point.x * xScale), Math.round(point.y * yScale));
     }
 

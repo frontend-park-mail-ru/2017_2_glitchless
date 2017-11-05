@@ -4,6 +4,10 @@ class Point {
         this.y = y;
     }
 
+    copy() {
+        return new Point(this.x, this.y);
+    }
+
     /**
      * Moves the point by given shift coordinates
      * @param {Number} deltaX
