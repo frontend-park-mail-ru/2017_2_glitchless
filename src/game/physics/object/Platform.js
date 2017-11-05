@@ -16,7 +16,7 @@ class Platform extends PhysicsEntitiy {
         const coord = this.getCoords();
         const rotation = this.sprite.rotation;
         const angel = 0.5;
-        const lengthHypotenuse = this.sprite.width / 2;
+        const lengthHypotenuse = Constants.GAME_PLATFORM_SIZE[0] / 2;
         const deltaXLeft = lengthHypotenuse * Math.cos(rotation + angel);
         const deltaYLeft = lengthHypotenuse * Math.sin(rotation + angel);
         const deltaXRight = lengthHypotenuse * Math.cos(rotation - angel);
