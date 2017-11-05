@@ -75,6 +75,7 @@ class GameUtils {
 
             return Math.abs(radian2 - radian1) * diffsign % Math.PI;
         }
+        console.error('Not fully tested case');
         return [Math.min(Math.abs(radian2 - radian1), 
             Math.abs(radian1 - sign1 * Math.PI) + Math.abs(radian2 - sign2 * Math.PI))];
     }
