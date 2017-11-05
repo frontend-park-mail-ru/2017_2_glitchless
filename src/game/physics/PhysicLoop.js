@@ -33,7 +33,7 @@ class PhysicLoop {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.gameManager.app.ticker.speed;
-        console.log('elapsed '+elapsedMS);
+        console.log('elapsed ' + elapsedMS);
         // for(let i = 0; i < 60; i++) {
         //     if (i===1) {
         //         console.log('it works');
@@ -55,9 +55,8 @@ class PhysicLoop {
                 laser.setSpeed(collision[1]);
             }
         });
-        //DebugOnly
 
-        platform.getEdgePoints().forEach(function(point) {
+        platform.getEdgePoints().forEach(function (point) {
             graphics.lineStyle(4, 0xffd900, 1);
             graphics.drawCircle(point.x, point.y, 3);
             graphics.lineStyle(4, 0xaaff00, 4);
@@ -75,41 +74,43 @@ class PhysicLoop {
         this.gameManager.scene.stage.addChild(graphics);
         // console.log(platformCircle);
         //*DebugOnly
-        this.vectorToPointDelegate.processVector(this.physicEntities, elapsedMS);
+        this.vectorToPointDelegate.processVector(this.physicEntities, this, elapsedMS);
         this.physicDelegate.processPhysicLoop(this.spriteStorage, elapsedMS);
     }
+
     //
     _firstSetting() {
-        const alien = new Alien(this._getCenterPoint());
+        const alien = new Alien(this, this._getCenterPoint());
         alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, this.gameManager);
         this.gameManager.addObject('alien', alien);
         this.spriteStorage.alien = alien;
 
-        const platform = new Platform();
-        platform.setCoords(new Point(200,200));
+        const platform = new Platform(this);
+        platform.setCoords(new Point(200, 200), this);
+        platform.setSpeed(new Point(0.1, 0.1));
         platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
         platform.setRotationSpeed(0.1);
         this.gameManager.addObject('platform', platform);
         this.spriteStorage.userPlatform = platform;
 
-        const platform2 = new Platform();
-        platform2.setCoords(new Point(400,200));
+        const platform2 = new Platform(this);
+        platform2.setCoords(new Point(400, 200), this);
         platform2.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
         platform2.setRotationSpeed(0.1);
         this.gameManager.addObject('platform', platform2);
 
-        const laser = new Laser(new Point(-0.1, -0.1));
-        laser.setCoords(new Point(400,400));
+        const laser = new Laser(new Point(-0.1, -0.1), this);
+        laser.setCoords(new Point(400, 400), this);
         laser.setSpriteSize(Constants.GAME_LASER_SIZE, this.gameManager);
         this.gameManager.addObject('laser', laser);
-        
+
         //DebugOnly
         this.graphics = new PIXI.Graphics();
     }
 
     _getCenterPoint() {
-        return new Point(this.gameManager.app.renderer.width / 2,
-            this.gameManager.app.renderer.height / 2);
+        return new Point(Constants.INITIAL_RES[0] / 2,
+            Constants.INITIAL_RES[1] / 2);
     }
 
     addObjectToPhysic(tag, physicObject) {

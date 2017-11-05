@@ -7,9 +7,9 @@ const Point = require('./primitive/Point.js');
 const basicPlatformTexture = PIXI.Texture.fromImage('./images/platform.png');
 
 class Platform extends PhysicsEntitiy {
-    constructor() {
+    constructor(context) {
         const basicPlatformSprite = new PIXI.Sprite(basicPlatformTexture);
-        super(basicPlatformSprite);
+        super(basicPlatformSprite, context);
     }
 
     getEdgePoints() {
@@ -29,12 +29,6 @@ class Platform extends PhysicsEntitiy {
 
         return [pointLeft, pointRight];
     }
-    //DebugOnly
-    setRotation(rotation) {
-        super.setRotation(rotation);
-        console.log(this.getEdgePoints());
-    }
-    //*DebugOnly
 }
 
 module.exports = Platform;

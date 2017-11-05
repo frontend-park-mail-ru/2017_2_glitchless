@@ -1,6 +1,7 @@
 const PIXI = require('pixi.js');
 const GameUtils = require('../utils/GameUtils.js');
 const Constant = require('../utils/Constants.js');
+const Point = require('./physics/object/primitive/Point.js');
 
 class GameScene {
     constructor() {
@@ -49,6 +50,22 @@ class GameScene {
         const yScale = this.height / initialRes[1];
 
         return [Math.round(x * xScale), Math.round(y * yScale)];
+    }
+
+    /**
+     * Scales coordinates from initial to final resolution, rounding to the nearest whole number
+     *
+     * Coordinates / resolution format: [x, y] / [width, height]
+     *
+     * @param {Point} point Coordinates to scale
+     * @param {Number[]} [initialRes=[1920, 1080]] Initial resolution
+     * @return {Point} Scaled coordinates
+     */
+    scalePoint(point, initialRes = Constant.INITIAL_RES) {
+        const xScale = this.width / initialRes[0];
+        const yScale = this.height / initialRes[1];
+
+        return new Point(Math.round(point.x * xScale), Math.round(point.y * yScale));
     }
 
     /**

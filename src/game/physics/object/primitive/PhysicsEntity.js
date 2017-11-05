@@ -3,8 +3,8 @@ const Constants = require('../../../../utils/Constants.js');
 const Point = require('./Point.js');
 
 class PhysicsEntitiy extends PhysicsObject {
-    constructor(sprite, coords = new Point(0, 0)) {
-        super(sprite, coords);
+    constructor(sprite, context, coords = new Point(0, 0)) {
+        super(sprite, context, coords);
         this.isStatic = false;
         this.rotationSpeed = 0;
         this.speed = new Point(0, 0);

@@ -5,15 +5,16 @@ const Point = require('./Point.js');
 class PhysicsObject {
     /**
      * @param {PIXI.Sprite} sprite The sprite with which the object will be rendered.
+     * @param {PhysicLoop} context  object
      * @param coords
      */
-    constructor(sprite, coords = new Point(0, 0)) {
+    constructor(sprite, context, coords = new Point(0, 0)) {
         if (new.target === PhysicsObject) {
             throw new TypeError("Cannot construct abstract instances directly");
         }
         this.sprite = sprite;
         this.sprite.anchor.set(0.5);
-        this.setCoords(coords);
+        this.setCoords(coords, context);
         this.isStatic = true;
         this.destroyListeners = [];
     }
@@ -22,17 +23,20 @@ class PhysicsObject {
      * @return {Point} Coordinates [x, y] of the object's sprite center.
      */
     getCoords() {
-        return new Point(this.sprite.x, this.sprite.y);
+        return this.physicCoords;
     }
 
     /**
      * Sets sprite's position
      *
      * @param {Point} point New coordinates {x, y} of the object's sprite center.
+     * @param {PhysicLoop} context
      */
-    setCoords(point) {
-        this.sprite.x = point.x;
-        this.sprite.y = point.y;
+    setCoords(point, context) {
+        this.physicCoords = point;
+        const newPoint = context.gameManager.scene.scalePoint(point);
+        this.sprite.x = newPoint.x;
+        this.sprite.y = newPoint.y;
     }
 
     getRotation() {
@@ -43,7 +47,6 @@ class PhysicsObject {
         if (rotation > 360) {
             rotation = rotation - 360;
         }
-        console.log(rotation);
         this.sprite.rotation = rotation / Constants.GAME_ROTATION_COEFFICIENT;
     }
 

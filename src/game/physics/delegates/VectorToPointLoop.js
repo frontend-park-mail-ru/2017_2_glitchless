@@ -6,13 +6,13 @@ class VectorToPointLoop {
 
     }
 
-    processVector(objects, elapsedMS) {
+    processVector(objects, context, elapsedMS) {
         objects.forEach(item => {
-            this._processOneEntity(item, elapsedMS);
+            this._processOneEntity(item, context, elapsedMS);
         });
     }
 
-    _processOneEntity(objectEntity, elapsedMS) {
+    _processOneEntity(objectEntity, context, elapsedMS) {
         const vec = objectEntity.getSpeed();
         const rotationSpeed = objectEntity.getRotationSpeed();
         const deltaX = vec.x * elapsedMS;
@@ -20,7 +20,7 @@ class VectorToPointLoop {
         const deltaRotation = rotationSpeed * elapsedMS;
         const newPoint = objectEntity.getCoords().apply(deltaX, deltaY);
 
-        objectEntity.setCoords(newPoint);
+        objectEntity.setCoords(newPoint, context);
 
         objectEntity.setRotation(
             objectEntity.getRotation() + deltaRotation
