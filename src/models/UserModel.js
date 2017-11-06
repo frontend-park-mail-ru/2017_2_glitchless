@@ -48,7 +48,11 @@ class UserModel {
      * Saves current object in localStorage
      */
     saveInLocalStorage() {
-        localStorage.setItem('user', JSON.stringify(this));
+        try {
+            localStorage.setItem('user', JSON.stringify(this));
+        } catch (exception) {
+            console.log("Error while write to storage!!!\n" + exception);
+        }
     }
 
     static clearInLocalStorage() {

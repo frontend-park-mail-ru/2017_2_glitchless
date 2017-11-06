@@ -2,6 +2,7 @@
 @import "signup/style";
 @import "about/style";
 @import "leaders/style";
+@import "game/style";
 @import "menu/style";
 @import "_modal/style";
 
@@ -17,4 +18,14 @@ body {
 
     color: #fff;
     font-family: 'Roboto', sans-serif;
+}
+
+.page_block--fullscreen {
+    &--fullscreen {
+        z-index: 1000;
+        display: inherit;
+        position: relative;
+        height: 100vh;
+        background-color: black;
+    }
 }

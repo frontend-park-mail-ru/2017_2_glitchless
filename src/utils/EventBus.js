@@ -45,7 +45,7 @@ class EventBus {
      * @return {Function} Function that unsubscribes the callback from event
      */
     subscribeOn(key, callback, context=this) {
-        if (this.events[key] == undefined) {
+        if (this.events[key] == null) {
             this.events[key] = [];
         }
         this.events[key].push([callback, context]);

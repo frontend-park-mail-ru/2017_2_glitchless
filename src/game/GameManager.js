@@ -4,17 +4,18 @@ const GameScene = require('./GameScene.js');
 const EventBusClass = require('../utils/EventBus.js');
 const EventBus = new EventBusClass;
 
+const PhysicLoop = require('./physics/PhysicLoop.js');
+
 let instance;
 
 class GameManager {
     constructor() {
-        if(!instance){
+        if (!instance) {
             this._init();
             instance = this;
         }
         return instance;
     }
-
 
     _init() {
         this.scene = new GameScene();
@@ -37,13 +38,28 @@ class GameManager {
     }
 
     initiateGame() {
-        this.app = new PIXI.Application(GameScene.width, GameScene.height, { backgroundColor: 0xFFFFFF});
+        this.app = new PIXI.Application(this.scene.width, this.scene.height, {backgroundColor: 0xFFFFFF});
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
-        setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
+        this.scene.initBackground(this.app);
+
+        //setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
+        this.loopObj = new PhysicLoop(this);
+        this.loopObj.initTick(this);
+
+
     }
+
+    addObject(tag, physicObject) {
+        this.loopObj.addObjectToPhysic(tag, physicObject);
+        physicObject.onDraw(this.app.stage);
+        physicObject.subscribeToDestroy((item) => {
+            item.onDestroy();
+        });
+    }
+
 }
 
 module.exports = GameManager;
