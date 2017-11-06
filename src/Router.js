@@ -1,5 +1,5 @@
 const MenuView = require('./views/menu/View.js');
-const DefaultView = require('./views/default/View.js');
+const EmptyView = require('./views/empty/View.js');
 const GameView = require('./views/game/View.js');
 const AboutView = require('./views/about/View.js');
 const LeadersView = require('./views/leaders/View.js');
@@ -112,7 +112,7 @@ class MenuRouterGroup extends RouterGroup {
 
         this._routes = {
             '/': {
-                viewClass: DefaultView,
+                viewClass: EmptyView,
                 title: 'Glitchless'
             },
             '/about': {
@@ -177,7 +177,7 @@ class MenuRouterGroup extends RouterGroup {
             this._currentModalView.close();
         }
 
-        if (state.viewId && this._modalViewCache.hasOwnProperty(state.viewId)) {
+        if (state && state.viewId && this._modalViewCache.hasOwnProperty(state.viewId)) {
             this._currentModalView = this._modalViewCache[state.viewId];
             this._currentModalView.open(this._modalSpan);
         } else {

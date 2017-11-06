@@ -8,8 +8,6 @@ const UserModel = require('../../models/UserModel.js');
 
 class MenuView extends View {
     open(root) {
-        this.root = root;
-
         this._setupChangePageOnClick();
         this._setupLogout();
         this._setupAuthListener();

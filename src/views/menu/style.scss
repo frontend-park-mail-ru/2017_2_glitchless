@@ -10,12 +10,10 @@
     left: 0;
     width: 100%;
     height: 100%;
+    @include centered;
 }
 
 .menu {
-    min-width: 25%;
-
-    position: absolute;
     padding: 15px;
     background: rgba($colour_main2, .8);
     color: $colour_main1;
@@ -43,7 +41,7 @@
         }
     }
 
-    &__user{
+    &__user {
         margin-bottom: 15px;
         &--centered {
           @include centered;

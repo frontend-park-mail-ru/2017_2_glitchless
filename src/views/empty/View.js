@@ -1,10 +1,10 @@
 const View = require('../View.js');
 
 
-class DefaultView extends View {
+class EmptyView extends View {
     open(root) {
         root.innerHTML = '';
     }
 }
 
-module.exports = DefaultView;
+module.exports = EmptyView;

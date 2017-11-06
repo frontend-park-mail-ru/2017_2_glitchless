@@ -19,7 +19,6 @@ class LoginModalView extends View {
 
     close() {
         this._savedModel = this._createModel();
-        this.root.innerHTML = '';
     }
 
     get template() {

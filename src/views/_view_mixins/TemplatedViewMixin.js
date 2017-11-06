@@ -6,6 +6,9 @@
  *     1. `root` is saved to `this.root`
  *     2. template is initialiazed on DOM
  *     3. on next frame `initialClass`'s `open` method is called
+ * - on `close` method
+ *     1. `initialClass`'s `close` method is called
+ *     2. `root.innerHTML = ''`
  *
  * Requirements to `initialClass`:
  * - must be extended from `View`
@@ -18,7 +21,7 @@ function TemplatedViewMixin(initialClass) {
     const superOpen = initialClass.prototype.open;
     const superClose = initialClass.prototype.close;
 
-    const TemplatedViewMixin = {
+    const Mixin = {
         open(root) {
             this.root = root;
             this.root.innerHTML = this.template();
@@ -28,16 +31,17 @@ function TemplatedViewMixin(initialClass) {
                     superOpen.call(this, this.root);
                 }
             }, 0);
+        },
+
+        close() {
+            if (superClose) {
+                superClose.call(this);
+            }
+            this.root.innerHTML = '';
         }
     };
 
-    if (!superClose) {
-        TemplatedViewMixin.close = () => {
-            this.root.innerHTML = '';
-        };
-    }
-
-    Object.assign(initialClass.prototype, TemplatedViewMixin);
+    Object.assign(initialClass.prototype, Mixin);
     return initialClass;
 }
 

@@ -24,7 +24,6 @@ class SignupModalView extends View {
 
     close() {
         this._savedModel = this._createModel();
-        this.root.innerHTML = '';
     }
 
     _setupSignupSubmit() {

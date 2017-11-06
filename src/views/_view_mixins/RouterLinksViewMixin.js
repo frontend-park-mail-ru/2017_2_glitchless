@@ -13,12 +13,12 @@
 function RouterLinksViewMixin(initialClass) {
     const superOpen = initialClass.prototype.open;
 
-    const RouterLinksViewMixin = {
+    const Mixin = {
         open(root) {
             Array.from(root.getElementsByTagName('a')).forEach(elem => {
                 elem.addEventListener('click', (event) => {
-                    this.serviceLocator.router.changePage(elem.getAttribute('href'));
                     event.preventDefault();
+                    this.serviceLocator.router.changePage(elem.getAttribute('href'));
                 });
             });
 
@@ -28,7 +28,7 @@ function RouterLinksViewMixin(initialClass) {
         }
     };
 
-    Object.assign(initialClass.prototype, RouterLinksViewMixin);
+    Object.assign(initialClass.prototype, Mixin);
     return initialClass;
 }
 
