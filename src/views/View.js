@@ -13,9 +13,8 @@ class View {
      * Initialize view in DOM element.
      *
      * @param root {Element} DOM element to initialize in
-     * @param state {Object} Some state
      */
-    open(root, state) {
+    open(root) {
     }
 
     /**

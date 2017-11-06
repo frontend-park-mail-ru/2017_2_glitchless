@@ -1,13 +1,13 @@
 const PIXI = require('pixi.js');
 
 const View = require('../View.js');
-const templatedViewMixin = require('../TemplatedViewMixin.js');
+const TemplatedViewMixin = require('../TemplatedViewMixin.js');
 const template = require('./template.pug');
 const GameManager = require('../../game/GameManager.js');
 
 
 class GameView extends View {
-    open(root, state) {
+    open(root) {
         const gameField = document.getElementById('game');
 
         let appWidth = window.innerWidth * 0.8;
@@ -72,4 +72,4 @@ class GameView extends View {
     }
 }
 
-module.exports = templatedViewMixin(GameView);
+module.exports = TemplatedViewMixin(GameView);

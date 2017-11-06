@@ -1,12 +1,12 @@
 const View = require('../View.js');
-const templatedViewMixin = require('../TemplatedViewMixin.js');
+const TemplatedViewMixin = require('../TemplatedViewMixin.js');
 const template = require('./template.pug');
 
 const UserModel = require('../../models/UserModel.js');
 
 
 class MenuView extends View {
-    open(root, state) {
+    open(root) {
         this.root = root;
 
         this._setupChangePageOnClick();
@@ -63,4 +63,4 @@ class MenuView extends View {
     }
 }
 
-module.exports = templatedViewMixin(MenuView);
+module.exports = TemplatedViewMixin(MenuView);

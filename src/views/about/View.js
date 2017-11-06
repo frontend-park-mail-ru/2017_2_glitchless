@@ -1,22 +1,12 @@
 const View = require('../View.js');
-const MenuView = require('../menu/View.js');
-const ModalView = require('./ModalView.js');
+const TemplatedViewMixin = require('../TemplatedViewMixin.js');
+const template = require('./template.pug');
 
 
-class AboutView extends View {
-    open(root) {
-        root.innerHTML = '';
-
-        const menuEl = document.createElement('span');
-        root.appendChild(menuEl);
-        const menuView = new MenuView(this.serviceLocator);
-        menuView.open(menuEl);
-
-        const modalEl = document.createElement('span');
-        root.appendChild(modalEl);
-        const modalView = new ModalView(this.serviceLocator);
-        modalView.open(modalEl);
+class AboutModalView extends View {
+    get template() {
+        return template;
     }
 }
 
-module.exports = AboutView;
+module.exports = TemplatedViewMixin(AboutModalView);

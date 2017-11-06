@@ -1,3 +1,4 @@
+const MenuView = require('./views/menu/View.js');
 const DefaultView = require('./views/default/View.js');
 const GameView = require('./views/game/View.js');
 const AboutView = require('./views/about/View.js');
@@ -11,19 +12,107 @@ const SignupView = require('./views/signup/View.js');
 class Router {
     constructor(serviceLocator) {
         this.serviceLocator = serviceLocator;
+
+        this._routerGroups = [
+            new MenuRouterGroup(this.serviceLocator),
+            new GameRouterGroup(this.serviceLocator),
+        ];
+        this._currentRouterGroup = null;
     }
 
     /**
      * Setups listeners and initializes the page.
      */
     init() {
+        window.onpopstate = (event) => {
+            const path = location.pathname;
+            const routerGroup = this._routerGroups.find(g => g.isPathOfGroup(path));
+
+            if (this._currentRouterGroup !== routerGroup) {
+                if (this._currentRouterGroup) {
+                    this._currentRouterGroup.close();
+                }
+                this._currentRouterGroup = routerGroup;
+                this._currentRouterGroup.open();
+            }
+            this._currentRouterGroup.revert(path, event.state);
+        };
+
+        this.changePage(location.pathname);
+    }
+
+    /**
+     * Changes page block.
+     *
+     * @param path {String} Path part of the URL string
+     */
+    changePage(path) {
+        const routerGroup = this._routerGroups.find(g => g.isPathOfGroup(path));
+
+        if (this._currentRouterGroup !== routerGroup) {
+            if (this._currentRouterGroup) {
+                this._currentRouterGroup.close();
+            }
+            this._currentRouterGroup = routerGroup;
+            this._currentRouterGroup.open();
+        }
+        const changeData = this._currentRouterGroup.change(path);
+        history.pushState(changeData.state, changeData.title, path);
+    }
+}
+
+/* eslint-disable no-unused-vars */
+class RouterGroup {
+    constructor(serviceLocator) {
+        this.serviceLocator = serviceLocator;
+    }
+
+    /**
+     * @param path {String} Url path
+     * @return {bool} True if path matches this group, else false.
+     */
+    isPathOfGroup(path) {
+    }
+
+    /**
+     * Is executed than router switched to this group.
+     */
+    open() {
+    }
+
+    /**
+     * Is executed than router changes paths.
+     *
+     * @param path {String} Url path
+     * @return {Object} Change data
+     */
+    change(path) {
+    }
+
+    /**
+     * Is executed than user goes back and forward in history.
+     *
+     * @param path {String} Url path
+     * @param state {Object} State object saved from change data
+     */
+    revert(path, state) {
+    }
+
+    /**
+     * Is executed than router matched another group and before router switched to it.
+     */
+    close() {
+    }
+}
+/* eslint-enable */
+
+class MenuRouterGroup extends RouterGroup {
+    constructor(serviceLocator) {
+        super(serviceLocator);
+
         this._routes = {
             '/': {
                 viewClass: DefaultView,
-                title: 'Glitchless'
-            },
-            '/play': {
-                viewClass: GameView,
                 title: 'Glitchless'
             },
             '/about': {
@@ -43,55 +132,93 @@ class Router {
                 title: 'Sign up'
             },
         };
-        this._viewCache = {};
-        this._currentView = null;
 
-        this._initListeners();
-        this._setPageFromLocation();
+        this._menuView = new MenuView(this.serviceLocator);
+        this._modalSpan = null;
+        this._currentModalView = null;
+        this._modalViewCache = {};
     }
 
-    /**
-     * Changes page block.
-     *
-     * @param path {String} Path part of the URL string
-     * @param state {Object} Some state
-     */
-    changePage(path, state={}) {
-        const route = this._routes[path];
-        if (!route) {
-            throw new Error('No such route');
+    isPathOfGroup(path) {
+        return this._routes.hasOwnProperty(path);
+    }
+
+    open() {
+        const root = document.body;
+
+        root.innerHTML = '';
+
+        const menuSpan = document.createElement('span');
+        root.appendChild(menuSpan);
+        this._menuView.open(menuSpan);
+
+        const modalSpan = document.createElement('span');
+        root.appendChild(modalSpan);
+        this._modalSpan = modalSpan;
+    }
+
+    change(path) {
+        if (this._currentModalView) {
+            this._currentModalView.close();
         }
 
-        const view = new route.viewClass(this.serviceLocator);
+        const viewClass = this._routes[path].viewClass;
+        const title = this._routes[path].title;
+        this._currentModalView = new viewClass(this.serviceLocator);
+        this._currentModalView.open(this._modalSpan);
 
         const viewId = Math.random().toString();
-        this._viewCache[viewId] = view;
-        const historyState = { viewId, state };
-        history.pushState(historyState, route.title, path);
+        this._modalViewCache[viewId] = this._currentModalView;
+        return {title, state: {viewId}};
+    }
 
-        if (this._currentView) {
-            this._currentView.close();
+    revert(path, state) {
+        if (this._currentModalView) {
+            this._currentModalView.close();
         }
-        this._currentView = view;
-        this._currentView.open(document.body, state);
+
+        if (state.viewId && this._modalViewCache.hasOwnProperty(state.viewId)) {
+            this._currentModalView = this._modalViewCache[state.viewId];
+            this._currentModalView.open(this._modalSpan);
+        } else {
+            this.change(path);
+        }
     }
 
-    _initListeners() {
-        window.onpopstate = (event) => {
-            if (this._currentView) {
-                this._currentView.close();
-            }
+    close() {
+        if (this._currentModalView) {
+            this._currentModalView.close();
+        }
+        this._menuView.close();
+        document.body.innerHTML = '';
+    }
+}
 
-            if (!event.state || !event.state.viewId) {
-                return;
-            }
-            this._currentView = this._viewCache[event.state.viewId];
-            this._currentView.open(document.body, event.state.state);
-        };
+class GameRouterGroup extends RouterGroup {
+    constructor(serviceLocator) {
+        super(serviceLocator);
+
+        this._view = null;
     }
 
-    _setPageFromLocation() {
-        this.changePage(document.location.pathname);
+    isPathOfGroup(path) {
+        return path === '/play';
+    }
+
+    open() {
+        this._view = new GameView();
+        this._view.open(document.body);
+    }
+
+    change() {
+        return {title: 'Glitchless'};
+    }
+
+    revert() {
+    }
+
+    close() {
+        this._view.close();
     }
 }
 

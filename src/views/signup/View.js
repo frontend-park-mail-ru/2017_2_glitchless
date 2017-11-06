@@ -1,22 +1,56 @@
 const View = require('../View.js');
-const MenuView = require('../menu/View.js');
-const ModalView = require('./ModalView.js');
+const TemplatedViewMixin = require('../TemplatedViewMixin.js');
+const template = require('./template.pug');
+const displayErrorsUtils = require('../_form_utils/displayErrors.js');
+
+const SignupForm = require('../../models/SignupForm.js');
+const UserModel = require('../../models/UserModel.js');
 
 
-class SignupView extends View {
+class SignupModalView extends View {
     open(root) {
-        root.innerHTML = '';
+        const signupForm = document.getElementById('signup-form');
+        displayErrorsUtils.initForm(signupForm);
+        this._setupSignupSubmit(signupForm);
+    }
 
-        const menuEl = document.createElement('span');
-        root.appendChild(menuEl);
-        const menuView = new MenuView(this.serviceLocator);
-        menuView.open(menuEl);
+    get template() {
+        return template;
+    }
 
-        const modalEl = document.createElement('span');
-        root.appendChild(modalEl);
-        const modalView = new ModalView(this.serviceLocator);
-        modalView.open(modalEl);
+    _setupSignupSubmit(signupForm) {
+        signupForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const serverErrorField = document.getElementById('login-form__server-errors');
+            const model = new SignupForm(this.serviceLocator);
+            model.login = signupForm.elements['login'].value;
+            model.email = signupForm.elements['email'].value;
+            model.password = signupForm.elements['password'].value;
+            model.passwordConfirmation = signupForm.elements['passwordConfirmation'].value;
+
+            const validationResult = model.validate();
+            if (!validationResult.ok) {
+                displayErrorsUtils.displayErrors(signupForm, validationResult.errors);
+                return;
+            }
+
+            model.send()
+                .then((res) => res.json())
+                .then((json) => {
+                    console.log(json);
+                    if (json.successful) {
+                        this.serviceLocator.user = UserModel.fromApiJson(json.message);
+                        this.serviceLocator.user.saveInLocalStorage();
+                        this.serviceLocator.router.changePage('/');
+                        this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
+                        return;
+                    }
+                    displayErrorsUtils.displayServerError(serverErrorField, json.message);
+                })
+                .catch((res) => console.error(res));
+        });
     }
 }
 
-module.exports = SignupView;
+module.exports = TemplatedViewMixin(SignupModalView);
+
