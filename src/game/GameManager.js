@@ -54,9 +54,9 @@ class GameManager {
 
     addObject(tag, physicObject) {
         this.loopObj.addObjectToPhysic(tag, physicObject);
-        this.app.stage.addChild(physicObject.sprite);
+        physicObject.onDraw(this.app.stage);
         physicObject.subscribeToDestroy((item) => {
-            item.sprite.parent.removeChild(item.sprite);
+            item.onDestroy();
         });
     }
 

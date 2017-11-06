@@ -13,10 +13,20 @@ class PhysicsObject {
             throw new TypeError("Cannot construct abstract instances directly");
         }
         this.sprite = sprite;
-        this.sprite.anchor.set(0.5);
+        if (this.sprite.anchor != undefined) {
+            this.sprite.anchor.set(0.5);
+        }
         this.setCoords(coords, context);
         this.isStatic = true;
         this.destroyListeners = [];
+    }
+
+    onDraw(stage) {
+        stage.addChild(this.sprite);
+    }
+
+    onDestroy() {
+        this.sprite.parent.removeChild(this.sprite);
     }
 
     /**
@@ -43,7 +53,7 @@ class PhysicsObject {
         return this.sprite.rotation * Constants.GAME_ROTATION_COEFFICIENT;
     }
 
-    setRotation(rotation) {
+    setRotation(rotation, context) {
         if (rotation > 360) {
             rotation = rotation - 360;
         }

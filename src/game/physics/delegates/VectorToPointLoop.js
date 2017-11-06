@@ -23,7 +23,8 @@ class VectorToPointLoop {
         objectEntity.setCoords(newPoint, context);
 
         objectEntity.setRotation(
-            objectEntity.getRotation() + deltaRotation
+            objectEntity.getRotation() + deltaRotation,
+            context
         );
 
         /* Destroy?
