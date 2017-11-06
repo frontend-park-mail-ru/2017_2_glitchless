@@ -8,7 +8,7 @@ const GameManager = require('../../game/GameManager.js');
 
 
 class GameView extends View {
-    open(root) {
+    open() {
         const gameField = document.getElementById('game');
 
         let appWidth = window.innerWidth * 0.8;

@@ -9,47 +9,67 @@ const UserModel = require('../../models/UserModel.js');
 
 
 class SignupModalView extends View {
-    open(root) {
-        const signupForm = document.getElementById('signup-form');
-        displayErrorsUtils.initForm(signupForm);
-        this._setupSignupSubmit(signupForm);
+    open() {
+        this.signupForm = document.getElementById('signup-form');
+        displayErrorsUtils.initForm(this.signupForm);
+        this._setupSignupSubmit();
+        if (this._savedModel) {
+            this._fillForm(this._savedModel);
+        }
     }
 
     get template() {
         return template;
     }
 
-    _setupSignupSubmit(signupForm) {
-        signupForm.addEventListener('submit', function (event) {
+    close() {
+        this._savedModel = this._createModel();
+        this.root.innerHTML = '';
+    }
+
+    _setupSignupSubmit() {
+        this.signupForm.addEventListener('submit', function (event) {
             event.preventDefault();
-            const serverErrorField = document.getElementById('login-form__server-errors');
-            const model = new SignupForm(this.serviceLocator);
-            model.login = signupForm.elements['login'].value;
-            model.email = signupForm.elements['email'].value;
-            model.password = signupForm.elements['password'].value;
-            model.passwordConfirmation = signupForm.elements['passwordConfirmation'].value;
+
+            const model = this._createModel(this.signupForm);
 
             const validationResult = model.validate();
             if (!validationResult.ok) {
-                displayErrorsUtils.displayErrors(signupForm, validationResult.errors);
+                displayErrorsUtils.displayErrors(this.signupForm, validationResult.errors);
                 return;
             }
 
             model.send()
                 .then((res) => res.json())
                 .then((json) => {
-                    console.log(json);
-                    if (json.successful) {
-                        this.serviceLocator.user = UserModel.fromApiJson(json.message);
-                        this.serviceLocator.user.saveInLocalStorage();
-                        this.serviceLocator.router.changePage('/');
-                        this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
+                    if (!json.successful) {
+                        const serverErrorField = document.getElementById('login-form__server-errors');
+                        displayErrorsUtils.displayServerError(serverErrorField, json.message);
                         return;
                     }
-                    displayErrorsUtils.displayServerError(serverErrorField, json.message);
+                    this.serviceLocator.user = UserModel.fromApiJson(json.message);
+                    this.serviceLocator.user.saveInLocalStorage();
+                    this.serviceLocator.router.changePage('/');
+                    this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
                 })
                 .catch((res) => console.error(res));
         });
+    }
+
+    _createModel() {
+        const model = new SignupForm(this.serviceLocator);
+        model.login = this.signupForm.elements['login'].value;
+        model.email = this.signupForm.elements['email'].value;
+        model.password = this.signupForm.elements['password'].value;
+        model.passwordConfirmation = this.signupForm.elements['passwordConfirmation'].value;
+        return model;
+    }
+
+    _fillForm(model) {
+        this.signupForm.elements['login'].value = model.login;
+        this.signupForm.elements['email'].value = model.email;
+        this.signupForm.elements['password'].value = model.password;
+        this.signupForm.elements['passwordConfirmation'].value = model.passwordConfirmation;
     }
 }
 
