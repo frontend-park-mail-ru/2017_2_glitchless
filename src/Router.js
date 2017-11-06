@@ -197,7 +197,6 @@ class MenuRouterGroup extends RouterGroup {
 class GameRouterGroup extends RouterGroup {
     constructor(serviceLocator) {
         super(serviceLocator);
-
         this._view = null;
     }
 
@@ -206,7 +205,7 @@ class GameRouterGroup extends RouterGroup {
     }
 
     open() {
-        this._view = new GameView();
+        this._view = new GameView(this.serviceLocator);
         this._view.open(document.body);
     }
 

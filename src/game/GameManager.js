@@ -1,25 +1,13 @@
 const PIXI = require('pixi.js');
 const GameScene = require('./GameScene.js');
 
-const EventBusClass = require('../utils/EventBus.js');
-const EventBus = new EventBusClass;
-
 const PhysicLoop = require('./physics/PhysicLoop.js');
 
-let instance;
-
 class GameManager {
-    constructor() {
-        if (!instance) {
-            this._init();
-            instance = this;
-        }
-        return instance;
-    }
-
-    _init() {
+    constructor(serviceLocator) {
+        this.serviceLocator = serviceLocator;
         this.scene = new GameScene();
-        EventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
+        this.serviceLocator.eventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
     }
 
     /**
@@ -48,8 +36,10 @@ class GameManager {
         //setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
         this.loopObj = new PhysicLoop(this);
         this.loopObj.initTick(this);
+    }
 
-
+    destroy() {
+        this.app.destroy(true);
     }
 
     addObject(tag, physicObject) {
@@ -59,7 +49,6 @@ class GameManager {
             item.onDestroy();
         });
     }
-
 }
 
 module.exports = GameManager;

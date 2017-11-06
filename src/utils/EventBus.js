@@ -1,7 +1,4 @@
 class EventBus {
-    /**
-     * @return {EventBus} EventBus singleton
-     */
     constructor() {
         this.events = {};
     }
@@ -13,9 +10,12 @@ class EventBus {
      * @param {Object} [args=null] Argument with which the callbacks will be executed
      */
     emitEvent(key, args=null) {
-        this.events[key].forEach((item) => {
-            let callback = item[0].bind(item[1]);
-            // console.log('Test');
+        const collection = this.events[key];
+        if (!collection) {
+            return;
+        }
+        collection.forEach((item) => {
+            const callback = item[0].bind(item[1]);
             if (args) {
                 callback(args);
                 return;
@@ -40,7 +40,7 @@ class EventBus {
      * Adds a callback to the event
      *
      * @param {String} key Name of the event
-     * @param {Function} callback Function that's going to be executed on emmitting event
+     * @param {Function} callback Function that's going to be executed on emitting event
      * @param {Object} [context=this] Context in which function will be executed
      * @return {Function} Function that unsubscribes the callback from event
      */
@@ -58,7 +58,7 @@ class EventBus {
      * Removes a callback from the event
      *
      * @param {String} key Name of the event
-     * @param {Function} callback Function that's executed on emmitting event
+     * @param {Function} callback Function that's executed on emitting event
      */
     subscribeOff(key, callback, context) {
         this.events[key] = this.events[key].filter((it) => {
