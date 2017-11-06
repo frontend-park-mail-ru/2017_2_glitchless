@@ -1,7 +1,8 @@
 const PIXI = require('pixi.js');
 
 const View = require('../View.js');
-const TemplatedViewMixin = require('../TemplatedViewMixin.js');
+const TemplatedViewMixin = require('../_view_mixins/TemplatedViewMixin.js');
+const RouterLinksViewMixin = require('../_view_mixins/RouterLinksViewMixin.js');
 const template = require('./template.pug');
 const GameManager = require('../../game/GameManager.js');
 
@@ -72,4 +73,4 @@ class GameView extends View {
     }
 }
 
-module.exports = TemplatedViewMixin(GameView);
+module.exports = TemplatedViewMixin(RouterLinksViewMixin(GameView));
