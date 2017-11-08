@@ -20,5 +20,13 @@ module.exports = {
     CONTROL_PLATFORM_DOWN: 40,
     CONTROL_PLATFORM_Q: 81,
     CONTROL_PLATFORM_E: 69,
-    COLLISION_DEBUG: true
+    COLLISION_DEBUG: true,
+    VERTICAL_PRECISION: 5,
+    FLOAT_PRECISION: 10,
+    COLLISION_PRECISION: 1.25,
+    GameObjects: {
+        laser: 'laser',
+        platform: 'platform',
+        circle: 'circle'
+    }
 };

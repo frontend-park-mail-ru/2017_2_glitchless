@@ -57,6 +57,9 @@ class PhysicsObject {
         if (rotation > 360) {
             rotation = rotation - 360;
         }
+        if (rotation < 0) {
+            rotation = 360 - rotation;
+        }
         this.sprite.rotation = rotation / Constants.GAME_ROTATION_COEFFICIENT;
     }
 

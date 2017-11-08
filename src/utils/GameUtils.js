@@ -57,19 +57,26 @@ class GameUtils {
         if (radian >= -Math.PI) {
             return radian;
         }
-        return Math.PI - radian % Math.PI;
+        return Math.PI + radian % Math.PI;
     }
 
     static minDist(radian1, radian2) {
         const sign1 = Math.sign(radian1);
         const sign2 = Math.sign(radian2);
         if (Math.sign(radian1) === Math.sign(radian2)) {
-            const diffsign = radian2 > radian1 ? -1 : 1;
-            return Math.abs(radian2 - radian1) * diffsign % Math.PI;
+            const diffsign = Math.abs(radian2) > Math.abs(radian1) ? -1 : 1;
+            return [Math.abs(radian2 - radian1) % Math.PI, diffsign];
         }
-        console.error('Not fully tested case');
-        return [Math.min(Math.abs(radian2 - radian1), 
-                Math.abs(radian1 - sign1 * Math.PI) + Math.abs(radian2 - sign2 * Math.PI))];
+        const simpleDiff = Math.abs(radian2 - radian1); 
+        const reverseDiff = Math.abs(radian1 - sign1 * Math.PI) + Math.abs(radian2 - sign2 * Math.PI);
+        if (simpleDiff < reverseDiff) {
+            return [simpleDiff, sign1];
+        }
+        return [reverseDiff, sign2];
+    }
+    
+    static degrees(radians) {
+        return radians * 180 / Math.PI + 180;
     }
 }
 
