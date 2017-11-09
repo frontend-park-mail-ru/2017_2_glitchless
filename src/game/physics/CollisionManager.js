@@ -68,7 +68,7 @@ function findIntersection(line, circle) {
     if (c * c > r * r * (a * a + b * b) + EPS) {
         if (Constants.COLLISION_DEBUG) {
             console.log('case1');
-            console.log([a, b, c])
+            console.log([a, b, c]);
             console.log(c * c);
             console.log(r * r * (a * a + b * b));
             console.log(line);
@@ -109,7 +109,8 @@ function checkCollision(point, vector, arc, elapsedMS) {
         console.log('vectCopy', vectorCopy);
     }
 
-    let line = Line.fromPoints(arc.centrate(initialPoint), arc.centrate(tmpPoint.apply(vectorCopy.x, vectorCopy.y)), true);
+    let line = Line.fromPoints(arc.centrate(initialPoint), 
+                               arc.centrate(tmpPoint.apply(vectorCopy.x, vectorCopy.y)), true);
 
     const intersections = findIntersection(line, arc);
 

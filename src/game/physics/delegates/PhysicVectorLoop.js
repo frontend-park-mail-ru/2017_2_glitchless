@@ -44,8 +44,8 @@ class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...platform.getEdgePoints(), platform.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(point) {
-                    var point = this.gameManager.scene.scalePoint(point);
+                points.forEach(function(physicPoint) {
+                    var point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
             }

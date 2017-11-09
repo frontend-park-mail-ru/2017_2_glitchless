@@ -31,7 +31,7 @@ class PhysicLoop {
         this._firstSetting();
 
         this.anglePoints = [new Point(0.1, -0.1), new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
-                             new Point(0.1, -0.05), new Point(0.1, 0), new Point(0.1, 0.05), new Point(0.1, 0.1)];
+            new Point(0.1, -0.05), new Point(0.1, 0), new Point(0.1, 0.05), new Point(0.1, 0.1)];
         this.angleCounter = 0;
     }
 
@@ -49,7 +49,8 @@ class PhysicLoop {
             this.gameManager.addObject('laser', laser);
             this.angleCounter++;
             //console.error(Math.degrees(Math.atan2(laserSpeed.) + 1));
-            this.physicObjects['platform'][0].setRotation(utils.degrees(Math.atan2(laserSpeed.y, laserSpeed.x)) + 91, this);
+            this.physicObjects['platform'][0].setRotation(
+                utils.degrees(Math.atan2(laserSpeed.y, laserSpeed.x)) + 91, this);
             // this.physicObjects]'laser'].forEach((laser) => {laser.setSpeed()});
         }
 
