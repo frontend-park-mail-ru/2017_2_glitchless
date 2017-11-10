@@ -1,6 +1,6 @@
 // const PIXI = require('pixi.js');
 const Point = require('./object/primitive/Point.js');
-
+const Constants = require('../../utils/Constants.js');
 class Circle {
     /**
      * @param {Number} radius Circle radius
@@ -181,6 +181,19 @@ class Line {
         return line;
     }
 
+    /**
+     * @param {Number} C Coefficient C of equation y=C
+     * @param {Point[]} bounds Bounds of line segment
+     * @param {Boolean} isVector
+     *
+     * @return {Line}
+     */
+    static createHorizontal(C, bounds = [], isVector=false) {
+        const line = new Line(0, 0, C, bounds, isVector);
+        line.isHorizontal = true;
+        return line;
+    }
+
 
     /**
      * @param {Point} point
@@ -242,9 +255,14 @@ class Line {
      * @return {Line} Line, passing through point1 and point2
      */
     static fromPoints(point1, point2, isVector=false) {
-        if (Math.abs(point2.y - point1.y) < Number.EPSILON) {
+        if (Math.abs(point2.x - point1.x) < Number.EPSILON * Constants.FLOAT_PRECISION) {
             return Line.createVertical(point1.x, [point1, point2], isVector);
         }
+
+        if (Math.abs(point2.y - point1.y) < Number.EPSILON * Constants.FLOAT_PRECISION) {
+            return Line.createHorizontal(-point1.y, [point1, point2], isVector);
+        }
+
         const A = 1;
         const B = (point1.x - point2.x) / (point2.y - point1.y);
         const C = point1.y * (point2.x - point1.x) / (point2.y - point1.y) - point1.x;
@@ -256,8 +274,6 @@ class Line {
         const B = -1 / Math.tan(slope);
         const C = -(point.x + B * point.y);
         if (isVector) {
-            console.log('slope');
-            console.log(slope);
             console.log(slope >= 0);
             console.log(slope >= -Math.PI / 2 && slope < Math.PI / 2);
             this.vectorDirectionByX = slope >= 0;

@@ -2,6 +2,7 @@ const PIXI = require('pixi.js');
 const Alien = require('./object/Alien.js');
 const SpriteStorage = require('./delegates/SpriteStorage.js');
 const Constants = require('../../utils/Constants.js');
+const utils = require('../../utils/GameUtils.js');
 const VectorToPointLoop = require('./delegates/VectorToPointLoop.js');
 const PhysicVectorLoop = require('./delegates/PhysicVectorLoop.js');
 const Platform = require('./object/Platform.js');
@@ -19,26 +20,44 @@ class PhysicLoop {
         this.spriteStorage = new SpriteStorage();
         this.vectorToPointDelegate = new VectorToPointLoop();
         this.physicDelegate = new PhysicVectorLoop();
-        this.physicObjects = {};
+        this.physicObjects = {'laser': [], 'platform': []};
         this.physicEntities = [];
     }
 
     initTick(gameManager) {
         console.log("Initializing tick...");
         gameManager.app.ticker.add(this._mainTick, this);
+        this.timeSum = -100; // Wait for everything to load properly
         this._firstSetting();
+
+        this.anglePoints = [new Point(0.1, -0.1), new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
+            new Point(0.1, -0.05), new Point(0.1, 0), new Point(0.1, 0.05), new Point(0.1, 0.1)];
+        this.angleCounter = 0;
     }
 
     _mainTick(deltaTime) {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.gameManager.app.ticker.speed;
+        this.timeSum += deltaTime;
+        if (this.timeSum > 100) {
+            this.timeSum = 0;
+            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(5);
+            const laser = new Laser(laserSpeed, this);
+            laser.setCoords(this._getCenterPoint(), this);
+            laser.setSpriteSize([10, 10], this.gameManager);
+            this.gameManager.addObject('laser', laser);
+            this.angleCounter++;
+            //console.error(Math.degrees(Math.atan2(laserSpeed.) + 1));
+            this.physicObjects['platform'][0].setRotation(
+                utils.degrees(Math.atan2(laserSpeed.y, laserSpeed.x)) + 91, this);
+            // this.physicObjects]'laser'].forEach((laser) => {laser.setSpeed()});
+        }
 
         this.vectorToPointDelegate.processVector(this.physicEntities, this, elapsedMS);
         this.physicDelegate.processPhysicLoop(this, elapsedMS);
     }
 
-    //
     _firstSetting() {
         const alien = new Alien(this, this._getCenterPoint());
         alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, this.gameManager);
@@ -51,11 +70,11 @@ class PhysicLoop {
         const platform = new Platform(this, circle);
         platform.setCoords(new Point(200, 200), this);
         platform.setSpeed(new Point(0, 0));
-        platform.setRotationSpeed(0.1);
         platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
-        platform.setRotation(90, this);
+        platform.setRotation(46, this);
         this.gameManager.addObject('platform', platform);
         this.spriteStorage.userPlatform = platform;
+
 
     }
 
