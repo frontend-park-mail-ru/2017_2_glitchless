@@ -11,8 +11,11 @@ module.exports = {
     GAME_ROTATION_COEFFICIENT: (360 / (Math.PI * 2)),
     GAME_STATE_WIN: 1,
     GAME_DEBUG: true,
+    DEBUG_INPUT_CHECK: true,
     GAME_CIRCLE_COLOR: 0x000000,
-    GAME_CIRCLE_RADIUS: 1080 / 2 - 30,
+    GAME_CIRCLE1_RADIUS: 1080 / 2 - 30,
+    GAME_CIRCLE2_RADIUS: 1080 / 2 - 150,
+    GAME_CIRCLE3_RADIUS: 1080 / 2 - 270,
     GAME_PLATFORM_CONTROL_SPEED: 0.1,
     CONTROL_PLATFORM_LEFT: 37,
     CONTROL_PLATFORM_UP: 38,
@@ -20,13 +23,14 @@ module.exports = {
     CONTROL_PLATFORM_DOWN: 40,
     CONTROL_PLATFORM_Q: 81,
     CONTROL_PLATFORM_E: 69,
-    COLLISION_DEBUG: true,
+    COLLISION_DEBUG: false,
     VERTICAL_PRECISION: 5,
     FLOAT_PRECISION: 10,
     COLLISION_PRECISION: 1.25,
     GameObjects: {
         laser: 'laser',
         platform: 'platform',
-        circle: 'circle'
+        circle: 'circle',
+        alien: 'alien'
     }
 };

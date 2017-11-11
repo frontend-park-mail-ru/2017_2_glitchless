@@ -11,6 +11,7 @@ class Platform extends PhysicsEntitiy {
         const basicPlatformSprite = new PIXI.Sprite(basicPlatformTexture);
         super(basicPlatformSprite, context);
         this.circle = circle;
+        this.circleLevel = 0;
     }
 
     getEdgePoints() {
@@ -35,11 +36,17 @@ class Platform extends PhysicsEntitiy {
         return this.circle;
     }
 
+    setCircle(circle, context) {
+        this.circle = circle;
+        this.setRotation(this.getRotation(), context);
+    }
+
     getRotation() {
         return super.getRotation();
     }
 
     setRotation(rotation, context) {
+
         super.setRotation(rotation, context);
         const radius = this.circle.radius - Constants.GAME_PLATFORM_SIZE[0] / 4;
         const rotationRadian = rotation / Constants.GAME_ROTATION_COEFFICIENT;
@@ -48,6 +55,11 @@ class Platform extends PhysicsEntitiy {
 
         const tmp = this.circle.getCoords();
         const newPoint = new Point(tmp.x - deltaX, tmp.y + deltaY);
+        if (Constants.DEBUG_INPUT_CHECK) {
+            if (isNaN(deltaX) || isNaN(deltaY)) {
+                throw new TypeError(deltaX, deltaY);
+            }
+        }
         this.setCoords(newPoint, context);
     }
 }

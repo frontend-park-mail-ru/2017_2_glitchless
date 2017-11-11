@@ -43,6 +43,11 @@ class PhysicsObject {
      * @param {PhysicLoop} context
      */
     setCoords(point, context) {
+        if (Constants.DEBUG_INPUT_CHECK) {
+            if (isNaN(point.x) || isNaN(point.y)) {
+                throw new TypeError;
+            }
+        }
         this.physicCoords = point;
         const newPoint = context.gameManager.scene.scalePoint(point);
         this.sprite.x = newPoint.x;

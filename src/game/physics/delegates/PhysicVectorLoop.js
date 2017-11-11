@@ -20,14 +20,31 @@ class PhysicVectorLoop {
     }
 
     processPhysicLoop(context, elapsedMS) {
-        this._processPlatformLogic(context.spriteStorage.userPlatform);
+        this._processPlatformLogic(context.spriteStorage.userPlatform, context);
         this._processCollisions(context, elapsedMS);
     }
 
-    _processPlatformLogic(platform) {
-        if (this.leftButton.isDown || this.upButton.isDown || this.qButton.isDown) {
+    _processPlatformLogic(platform, context) {
+        if (this.downButton.isUp && this.upButton.isUp) {
+            this.verticalPressed = false;
+        }
+
+        if (!this.verticalPressed && this.downButton.isDown) {
+            this.verticalPressed = true;
+            platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
+            console.log('pressed up, new level' + platform.circleLevel)
+            platform.setCircle(context.physicObjects['circle'][platform.circleLevel], context);
+        } else {
+            if (!this.verticalPressed && this.upButton.isDown) {
+                this.verticalPressed = true;
+                platform.circleLevel = (platform.circleLevel + 1) % 3;
+                platform.setCircle(context.physicObjects['circle'][platform.circleLevel], context);
+            }
+        }
+
+        if (this.leftButton.isDown || this.qButton.isDown) {
             platform.setRotationSpeed(Constants.GAME_PLATFORM_CONTROL_SPEED);
-        } else if (this.rightButton.isDown || this.downButton.isDown || this.eButton.isDown) {
+        } else if (this.rightButton.isDown || this.eButton.isDown) {
             platform.setRotationSpeed(-Constants.GAME_PLATFORM_CONTROL_SPEED);
         } else {
             platform.setRotationSpeed(0);
@@ -41,6 +58,7 @@ class PhysicVectorLoop {
         }
         context.physicObjects['platform'].forEach((platform) => {
             const platformArc = Arc.fromPoints(...(platform.getEdgePoints()), platform.getCoords());
+
             if (Constants.COLLISION_DEBUG) {
                 const points = [...platform.getEdgePoints(), platform.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
@@ -59,7 +77,6 @@ class PhysicVectorLoop {
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
                     laser.getSpeed(), platformArc, elapsedMS);
                 if (collision) {
-                    console.log('collided', collision);
                     laser.onCollision(collision);
                 }
             });

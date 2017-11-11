@@ -2,13 +2,12 @@ const PhysicsObject = require('./primitive/PhysicsObject.js');
 const PIXI = require('pixi.js');
 const Constants = require('../../../utils/Constants.js');
 
-const circleSprite = new PIXI.Graphics();
-
 class PlatformKirkle extends PhysicsObject {
-    constructor(context, radius, coord) {
-        super(circleSprite, context);
+    constructor(context, radius, coord, level) {
+        super(new PIXI.Graphics(), context);
         this.radius = radius;
         this.setCoords(coord, context);
+        this.level = level;
     }
 
     setRadius(radius) {
@@ -24,9 +23,9 @@ class PlatformKirkle extends PhysicsObject {
         if (this.radius === null) {
             return;
         }
-        circleSprite.clear();
-        circleSprite.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-        circleSprite.drawCircle(0, 0, context.gameManager.scene.scaleCoords([0, this.radius])[1]);
+        this.sprite.clear();
+        this.sprite.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
+        this.sprite.drawCircle(0, 0, context.gameManager.scene.scaleCoords([0, this.radius])[1]);
     }
 
 }

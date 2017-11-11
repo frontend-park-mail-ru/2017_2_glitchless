@@ -17,6 +17,11 @@ class Laser extends PhysicsEntity {
         this.setSpeed(collision[1].copy());
     }
 
+    onDraw(stage) {
+    	super.onDraw(stage);
+    	this.sprite.zOrder = -1;
+    }
+
     setSpeed(speed) {
         super.setSpeed(speed);
         this.setRotation(utils.degrees(Math.atan2(speed.y, speed.x)));

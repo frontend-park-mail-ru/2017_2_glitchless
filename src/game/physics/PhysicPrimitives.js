@@ -274,8 +274,6 @@ class Line {
         const B = -1 / Math.tan(slope);
         const C = -(point.x + B * point.y);
         if (isVector) {
-            console.log(slope >= 0);
-            console.log(slope >= -Math.PI / 2 && slope < Math.PI / 2);
             this.vectorDirectionByX = slope >= 0;
             this.vectorDirectionByY = slope >= -Math.PI / 2 && slope < Math.PI / 2;
         }

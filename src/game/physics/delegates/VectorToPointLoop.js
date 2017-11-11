@@ -27,12 +27,12 @@ class VectorToPointLoop {
             context
         );
 
-        /* Destroy?
         if (newPoint.x > Constants.INITIAL_RES[0]
             || newPoint.y > Constants.INITIAL_RES[1]
             || newPoint.x < 0
             || newPoint.y < 0) {
-        } */
+            objectEntity.forDestroy = true;
+        }
     }
 }
 
