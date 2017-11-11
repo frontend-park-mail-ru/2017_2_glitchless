@@ -8,6 +8,7 @@ class PhysicsEntity extends PhysicsObject {
         this.isStatic = false;
         this.rotationSpeed = 0;
         this.speed = new Point(0, 0);
+        this.forDestroy = false;
     }
 
     getSpeed() {

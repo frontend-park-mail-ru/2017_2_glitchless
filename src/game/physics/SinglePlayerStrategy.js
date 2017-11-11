@@ -1,6 +1,6 @@
 class SinglePlayerStrategy { 
-	constructor() {
-	}
+    constructor() {
+    }   
 }
 
 module.exports = SinglePlayerStrategy;

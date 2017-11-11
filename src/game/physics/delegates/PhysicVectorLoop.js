@@ -5,6 +5,8 @@ const primitives = require('../PhysicPrimitives.js');
 const PIXI = require('pixi.js');
 
 const Arc = primitives.Arc;
+const Circle = primitives.Circle;
+
 
 class PhysicVectorLoop {
     constructor() {
@@ -32,7 +34,6 @@ class PhysicVectorLoop {
         if (!this.verticalPressed && this.downButton.isDown) {
             this.verticalPressed = true;
             platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
-            console.log('pressed up, new level' + platform.circleLevel)
             platform.setCircle(context.physicObjects['circle'][platform.circleLevel], context);
         } else {
             if (!this.verticalPressed && this.upButton.isDown) {
@@ -56,6 +57,8 @@ class PhysicVectorLoop {
             var graphics = this.graphics;
             graphics.clear();
         }
+
+        //Reflecting lasers
         context.physicObjects['platform'].forEach((platform) => {
             const platformArc = Arc.fromPoints(...(platform.getEdgePoints()), platform.getCoords());
 
@@ -74,7 +77,7 @@ class PhysicVectorLoop {
                     const speed = laser.getSpeed().copy();
                     console.log(speed);
                 }
-                const collision = CollisionManager.checkCollision(laser.getCoords(),
+                const collision = CollisionManager.getReflection(laser.getCoords(),
                     laser.getSpeed(), platformArc, elapsedMS);
                 if (collision) {
                     laser.onCollision(collision);
@@ -84,6 +87,19 @@ class PhysicVectorLoop {
         if (Constants.COLLISION_DEBUG) {
             context.gameManager.scene.stage.addChild(graphics);
         }
+
+        const alien = context.physicObjects['alien'][0];
+        context.physicObjects['laser'].forEach((laser) => {
+            if (!laser.reflected) {
+                return;
+            }
+
+            const collision = CollisionManager.checkCollision(laser.getCoords(),
+                    laser.getSpeed(), alien.collisionCircle , elapsedMS, true);
+            if (collision) {
+                laser.forDestroy = true;
+            }
+        });
     }
 }
 

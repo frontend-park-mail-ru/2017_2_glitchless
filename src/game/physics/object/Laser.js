@@ -15,11 +15,11 @@ class Laser extends PhysicsEntity {
 
     onCollision(collision) {
         this.setSpeed(collision[1].copy());
+        this.reflected = true;
     }
 
     onDraw(stage) {
-    	super.onDraw(stage);
-    	this.sprite.zOrder = -1;
+        super.onDraw(stage);
     }
 
     setSpeed(speed) {

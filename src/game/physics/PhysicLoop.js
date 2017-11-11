@@ -52,7 +52,9 @@ class PhysicLoop {
 
         this.physicDelegate.processPhysicLoop(this, elapsedMS);
         this.vectorToPointDelegate.processVector(this.physicEntities, this, elapsedMS);
-        this.physicObjects['laser'].filter((laser) => laser.forDestroy).forEach((laser) => { laser.destroy()});
+        this.physicObjects['laser'].filter((laser) => laser.forDestroy).forEach((laser) => { 
+            laser.destroy(); 
+        });
         this.physicObjects['laser'] = this.physicObjects['laser'].filter((laser) => !laser.forDestroy);
         console.assert(this.physicObjects['laser'].filter((laser)=> laser.forDestroy).length === 0);
     }
@@ -76,8 +78,6 @@ class PhysicLoop {
         platform.setRotation(46, this);
         this.gameManager.addObject('platform', platform);
         this.spriteStorage.userPlatform = platform;
-
-
     }
 
     _getCenterPoint() {

@@ -79,14 +79,6 @@ class GameScene {
     }
 
     /**
-     * @param {String} objectName
-     * @return {PIXI.display.Group}
-     */
-    getParentGroup(objectName) {
-        return this.groups[object];
-    }
-
-    /**
      * Adds a new object to scene
      *
      * @param {Sprite} sprite Object's sprite

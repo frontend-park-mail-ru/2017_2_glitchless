@@ -88,15 +88,17 @@ function findIntersection(line, circle) {
     return [new Point(ax + endShift[0], ay - endShift[1]), new Point(bx + endShift[0], by - endShift[1])];
 }
 
+
 /**
  * @param {Point} point
  * @param {Point} vector
  * @param {Arc} arc
  * @param {Number} elapsedMS
+ * @param {Boolean} fullCircle
  *
- * @return {[Point, Point] | Boolean} Point of collision and new speed vector if collision exists, else false
+ * @return {[Point, Line] | Boolean} Point of collision and old trajectory line if collision exists, else false
  */
-function checkCollision(point, vector, arc, elapsedMS) {
+function checkCollision(point, vector, arc, elapsedMS, fullCircle=false) {
     const speed = vector.getLength();
     const initialPoint = point.copy();
     const tmpPoint = point.copy();
@@ -123,22 +125,37 @@ function checkCollision(point, vector, arc, elapsedMS) {
     if (intersections.length === 0) {
         return null;
     }
-    const collisions = intersections.map(function (intersectionPoint) {
-        
-        if (!line.segmentContains(intersectionPoint)) {
-            return;
-        }
-        if (!arc.contains(intersectionPoint)) {
-            return;
-        }
-        return intersectionPoint;
+
+    const collisions = intersections.filter(function (intersectionPoint) {
+        return line.segmentContains(intersectionPoint) && (fullCircle || arc.contains(intersectionPoint));
     });
 
-    const collision = collisions.filter(Boolean)[0]; // There can't be more than 1 collision in our circumstances
-
-    if (!collision) {
+    if (collisions.length === 0) {
         return false;
     }
+
+    // There can't be more than 1 collision in our circumstances
+    return [collisions[0], line];
+}
+
+
+/**
+ * @param {Point} point
+ * @param {Point} vector
+ * @param {Arc} arc
+ * @param {Number} elapsedMS
+ *
+ * @return {[Point, Point] | Boolean} Point of collision and new speed vector if collision exists, else false
+ */
+function getReflection(point, vector, arc, elapsedMS) {
+    const collisionResult = checkCollision(point, vector, arc, elapsedMS);
+
+    if (!collisionResult) {
+        return false;
+    }
+
+    const [collision, line] = collisionResult;
+    const speed = vector.getLength();
 
     const relativeCollision = arc.centrate(collision);
     const angle = utils.radianLimit(-Math.atan2(relativeCollision.y, relativeCollision.x) + Math.PI/2);
@@ -188,5 +205,6 @@ function simpleTest() {
 module.exports = {
     findIntersection,
     checkCollision,
+    getReflection,
     simpleTest
 };
