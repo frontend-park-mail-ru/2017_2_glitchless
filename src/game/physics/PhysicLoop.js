@@ -10,8 +10,8 @@ import VectorToPointLoop from './delegates/VectorToPointLoop';
 import PhysicVectorLoop from './delegates/PhysicVectorLoop';
 import Point from './object/primitive/Point';
 import CollisionManager from './CollisionManager';
-import { Arc } from './PhysicPrimitives';
-import Circle from './object/PlatformKirkle';
+import { Arc, Circle } from './PhysicPrimitives';
+import PlatformCircle from './object/PlatformKirkle';
 
 export default class PhysicLoop {
     constructor(gameManager) {
@@ -65,24 +65,38 @@ export default class PhysicLoop {
         this.gameManager.addObject('alien', alien);
         this.spriteStorage.alien = alien;
 
-        const circle1 = new Circle(this, Constants.GAME_CIRCLE1_RADIUS, center, 0);
-        this.gameManager.addObject('circle', circle1);
-        const circle2 = new Circle(this, Constants.GAME_CIRCLE2_RADIUS, center, 1);
-        this.gameManager.addObject('circle', circle2);
-        const circle3 = new Circle(this, Constants.GAME_CIRCLE3_RADIUS, center, 2);
-        this.gameManager.addObject('circle', circle3);
+        const PlatformCircle1 = new PlatformCircle(this, Constants.GAME_CIRCLE1_RADIUS, center, 0);
+        this.gameManager.addObject('circle', PlatformCircle1);
+        const PlatformCircle2 = new PlatformCircle(this, Constants.GAME_CIRCLE2_RADIUS, center, 1);
+        this.gameManager.addObject('circle', PlatformCircle2);
+        const PlatformCircle3 = new PlatformCircle(this, Constants.GAME_CIRCLE3_RADIUS, center, 2);
+        this.gameManager.addObject('circle', PlatformCircle3);
+        for (let i = 0; i < Constants.HP_COUNT * 2; i++) {
+            const hpblock = new HealthBlock(this, 
+                new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                new Circle(Constants.GAME_HP_CIRCLE_RADIUS, center));
+            hpblock.setSpriteSize(Constants.GAME_HEALTHBLOCK_SIZE, this.gameManager);
+            hpblock.setRotation(i * Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) + 
+                Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) / 2, this);
+            this.gameManager.addObject('hpblock', hpblock);
+        }
 
-        const hpblock = new HealthBlock(this, 
-            new Point(center.x + Constants.GAME_CIRCLE1_RADIUS, center.y));
-        this.gameManager.addObject('hpblock', hpblock)
+        for (let i = 0; i < Constants.HP_COUNT * 2; i++) {
+            const hpblock = new HealthBlock(this, 
+                new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                new Circle(Constants.GAME_HP_CIRCLE_RADIUS, center));
+            hpblock.setSpriteSize(Constants.GAME_HEALTHBLOCK_SIZE, this.gameManager);
+            hpblock.setRotation(i * Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) + 
+                Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) / 2, this);
+            this.gameManager.addObject('hpblock', hpblock);
+        }
 
-        const platform = new Platform(this, circle1);
+        const platform = new Platform(this, PlatformCircle1);
         platform.setSpeed(new Point(0, 0));
         platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
         platform.setRotation(46, this);
         this.gameManager.addObject('platform', platform);
         this.spriteStorage.userPlatform = platform;
-
     }
 
     _getCenterPoint() {

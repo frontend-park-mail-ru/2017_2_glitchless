@@ -80,9 +80,6 @@ export default class PhysicVectorLoop {
                 }
             });
         });
-        if (Constants.COLLISION_DEBUG) {
-            context.gameManager.scene.stage.addChild(graphics);
-        }
 
         //Absorbing lasers that hit alien/turret
         const alien = context.physicObjects.alien[0];
@@ -92,7 +89,7 @@ export default class PhysicVectorLoop {
             }
 
             const collision = CollisionManager.checkCollision(laser.getCoords(),
-                    laser.getSpeed(), alien.collisionCircle , elapsedMS, true);
+                    laser.getSpeed(), alien.collisionCircle, elapsedMS, true);
             if (collision) {
                 laser.forDestroy = true;
             }
@@ -100,6 +97,36 @@ export default class PhysicVectorLoop {
 
         //TODO: Absorbing lasers that hit forcefields, depleting forcefields
 
-        //TODO: Absorbing lasers that hit HP blocks, depleting health
+        //TODO: depleting health
+        context.physicObjects.hpblock.forEach((hpblock) => {
+            context.physicObjects.laser.forEach((laser) => {
+                const hpblockCollisionArc = Arc.fromPoints(...(hpblock.getEdgePoints()), hpblock.getCoords());
+                const collision = CollisionManager.checkCollision(laser.getCoords(),
+                        laser.getSpeed(), hpblockCollisionArc, elapsedMS);
+                if (collision) {
+                    console.log(Constants.GAME_CIRCLE1_RADIUS)
+                    console.log(collision);
+                    const point = context.gameManager.scene.scalePoint(collision[1]);
+                    graphics.drawCircle(point.x, point.y, 3);
+                    // debugger;
+                    laser.forDestroy = true;
+                    hpblock.destroy();
+                }
+            });
+
+            if (Constants.COLLISION_DEBUG) {
+                const points = [...hpblock.getEdgePoints(), hpblock.getCoords()];
+                graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
+                points.forEach(function(physicPoint) {
+                    const point = this.gameManager.scene.scalePoint(physicPoint);
+                    graphics.drawCircle(point.x, point.y, 3);
+                }.bind(context));
+            }
+        });
+
+        if (Constants.COLLISION_DEBUG) {
+            context.gameManager.scene.stage.addChild(graphics);
+
+        }
     }
 }

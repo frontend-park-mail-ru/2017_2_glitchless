@@ -36,7 +36,7 @@ export class Circle {
         if (Math.abs(point2.y - point1.y) < Number.EPSILON) {
             [point3, point2] = [point2, point3];
         }
-        
+
         //To prevent cases where ma == Infinity or mb == Infinity
         if (Math.abs(point3.x - point2.x) < Number.EPSILON) {
             [point2, point1] = [point1, point2];
@@ -120,7 +120,7 @@ export class Arc extends Circle {
     contains(point) {
         const relPoint = this.centrate(point);
         const anglePoint = Math.atan2(relPoint.y, relPoint.x);
-        // console.log('agpoint' + anglePoint);
+        console.log('agpoint' + anglePoint);
         if (!this.reversed) {
             return this.angleBound1 < anglePoint && this.angleBound2 > anglePoint;
         }

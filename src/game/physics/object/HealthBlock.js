@@ -2,22 +2,26 @@ import PhysicsObject from './primitive/PhysicsObject.js';
 import * as PIXI from 'pixi.js';
 import Point from './primitive/Point.js';
 import Constants from '../../../utils/Constants';
-import { Arc } from '../PhysicPrimitives.js';
+import { Arc, Circle } from '../PhysicPrimitives.js';
 
 const basicHealthBlockTexture = PIXI.Texture.fromImage('./images/energy_block.png');
 
 export default class HealthBlock extends PhysicsObject {
-    constructor(context, coords = new Point(0, 0)) {
+    constructor(context, coords = new Point(0, 0), alignmentCircle) {
         const basicHealthBlockSprite = new PIXI.Sprite(basicHealthBlockTexture);
         super(basicHealthBlockSprite, context, coords);
-        this.collisionCircle = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
+        this.circle = alignmentCircle;
+    }
+
+    refreshCollisionArc() {
+        this.collisionArc = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
     }
 
     getEdgePoints() {
         const coord = this.getCoords();
         const rotation = this.sprite.rotation;
-        const angle = 0.5;
-        const lengthHypotenuse = Constants.GAME_HEALTHBLOCK_SIZE[1] / 2;
+        const angle = 0.15;
+        const lengthHypotenuse = Constants.GAME_HEALTHBLOCK_SIZE[0] / 2;
         const deltaXLeft = lengthHypotenuse * Math.cos(rotation + angle);
         const deltaYLeft = lengthHypotenuse * Math.sin(rotation + angle);
         const deltaXRight = lengthHypotenuse * Math.cos(rotation - angle);
@@ -30,4 +34,23 @@ export default class HealthBlock extends PhysicsObject {
 
         return [pointLeft, pointRight];
     }
+
+    setRotation(rotation, context) {
+        super.setRotation(rotation, context);
+        const radius = this.circle.R - Constants.GAME_PLATFORM_SIZE[0] / 4;
+        const rotationRadian = rotation / Constants.GAME_ROTATION_COEFFICIENT;
+        const deltaX = radius * Math.sin(rotationRadian);
+        const deltaY = radius * Math.cos(rotationRadian);
+
+        const tmp = this.circle.center;
+        const newPoint = new Point(tmp.x - deltaX, tmp.y + deltaY);
+        if (Constants.DEBUG_INPUT_CHECK) {
+            if (isNaN(deltaX) || isNaN(deltaY)) {
+                throw new TypeError(deltaX, deltaY);
+            }
+        }
+        this.setCoords(newPoint, context);
+        this.refreshCollisionArc();
+    }
+
 }
