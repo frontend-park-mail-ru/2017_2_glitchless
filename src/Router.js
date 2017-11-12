@@ -61,7 +61,7 @@ export default class Router {
     }
 }
 
-/* eslint-disable no-unused-vars */
+/* tslint-disable no-unused-vars */
 class RouterGroup {
     constructor(serviceLocator) {
         this.serviceLocator = serviceLocator;

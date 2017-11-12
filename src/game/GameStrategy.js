@@ -1,4 +1,4 @@
-class GameStrategy { 
+export default class GameStrategy { 
     constructor() {
     }
 
@@ -14,5 +14,3 @@ class GameStrategy {
 
    	}
 }
-
-module.exports = GameStrategy;

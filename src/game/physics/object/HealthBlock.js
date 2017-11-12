@@ -1,13 +1,12 @@
-const PhysicsObject = require('./primitive/PhysicsObject.js');
-const PIXI = require('pixi.js');
-const Point = require('./primitive/Point.js');
-const Constants = require('../../../utils/Constants.js');
-const primitives = require('../PhysicPrimitives.js');
-const Arc = primitives.Arc;
+import PhysicsObject from './primitive/PhysicsObject.js';
+import PIXI from 'pixi.js';
+import Point from './primitive/Point.js';
+import Constants from '../../../utils/Constants.js';
+import { Arc } from '../PhysicPrimitives.js';
 
 // const basicHealthBlockTexture = PIXI.Texture.fromImage('./images/HPblock.png');
 
-class HealthBlock extends PhysicsObject {
+export default class HealthBlock extends PhysicsObject {
 	constructor(context, coords = new Point(0, 0)) {
 		const basicHealthBlockSprite = new PIXI.Sprite(basicHealthBlockTexture);
         super(basicHealthBlockSprite, context, coords);

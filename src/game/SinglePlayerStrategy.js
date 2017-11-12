@@ -1,10 +1,10 @@
-const GameStrategy = require('./GameStrategy.js');
-const Player = require('./Player.js');
-const Constants = require('../utils/Constants.js');
-const Point = require('./physics/object/primitive/Point.js');
+import GameStrategy from './GameStrategy.js';
+import Player from './Player.js';
+import Constants from '../utils/Constants.js';
+import Point from './physics/object/primitive/Point.js';
 
 const forceFieldBarTexture = PIXI.Texture.fromImage('./images/laser_large.png');
-class SinglePlayerStrategy extends GameStrategy { 
+export default class SinglePlayerStrategy extends GameStrategy { 
     constructor() {
     	super();
     	this.players = [new Player(0), new Player(1)];
@@ -38,5 +38,3 @@ class SinglePlayerStrategy extends GameStrategy {
         }.bind(this));
     }
 }
-
-module.exports = SinglePlayerStrategy;

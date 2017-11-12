@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server",
     "postinstall": "npm run build",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' ; tslint -c tslint.json 'src/**/*.js'",
     "build": "gulp build",
     "watch": "gulp watch",
     "test": "gulp test"
@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@types/pixi.js": "^4.5.7",
+    "ajv-keywords": "^2.1.1",
     "pixi.js": "^4.6.0"
   },
   "devDependencies": {
