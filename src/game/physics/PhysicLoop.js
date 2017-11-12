@@ -1,12 +1,13 @@
 import * as PIXI from 'pixi.js';
 import Alien from './object/Alien';
+import Platform from './object/Platform';
+import Laser from './object/Laser';
+import HealthBlock from './object/HealthBlock';
 import SpriteStorage from './delegates/SpriteStorage';
 import Constants from '../../utils/Constants';
 import utils from '../../utils/GameUtils';
 import VectorToPointLoop from './delegates/VectorToPointLoop';
 import PhysicVectorLoop from './delegates/PhysicVectorLoop';
-import Platform from './object/Platform';
-import Laser from './object/Laser';
 import Point from './object/primitive/Point';
 import CollisionManager from './CollisionManager';
 import { Arc } from './PhysicPrimitives';
@@ -58,17 +59,22 @@ export default class PhysicLoop {
     }
 
     _firstSetting() {
-        const alien = new Alien(this, this._getCenterPoint());
+        const center = this._getCenterPoint();
+        const alien = new Alien(this, center);
         alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, this.gameManager);
         this.gameManager.addObject('alien', alien);
         this.spriteStorage.alien = alien;
 
-        const circle1 = new Circle(this, Constants.GAME_CIRCLE1_RADIUS, this._getCenterPoint(), 0);
+        const circle1 = new Circle(this, Constants.GAME_CIRCLE1_RADIUS, center, 0);
         this.gameManager.addObject('circle', circle1);
-        const circle2 = new Circle(this, Constants.GAME_CIRCLE2_RADIUS, this._getCenterPoint(), 1);
+        const circle2 = new Circle(this, Constants.GAME_CIRCLE2_RADIUS, center, 1);
         this.gameManager.addObject('circle', circle2);
-        const circle3 = new Circle(this, Constants.GAME_CIRCLE3_RADIUS, this._getCenterPoint(), 2);
+        const circle3 = new Circle(this, Constants.GAME_CIRCLE3_RADIUS, center, 2);
         this.gameManager.addObject('circle', circle3);
+
+        const hpblock = new HealthBlock(this, 
+            new Point(center.x + Constants.GAME_CIRCLE1_RADIUS, center.y));
+        this.gameManager.addObject('hpblock', hpblock)
 
         const platform = new Platform(this, circle1);
         platform.setSpeed(new Point(0, 0));
@@ -76,6 +82,7 @@ export default class PhysicLoop {
         platform.setRotation(46, this);
         this.gameManager.addObject('platform', platform);
         this.spriteStorage.userPlatform = platform;
+
     }
 
     _getCenterPoint() {

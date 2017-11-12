@@ -34,15 +34,13 @@ export class Circle {
     static fromPoints(point1, point2, point3) {
         //To prevent cases where ma == 0
         if (Math.abs(point2.y - point1.y) < Number.EPSILON) {
-            // console.log('1');
             [point3, point2] = [point2, point3];
         }
+        
         //To prevent cases where ma == Infinity or mb == Infinity
         if (Math.abs(point3.x - point2.x) < Number.EPSILON) {
-            // console.log('2');
             [point2, point1] = [point1, point2];
         } else if (Math.abs(point2.x - point1.x) < Number.EPSILON) {
-            // console.log('3');
             [point2, point3] = [point3, point2];
         }
         const ma = (point2.y - point1.y) / (point2.x - point1.x);

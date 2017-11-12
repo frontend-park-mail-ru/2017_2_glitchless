@@ -34,7 +34,7 @@ export default class GameScene {
 
         PIXI.loader.add('./images/background.png').load(function() {
             const slide = GameUtils.makeBackgroundCoverWithSprite(
-                bgSize, new PIXI.Sprite.fromImage('./images/background.png'), 'cover');
+                bgSize, PIXI.Sprite.fromImage('./images/background.png'), 'cover');
             container.addChild(slide);
         });
     }

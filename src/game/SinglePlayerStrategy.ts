@@ -1,10 +1,13 @@
-import GameStrategy from './GameStrategy.js';
-import Player from './Player.js';
-import Constants from '../utils/Constants.js';
-import Point from './physics/object/primitive/Point.js';
+import GameStrategy from './GameStrategy';
+import Player from './Player';
+import Constants from '../utils/Constants';
+import Point from './physics/object/primitive/Point';
 
 const forceFieldBarTexture = PIXI.Texture.fromImage('./images/laser_large.png');
 export default class SinglePlayerStrategy extends GameStrategy {
+    players: Player[];
+    forceFieldBarPos: Point[];
+    forceFieldBars: PIXI.Sprite[];
     constructor() {
         super();
         this.players = [new Player(0), new Player(1)];
@@ -36,5 +39,5 @@ export default class SinglePlayerStrategy extends GameStrategy {
             scene.setCoords(forceFieldBar, position);
             scene.addObject(forceFieldBar);
         }.bind(this));
-    }
+}
 }

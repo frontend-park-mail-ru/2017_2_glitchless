@@ -1,10 +1,10 @@
 import PhysicsObject from './primitive/PhysicsObject.js';
-import PIXI from 'pixi.js';
+import * as PIXI from 'pixi.js';
 import Point from './primitive/Point.js';
-import Constants from '../../../utils/Constants.js';
+import Constants from '../../../utils/Constants';
 import { Arc } from '../PhysicPrimitives.js';
 
-// const basicHealthBlockTexture = PIXI.Texture.fromImage('./images/HPblock.png');
+const basicHealthBlockTexture = PIXI.Texture.fromImage('./images/energy_block.png');
 
 export default class HealthBlock extends PhysicsObject {
     constructor(context, coords = new Point(0, 0)) {

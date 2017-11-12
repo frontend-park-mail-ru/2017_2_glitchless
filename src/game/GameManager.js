@@ -2,8 +2,8 @@ import * as PIXI from 'pixi.js';
 import GameScene from './GameScene';
 
 import PhysicLoop from './physics/PhysicLoop';
-import SinglePlayerStrategy from './SinglePlayerStrategy.js';
-import EventBus from '../utils/EventBus.js';
+import SinglePlayerStrategy from './SinglePlayerStrategy';
+import EventBus from '../utils/EventBus';
 
 export default class GameManager {
     constructor(serviceLocator) {
