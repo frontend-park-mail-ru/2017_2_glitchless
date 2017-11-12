@@ -1,6 +1,5 @@
-import ServiceLocator from './ServiceLocator';
-import authUser from './authUser';
-
+import authUser from "./authUser";
+import ServiceLocator from "./ServiceLocator";
 
 window.onload = () => {
     const serviceLocator = new ServiceLocator();
