@@ -12,13 +12,30 @@ const gulpIf = require('gulp-if');
 // js
 
 const webpackConfig = {
-    devtool: 'source-map',
     module: {
         rules: [
-            {test: /\.pug$/, use: 'pug-loader'},
-            {test: /\.ts$/, use: 'ts-loader'}
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['env']
+                    }
+                }
+            },
+            {
+                test: /\.ts$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.pug$/,
+                use: 'pug-loader'
+            }
         ]
     },
+    devtool: 'source-map',
     resolve: {
         extensions: ['.ts', '.js']
     },
