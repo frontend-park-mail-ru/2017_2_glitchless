@@ -1,7 +1,7 @@
-// const PIXI = require('pixi.js');
-const Point = require('./object/primitive/Point.js');
-const Constants = require('../../utils/Constants.js');
-class Circle {
+import Point from './object/primitive/Point';
+import Constants from '../../utils/Constants';
+
+export class Circle {
     /**
      * @param {Number} radius Circle radius
      * @param {Point} center Circle center
@@ -56,7 +56,7 @@ class Circle {
     }
 }
 
-class Arc extends Circle {
+export class Arc extends Circle {
     /**
      * @param {Number} radius Radius of the circle, on which arc is located
      * @param {Point[]} boundingPoints Two points (number 0, 1 in array) that limit the arc on the circle,
@@ -130,7 +130,7 @@ class Arc extends Circle {
     }
 }
 
-class Line {
+export class Line {
     /**
      * Creates a line defined by equation Ax + By + C  = 0, where A, B, C are constants, x, y - coordinate variables
      *
@@ -333,8 +333,3 @@ class Line {
 // console.log(line.getPointByDist());
 
 
-module.exports = {
-    Line,
-    Circle,
-    Arc
-};

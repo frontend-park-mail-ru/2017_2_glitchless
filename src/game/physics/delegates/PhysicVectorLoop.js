@@ -1,14 +1,11 @@
-const ButtonHandler = require('../helpers/ButtonHandler.js');
-const Constants = require('../../../utils/Constants.js');
-const CollisionManager = require('../CollisionManager.js');
-const primitives = require('../PhysicPrimitives.js');
-const PIXI = require('pixi.js');
-
-const Arc = primitives.Arc;
-const Circle = primitives.Circle;
+import * as PIXI from 'pixi.js';
+import ButtonHandler from '../helpers/ButtonHandler';
+import Constants from '../../../utils/Constants';
+import CollisionManager from '../CollisionManager';
+import { Arc, Circle } from '../PhysicPrimitives';
 
 
-class PhysicVectorLoop {
+export default class PhysicVectorLoop {
     constructor() {
         this.leftButton = new ButtonHandler(Constants.CONTROL_PLATFORM_LEFT);
         this.upButton = new ButtonHandler(Constants.CONTROL_PLATFORM_UP);
@@ -102,6 +99,3 @@ class PhysicVectorLoop {
         });
     }
 }
-
-
-module.exports = PhysicVectorLoop;

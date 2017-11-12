@@ -1,9 +1,9 @@
-const View = require('../View.js');
-const TemplatedViewMixin = require('../_view_mixins/TemplatedViewMixin.js');
-const RouterLinksViewMixin = require('../_view_mixins/RouterLinksViewMixin.js');
-const template = require('./template.pug');
+import View from '../View';
+import TemplatedViewMixin from '../_view_mixins/TemplatedViewMixin';
+import RouterLinksViewMixin from '../_view_mixins/RouterLinksViewMixin';
+import template from './template.pug';
 
-const UserModel = require('../../models/UserModel.js');
+import UserModel from '../../models/UserModel';
 
 
 class MenuView extends View {
@@ -62,4 +62,6 @@ class MenuView extends View {
     }
 }
 
-module.exports = TemplatedViewMixin(RouterLinksViewMixin(MenuView));
+MenuView = TemplatedViewMixin(RouterLinksViewMixin(MenuView));
+
+export default MenuView;

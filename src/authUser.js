@@ -1,6 +1,6 @@
-const UserModel = require('./models/UserModel.js');
+import UserModel from './models/UserModel';
 
-module.exports = function (serviceLocator) {
+export default function (serviceLocator) {
     UserModel.loadCurrent().then((user) => {
         serviceLocator.eventBus.emitEvent('auth', user);
     });

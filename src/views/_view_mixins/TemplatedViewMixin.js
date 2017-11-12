@@ -17,7 +17,7 @@
  * @param initialClass {Class}
  * @return {Class}
  */
-function TemplatedViewMixin(initialClass) {
+export default function TemplatedViewMixin(initialClass) {
     const superOpen = initialClass.prototype.open;
     const superClose = initialClass.prototype.close;
 
@@ -44,5 +44,3 @@ function TemplatedViewMixin(initialClass) {
     Object.assign(initialClass.prototype, Mixin);
     return initialClass;
 }
-
-module.exports = TemplatedViewMixin;

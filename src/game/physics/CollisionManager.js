@@ -1,11 +1,7 @@
-const primitives = require('./PhysicPrimitives.js');
-const Point = require('./object/primitive/Point.js');
-const Constants = require('../../utils/Constants.js');
-const utils = require('../../utils/GameUtils.js');
-
-const Line = primitives.Line;
-const Circle = primitives.Circle;
-const Arc = primitives.Arc;
+import { Line, Circle, Arc } from './PhysicPrimitives';
+import Point from './object/primitive/Point';
+import Constants from '../../utils/Constants';
+import utils from '../../utils/GameUtils';
 
 /**
  * @param {Line} line
@@ -202,7 +198,7 @@ function simpleTest() {
     console.log(checkCollision(points[0], points[1], arc, 1));
 }
 
-module.exports = {
+export default {
     findIntersection,
     checkCollision,
     getReflection,

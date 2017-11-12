@@ -1,9 +1,9 @@
-const PIXI = require('pixi.js');
-const GameScene = require('./GameScene.js');
+import * as PIXI from 'pixi.js';
+import GameScene from './GameScene';
 
-const PhysicLoop = require('./physics/PhysicLoop.js');
+import PhysicLoop from './physics/PhysicLoop';
 
-class GameManager {
+export default class GameManager {
     constructor(serviceLocator) {
         this.serviceLocator = serviceLocator;
         this.scene = new GameScene();
@@ -50,5 +50,3 @@ class GameManager {
         });
     }
 }
-
-module.exports = GameManager;

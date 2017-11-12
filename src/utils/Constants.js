@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     INITIAL_RES: [1920, 1080],
     WINDOW_TEXT_X: 30,
     WINDOW_TEXT_Y: 90,

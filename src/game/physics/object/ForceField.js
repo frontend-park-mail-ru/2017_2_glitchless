@@ -1,11 +1,10 @@
-const PhysicsObject = require('./primitive/PhysicsObject.js');
+import PhysicsObject from './primitive/PhysicsObject';
 
 const basicForceFieldSprite ='';
-class ForceField extends PhysicsObject {
+
+export default class ForceField extends PhysicsObject {
     constructor(speed, context) {
         super(basicForceFieldSprite, context);
         this.speed = speed;
     }
 }
-
-module.exports = ForceField;

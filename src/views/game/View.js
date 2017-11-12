@@ -1,9 +1,8 @@
-const View = require('../View.js');
-const GameManager = require('../../game/GameManager.js');
-const Constants = require('../../utils/Constants.js');
+import View from '../View';
+import GameManager from '../../game/GameManager';
+import Constants from '../../utils/Constants';
 
-
-class GameView extends View {
+export default class GameView extends View {
     open(root) {
         this.root = root;
 
@@ -56,5 +55,3 @@ class GameView extends View {
         this.gameManager.setResolution([appWidth, appHeight]);
     }
 }
-
-module.exports = GameView;

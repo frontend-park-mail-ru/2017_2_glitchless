@@ -1,17 +1,17 @@
-const View = require('../View.js');
-const TemplatedViewMixin = require('../_view_mixins/TemplatedViewMixin.js');
-const RouterLinksViewMixin = require('../_view_mixins/RouterLinksViewMixin.js');
-const template = require('./template.pug');
-const displayErrorsUtils = require('../_form_utils/displayErrors.js');
+import View from '../View';
+import TemplatedViewMixin from '../_view_mixins/TemplatedViewMixin';
+import RouterLinksViewMixin from '../_view_mixins/RouterLinksViewMixin';
+import template from './template.pug';
+import { initDisplayErrorsForm, displayErrors, displayServerError } from '../_form_utils/displayErrors';
 
-const SignupForm = require('../../models/SignupForm.js');
-const UserModel = require('../../models/UserModel.js');
+import SignupForm from '../../models/SignupForm';
+import UserModel from '../../models/UserModel';
 
 
 class SignupModalView extends View {
     open() {
         this.signupForm = document.getElementById('signup-form');
-        displayErrorsUtils.initForm(this.signupForm);
+        initDisplayErrorsForm(this.signupForm);
         this._setupSignupSubmit();
         if (this._savedModel) {
             this._fillForm(this._savedModel);
@@ -34,7 +34,7 @@ class SignupModalView extends View {
 
             const validationResult = model.validate();
             if (!validationResult.ok) {
-                displayErrorsUtils.displayErrors(this.signupForm, validationResult.errors);
+                displayErrors(this.signupForm, validationResult.errors);
                 return;
             }
 
@@ -43,7 +43,7 @@ class SignupModalView extends View {
                 .then((json) => {
                     if (!json.successful) {
                         const serverErrorField = document.getElementById('login-form__server-errors');
-                        displayErrorsUtils.displayServerError(serverErrorField, json.message);
+                        displayServerError(serverErrorField, json.message);
                         return;
                     }
                     this.serviceLocator.user = UserModel.fromApiJson(json.message);
@@ -72,5 +72,6 @@ class SignupModalView extends View {
     }
 }
 
-module.exports = TemplatedViewMixin(RouterLinksViewMixin(SignupModalView));
+SignupModalView = TemplatedViewMixin(RouterLinksViewMixin(SignupModalView));
 
+export default SignupModalView;

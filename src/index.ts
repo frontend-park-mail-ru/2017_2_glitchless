@@ -1,5 +1,5 @@
-const ServiceLocator = require('./ServiceLocator.js');
-const authUser = require('./authUser.js');
+import ServiceLocator from './ServiceLocator';
+import authUser from './authUser';
 
 
 window.onload = () => {

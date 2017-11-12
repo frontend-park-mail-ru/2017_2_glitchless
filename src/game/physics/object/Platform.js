@@ -1,12 +1,12 @@
-const PhysicsEntitiy = require('./primitive/PhysicsEntity.js');
-const PIXI = require('pixi.js');
-const Constants = require('../../../utils/Constants.js');
-const Point = require('./primitive/Point.js');
+import * as PIXI from 'pixi.js';
+import PhysicsEntitiy from './primitive/PhysicsEntity';
+import Constants from '../../../utils/Constants';
+import Point from './primitive/Point';
 
 
 const basicPlatformTexture = PIXI.Texture.fromImage('./images/platform.png');
 
-class Platform extends PhysicsEntitiy {
+export default class Platform extends PhysicsEntitiy {
     constructor(context, circle) {
         const basicPlatformSprite = new PIXI.Sprite(basicPlatformTexture);
         super(basicPlatformSprite, context);
@@ -63,5 +63,3 @@ class Platform extends PhysicsEntitiy {
         this.setCoords(newPoint, context);
     }
 }
-
-module.exports = Platform;
