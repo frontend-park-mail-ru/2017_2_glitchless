@@ -18,10 +18,6 @@ class Laser extends PhysicsEntity {
         this.reflected = true;
     }
 
-    onDraw(stage) {
-        super.onDraw(stage);
-    }
-
     setSpeed(speed) {
         super.setSpeed(speed);
         this.setRotation(utils.degrees(Math.atan2(speed.y, speed.x)));

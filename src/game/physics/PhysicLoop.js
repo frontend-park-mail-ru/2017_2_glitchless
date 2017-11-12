@@ -111,5 +111,4 @@ class PhysicLoop {
     }
 }
 
-
 module.exports = PhysicLoop;

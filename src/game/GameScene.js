@@ -10,10 +10,19 @@ class GameScene {
     }
 
     displayWinMessage() {
-        let basicText = new PIXI.Text('You win!');
-        basicText.x = Constant.WINDOW_TEXT_X;
-        basicText.y = Constant.WINDOW_TEXT_Y;
-        // this.stage.addChild(basicText);
+        const winText = new PIXI.Sprite.fromImage('./images/game_over_splash_won.png');
+        this.prepareCentralText(winText);
+        this.addObject(winText);
+    }
+
+    prepareCentralText(textSprite) {
+        textSprite.anchor.set(0.5);
+        const textSize = this.scaleCoords(Constant.GAME_TEXT_SIZE);
+        textSprite.width = textSize[0];
+        textSprite.height = textSize[1];
+        const center = this.getCenterPoint();
+        textSprite.x = center.x;
+        textSprite.y = center.y;
     }
 
     initBackground(app) {
@@ -30,6 +39,16 @@ class GameScene {
         });
     }
 
+    setCoords(sprite, point) {
+        const scenePoint = this.scalePoint(point);
+        [sprite.x, sprite.y] = [scenePoint.x, scenePoint.y];
+    }
+
+    setSize(sprite, coords) {
+        const sceneCoords = this.scaleCoords(coords);
+        [sprite.width, sprite.height] = sceneCoords;
+    }
+
     /**
      * Scales length from initial to final resolution, without rounding
      *
@@ -40,7 +59,7 @@ class GameScene {
      * @return {Number} Scaled length
      */
     scaleLength(length, initialRes = Constant.INITIAL_RES) {
-        const scale = this.width / initialRes[0];
+        const scale = this.height / initialRes[1];
         return length * scale;
     }
 
@@ -78,6 +97,10 @@ class GameScene {
         return new Point(Math.round(point.x * xScale), Math.round(point.y * yScale));
     }
 
+    getCenterPoint() {
+        return new Point(this.width / 2, this.height / 2);
+    }
+
     /**
      * Adds a new object to scene
      *
@@ -87,6 +110,5 @@ class GameScene {
         this.stage.addChild(sprite);
     }
 }
-
 
 module.exports = GameScene;

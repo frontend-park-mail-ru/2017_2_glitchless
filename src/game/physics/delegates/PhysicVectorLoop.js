@@ -58,7 +58,7 @@ class PhysicVectorLoop {
             graphics.clear();
         }
 
-        //Reflecting lasers
+        //Reflecting lasers from platform
         context.physicObjects['platform'].forEach((platform) => {
             const platformArc = Arc.fromPoints(...(platform.getEdgePoints()), platform.getCoords());
 
@@ -66,7 +66,7 @@ class PhysicVectorLoop {
                 const points = [...platform.getEdgePoints(), platform.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
                 points.forEach(function(physicPoint) {
-                    var point = this.gameManager.scene.scalePoint(physicPoint);
+                    const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
             }
@@ -88,6 +88,7 @@ class PhysicVectorLoop {
             context.gameManager.scene.stage.addChild(graphics);
         }
 
+        //Absorbing lasers that hit alien/turret
         const alien = context.physicObjects['alien'][0];
         context.physicObjects['laser'].forEach((laser) => {
             if (!laser.reflected) {
@@ -100,6 +101,10 @@ class PhysicVectorLoop {
                 laser.forDestroy = true;
             }
         });
+
+        //TODO: Absorbing lasers that hit forcefields, depleting forcefields
+
+        //TODO: Absorbing lasers that hit HP blocks, depleting health
     }
 }
 

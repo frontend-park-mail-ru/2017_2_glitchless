@@ -1,10 +1,16 @@
 const PhysicsObject = require('./primitive/PhysicsObject.js');
+const PIXI = require('pixi.js');
+const Point = require('./primitive/Point.js');
+const Constants = require('../../../utils/Constants.js');
+const primitives = require('../PhysicPrimitives.js');
+const Arc = primitives.Arc;
 
-const basicForceFieldTexture ='';
-class ForceField extends PhysicsObject {
-    constructor(context, coords = new Point(0, 0)) {
-		const basicForceFieldSprite = new PIXI.Sprite(basicForceFieldTexture);
-        super(basicForceFieldSprite, context, coords);
+// const basicHealthBlockTexture = PIXI.Texture.fromImage('./images/HPblock.png');
+
+class HealthBlock extends PhysicsObject {
+	constructor(context, coords = new Point(0, 0)) {
+		const basicHealthBlockSprite = new PIXI.Sprite(basicHealthBlockTexture);
+        super(basicHealthBlockSprite, context, coords);
         this.collisionCircle = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
     }
 
@@ -12,7 +18,7 @@ class ForceField extends PhysicsObject {
         const coord = this.getCoords();
         const rotation = this.sprite.rotation;
         const angle = 0.5;
-        const lengthHypotenuse = Constants.GAME_FORCEFIELD_SIZE[1] / 2;
+        const lengthHypotenuse = Constants.GAME_HEALTHBLOCK_SIZE[1] / 2;
         const deltaXLeft = lengthHypotenuse * Math.cos(rotation + angle);
         const deltaYLeft = lengthHypotenuse * Math.sin(rotation + angle);
         const deltaXRight = lengthHypotenuse * Math.cos(rotation - angle);
@@ -26,5 +32,3 @@ class ForceField extends PhysicsObject {
         return [pointLeft, pointRight];
     }
 }
-
-module.exports = ForceField;

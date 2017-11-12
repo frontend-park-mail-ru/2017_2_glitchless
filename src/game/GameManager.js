@@ -2,12 +2,16 @@ const PIXI = require('pixi.js');
 const GameScene = require('./GameScene.js');
 
 const PhysicLoop = require('./physics/PhysicLoop.js');
+const EventBus = require('../utils/EventBus.js');
+const SinglePlayerStrategy = require('./SinglePlayerStrategy.js');
 
 class GameManager {
     constructor(serviceLocator) {
         this.serviceLocator = serviceLocator;
         this.scene = new GameScene();
-        this.serviceLocator.eventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
+        // this.serviceLocator.eventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
+        this.eventBus = new EventBus();
+        this.gameStrategy = new SinglePlayerStrategy();
     }
 
     /**
@@ -32,6 +36,7 @@ class GameManager {
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         this.scene.initBackground(this.app);
+        this.gameStrategy.initUI(this.scene);
 
         //setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
         this.loopObj = new PhysicLoop(this);

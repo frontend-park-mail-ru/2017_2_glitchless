@@ -12,10 +12,6 @@ class Alien extends PhysicsObject {
         super(basicAlienSprite, context, coords);
         this.collisionCircle = new Circle(Constants.GAME_ALIEN_SIZE[0] / 2, coords.copy());
     }
-
-    onDraw(stage) {
-        super.onDraw(stage);
-    }
 }
 
 module.exports = Alien;
