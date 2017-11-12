@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     INITIAL_RES: [1920, 1080],
     WINDOW_HD_RATIO: 16.0 / 9.0,
     WINDOW_HD_RATIO_INVERSE: 9.0 / 16.0,

@@ -1,6 +1,6 @@
-const PIXI = require('pixi.js');
+import * as PIXI from 'pixi.js';
 
-class GameUtils {
+export default class GameUtils {
     /**
      *  PixiJS Background Cover/Contain Script.
      *
@@ -79,5 +79,3 @@ class GameUtils {
         return radians * 180 / Math.PI + 180;
     }
 }
-
-module.exports = GameUtils;

@@ -1,11 +1,11 @@
-const View = require('../View.js');
-const TemplatedViewMixin = require('../_view_mixins/TemplatedViewMixin.js');
-const RouterLinksViewMixin = require('../_view_mixins/RouterLinksViewMixin.js');
-const template = require('./template.pug');
-const displayErrorsUtils = require('../_form_utils/displayErrors.js');
+import View from '../View';
+import TemplatedViewMixin from '../_view_mixins/TemplatedViewMixin';
+import RouterLinksViewMixin from '../_view_mixins/RouterLinksViewMixin';
+import template from './template.pug';
+import { initDisplayErrorsForm, displayErrors, displayServerError } from '../_form_utils/displayErrors';
 
-const LoginForm = require('../../models/LoginForm.js');
-const UserModel = require('../../models/UserModel.js');
+import LoginForm from '../../models/LoginForm';
+import UserModel from '../../models/UserModel';
 
 
 class LoginModalView extends View {
@@ -26,7 +26,7 @@ class LoginModalView extends View {
     }
 
     _initForm() {
-        displayErrorsUtils.initForm(this.loginForm);
+        initDisplayErrorsForm(this.loginForm);
 
         this.loginForm.addEventListener('submit', function (event) {
             event.preventDefault();
@@ -35,7 +35,7 @@ class LoginModalView extends View {
 
             const validationResult = model.validate();
             if (!validationResult.ok) {
-                displayErrorsUtils.displayErrors(this.loginForm, validationResult.errors);
+                displayErrors(this.loginForm, validationResult.errors);
                 return;
             }
             model.send()
@@ -43,7 +43,7 @@ class LoginModalView extends View {
                 .then((json) => {
                     if (!json.successful) {
                         const serverErrorField = document.getElementById('login-form__server-errors');
-                        displayErrorsUtils.displayServerError(serverErrorField, json.message);
+                        displayServerError(serverErrorField, json.message);
                         return;
                     }
                     this.serviceLocator.user = UserModel.fromApiJson(json.message);
@@ -68,4 +68,6 @@ class LoginModalView extends View {
     }
 }
 
-module.exports = TemplatedViewMixin(RouterLinksViewMixin(LoginModalView));
+LoginModalView = TemplatedViewMixin(RouterLinksViewMixin(LoginModalView));
+
+export default LoginModalView;

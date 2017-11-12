@@ -1,4 +1,4 @@
-class Point {
+export default class Point {
     constructor(x = 0, y = 0) {
         this.x = x;
         this.y = y;
@@ -55,5 +55,3 @@ class Point {
         return Math.sqrt(this.x*this.x + this.y * this.y);
     }
 }
-
-module.exports = Point;

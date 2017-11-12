@@ -1,12 +1,11 @@
-const PhysicsEntity = require('./primitive/PhysicsEntity.js');
-const PIXI = require('pixi.js');
-const Constants = require('../../../utils/Constants.js');
-const utils = require('../../../utils/GameUtils.js');
+import * as PIXI from 'pixi.js';
+import PhysicsEntity from './primitive/PhysicsEntity';
+import Constants from '../../../utils/Constants';
+import utils from '../../../utils/GameUtils';
 
 const basicLaserTexture = PIXI.Texture.fromImage('./images/laser.png');
 
-
-class Laser extends PhysicsEntity {
+export default class Laser extends PhysicsEntity {
     constructor(speed, context) {
         const basicLaserSprite = new PIXI.Sprite(basicLaserTexture);
         super(basicLaserSprite, context);
@@ -23,5 +22,3 @@ class Laser extends PhysicsEntity {
         this.setRotation(utils.degrees(Math.atan2(speed.y, speed.x)));
     }
 }
-
-module.exports = Laser;

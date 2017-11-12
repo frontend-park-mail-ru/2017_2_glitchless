@@ -1,11 +1,12 @@
 const gulp = require('gulp');
+const path = require('path');
 const webpack = require('webpack-stream');
-const sass = require('gulp-sass');
-const rename = require('gulp-rename');
-const sourcemaps = require('gulp-sourcemaps');
-const plumber = require('gulp-plumber');
-const insert = require('gulp-insert');
-const gulpif = require('gulp-if');
+const gulpSass = require('gulp-sass');
+const gulpRename = require('gulp-rename');
+const gulpSourcemaps = require('gulp-sourcemaps');
+const gulpPlumber = require('gulp-plumber');
+const gulpInsert = require('gulp-insert');
+const gulpIf = require('gulp-if');
 
 
 // js
@@ -15,7 +16,11 @@ const webpackConfig = {
     module: {
         rules: [
             {test: /\.pug$/, use: 'pug-loader'},
+            {test: /\.ts$/, use: 'ts-loader'}
         ]
+    },
+    resolve: {
+        extensions: ['.ts', '.js']
     },
     output: {
         filename: 'app.js'
@@ -23,16 +28,16 @@ const webpackConfig = {
 };
 
 gulp.task('js:build', () => {
-    return gulp.src('src/index.js')
+    return gulp.src('src/index.ts')
         .pipe(webpack(webpackConfig))
-        .pipe(gulpif((file) => file.path.endsWith('.js'), insert.prepend('"use strict";\n')))
+        .pipe(gulpIf((file) => file.path.endsWith('.js'), gulpInsert.prepend('"use strict";\n')))
         .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('js:watch', () => {
-    return gulp.src('src/index.js')
+    return gulp.src('src/index.ts')
         .pipe(webpack(Object.assign({}, webpackConfig, {watch: true})))
-        .pipe(gulpif((file) => file.path.endsWith('.js'), insert.prepend('"use strict";\n')))
+        .pipe(gulpIf((file) => file.path.endsWith('.js'), gulpInsert.prepend('"use strict";\n')))
         .pipe(gulp.dest('dist/'));
 });
 
@@ -46,16 +51,16 @@ gulp.task('css:build', () => {
 
 gulp.task('css:build-dev', () => {
     const p = gulp.src('src/views/index.scss')
-        .pipe(plumber());
+        .pipe(gulpPlumber());
     return cssPipe(p);
 });
 
 const cssPipe = (p) => {
     return p
-        .pipe(sourcemaps.init())
-        .pipe(sass())
-        .pipe(rename('app.css'))
-        .pipe(sourcemaps.write('.'))
+        .pipe(gulpSourcemaps.init())
+        .pipe(gulpSass())
+        .pipe(gulpRename('app.css'))
+        .pipe(gulpSourcemaps.write('.'))
         .pipe(gulp.dest('dist'));
 };
 
@@ -95,8 +100,8 @@ const webpackTestConfig = {
 };
 
 gulp.task('test-js:watch', () => {
-    return gulp.src('test/lib/index.js')
-        .pipe(plumber())
+    return gulp.src('test/lib/index.ts')
+        .pipe(gulpPlumber())
         .pipe(webpack(webpackTestConfig))
         .pipe(gulp.dest('dist/'));
 });

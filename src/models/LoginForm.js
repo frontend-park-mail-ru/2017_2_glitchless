@@ -1,9 +1,9 @@
-const validations = require('../utils/validations.js');
+import { validatePassword } from '../utils/validations';
 
 /**
  * Model of login form.
  */
-class LoginForm {
+export default class LoginForm {
     /**
      * @param serviceLocator Instance of service locator.
      */
@@ -37,7 +37,7 @@ class LoginForm {
             errors.push({field: 'login', message: 'Login can\'t be empty'});
         }
 
-        const passwordValidation = validations.validatePassword(this.password);
+        const passwordValidation = validatePassword(this.password);
         if (passwordValidation !== true) {
             errors.push({field: 'password', message: passwordValidation});
         }
@@ -57,5 +57,3 @@ class LoginForm {
         return this.api.post('login', {login: this.login, password: this.password});
     }
 }
-
-module.exports = LoginForm;

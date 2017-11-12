@@ -1,8 +1,8 @@
-const PhysicsObject = require('./PhysicsObject');
-const Constants = require('../../../../utils/Constants.js');
-const Point = require('./Point.js');
+import PhysicsObject from './PhysicsObject';
+import Constants from '../../../../utils/Constants';
+import Point from './Point';
 
-class PhysicsEntity extends PhysicsObject {
+export default class PhysicsEntity extends PhysicsObject {
     constructor(sprite, context, coords = new Point(0, 0)) {
         super(sprite, context, coords);
         this.isStatic = false;
@@ -32,5 +32,3 @@ class PhysicsEntity extends PhysicsObject {
         this.rotationSpeed = rotationSpeed;
     }
 }
-
-module.exports = PhysicsEntity;

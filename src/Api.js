@@ -1,7 +1,7 @@
 /**
  * Sends requests to server api.
  */
-class Api {
+export default class Api {
     constructor(baseUrl) {
         this.baseUrl = baseUrl;
     }
@@ -26,5 +26,3 @@ class Api {
         });
     }
 }
-
-module.exports = Api;

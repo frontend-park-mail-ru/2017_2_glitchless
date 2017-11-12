@@ -4,7 +4,7 @@
  * Abstract class.
  * Represents view component on the page.
  */
-class View {
+export default class View {
     constructor(serviceLocator) {
         this.serviceLocator = serviceLocator;
     }
@@ -23,5 +23,3 @@ class View {
     close() {
     }
 }
-
-module.exports = View;

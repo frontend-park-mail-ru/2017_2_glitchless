@@ -1,8 +1,8 @@
-const utils = require('../../../../utils/GameUtils.js');
-const Constants = require('../../../../utils/Constants.js');
-const Point = require('./Point.js');
+import utils from '../../../../utils/GameUtils';
+import Constants from '../../../../utils/Constants';
+import Point from './Point';
 
-class PhysicsObject {
+export default class PhysicsObject {
     /**
      * @param {PIXI.Sprite} sprite The sprite with which the object will be rendered.
      * @param {PhysicLoop} context  object
@@ -90,5 +90,3 @@ class PhysicsObject {
         return this.spriteSize;
     }
 }
-
-module.exports = PhysicsObject;

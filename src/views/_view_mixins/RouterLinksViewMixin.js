@@ -10,7 +10,7 @@
  * @param initialClass {Class}
  * @return {Class}
  */
-function RouterLinksViewMixin(initialClass) {
+export default function RouterLinksViewMixin(initialClass) {
     const superOpen = initialClass.prototype.open;
 
     const Mixin = {
@@ -31,5 +31,3 @@ function RouterLinksViewMixin(initialClass) {
     Object.assign(initialClass.prototype, Mixin);
     return initialClass;
 }
-
-module.exports = RouterLinksViewMixin;

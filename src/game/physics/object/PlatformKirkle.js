@@ -1,8 +1,8 @@
-const PhysicsObject = require('./primitive/PhysicsObject.js');
-const PIXI = require('pixi.js');
-const Constants = require('../../../utils/Constants.js');
+import * as PIXI from 'pixi.js';
+import PhysicsObject from './primitive/PhysicsObject';
+import Constants from '../../../utils/Constants';
 
-class PlatformKirkle extends PhysicsObject {
+export default class PlatformKirkle extends PhysicsObject {
     constructor(context, radius, coord, level) {
         super(new PIXI.Graphics(), context);
         this.radius = radius;
@@ -29,5 +29,3 @@ class PlatformKirkle extends PhysicsObject {
     }
 
 }
-
-module.exports = PlatformKirkle;

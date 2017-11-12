@@ -1,4 +1,4 @@
-class EventBus {
+export default class EventBus {
     constructor() {
         this.events = {};
     }
@@ -66,5 +66,3 @@ class EventBus {
         });
     }
 }
-
-module.exports = EventBus;

@@ -1,7 +1,7 @@
-const PhysicsObject = require('./primitive/PhysicsObject.js');
+import PhysicsObject from './primitive/PhysicsObject';
 
 const basicForceFieldTexture ='';
-class ForceField extends PhysicsObject {
+export default class ForceField extends PhysicsObject {
     constructor(context, coords = new Point(0, 0)) {
 		const basicForceFieldSprite = new PIXI.Sprite(basicForceFieldTexture);
         super(basicForceFieldSprite, context, coords);
@@ -26,5 +26,3 @@ class ForceField extends PhysicsObject {
         return [pointLeft, pointRight];
     }
 }
-
-module.exports = ForceField;

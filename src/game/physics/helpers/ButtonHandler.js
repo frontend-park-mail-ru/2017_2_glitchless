@@ -1,4 +1,4 @@
-class ButtonOnKeyboard {
+export default class ButtonOnKeyboard {
     constructor(keyCode) {
         this.code = keyCode;
         this.isDown = false;
@@ -37,5 +37,3 @@ class ButtonOnKeyboard {
         event.preventDefault();
     }
 }
-
-module.exports = ButtonOnKeyboard;

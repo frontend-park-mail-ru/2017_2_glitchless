@@ -1,7 +1,7 @@
-const View = require('../View.js');
-const TemplatedViewMixin = require('../_view_mixins/TemplatedViewMixin.js');
-const RouterLinksViewMixin = require('../_view_mixins/RouterLinksViewMixin.js');
-const template = require('./template.pug');
+import View from '../View';
+import TemplatedViewMixin from '../_view_mixins/TemplatedViewMixin';
+import RouterLinksViewMixin from '../_view_mixins/RouterLinksViewMixin';
+import template from './template.pug';
 
 
 class LeadersModalView extends View {
@@ -10,4 +10,6 @@ class LeadersModalView extends View {
     }
 }
 
-module.exports = TemplatedViewMixin(RouterLinksViewMixin(LeadersModalView));
+LeadersModalView = TemplatedViewMixin(RouterLinksViewMixin(LeadersModalView));
+
+export default LeadersModalView;

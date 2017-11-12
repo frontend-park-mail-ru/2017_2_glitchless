@@ -1,7 +1,7 @@
 /**
  * Represents user session.
  */
-class UserModel {
+export default class UserModel {
     constructor() {
         this.login = '';
         this.email = '';
@@ -59,5 +59,3 @@ class UserModel {
         localStorage.removeItem('user');
     }
 }
-
-module.exports = UserModel;

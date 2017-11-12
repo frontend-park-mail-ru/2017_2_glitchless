@@ -1,15 +1,15 @@
-const MenuView = require('./views/menu/View.js');
-const EmptyView = require('./views/empty/View.js');
-const GameView = require('./views/game/View.js');
-const AboutView = require('./views/about/View.js');
-const LeadersView = require('./views/leaders/View.js');
-const LoginView = require('./views/login/View.js');
-const SignupView = require('./views/signup/View.js');
+import MenuView from './views/menu/View';
+import EmptyView from './views/empty/View';
+import GameView from './views/game/View';
+import AboutView from './views/about/View';
+import LeadersView from './views/leaders/View';
+import LoginView from './views/login/View';
+import SignupView from './views/signup/View';
 
 /**
  * Changes the page according to url hash.
  */
-class Router {
+export default class Router {
     constructor(serviceLocator) {
         this.serviceLocator = serviceLocator;
 
@@ -220,5 +220,3 @@ class GameRouterGroup extends RouterGroup {
         this._view.close();
     }
 }
-
-module.exports = Router;

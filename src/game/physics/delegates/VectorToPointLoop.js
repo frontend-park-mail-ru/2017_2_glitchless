@@ -1,11 +1,7 @@
-const Point = require('../object/primitive/Point.js'); // It's vector
-const Constants = require('../../../utils/Constants.js');
+import Constants from '../../../utils/Constants';
 
-class VectorToPointLoop {
-    constructor() {
 
-    }
-
+export default class VectorToPointLoop {
     processVector(objects, context, elapsedMS) {
         objects.forEach(item => {
             this._processOneEntity(item, context, elapsedMS);
@@ -35,6 +31,3 @@ class VectorToPointLoop {
         }
     }
 }
-
-
-module.exports = VectorToPointLoop;

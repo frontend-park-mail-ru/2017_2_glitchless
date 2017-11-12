@@ -1,20 +1,18 @@
-const PIXI = require('pixi.js');
-const Alien = require('./object/Alien.js');
-const SpriteStorage = require('./delegates/SpriteStorage.js');
-const Constants = require('../../utils/Constants.js');
-const utils = require('../../utils/GameUtils.js');
-const VectorToPointLoop = require('./delegates/VectorToPointLoop.js');
-const PhysicVectorLoop = require('./delegates/PhysicVectorLoop.js');
-const Platform = require('./object/Platform.js');
-const Laser = require('./object/Laser.js');
-const Point = require('./object/primitive/Point.js');
-const CollisionManager = require('./CollisionManager.js');
-const primitives = require('./PhysicPrimitives.js');
+import * as PIXI from 'pixi.js';
+import Alien from './object/Alien';
+import SpriteStorage from './delegates/SpriteStorage';
+import Constants from '../../utils/Constants';
+import utils from '../../utils/GameUtils';
+import VectorToPointLoop from './delegates/VectorToPointLoop';
+import PhysicVectorLoop from './delegates/PhysicVectorLoop';
+import Platform from './object/Platform';
+import Laser from './object/Laser';
+import Point from './object/primitive/Point';
+import CollisionManager from './CollisionManager';
+import { Arc } from './PhysicPrimitives';
+import Circle from './object/PlatformKirkle';
 
-const Circle = require('./object/PlatformKirkle.js');
-const Arc = primitives.Arc;
-
-class PhysicLoop {
+export default class PhysicLoop {
     constructor(gameManager) {
         this.gameManager = gameManager;
         this.spriteStorage = new SpriteStorage();
@@ -110,5 +108,3 @@ class PhysicLoop {
         }
     }
 }
-
-module.exports = PhysicLoop;

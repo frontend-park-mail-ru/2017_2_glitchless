@@ -1,9 +1,9 @@
-const PIXI = require('pixi.js');
-const GameUtils = require('../utils/GameUtils.js');
-const Constant = require('../utils/Constants.js');
-const Point = require('./physics/object/primitive/Point.js');
+import * as PIXI from 'pixi.js';
+import GameUtils from '../utils/GameUtils';
+import Constant from '../utils/Constants';
+import Point from './physics/object/primitive/Point';
 
-class GameScene {
+export default class GameScene {
     constructor() {
         this.field = null;
         this.stage = null;
@@ -110,5 +110,3 @@ class GameScene {
         this.stage.addChild(sprite);
     }
 }
-
-module.exports = GameScene;
