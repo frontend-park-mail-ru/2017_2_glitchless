@@ -32,7 +32,7 @@ export default class GameScene {
 
         app.stage.addChild(container);
 
-        PIXI.loader.add("./images/background.png").load(function () {
+        PIXI.loader.add('./images/background.png').load(function() {
             const slide = GameUtils.makeBackgroundCoverWithSprite(
                 bgSize, new PIXI.Sprite.fromImage('./images/background.png'), 'cover');
             container.addChild(slide);

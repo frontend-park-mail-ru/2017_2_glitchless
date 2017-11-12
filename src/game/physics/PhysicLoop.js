@@ -23,15 +23,15 @@ export default class PhysicLoop {
     }
 
     initTick(gameManager) {
-        console.log("Initializing tick...");
+        console.log('Initializing tick...');
         gameManager.app.ticker.add(this._mainTick, this);
         this.timeSum = -100; // Wait for everything to load properly
         this._firstSetting();
 
-        this.anglePoints = [new Point(0.1, -0.05)];//, new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
+        this.anglePoints = [new Point(0.1, -0.05)]; //, new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
             // new Point(0.1, -0.05), new Point(0.1, 0), new Point(0.1, 0.05), new Point(0.1, 0.1)];
         this.angleCounter = 0;
-    } 
+    }
 
     _mainTick(deltaTime) {
         let elapsedMS = deltaTime /
@@ -50,11 +50,11 @@ export default class PhysicLoop {
 
         this.physicDelegate.processPhysicLoop(this, elapsedMS);
         this.vectorToPointDelegate.processVector(this.physicEntities, this, elapsedMS);
-        this.physicObjects['laser'].filter((laser) => laser.forDestroy).forEach((laser) => { 
-            laser.destroy(); 
+        this.physicObjects.laser.filter((laser) => laser.forDestroy).forEach((laser) => {
+            laser.destroy();
         });
-        this.physicObjects['laser'] = this.physicObjects['laser'].filter((laser) => !laser.forDestroy);
-        console.assert(this.physicObjects['laser'].filter((laser)=> laser.forDestroy).length === 0);
+        this.physicObjects.laser = this.physicObjects.laser.filter((laser) => !laser.forDestroy);
+        console.assert(this.physicObjects.laser.filter((laser) => laser.forDestroy).length === 0);
     }
 
     _firstSetting() {

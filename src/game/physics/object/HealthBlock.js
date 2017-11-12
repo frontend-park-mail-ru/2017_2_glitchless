@@ -7,8 +7,8 @@ import { Arc } from '../PhysicPrimitives.js';
 // const basicHealthBlockTexture = PIXI.Texture.fromImage('./images/HPblock.png');
 
 export default class HealthBlock extends PhysicsObject {
-	constructor(context, coords = new Point(0, 0)) {
-		const basicHealthBlockSprite = new PIXI.Sprite(basicHealthBlockTexture);
+    constructor(context, coords = new Point(0, 0)) {
+        const basicHealthBlockSprite = new PIXI.Sprite(basicHealthBlockTexture);
         super(basicHealthBlockSprite, context, coords);
         this.collisionCircle = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
     }

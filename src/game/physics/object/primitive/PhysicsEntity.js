@@ -18,7 +18,7 @@ export default class PhysicsEntity extends PhysicsObject {
     setSpeed(speed) {
         if (Constants.DEBUG_INPUT_CHECK) {
             if (isNaN(speed.x) || isNaN(speed.y)) {
-                throw new TypeError;
+                throw new TypeError();
             }
         }
         this.speed = speed;

@@ -9,7 +9,7 @@ export default class EventBus {
      * @param {String} key Name of the event
      * @param {Object} [args=null] Argument with which the callbacks will be executed
      */
-    emitEvent(key, args=null) {
+    emitEvent(key, args= null) {
         const collection = this.events[key];
         if (!collection) {
             return;
@@ -31,10 +31,9 @@ export default class EventBus {
      * @param {Object} context Context in which callback will be executed
      * @param {Iterable} [args=[]] Arguments with which the callback will be executed
      */
-    proxy(callback, context=this, args=[]) {
+    proxy(callback, context= this, args= []) {
         return callback.bind(context, ...args);
     }
-
 
     /**
      * Adds a callback to the event
@@ -44,7 +43,7 @@ export default class EventBus {
      * @param {Object} [context=this] Context in which function will be executed
      * @return {Function} Function that unsubscribes the callback from event
      */
-    subscribeOn(key, callback, context=this) {
+    subscribeOn(key, callback, context= this) {
         if (this.events[key] == null) {
             this.events[key] = [];
         }
@@ -61,8 +60,8 @@ export default class EventBus {
      * @param {Function} callback Function that's executed on emitting event
      */
     subscribeOff(key, callback, context) {
-        this.events[key] = this.events[key].filter((it) => {
-            it[0] != callback || it[1] != context;
-        });
+        this.events[key] = this.events[key].filter((it) => (
+            it[0] !== callback || it[1] !== context
+        ));
     }
 }

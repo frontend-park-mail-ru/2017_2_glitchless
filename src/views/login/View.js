@@ -7,7 +7,6 @@ import { initDisplayErrorsForm, displayErrors, displayServerError } from '../_fo
 import LoginForm from '../../models/LoginForm';
 import UserModel from '../../models/UserModel';
 
-
 class LoginModalView extends View {
     open() {
         this.loginForm = document.getElementById('login-form');
@@ -28,7 +27,7 @@ class LoginModalView extends View {
     _initForm() {
         initDisplayErrorsForm(this.loginForm);
 
-        this.loginForm.addEventListener('submit', function (event) {
+        this.loginForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
             const model = this._createModel();
@@ -49,7 +48,7 @@ class LoginModalView extends View {
                     this.serviceLocator.user = UserModel.fromApiJson(json.message);
                     this.serviceLocator.user.saveInLocalStorage();
                     this.serviceLocator.router.changePage('/');
-                    this.serviceLocator.eventBus.emitEvent("auth", this.serviceLocator.user);
+                    this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
                 })
                 .catch((res) => console.error(res));
         });
@@ -57,14 +56,14 @@ class LoginModalView extends View {
 
     _createModel() {
         const model = new LoginForm(this.serviceLocator);
-        model.login = this.loginForm.elements['login'].value;
-        model.password = this.loginForm.elements['password'].value;
+        model.login = this.loginForm.elements.login.value;
+        model.password = this.loginForm.elements.password.value;
         return model;
     }
 
     _fillForm(model) {
-        this.loginForm.elements['login'].value = model.login;
-        this.loginForm.elements['password'].value = model.password;
+        this.loginForm.elements.login.value = model.login;
+        this.loginForm.elements.password.value = model.password;
     }
 }
 

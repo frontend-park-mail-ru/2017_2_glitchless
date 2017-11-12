@@ -7,11 +7,11 @@ export default class ButtonOnKeyboard {
         this.release = undefined;
 
         window.addEventListener(
-            "keydown", this._downHandler.bind(this), false
+            'keydown', this._downHandler.bind(this), false,
         );
 
         window.addEventListener(
-            "keyup", this._upHandler.bind(this), false
+            'keyup', this._upHandler.bind(this), false,
         );
     }
 

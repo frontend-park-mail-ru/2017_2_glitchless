@@ -7,7 +7,6 @@ import { initDisplayErrorsForm, displayErrors, displayServerError } from '../_fo
 import SignupForm from '../../models/SignupForm';
 import UserModel from '../../models/UserModel';
 
-
 class SignupModalView extends View {
     open() {
         this.signupForm = document.getElementById('signup-form');
@@ -27,7 +26,7 @@ class SignupModalView extends View {
     }
 
     _setupSignupSubmit() {
-        this.signupForm.addEventListener('submit', function (event) {
+        this.signupForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
             const model = this._createModel(this.signupForm);
@@ -57,18 +56,18 @@ class SignupModalView extends View {
 
     _createModel() {
         const model = new SignupForm(this.serviceLocator);
-        model.login = this.signupForm.elements['login'].value;
-        model.email = this.signupForm.elements['email'].value;
-        model.password = this.signupForm.elements['password'].value;
-        model.passwordConfirmation = this.signupForm.elements['passwordConfirmation'].value;
+        model.login = this.signupForm.elements.login.value;
+        model.email = this.signupForm.elements.email.value;
+        model.password = this.signupForm.elements.password.value;
+        model.passwordConfirmation = this.signupForm.elements.passwordConfirmation.value;
         return model;
     }
 
     _fillForm(model) {
-        this.signupForm.elements['login'].value = model.login;
-        this.signupForm.elements['email'].value = model.email;
-        this.signupForm.elements['password'].value = model.password;
-        this.signupForm.elements['passwordConfirmation'].value = model.passwordConfirmation;
+        this.signupForm.elements.login.value = model.login;
+        this.signupForm.elements.email.value = model.email;
+        this.signupForm.elements.password.value = model.password;
+        this.signupForm.elements.passwordConfirmation.value = model.passwordConfirmation;
     }
 }
 

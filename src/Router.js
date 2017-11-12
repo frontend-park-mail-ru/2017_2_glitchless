@@ -61,7 +61,7 @@ export default class Router {
     }
 }
 
-/* tslint-disable no-unused-vars */
+/* tslint:disable:no-empty */
 class RouterGroup {
     constructor(serviceLocator) {
         this.serviceLocator = serviceLocator;
@@ -113,23 +113,23 @@ class MenuRouterGroup extends RouterGroup {
         this._routes = {
             '/': {
                 viewClass: EmptyView,
-                title: 'Glitchless'
+                title: 'Glitchless',
             },
             '/about': {
                 viewClass: AboutView,
-                title: 'About'
+                title: 'About',
             },
             '/leaders': {
                 viewClass: LeadersView,
-                title: 'Leaders'
+                title: 'Leaders',
             },
             '/login': {
                 viewClass: LoginView,
-                title: 'Login'
+                title: 'Login',
             },
             '/signup': {
                 viewClass: SignupView,
-                title: 'Sign up'
+                title: 'Sign up',
             },
         };
 

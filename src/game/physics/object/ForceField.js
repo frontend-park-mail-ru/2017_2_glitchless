@@ -1,9 +1,9 @@
 import PhysicsObject from './primitive/PhysicsObject';
 
-const basicForceFieldTexture ='';
+const basicForceFieldTexture = '';
 export default class ForceField extends PhysicsObject {
     constructor(context, coords = new Point(0, 0)) {
-		const basicForceFieldSprite = new PIXI.Sprite(basicForceFieldTexture);
+        const basicForceFieldSprite = new PIXI.Sprite(basicForceFieldTexture);
         super(basicForceFieldSprite, context, coords);
         this.collisionCircle = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
     }

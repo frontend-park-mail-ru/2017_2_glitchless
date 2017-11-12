@@ -5,7 +5,6 @@ import template from './template.pug';
 
 import UserModel from '../../models/UserModel';
 
-
 class MenuView extends View {
     open(root) {
         this._setupChangePageOnClick();

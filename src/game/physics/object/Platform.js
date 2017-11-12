@@ -3,7 +3,6 @@ import PhysicsEntitiy from './primitive/PhysicsEntity';
 import Constants from '../../../utils/Constants';
 import Point from './primitive/Point';
 
-
 const basicPlatformTexture = PIXI.Texture.fromImage('./images/platform.png');
 
 export default class Platform extends PhysicsEntitiy {

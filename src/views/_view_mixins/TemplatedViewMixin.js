@@ -38,7 +38,7 @@ export default function TemplatedViewMixin(initialClass) {
                 superClose.call(this);
             }
             this.root.innerHTML = '';
-        }
+        },
     };
 
     Object.assign(initialClass.prototype, Mixin);

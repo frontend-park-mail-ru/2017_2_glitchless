@@ -1,6 +1,5 @@
 import Constants from '../../../utils/Constants';
 
-
 export default class VectorToPointLoop {
     processVector(objects, context, elapsedMS) {
         objects.forEach(item => {
@@ -20,7 +19,7 @@ export default class VectorToPointLoop {
 
         objectEntity.setRotation(
             objectEntity.getRotation() + deltaRotation,
-            context
+            context,
         );
 
         if (newPoint.x > Constants.INITIAL_RES[0]

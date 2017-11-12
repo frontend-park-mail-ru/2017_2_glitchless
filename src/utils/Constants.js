@@ -31,6 +31,6 @@ export default {
         laser: 'laser',
         platform: 'platform',
         circle: 'circle',
-        alien: 'alien'
-    }
+        alien: 'alien',
+    },
 };

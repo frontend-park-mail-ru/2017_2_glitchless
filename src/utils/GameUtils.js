@@ -67,14 +67,14 @@ export default class GameUtils {
             const diffsign = Math.abs(radian2) > Math.abs(radian1) ? -1 : 1;
             return [Math.abs(radian2 - radian1) % Math.PI, diffsign];
         }
-        const simpleDiff = Math.abs(radian2 - radian1); 
+        const simpleDiff = Math.abs(radian2 - radian1);
         const reverseDiff = Math.abs(radian1 - sign1 * Math.PI) + Math.abs(radian2 - sign2 * Math.PI);
         if (simpleDiff < reverseDiff) {
             return [simpleDiff, sign1];
         }
         return [reverseDiff, sign2];
     }
-    
+
     static degrees(radians) {
         return radians * 180 / Math.PI + 180;
     }

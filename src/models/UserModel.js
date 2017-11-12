@@ -51,7 +51,7 @@ export default class UserModel {
         try {
             localStorage.setItem('user', JSON.stringify(this));
         } catch (exception) {
-            console.log("Error while write to storage!!!\n" + exception);
+            console.log('Error while write to storage!!!\n' + exception);
         }
     }
 

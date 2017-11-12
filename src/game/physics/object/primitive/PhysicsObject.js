@@ -10,9 +10,10 @@ export default class PhysicsObject {
      */
     constructor(sprite, context, coords = new Point(0, 0)) {
         if (new.target === PhysicsObject) {
-            throw new TypeError("Cannot construct abstract instances directly");
+            throw new TypeError('Cannot construct abstract instances directly');
         }
         this.sprite = sprite;
+        // tslint:disable-next-line:triple-equals
         if (this.sprite.anchor != undefined) {
             this.sprite.anchor.set(0.5);
         }
@@ -45,7 +46,7 @@ export default class PhysicsObject {
     setCoords(point, context) {
         if (Constants.DEBUG_INPUT_CHECK) {
             if (isNaN(point.x) || isNaN(point.y)) {
-                throw new TypeError;
+                throw new TypeError();
             }
         }
         this.physicCoords = point;

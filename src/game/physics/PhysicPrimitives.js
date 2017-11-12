@@ -143,7 +143,7 @@ export class Line {
      *
      * @return {Line}
      */
-    constructor(A, B, C = 0, bounds = [], isVector=false, nocheck=false) {
+    constructor(A, B, C = 0, bounds = [], isVector= false, nocheck= false) {
         this.A = A;
         this.B = B;
         this.C = C;
@@ -151,11 +151,11 @@ export class Line {
         this.isVector = isVector;
 
         if (bounds.length !== 0 && bounds.length !== 2) {
-            throw new Error("Lines must be either non-bounded, or bounded by 2 points");
+            throw new Error('Lines must be either non-bounded, or bounded by 2 points');
         }
 
         if (isVector && bounds.length === 0) {
-            throw new Error("Cannot construct non-bounded vectors");
+            throw new Error('Cannot construct non-bounded vectors');
         }
 
         if (bounds.length > 1) {
@@ -175,7 +175,7 @@ export class Line {
      *
      * @return {Line}
      */
-    static createVertical(C, bounds = [], isVector=false) {
+    static createVertical(C, bounds = [], isVector= false) {
         const line = new Line(0, 0, C, bounds, isVector);
         line.isVertical = true;
         return line;
@@ -188,12 +188,11 @@ export class Line {
      *
      * @return {Line}
      */
-    static createHorizontal(C, bounds = [], isVector=false) {
+    static createHorizontal(C, bounds = [], isVector= false) {
         const line = new Line(0, 0, C, bounds, isVector);
         line.isHorizontal = true;
         return line;
     }
-
 
     /**
      * @param {Point} point
@@ -254,7 +253,7 @@ export class Line {
      *
      * @return {Line} Line, passing through point1 and point2
      */
-    static fromPoints(point1, point2, isVector=false) {
+    static fromPoints(point1, point2, isVector= false) {
         if (Math.abs(point2.x - point1.x) < Number.EPSILON * Constants.FLOAT_PRECISION) {
             return Line.createVertical(point1.x, [point1, point2], isVector);
         }
@@ -269,7 +268,7 @@ export class Line {
         return new Line(A, B, C, [point1, point2], isVector);
     }
 
-    static fromSlopeAndPoint(slope, point, isVector=true) {
+    static fromSlopeAndPoint(slope, point, isVector= true) {
         const A = 1;
         const B = -1 / Math.tan(slope);
         const C = -(point.x + B * point.y);
@@ -331,5 +330,3 @@ export class Line {
 // console.log(line);
 // console.log(line.getXByY(0));
 // console.log(line.getPointByDist());
-
-

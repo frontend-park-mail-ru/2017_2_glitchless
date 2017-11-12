@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import GameScene from './GameScene';
 
 import PhysicLoop from './physics/PhysicLoop';
-import SinglePlayerStrategy from './SinglePlayerStrategy.js'
+import SinglePlayerStrategy from './SinglePlayerStrategy.js';
 import EventBus from '../utils/EventBus.js';
 
 export default class GameManager {

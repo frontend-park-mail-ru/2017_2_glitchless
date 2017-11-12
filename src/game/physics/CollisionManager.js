@@ -13,7 +13,7 @@ function findIntersection(line, circle) {
     const endShift = [circle.center.x, -circle.center.y];
     const r = circle.R;
     const EPS = Number.EPSILON;
-
+    /* tslint:disable no-shadowed-variable */
     if (line.isVertical) {
         if (Constants.COLLISION_DEBUG) {
             console.log('vertical');
@@ -25,7 +25,7 @@ function findIntersection(line, circle) {
         if (Math.abs(Math.abs(line.C) - circle.R) < EPS) {
             return [new Point(line.C, circle.center.y)];
         }
-        const tmpSqrt = Math.sqrt(r*r - Math.pow((x0), 2));
+        const tmpSqrt = Math.sqrt(r * r - Math.pow((x0), 2));
         const y1 = circle.center.y + tmpSqrt;
         const y2 = circle.center.y - tmpSqrt;
         if (Constants.COLLISION_DEBUG) {
@@ -35,7 +35,7 @@ function findIntersection(line, circle) {
         return [new Point(x0 + endShift[0], y1), new Point(x0 + endShift[0], y2)];
     }
 
-    if(line.isHorizontal) {
+    if (line.isHorizontal) {
         if (Constants.COLLISION_DEBUG) {
             console.log('horizontal');
         }
@@ -46,7 +46,7 @@ function findIntersection(line, circle) {
         if (Math.abs(Math.abs(line.C) - circle.R) < EPS) {
             return [new Point(line.C, circle.center.x)];
         }
-        const tmpSqrt = Math.sqrt(r*r - Math.pow((y0), 2));
+        const tmpSqrt = Math.sqrt(r * r - Math.pow((y0), 2));
         const x1 = circle.center.x + tmpSqrt;
         const x2 = circle.center.x - tmpSqrt;
         if (Constants.COLLISION_DEBUG) {
@@ -83,7 +83,7 @@ function findIntersection(line, circle) {
     const by = y0 + a * mult;
     return [new Point(ax + endShift[0], ay - endShift[1]), new Point(bx + endShift[0], by - endShift[1])];
 }
-
+/* tslint:enable */
 
 /**
  * @param {Point} point
@@ -94,7 +94,7 @@ function findIntersection(line, circle) {
  *
  * @return {[Point, Line] | Boolean} Point of collision and old trajectory line if collision exists, else false
  */
-function checkCollision(point, vector, arc, elapsedMS, fullCircle=false) {
+function checkCollision(point, vector, arc, elapsedMS, fullCircle= false) {
     const speed = vector.getLength();
     const initialPoint = point.copy();
     const tmpPoint = point.copy();
@@ -107,7 +107,7 @@ function checkCollision(point, vector, arc, elapsedMS, fullCircle=false) {
         console.log('vectCopy', vectorCopy);
     }
 
-    let line = Line.fromPoints(arc.centrate(initialPoint), 
+    let line = Line.fromPoints(arc.centrate(initialPoint),
                                arc.centrate(tmpPoint.apply(vectorCopy.x, vectorCopy.y)), true);
 
     const intersections = findIntersection(line, arc);
@@ -122,7 +122,7 @@ function checkCollision(point, vector, arc, elapsedMS, fullCircle=false) {
         return null;
     }
 
-    const collisions = intersections.filter(function (intersectionPoint) {
+    const collisions = intersections.filter(function(intersectionPoint) {
         return line.segmentContains(intersectionPoint) && (fullCircle || arc.contains(intersectionPoint));
     });
 
@@ -133,7 +133,6 @@ function checkCollision(point, vector, arc, elapsedMS, fullCircle=false) {
     // There can't be more than 1 collision in our circumstances
     return [collisions[0], line];
 }
-
 
 /**
  * @param {Point} point
@@ -154,13 +153,14 @@ function getReflection(point, vector, arc, elapsedMS) {
     const speed = vector.getLength();
 
     const relativeCollision = arc.centrate(collision);
-    const angle = utils.radianLimit(-Math.atan2(relativeCollision.y, relativeCollision.x) + Math.PI/2);
+    const angle = utils.radianLimit(-Math.atan2(relativeCollision.y, relativeCollision.x) + Math.PI / 2);
     let reflectionAngle;
 
     if (line.isVertical || line.isHorizontal) {
         reflectionAngle = utils.radianLimit(angle + Math.PI);
     } else {
         const [diffAngle, sign] = utils.minDist(line.getSlope(), angle);
+        // tslint:disable-next-line
         reflectionAngle = utils.radianLimit((angle - diffAngle * sign, angle) + Math.PI * sign);
     }
 
@@ -182,16 +182,15 @@ function getReflection(point, vector, arc, elapsedMS) {
     return [collision, resultTrajectory.getVector(speed)];
 }
 
-
 function simpleTest() {
     // let points = [new Point(0, 2), new Point(3, -1), new Point (1, -1)];
     // let points2 = [new Point(1, -2), new Point(1, 2), new Point (3, 0)];
 
     let points = [new Point(0, 2), new Point(0, 5), new Point (1, -1)];
-    let points2 = [new Point(-1, 2), new Point(-0.5,3), new Point (1, 2)];
+    let points2 = [new Point(-1, 2), new Point(-0.5, 3), new Point (1, 2)];
 
     const arc = Arc.fromPoints(...points2);
-    const line = Line.fromPoints(...points.slice(0,2));
+    const line = Line.fromPoints(...points.slice(0, 2));
     console.log(arc);
     console.log(line);
     findIntersection(line, arc);
@@ -202,5 +201,5 @@ export default {
     findIntersection,
     checkCollision,
     getReflection,
-    simpleTest
+    simpleTest,
 };

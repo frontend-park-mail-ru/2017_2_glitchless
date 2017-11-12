@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* tslint:disable:no-empty */
 
 /**
  * Abstract class.

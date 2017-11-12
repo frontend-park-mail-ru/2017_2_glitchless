@@ -45,13 +45,12 @@ export default class Point {
         return this;
     }
 
-
     /**
      * Returns the length of a vector represented by a point
      *
      * @return {Point}
      */
     getLength() {
-        return Math.sqrt(this.x*this.x + this.y * this.y);
+        return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 }

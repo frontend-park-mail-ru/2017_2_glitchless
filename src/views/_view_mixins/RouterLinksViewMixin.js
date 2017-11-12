@@ -25,7 +25,7 @@ export default function RouterLinksViewMixin(initialClass) {
             if (superOpen) {
                 superOpen.call(this, root);
             }
-        }
+        },
     };
 
     Object.assign(initialClass.prototype, Mixin);

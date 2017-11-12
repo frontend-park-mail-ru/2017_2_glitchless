@@ -4,7 +4,6 @@ import Constants from '../../../utils/Constants';
 import CollisionManager from '../CollisionManager';
 import { Arc, Circle } from '../PhysicPrimitives';
 
-
 export default class PhysicVectorLoop {
     constructor() {
         this.leftButton = new ButtonHandler(Constants.CONTROL_PLATFORM_LEFT);
@@ -31,12 +30,12 @@ export default class PhysicVectorLoop {
         if (!this.verticalPressed && this.downButton.isDown) {
             this.verticalPressed = true;
             platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
-            platform.setCircle(context.physicObjects['circle'][platform.circleLevel], context);
+            platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
         } else {
             if (!this.verticalPressed && this.upButton.isDown) {
                 this.verticalPressed = true;
                 platform.circleLevel = (platform.circleLevel + 1) % 3;
-                platform.setCircle(context.physicObjects['circle'][platform.circleLevel], context);
+                platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
             }
         }
 
@@ -56,7 +55,7 @@ export default class PhysicVectorLoop {
         }
 
         //Reflecting lasers from platform
-        context.physicObjects['platform'].forEach((platform) => {
+        context.physicObjects.platform.forEach((platform) => {
             const platformArc = Arc.fromPoints(...(platform.getEdgePoints()), platform.getCoords());
 
             if (Constants.COLLISION_DEBUG) {
@@ -68,7 +67,7 @@ export default class PhysicVectorLoop {
                 }.bind(context));
             }
 
-            context.physicObjects['laser'].forEach((laser) => {
+            context.physicObjects.laser.forEach((laser) => {
                 if (Constants.COLLISION_DEBUG) {
                     console.log('laser');
                     const speed = laser.getSpeed().copy();
@@ -86,8 +85,8 @@ export default class PhysicVectorLoop {
         }
 
         //Absorbing lasers that hit alien/turret
-        const alien = context.physicObjects['alien'][0];
-        context.physicObjects['laser'].forEach((laser) => {
+        const alien = context.physicObjects.alien[0];
+        context.physicObjects.laser.forEach((laser) => {
             if (!laser.reflected) {
                 return;
             }
