@@ -21,9 +21,13 @@
   "dependencies": {
     "@types/pixi.js": "^4.5.7",
     "ajv-keywords": "^2.1.1",
+    "babel-polyfill": "^6.26.0",
     "pixi.js": "^4.6.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
@@ -40,6 +44,7 @@
     "ts-loader": "^3.1.1",
     "tslint": "^5.8.0",
     "typescript": "^2.7.0-dev.20171112",
+    "webpack": "^3.8.1",
     "webpack-stream": "^4.0.0"
   }
 }

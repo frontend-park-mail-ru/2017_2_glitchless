@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import authUser from './authUser';
 import ServiceLocator from './ServiceLocator';
 

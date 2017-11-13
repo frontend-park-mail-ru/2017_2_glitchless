@@ -45,7 +45,6 @@ export default class Platform extends PhysicsEntitiy {
     }
 
     setRotation(rotation, context) {
-
         super.setRotation(rotation, context);
         const radius = this.circle.radius - Constants.GAME_PLATFORM_SIZE[0] / 4;
         const rotationRadian = rotation / Constants.GAME_ROTATION_COEFFICIENT;

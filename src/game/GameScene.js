@@ -9,8 +9,22 @@ export default class GameScene {
         this.stage = null;
     }
 
+    displayEndResult(winner) {
+        if (winner === 0) {
+            this.displayWinMessage();
+        } else {
+            this.displayLoseMessage();
+        }
+    }
+
     displayWinMessage() {
         const winText = new PIXI.Sprite.fromImage('./images/game_over_splash_won.png');
+        this.prepareCentralText(winText);
+        this.addObject(winText);
+    }
+
+    displayLoseMessage() {
+        const winText = new PIXI.Sprite.fromImage('./images/game_over_splash_lost.png');
         this.prepareCentralText(winText);
         this.addObject(winText);
     }
@@ -34,7 +48,7 @@ export default class GameScene {
 
         PIXI.loader.add('./images/background.png').load(function() {
             const slide = GameUtils.makeBackgroundCoverWithSprite(
-                bgSize, new PIXI.Sprite.fromImage('./images/background.png'), 'cover');
+                bgSize, PIXI.Sprite.fromImage('./images/background.png'), 'cover');
             container.addChild(slide);
         });
     }

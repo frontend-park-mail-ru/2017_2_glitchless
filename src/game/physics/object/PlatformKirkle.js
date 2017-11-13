@@ -25,7 +25,7 @@ export default class PlatformKirkle extends PhysicsObject {
         }
         this.sprite.clear();
         this.sprite.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-        this.sprite.drawCircle(0, 0, context.gameManager.scene.scaleCoords([0, this.radius])[1]);
+        this.sprite.drawCircle(0, 0, context.gameManager.scene.scaleLength(this.radius));
     }
 
 }

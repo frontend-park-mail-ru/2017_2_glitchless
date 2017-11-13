@@ -80,9 +80,6 @@ export default class PhysicVectorLoop {
                 }
             });
         });
-        if (Constants.COLLISION_DEBUG) {
-            context.gameManager.scene.stage.addChild(graphics);
-        }
 
         //Absorbing lasers that hit alien/turret
         const alien = context.physicObjects.alien[0];
@@ -92,14 +89,61 @@ export default class PhysicVectorLoop {
             }
 
             const collision = CollisionManager.checkCollision(laser.getCoords(),
-                    laser.getSpeed(), alien.collisionCircle , elapsedMS, true);
+                    laser.getSpeed(), alien.collisionCircle, elapsedMS, true);
             if (collision) {
                 laser.forDestroy = true;
             }
         });
 
         //TODO: Absorbing lasers that hit forcefields, depleting forcefields
+        context.physicObjects.forcefield.forEach((forcefield) => {
+            context.physicObjects.laser.forEach((laser) => {
+                if (forcefield.off) {
+                    return;
+                }
+                const forcefieldCollisionArc = Arc.fromPoints(...(forcefield.getEdgePoints()), forcefield.getCoords());
+                const collision = CollisionManager.checkCollision(laser.getCoords(),
+                        laser.getSpeed(), forcefieldCollisionArc, elapsedMS);
+                if (collision) {
+                    laser.forDestroy = true;
+                    forcefield.onCollision(collision);
+                }
+            });
 
-        //TODO: Absorbing lasers that hit HP blocks, depleting health
+            if (Constants.COLLISION_DEBUG) {
+                const points = [...forcefield.getEdgePoints(), forcefield.getCoords()];
+                graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
+                points.forEach(function(physicPoint) {
+                    const point = this.gameManager.scene.scalePoint(physicPoint);
+                    graphics.drawCircle(point.x, point.y, 3);
+                }.bind(context));
+            }
+        });
+        //TODO: depleting health
+        context.physicObjects.hpblock.forEach((hpblock) => {
+            context.physicObjects.laser.forEach((laser) => {
+                const hpblockCollisionArc = Arc.fromPoints(...(hpblock.getEdgePoints()), hpblock.getCoords());
+                const collision = CollisionManager.checkCollision(laser.getCoords(),
+                        laser.getSpeed(), hpblockCollisionArc, elapsedMS);
+                if (collision) {
+                    laser.forDestroy = true;
+                    hpblock.onCollision();
+                }
+            });
+
+            if (Constants.COLLISION_DEBUG) {
+                const points = [...hpblock.getEdgePoints(), hpblock.getCoords()];
+                graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
+                points.forEach(function(physicPoint) {
+                    const point = this.gameManager.scene.scalePoint(physicPoint);
+                    graphics.drawCircle(point.x, point.y, 3);
+                }.bind(context));
+            }
+        });
+
+        if (Constants.COLLISION_DEBUG) {
+            context.gameManager.scene.stage.addChild(graphics);
+
+        }
     }
 }

@@ -1,16 +1,23 @@
 import * as PIXI from 'pixi.js';
+
 import Alien from './object/Alien';
+import Platform from './object/Platform';
+import Laser from './object/Laser';
+import HealthBlock from './object/HealthBlock';
+import ForceField from './object/ForceField';
+import Bounder from './object/Bounder';
+import PlatformCircle from './object/PlatformKirkle';
+
 import SpriteStorage from './delegates/SpriteStorage';
 import Constants from '../../utils/Constants';
 import utils from '../../utils/GameUtils';
+
 import VectorToPointLoop from './delegates/VectorToPointLoop';
 import PhysicVectorLoop from './delegates/PhysicVectorLoop';
-import Platform from './object/Platform';
-import Laser from './object/Laser';
+
 import Point from './object/primitive/Point';
 import CollisionManager from './CollisionManager';
-import { Arc } from './PhysicPrimitives';
-import Circle from './object/PlatformKirkle';
+import { Arc, Circle } from './PhysicPrimitives';
 
 export default class PhysicLoop {
     constructor(gameManager) {
@@ -28,8 +35,8 @@ export default class PhysicLoop {
         this.timeSum = -100; // Wait for everything to load properly
         this._firstSetting();
 
-        this.anglePoints = [new Point(0.1, -0.05)]; //, new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
-            // new Point(0.1, -0.05), new Point(0.1, 0), new Point(0.1, 0.05), new Point(0.1, 0.1)];
+        this.anglePoints = [new Point(0.1, -0.05), new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
+            new Point(0.1, -0.05), new Point(0.1, 0), new Point(0.1, 0.05), new Point(0.1, 0.1)];
         this.angleCounter = 0;
     }
 
@@ -40,10 +47,10 @@ export default class PhysicLoop {
         this.timeSum += deltaTime;
         if (this.timeSum > 100) {
             this.timeSum = 0;
-            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(1).copy().mult(2);
+            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(1).copy().mult(-2);
             const laser = new Laser(laserSpeed, this);
             laser.setCoords(this._getCenterPoint(), this);
-            laser.setSpriteSize([10, 10], this.gameManager);
+            laser.setSpriteSize(Constants.GAME_LASER_SIZE, this.gameManager);
             this.gameManager.addObject('laser', laser);
             this.angleCounter++;
         }
@@ -53,24 +60,59 @@ export default class PhysicLoop {
         this.physicObjects.laser.filter((laser) => laser.forDestroy).forEach((laser) => {
             laser.destroy();
         });
-        this.physicObjects.laser = this.physicObjects.laser.filter((laser) => !laser.forDestroy);
+        this.physicObjects.laser = this.physicObjects.laser.filter((laser) => (!laser.forDestroy));
         console.assert(this.physicObjects.laser.filter((laser) => laser.forDestroy).length === 0);
     }
 
     _firstSetting() {
-        const alien = new Alien(this, this._getCenterPoint());
+        const center = this._getCenterPoint();
+
+        const alien = new Alien(this, center);
         alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, this.gameManager);
         this.gameManager.addObject('alien', alien);
         this.spriteStorage.alien = alien;
 
-        const circle1 = new Circle(this, Constants.GAME_CIRCLE1_RADIUS, this._getCenterPoint(), 0);
-        this.gameManager.addObject('circle', circle1);
-        const circle2 = new Circle(this, Constants.GAME_CIRCLE2_RADIUS, this._getCenterPoint(), 1);
-        this.gameManager.addObject('circle', circle2);
-        const circle3 = new Circle(this, Constants.GAME_CIRCLE3_RADIUS, this._getCenterPoint(), 2);
-        this.gameManager.addObject('circle', circle3);
+        const PlatformCircle1 = new PlatformCircle(this, Constants.GAME_CIRCLE1_RADIUS, center, 0);
+        this.gameManager.addObject('circle', PlatformCircle1);
+        const PlatformCircle2 = new PlatformCircle(this, Constants.GAME_CIRCLE2_RADIUS, center, 1);
+        this.gameManager.addObject('circle', PlatformCircle2);
+        const PlatformCircle3 = new PlatformCircle(this, Constants.GAME_CIRCLE3_RADIUS, center, 2);
+        this.gameManager.addObject('circle', PlatformCircle3);
 
-        const platform = new Platform(this, circle1);
+        for (let i = 0; i < Constants.HP_COUNT * 2; i++) {
+            const playerNum = i < Constants.HP_COUNT ? 0 : 1;
+            const hpblock = new HealthBlock(this,
+                new Point(0, 0),
+                new Circle(Constants.GAME_HP_CIRCLE_RADIUS, center), playerNum);
+            hpblock.setSpriteSize(Constants.GAME_HEALTHBLOCK_SIZE, this.gameManager);
+            hpblock.setRotation(i * Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) +
+                Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) / 2, this);
+            this.gameManager.addObject('hpblock', hpblock);
+        }
+
+        for (let i = 0; i < 2; i++) {
+            const forceField = new ForceField(this,
+                    new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                    new Circle(Constants.GAME_FORCEFIELD_RADIUS, center), i);
+            forceField.setSpriteSize(Constants.GAME_FORCEFIELD_SIZE, this.gameManager);
+            forceField.setRotation(90 + i * 180, this);
+            const coords = forceField.getCoords();
+            forceField.setCoords(new Point(coords.x, coords.y - i * 1), this);
+            this.gameManager.addObject('forcefield', forceField);
+        }
+
+        for (let i = 0; i < 2; i++) {
+            const bounder = new Bounder(this,
+                    new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                    new Circle(Constants.GAME_FORCEFIELD_RADIUS, center));
+            bounder.setSpriteSize(Constants.GAME_BOUNDER_SIZE, this.gameManager);
+            bounder.setRotation(i * 180, this);
+            const coords = bounder.getCoords();
+            bounder.setCoords(new Point(coords.x, coords.y - i * 1), this);
+            this.gameManager.addObject('bounder', bounder);
+        }
+
+        const platform = new Platform(this, PlatformCircle1);
         platform.setSpeed(new Point(0, 0));
         platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, this.gameManager);
         platform.setRotation(46, this);
