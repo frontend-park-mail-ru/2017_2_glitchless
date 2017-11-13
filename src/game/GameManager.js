@@ -3,15 +3,18 @@ import GameScene from './GameScene';
 
 import PhysicLoop from './physics/PhysicLoop';
 import SinglePlayerStrategy from './SinglePlayerStrategy';
-import EventBus from '../utils/EventBus';
+import EventBus from './GameEventBus';
 
 export default class GameManager {
     constructor(serviceLocator) {
         this.serviceLocator = serviceLocator;
         this.scene = new GameScene();
-        // this.serviceLocator.eventBus.subscribeOn('Win', this.scene.displayWinMessage.bind(this.scene));
-        this.eventBus = new EventBus();
-        this.gameStrategy = new SinglePlayerStrategy();
+        this.eventBus = EventBus;
+        this.gameStrategy = new SinglePlayerStrategy(this.scene);
+        EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
+        EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
+        EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
+        EventBus.subscribeOn('player_won', this.onGameEnd, this);
     }
 
     /**
@@ -38,9 +41,12 @@ export default class GameManager {
         this.scene.initBackground(this.app);
         this.gameStrategy.initUI(this.scene);
 
-        //setTimeout(EventBus.emitEvent.bind(EventBus, 'Win'), 500);
         this.loopObj = new PhysicLoop(this);
         this.loopObj.initTick(this);
+    }
+
+    onGameEnd() {
+        setTimeout(function() {this.app.ticker.stop(); }.bind(this), 1000);
     }
 
     destroy() {

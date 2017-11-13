@@ -94,7 +94,7 @@ function findIntersection(line, circle) {
  *
  * @return {[Point, Line] | Boolean} Point of collision and old trajectory line if collision exists, else false
  */
-function checkCollision(point, vector, arc, elapsedMS, fullCircle=false) {
+function checkCollision(point, vector, arc, elapsedMS, fullCircle= false) {
     const speed = vector.getLength();
     const initialPoint = point.copy();
     const tmpPoint = point.copy();

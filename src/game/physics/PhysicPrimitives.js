@@ -120,7 +120,6 @@ export class Arc extends Circle {
     contains(point) {
         const relPoint = this.centrate(point);
         const anglePoint = Math.atan2(relPoint.y, relPoint.x);
-        console.log('agpoint' + anglePoint);
         if (!this.reversed) {
             return this.angleBound1 < anglePoint && this.angleBound2 > anglePoint;
         }

@@ -96,7 +96,29 @@ export default class PhysicVectorLoop {
         });
 
         //TODO: Absorbing lasers that hit forcefields, depleting forcefields
+        context.physicObjects.forcefield.forEach((forcefield) => {
+            context.physicObjects.laser.forEach((laser) => {
+                if (forcefield.off) {
+                    return;
+                }
+                const forcefieldCollisionArc = Arc.fromPoints(...(forcefield.getEdgePoints()), forcefield.getCoords());
+                const collision = CollisionManager.checkCollision(laser.getCoords(),
+                        laser.getSpeed(), forcefieldCollisionArc, elapsedMS);
+                if (collision) {
+                    laser.forDestroy = true;
+                    forcefield.onCollision(collision);
+                }
+            });
 
+            if (Constants.COLLISION_DEBUG) {
+                const points = [...forcefield.getEdgePoints(), forcefield.getCoords()];
+                graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
+                points.forEach(function(physicPoint) {
+                    const point = this.gameManager.scene.scalePoint(physicPoint);
+                    graphics.drawCircle(point.x, point.y, 3);
+                }.bind(context));
+            }
+        });
         //TODO: depleting health
         context.physicObjects.hpblock.forEach((hpblock) => {
             context.physicObjects.laser.forEach((laser) => {
@@ -104,13 +126,8 @@ export default class PhysicVectorLoop {
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
                         laser.getSpeed(), hpblockCollisionArc, elapsedMS);
                 if (collision) {
-                    console.log(Constants.GAME_CIRCLE1_RADIUS)
-                    console.log(collision);
-                    const point = context.gameManager.scene.scalePoint(collision[1]);
-                    graphics.drawCircle(point.x, point.y, 3);
-                    // debugger;
                     laser.forDestroy = true;
-                    hpblock.destroy();
+                    hpblock.onCollision();
                 }
             });
 

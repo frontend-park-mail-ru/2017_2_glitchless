@@ -3,18 +3,25 @@ import * as PIXI from 'pixi.js';
 import Point from './primitive/Point.js';
 import Constants from '../../../utils/Constants';
 import { Arc, Circle } from '../PhysicPrimitives.js';
+import EventBus from '../../GameEventBus';
 
 const basicHealthBlockTexture = PIXI.Texture.fromImage('./images/energy_block.png');
 
 export default class HealthBlock extends PhysicsObject {
-    constructor(context, coords = new Point(0, 0), alignmentCircle) {
+    constructor(context, coords = new Point(0, 0), alignmentCircle, id) {
         const basicHealthBlockSprite = new PIXI.Sprite(basicHealthBlockTexture);
         super(basicHealthBlockSprite, context, coords);
         this.circle = alignmentCircle;
+        this.playerNumber = id;
     }
 
     refreshCollisionArc() {
         this.collisionArc = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
+    }
+
+    onCollision() {
+        EventBus.emitEvent('hpblock_hit', this);
+        this.destroy();
     }
 
     getEdgePoints() {
