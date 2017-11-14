@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import ButtonHandler from '../helpers/ButtonHandler';
 import Constants from '../../../utils/Constants';
 import CollisionManager from '../CollisionManager';
-import { Arc, Circle } from '../PhysicPrimitives';
+import {Arc, Circle} from '../PhysicPrimitives';
 
 export default class PhysicVectorLoop {
     constructor() {
@@ -25,31 +25,18 @@ export default class PhysicVectorLoop {
 
     _processPlatformLogic(platform, context) {
         context.physicObjects.platform.forEach((platform) => {
+            if (platform.direction === 0) {
+                if (platform.getRotationSpeed() > Constants.GAME_PLATFROM_MIN_SPEED) {
+                    platform.setRotationSpeed(Math.max(platform.getRotationSpeed() - (platform.getRotationSpeed() / 8), 0));
+                } else if (platform.getRotationSpeed() < Constants.GAME_PLATFROM_MIN_SPEED) {
+                    platform.setRotationSpeed(Math.min(platform.getRotationSpeed() + Math.abs(platform.getRotationSpeed() / 8), 0));
+                } else {
+                    platform.setRotationSpeed(0);
+                }
+                return;
+            }
             platform.setRotationSpeed(Constants.GAME_PLATFORM_CONTROL_SPEED * platform.direction);
         })
-        // if (this.downButton.isUp && this.upButton.isUp) {
-        //     this.verticalPressed = false;
-        // }
-
-        // if (!this.verticalPressed && this.downButton.isDown) {
-        //     this.verticalPressed = true;
-        //     platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
-        //     platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-        // } else {
-        //     if (!this.verticalPressed && this.upButton.isDown) {
-        //         this.verticalPressed = true;
-        //         platform.circleLevel = (platform.circleLevel + 1) % 3;
-        //         platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-        //     }
-        // }
-
-        // if (this.leftButton.isDown || this.qButton.isDown) {
-        //     platform.setRotationSpeed(Constants.GAME_PLATFORM_CONTROL_SPEED);
-        // } else if (this.rightButton.isDown || this.eButton.isDown) {
-        //     platform.setRotationSpeed(-Constants.GAME_PLATFORM_CONTROL_SPEED);
-        // } else {
-        //     platform.setRotationSpeed(0);
-        // }
     }
 
     _processCollisions(context, elapsedMS) {
@@ -65,7 +52,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...platform.getEdgePoints(), platform.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
@@ -93,7 +80,7 @@ export default class PhysicVectorLoop {
             }
 
             const collision = CollisionManager.checkCollision(laser.getCoords(),
-                    laser.getSpeed(), alien.collisionCircle, elapsedMS, true);
+                laser.getSpeed(), alien.collisionCircle, elapsedMS, true);
             if (collision) {
                 laser.forDestroy = true;
             }
@@ -106,7 +93,7 @@ export default class PhysicVectorLoop {
             }
             context.physicObjects.laser.forEach((laser) => {
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
-                        laser.getSpeed(), forcefield.collisionArc, elapsedMS);
+                    laser.getSpeed(), forcefield.collisionArc, elapsedMS);
                 if (collision) {
                     laser.forDestroy = true;
                     forcefield.onCollision(collision);
@@ -116,7 +103,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...forcefield.getEdgePoints(), forcefield.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
@@ -126,7 +113,7 @@ export default class PhysicVectorLoop {
         context.physicObjects.hpblock.forEach((hpblock) => {
             context.physicObjects.laser.forEach((laser) => {
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
-                        laser.getSpeed(), hpblock.collisionArc, elapsedMS);
+                    laser.getSpeed(), hpblock.collisionArc, elapsedMS);
                 if (collision) {
                     laser.forDestroy = true;
                     hpblock.onCollision();
@@ -136,7 +123,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...hpblock.getEdgePoints(), hpblock.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
