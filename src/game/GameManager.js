@@ -14,7 +14,7 @@ export default class GameManager {
         EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
         EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
-        EventBus.subscribeOn('player_won', this.onGameEnd, this);
+        // EventBus.subscribeOn('player_won', this.onGameEnd, this);
     }
 
     /**
@@ -39,7 +39,7 @@ export default class GameManager {
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         this.scene.initBackground(this.app);
-        this.gameStrategy.initUI(this.scene);
+        this.gameStrategy.initUI();
 
         this.loopObj = new PhysicLoop(this);
         this.loopObj.initTick(this);

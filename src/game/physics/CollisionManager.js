@@ -90,17 +90,23 @@ function findIntersection(line, circle) {
  * @param {Point} vector
  * @param {Arc} arc
  * @param {Number} elapsedMS
- * @param {Boolean} fullCircle
+ * @param {Boolean} fullCircle whether we should check collision with an arc (default) or with full circle
+ * @param {Boolean} isRay whether we should check normal coollision (default) or with a ray starting at point,
+ *     in direction of vector
  *
  * @return {[Point, Line] | Boolean} Point of collision and old trajectory line if collision exists, else false
  */
-function checkCollision(point, vector, arc, elapsedMS, fullCircle= false) {
+function checkCollision(point, vector, arc, elapsedMS, fullCircle= false, isRay= false) {
     const speed = vector.getLength();
     const initialPoint = point.copy();
     const tmpPoint = point.copy();
 
     const vectorCopy = new Point(vector.x, vector.y);
-    vectorCopy.mult(elapsedMS).mult(Constants.COLLISION_PRECISION);
+    if (!isRay) {
+        vectorCopy.mult(elapsedMS).mult(Constants.COLLISION_PRECISION);
+    } else {
+        vectorCopy.mult(1000000);
+    }
 
     if (Constants.COLLISION_DEBUG) {
         console.log('collision inputs', point, vector, arc, elapsedMS);
