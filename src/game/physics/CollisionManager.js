@@ -91,7 +91,7 @@ function findIntersection(line, circle) {
  * @param {Arc} arc
  * @param {Number} elapsedMS
  * @param {Boolean} fullCircle whether we should check collision with an arc (default) or with full circle
- * @param {Boolean} isRay whether we should check normal coollision (default) or with a ray starting at point, 
+ * @param {Boolean} isRay whether we should check normal coollision (default) or with a ray starting at point,
  *     in direction of vector
  *
  * @return {[Point, Line] | Boolean} Point of collision and old trajectory line if collision exists, else false

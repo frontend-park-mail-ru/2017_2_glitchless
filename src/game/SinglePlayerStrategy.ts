@@ -45,84 +45,6 @@ export default class SinglePlayerStrategy extends GameStrategy {
         this.processControls(physicContext, physicContext.spriteStorage.userPlatform);
     }
 
-    private processControls(context, platform) {
-         if (this.downButton.isUp && this.upButton.isUp) {
-            this.verticalPressed = false;
-        }
-
-        if (!this.verticalPressed && this.downButton.isDown) {
-            this.verticalPressed = true;
-            platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
-            platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-        } else {
-            if (!this.verticalPressed && this.upButton.isDown) {
-                this.verticalPressed = true;
-                platform.circleLevel = (platform.circleLevel + 1) % 3;
-                platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-            }
-        }
-
-        if (this.leftButton.isDown || this.qButton.isDown) {
-            platform.setMoveDirection('left');
-        } else if (this.rightButton.isDown || this.eButton.isDown) {
-            platform.setMoveDirection('right');
-        } else {
-            platform.setMoveDirection('none');
-        }
-    }
-
-    public processBotLogic(physicContext) {
-        const enemyPlatform = physicContext.spriteStorage.enemyPlatform;
-        const lasers = physicContext.physicObjects.laser;
-        const forcefield = physicContext.physicObjects.forcefield[1];
-        const platformCoords = enemyPlatform.getCoords().copy();
-        const mapCenter = physicContext._getCenterPoint();
-        const platformRotation = enemyPlatform.getRotation();
-        if (platformRotation < 181) {
-            enemyPlatform.setMoveDirection('left');
-            return;
-        }
-
-        let minDistance = Infinity;
-        let closestLaser;
-        let dangerPoint;
-        lasers.forEach((laser) => {
-            const collision = CollisionManager.checkCollision(laser.getCoords(), laser.getSpeed(), forcefield.collisionArc,
-                0, false, true);
-            if (!collision) {
-                return; // Laser is not going to hit our half of the field, no need to worry
-            }
-            const laserCoords = laser.getCoords();
-            const distance = laserCoords.copy()
-                .apply(-platformCoords.x, -platformCoords.y)
-                .getLength();
-
-            if (distance >= minDistance) {
-                return; // We have more sudden threats to worry about
-            }
-
-            minDistance = distance;
-            closestLaser = laser;
-            dangerPoint = collision[0];
-        });
-
-        if (!closestLaser) {
-            enemyPlatform.setMoveDirection('none');
-            return; // No lasers are going for our half of the field, who are we to complain? Just chillax.
-        }
-
-        if (dangerPoint.y * 1 / Math.sin(Constants.GAME_FORCEFIELD_RADIUS / Constants.GAME_CIRCLE1_RADIUS * dangerPoint.y)
-            > platformCoords.y) {
-            enemyPlatform.setMoveDirection('left');
-        }
-        else {
-            console.log(dangerPoint);
-            enemyPlatform.setMoveDirection('right');
-        }
-
-        console.log('Oooh, my defense!');
-    }
-
     public onForceFieldDepletion(forcefield: ForceField) {
         const playerNum = forcefield.playerNumber;
         const player = this.players[playerNum];
@@ -176,4 +98,88 @@ export default class SinglePlayerStrategy extends GameStrategy {
             this.forceFieldBars.push(forceFieldBar);
         }.bind(this));
     }
+
+     private processControls(context, platform) {
+        if (this.downButton.isUp && this.upButton.isUp) {
+            this.verticalPressed = false;
+        }
+
+        if (!this.verticalPressed && this.downButton.isDown) {
+            this.verticalPressed = true;
+            platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
+            platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
+        } else {
+            if (!this.verticalPressed && this.upButton.isDown) {
+                this.verticalPressed = true;
+                platform.circleLevel = (platform.circleLevel + 1) % 3;
+                platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
+            }
+        }
+
+        if (this.leftButton.isDown || this.qButton.isDown) {
+            platform.setMoveDirection('left');
+        } else if (this.rightButton.isDown || this.eButton.isDown) {
+            platform.setMoveDirection('right');
+        } else {
+            platform.setMoveDirection('none');
+        }
+    }
+
+    private processBotLogic(physicContext) {
+        const enemyPlatform = physicContext.spriteStorage.enemyPlatform;
+        const lasers = physicContext.physicObjects.laser;
+        const forcefield = physicContext.physicObjects.forcefield[1];
+        const platformCoords = enemyPlatform.getCoords().copy();
+        const mapCenter = physicContext._getCenterPoint();
+        const platformRotation = enemyPlatform.getRotation();
+        if (platformRotation < 90 || platformRotation > 358) {
+            enemyPlatform.setMoveDirection('right');
+            return;
+        }
+        if (platformRotation < 181) {
+            enemyPlatform.setMoveDirection('left');
+            return;
+        }
+
+        let minDistance = Infinity;
+        let closestLaser;
+        let dangerPoint;
+        lasers.forEach((laser) => {
+            const collision = CollisionManager.checkCollision(
+                laser.getCoords(), laser.getSpeed(), forcefield.collisionArc,
+                0, false, true);
+            if (!collision) {
+                return; // Laser is not going to hit our half of the field, no need to worry
+            }
+            const laserCoords = laser.getCoords();
+            const distance = laserCoords.copy()
+                .apply(-platformCoords.x, -platformCoords.y)
+                .getLength();
+
+            if (distance >= minDistance) {
+                return; // We have more sudden threats to worry about
+            }
+
+            minDistance = distance;
+            closestLaser = laser;
+            dangerPoint = collision[0];
+        });
+
+        if (!closestLaser) {
+            enemyPlatform.setMoveDirection('none');
+            return; // No lasers are going for our half of the field, who are we to complain? Just chillax.
+        }
+
+        if (dangerPoint.y * 1
+            / Math.sin(Constants.GAME_FORCEFIELD_RADIUS / Constants.GAME_CIRCLE1_RADIUS * dangerPoint.y)
+            > platformCoords.y) {
+            enemyPlatform.setMoveDirection('left');
+        } else {
+            console.log(dangerPoint);
+            enemyPlatform.setMoveDirection('right');
+        }
+
+        console.log('Oooh, my defense!');
+    }
+
 }
