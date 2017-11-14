@@ -5,6 +5,7 @@ import AboutView from './views/about/View';
 import LeadersView from './views/leaders/View';
 import LoginView from './views/login/View';
 import SignupView from './views/signup/View';
+import LobbyView from "./views/lobby/View";
 
 /**
  * Changes the page according to url hash.
@@ -130,6 +131,10 @@ class MenuRouterGroup extends RouterGroup {
             '/signup': {
                 viewClass: SignupView,
                 title: 'Sign up',
+            },
+            '/lobby': {
+                viewClass: LobbyView,
+                title: 'Lobby search',
             },
         };
 

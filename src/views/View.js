@@ -1,25 +1,25 @@
-/* tslint:disable:no-empty */
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Abstract class.
  * Represents view component on the page.
  */
-export default class View {
-    constructor(serviceLocator) {
+var View = /** @class */ (function () {
+    function View(serviceLocator) {
         this.serviceLocator = serviceLocator;
     }
-
     /**
      * Initialize view in DOM element.
      *
      * @param root {Element} DOM element to initialize in
      */
-    open(root) {
-    }
-
+    View.prototype.open = function (root) {
+    };
     /**
      * Process cleanup.
      */
-    close() {
-    }
-}
+    View.prototype.close = function () {
+    };
+    return View;
+}());
+exports.default = View;
