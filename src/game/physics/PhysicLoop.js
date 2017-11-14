@@ -37,7 +37,7 @@ export default class PhysicLoop {
 
         this.anglePoints = [new Point(0.1, -0.05), new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
             new Point(0.1, -0.05), new Point(0.1, 0), new Point(0.1, 0.05), new Point(0.1, 0.1)];
-        this.angleCounter = this.anglePoints.length / 2 + 2;
+        this.angleCounter = 0;
     }
 
     _mainTick(deltaTime) {
@@ -47,7 +47,7 @@ export default class PhysicLoop {
         this.timeSum += deltaTime;
         if (this.timeSum > 100) {
             this.timeSum = 0;
-            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(1).copy().mult(2);
+            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-2);
             const laser = new Laser(laserSpeed, this);
             laser.setCoords(this._getCenterPoint(), this);
             laser.setSpriteSize(Constants.GAME_LASER_SIZE, this.gameManager);
