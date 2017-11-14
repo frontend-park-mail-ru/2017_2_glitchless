@@ -2,8 +2,12 @@ import Constants from '../utils/Constants';
 import EventBus from './GameEventBus';
 import GameScene from './GameScene';
 import GameStrategy from './GameStrategy';
+
+import CollisionManager from './physics/CollisionManager';
 import ForceField from './physics/object/ForceField';
+import Platform from './physics/object/Platform';
 import Point from './physics/object/primitive/Point';
+
 import Player from './Player';
 
 const forceFieldBarTexture = PIXI.Texture.fromImage('./images/shield_gui_status.png');
@@ -12,8 +16,10 @@ export default class SinglePlayerStrategy extends GameStrategy {
     public players: Player[];
     public forceFieldBarPos: Point[];
     public forceFieldBars: PIXI.Sprite[];
+    public botPlatform: Platform;
     private laserDamage: number;
     private scene: GameScene;
+
     constructor(scene) {
         super();
         this.players = [new Player(0), new Player(1)];
@@ -30,8 +36,91 @@ export default class SinglePlayerStrategy extends GameStrategy {
         this.scene = scene;
     }
 
-    public initUI(scene) {
-        this._drawForceFieldBars(scene);
+    public initUI() {
+        this._drawForceFieldBars(this.scene);
+    }
+
+    public gameplayTick(physicContext) {
+        this.processBotLogic(physicContext);
+        this.processControls(physicContext, physicContext.spriteStorage.userPlatform);
+    }
+
+    private processControls(context, platform) {
+         if (this.downButton.isUp && this.upButton.isUp) {
+            this.verticalPressed = false;
+        }
+
+        if (!this.verticalPressed && this.downButton.isDown) {
+            this.verticalPressed = true;
+            platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
+            platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
+        } else {
+            if (!this.verticalPressed && this.upButton.isDown) {
+                this.verticalPressed = true;
+                platform.circleLevel = (platform.circleLevel + 1) % 3;
+                platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
+            }
+        }
+
+        if (this.leftButton.isDown || this.qButton.isDown) {
+            platform.setMoveDirection('left');
+        } else if (this.rightButton.isDown || this.eButton.isDown) {
+            platform.setMoveDirection('right');
+        } else {
+            platform.setMoveDirection('none');
+        }
+    }
+
+    public processBotLogic(physicContext) {
+        const enemyPlatform = physicContext.spriteStorage.enemyPlatform;
+        const lasers = physicContext.physicObjects.laser;
+        const forcefield = physicContext.physicObjects.forcefield[1];
+        const platformCoords = enemyPlatform.getCoords().copy();
+        const mapCenter = physicContext._getCenterPoint();
+        const platformRotation = enemyPlatform.getRotation();
+        if (platformRotation < 181) {
+            enemyPlatform.setMoveDirection('left');
+            return;
+        }
+
+        let minDistance = Infinity;
+        let closestLaser;
+        let dangerPoint;
+        lasers.forEach((laser) => {
+            const collision = CollisionManager.checkCollision(laser.getCoords(), laser.getSpeed(), forcefield.collisionArc,
+                0, false, true);
+            if (!collision) {
+                return; // Laser is not going to hit our half of the field, no need to worry
+            }
+            const laserCoords = laser.getCoords();
+            const distance = laserCoords.copy()
+                .apply(-platformCoords.x, -platformCoords.y)
+                .getLength();
+
+            if (distance >= minDistance) {
+                return; // We have more sudden threats to worry about
+            }
+
+            minDistance = distance;
+            closestLaser = laser;
+            dangerPoint = collision[0];
+        });
+
+        if (!closestLaser) {
+            enemyPlatform.setMoveDirection('none');
+            return; // No lasers are going for our half of the field, who are we to complain? Just chillax.
+        }
+
+        if (dangerPoint.y * 1 / Math.sin(Constants.GAME_FORCEFIELD_RADIUS / Constants.GAME_CIRCLE1_RADIUS * dangerPoint.y)
+            > platformCoords.y) {
+            enemyPlatform.setMoveDirection('left');
+        }
+        else {
+            console.log(dangerPoint);
+            enemyPlatform.setMoveDirection('right');
+        }
+
+        console.log('Oooh, my defense!');
     }
 
     public onForceFieldDepletion(forcefield: ForceField) {
@@ -66,6 +155,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
 
     public onGameEnd(loser: number) {
         const winner = (loser + 1) % 1;
+        console.log(winner);
         EventBus.emitEvent('player_won', winner);
     }
 

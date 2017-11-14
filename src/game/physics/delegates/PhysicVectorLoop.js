@@ -18,34 +18,38 @@ export default class PhysicVectorLoop {
     }
 
     processPhysicLoop(context, elapsedMS) {
+        context.gameManager.gameStrategy.gameplayTick(context);
         this._processPlatformLogic(context.spriteStorage.userPlatform, context);
         this._processCollisions(context, elapsedMS);
     }
 
     _processPlatformLogic(platform, context) {
-        if (this.downButton.isUp && this.upButton.isUp) {
-            this.verticalPressed = false;
-        }
+        context.physicObjects.platform.forEach((platform) => {
+            platform.setRotationSpeed(Constants.GAME_PLATFORM_CONTROL_SPEED * platform.direction);
+        })
+        // if (this.downButton.isUp && this.upButton.isUp) {
+        //     this.verticalPressed = false;
+        // }
 
-        if (!this.verticalPressed && this.downButton.isDown) {
-            this.verticalPressed = true;
-            platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
-            platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-        } else {
-            if (!this.verticalPressed && this.upButton.isDown) {
-                this.verticalPressed = true;
-                platform.circleLevel = (platform.circleLevel + 1) % 3;
-                platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-            }
-        }
+        // if (!this.verticalPressed && this.downButton.isDown) {
+        //     this.verticalPressed = true;
+        //     platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
+        //     platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
+        // } else {
+        //     if (!this.verticalPressed && this.upButton.isDown) {
+        //         this.verticalPressed = true;
+        //         platform.circleLevel = (platform.circleLevel + 1) % 3;
+        //         platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
+        //     }
+        // }
 
-        if (this.leftButton.isDown || this.qButton.isDown) {
-            platform.setRotationSpeed(Constants.GAME_PLATFORM_CONTROL_SPEED);
-        } else if (this.rightButton.isDown || this.eButton.isDown) {
-            platform.setRotationSpeed(-Constants.GAME_PLATFORM_CONTROL_SPEED);
-        } else {
-            platform.setRotationSpeed(0);
-        }
+        // if (this.leftButton.isDown || this.qButton.isDown) {
+        //     platform.setRotationSpeed(Constants.GAME_PLATFORM_CONTROL_SPEED);
+        // } else if (this.rightButton.isDown || this.eButton.isDown) {
+        //     platform.setRotationSpeed(-Constants.GAME_PLATFORM_CONTROL_SPEED);
+        // } else {
+        //     platform.setRotationSpeed(0);
+        // }
     }
 
     _processCollisions(context, elapsedMS) {
@@ -97,13 +101,12 @@ export default class PhysicVectorLoop {
 
         //TODO: Absorbing lasers that hit forcefields, depleting forcefields
         context.physicObjects.forcefield.forEach((forcefield) => {
+            if (forcefield.off) {
+                return;
+            }
             context.physicObjects.laser.forEach((laser) => {
-                if (forcefield.off) {
-                    return;
-                }
-                const forcefieldCollisionArc = Arc.fromPoints(...(forcefield.getEdgePoints()), forcefield.getCoords());
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
-                        laser.getSpeed(), forcefieldCollisionArc, elapsedMS);
+                        laser.getSpeed(), forcefield.collisionArc, elapsedMS);
                 if (collision) {
                     laser.forDestroy = true;
                     forcefield.onCollision(collision);
@@ -122,9 +125,8 @@ export default class PhysicVectorLoop {
         //TODO: depleting health
         context.physicObjects.hpblock.forEach((hpblock) => {
             context.physicObjects.laser.forEach((laser) => {
-                const hpblockCollisionArc = Arc.fromPoints(...(hpblock.getEdgePoints()), hpblock.getCoords());
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
-                        laser.getSpeed(), hpblockCollisionArc, elapsedMS);
+                        laser.getSpeed(), hpblock.collisionArc, elapsedMS);
                 if (collision) {
                     laser.forDestroy = true;
                     hpblock.onCollision();

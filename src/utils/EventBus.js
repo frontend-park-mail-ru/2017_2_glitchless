@@ -16,7 +16,7 @@ export default class EventBus {
         }
         collection.forEach((item) => {
             const callback = item[0].bind(item[1]);
-            if (args) {
+            if (args !== null) {
                 callback(args);
                 return;
             }

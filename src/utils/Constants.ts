@@ -37,7 +37,7 @@ export default {
     COLLISION_DEBUG: false,
     VERTICAL_PRECISION: 5,
     FLOAT_PRECISION: 10,
-    COLLISION_PRECISION: 1.25,
+    COLLISION_PRECISION: 1.5,
     GameObjects: {
         laser: 'laser',
         platform: 'platform',

@@ -1,6 +1,17 @@
 import * as PIXI from 'pixi.js';
+
+import Alien from './physics/object/Alien';
+import Platform from './physics/object/Platform';
+import Laser from './physics/object/Laser';
+import HealthBlock from './physics/object/HealthBlock';
+import ForceField from './physics/object/ForceField';
+import Bounder from './physics/object/Bounder';
+import PlatformCircle from './physics/object/PlatformKirkle';
+
+import {Circle} from './physics/PhysicPrimitives';
+
 import GameUtils from '../utils/GameUtils';
-import Constant from '../utils/Constants';
+import Constants from '../utils/Constants';
 import Point from './physics/object/primitive/Point';
 
 export default class GameScene {
@@ -10,6 +21,7 @@ export default class GameScene {
     }
 
     displayEndResult(winner) {
+        console.log(winner);
         if (winner === 0) {
             this.displayWinMessage();
         } else {
@@ -24,14 +36,14 @@ export default class GameScene {
     }
 
     displayLoseMessage() {
-        const winText = new PIXI.Sprite.fromImage('./images/game_over_splash_lost.png');
-        this.prepareCentralText(winText);
-        this.addObject(winText);
+        const loseText = new PIXI.Sprite.fromImage('./images/game_over_splash_lost.png');
+        this.prepareCentralText(loseText);
+        this.addObject(loseText);
     }
 
     prepareCentralText(textSprite) {
         textSprite.anchor.set(0.5);
-        const textSize = this.scaleCoords(Constant.GAME_TEXT_SIZE);
+        const textSize = this.scaleCoords(Constants.GAME_TEXT_SIZE);
         textSprite.width = textSize[0];
         textSprite.height = textSize[1];
         const center = this.getCenterPoint();
@@ -53,6 +65,68 @@ export default class GameScene {
         });
     }
 
+    initField(physicContext) {
+        const center = physicContext._getCenterPoint();
+
+        const alien = new Alien(physicContext, center);
+        alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, physicContext.gameManager);
+        physicContext.gameManager.addObject('alien', alien);
+        physicContext.spriteStorage.alien = alien;
+
+        const PlatformCircle1 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE1_RADIUS, center, 0);
+        physicContext.gameManager.addObject('circle', PlatformCircle1);
+        const PlatformCircle2 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE2_RADIUS, center, 1);
+        physicContext.gameManager.addObject('circle', PlatformCircle2);
+        const PlatformCircle3 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE3_RADIUS, center, 2);
+        physicContext.gameManager.addObject('circle', PlatformCircle3);
+
+        for (let i = 0; i < Constants.HP_COUNT * 2; i++) {
+            const playerNum = i < Constants.HP_COUNT ? 0 : 1;
+            const hpblock = new HealthBlock(physicContext,
+                new Point(0, 0),
+                new Circle(Constants.GAME_HP_CIRCLE_RADIUS, center), playerNum);
+            hpblock.setSpriteSize(Constants.GAME_HEALTHBLOCK_SIZE, physicContext.gameManager);
+            hpblock.setRotation(i * Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) +
+                Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) / 2, physicContext);
+            physicContext.gameManager.addObject('hpblock', hpblock);
+        }
+
+        for (let i = 0; i < 2; i++) {
+            const forceField = new ForceField(physicContext,
+                    new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                    new Circle(Constants.GAME_FORCEFIELD_RADIUS, center), i);
+            forceField.setSpriteSize(Constants.GAME_FORCEFIELD_SIZE, physicContext.gameManager);
+            forceField.setRotation(90 + i * 180, physicContext);
+            const coords = forceField.getCoords();
+            forceField.setCoords(new Point(coords.x, coords.y - i * 1), physicContext);
+            physicContext.gameManager.addObject('forcefield', forceField);
+        }
+
+        for (let i = 0; i < 2; i++) {
+            const bounder = new Bounder(physicContext,
+                    new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                    new Circle(Constants.GAME_FORCEFIELD_RADIUS, center));
+            bounder.setSpriteSize(Constants.GAME_BOUNDER_SIZE, physicContext.gameManager);
+            bounder.setRotation(i * 180, physicContext);
+            const coords = bounder.getCoords();
+            bounder.setCoords(new Point(coords.x, coords.y - i * 1), physicContext);
+            physicContext.gameManager.addObject('bounder', bounder);
+        }
+
+        for (let i = 0; i < 2; i++) {
+            const platform = new Platform(physicContext, PlatformCircle1);
+            platform.setSpeed(new Point(0, 0));
+            platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, physicContext.gameManager);
+            platform.setRotation(90 + i * 180, physicContext);
+            physicContext.gameManager.addObject('platform', platform);
+            if (i === 0) {
+                physicContext.spriteStorage.userPlatform = platform;
+            } else {
+                physicContext.spriteStorage.enemyPlatform = platform;
+            }
+        }
+    }
+
     setCoords(sprite, point) {
         const scenePoint = this.scalePoint(point);
         [sprite.x, sprite.y] = [scenePoint.x, scenePoint.y];
@@ -72,7 +146,7 @@ export default class GameScene {
      * @param {Number[]} [initialRes=[1920, 1080]] Initial resolution
      * @return {Number} Scaled length
      */
-    scaleLength(length, initialRes = Constant.INITIAL_RES) {
+    scaleLength(length, initialRes = Constants.INITIAL_RES) {
         const scale = this.height / initialRes[1];
         return length * scale;
     }
@@ -86,7 +160,7 @@ export default class GameScene {
      * @param {Number[]} [initialRes=[1920, 1080]] Initial resolution
      * @return {Number[]} Scaled coordinates
      */
-    scaleCoords(coords, initialRes = Constant.INITIAL_RES) {
+    scaleCoords(coords, initialRes = Constants.INITIAL_RES) {
         const x = coords[0];
         const y = coords[1];
 
@@ -105,7 +179,7 @@ export default class GameScene {
      * @param {Number[]} [initialRes=[1920, 1080]] Initial resolution
      * @return {Point} Scaled coordinates
      */
-    scalePoint(point, initialRes = Constant.INITIAL_RES) {
+    scalePoint(point, initialRes = Constants.INITIAL_RES) {
         const xScale = this.width / initialRes[0];
         const yScale = this.height / initialRes[1];
         return new Point(Math.round(point.x * xScale), Math.round(point.y * yScale));
