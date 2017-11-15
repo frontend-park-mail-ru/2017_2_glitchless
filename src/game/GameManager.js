@@ -68,7 +68,3 @@ export default class GameManager {
         });
     }
 }
-
-function Class() {
-    return 
-}

@@ -45,7 +45,7 @@ export default class PhysicLoop {
             PIXI.settings.TARGET_FPMS /
             this.gameManager.app.ticker.speed;
         this.timeSum += elapsedMS;
-        if (this.timeSum > 100) {
+        if (this.timeSum > 1000) {
             this.timeSum = 0;
             const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-2);
             const laser = new Laser(laserSpeed, this);

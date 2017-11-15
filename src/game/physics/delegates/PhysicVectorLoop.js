@@ -18,7 +18,6 @@ export default class PhysicVectorLoop {
     }
 
     processPhysicLoop(context, elapsedMS) {
-        context.gameManager.gameStrategy.gameplayTick(context);
         this._processPlatformLogic(context.physicObjects.platform);
         this._processCollisions(context, elapsedMS);
     }
@@ -28,12 +27,12 @@ export default class PhysicVectorLoop {
             if (platform.direction === 0) {
                 if (platform.getRotationSpeed() > Constants.GAME_PLATFROM_MIN_SPEED) {
                     platform.setRotationSpeed(Math.max(
-                        platform.getRotationSpeed() - (platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT),
-                        0));
+                        platform.getRotationSpeed()
+                        - (platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0));
                 } else if (platform.getRotationSpeed() < Constants.GAME_PLATFROM_MIN_SPEED) {
                     platform.setRotationSpeed(Math.min(
-                        platform.getRotationSpeed() + Math.abs(platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT),
-                        0));
+                        platform.getRotationSpeed()
+                        + Math.abs(platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0));
                 } else {
                     platform.setRotationSpeed(0);
                 }
