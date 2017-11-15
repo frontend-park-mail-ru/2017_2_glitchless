@@ -32,7 +32,7 @@ export default class PhysicLoop {
     initTick(gameManager) {
         console.log('Initializing tick...');
         this._firstSetting();
-        gameManager.app.ticker.add(this._mainTick, this);
+
         this.timeSum = -100; // Wait for everything to load properly
 
         this.anglePoints = [new Point(0.1, -0.05), new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
@@ -44,7 +44,7 @@ export default class PhysicLoop {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.gameManager.app.ticker.speed;
-        this.timeSum += deltaTime;
+        this.timeSum += elapsedMS;
         if (this.timeSum > 100) {
             this.timeSum = 0;
             const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-2);

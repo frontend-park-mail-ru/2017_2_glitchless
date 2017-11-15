@@ -14,7 +14,7 @@ export default class GameManager {
         EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
         EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
-        // EventBus.subscribeOn('player_won', this.onGameEnd, this);
+        EventBus.subscribeOn('player_won', this.onGameEnd, this);
     }
 
     /**
@@ -43,6 +43,13 @@ export default class GameManager {
 
         this.loopObj = new PhysicLoop(this);
         this.loopObj.initTick(this);
+
+        this.app.ticker.add(this._onTick, this);
+    }
+
+    _onTick(deltaTime) {
+        this.gameStrategy.gameplayTick(this.loopObj);
+        this.loopObj._mainTick(deltaTime);
     }
 
     onGameEnd() {
@@ -60,4 +67,8 @@ export default class GameManager {
             item.onDestroy();
         });
     }
+}
+
+function Class() {
+    return 
 }
