@@ -7,6 +7,7 @@ class LobbyView extends View {
     open(root) {
         this.progressText = document.getElementsByClassName('lobby__progresstext');
         this.serviceLocator.magicTransport.openSocket();
+        this.serviceLocator.magicTransport.send({type: "WantPlayMessage", state: 1})
     }
 
     get template() {

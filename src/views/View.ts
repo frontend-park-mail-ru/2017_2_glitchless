@@ -1,11 +1,11 @@
 /* tslint:disable:no-empty */
-import ServiceLocator from '../ServiceLocator';
+import ServiceLocator from '../ServiceLocator.js';
 /**
  * Abstract class.
  * Represents view component on the page.
  */
 export default class View {
-    private serviceLocator: ServiceLocator;
+    public serviceLocator: ServiceLocator;
     constructor(serviceLocator) {
         this.serviceLocator = serviceLocator;
     }

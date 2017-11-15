@@ -11,7 +11,7 @@ const BASE_URL = "localhost:8081";
 
 export default class ServiceLocator {
     constructor() {
-        this.api = new Api("https://" + BASE_URL + "/api");
+        this.api = new Api("http://" + BASE_URL + "/api");
         this.magicTransport = new MagicTransport("ws://" + BASE_URL + "/game");
         this.router = new Router(this);
         this.user = null;
