@@ -76,7 +76,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
     }
 
     public onGameEnd(loser: number) {
-        const winner = (loser + 1) % 1;
+        const winner = (loser + 1) % 2;
         console.log(winner);
         EventBus.emitEvent('player_won', winner);
     }
@@ -151,7 +151,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
             if (!collision) {
                 return; // Laser is not going to hit our half of the field, no need to worry
             }
-            const laserCoords = laser.getCoords();
+            const laserCoords = collision[0];
             const distance = laserCoords.copy()
                 .apply(-platformCoords.x, -platformCoords.y)
                 .getLength();
@@ -175,11 +175,8 @@ export default class SinglePlayerStrategy extends GameStrategy {
             > platformCoords.y) {
             enemyPlatform.setMoveDirection('left');
         } else {
-            console.log(dangerPoint);
             enemyPlatform.setMoveDirection('right');
         }
-
-        console.log('Oooh, my defense!');
     }
 
 }

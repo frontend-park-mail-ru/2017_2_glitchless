@@ -28,11 +28,11 @@ export default class PhysicVectorLoop {
             if (platform.direction === 0) {
                 if (platform.getRotationSpeed() > Constants.GAME_PLATFROM_MIN_SPEED) {
                     platform.setRotationSpeed(Math.max(
-                        platform.getRotationSpeed() - (platform.getRotationSpeed() / 8),
+                        platform.getRotationSpeed() - (platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT),
                         0));
                 } else if (platform.getRotationSpeed() < Constants.GAME_PLATFROM_MIN_SPEED) {
                     platform.setRotationSpeed(Math.min(
-                        platform.getRotationSpeed() + Math.abs(platform.getRotationSpeed() / 8),
+                        platform.getRotationSpeed() + Math.abs(platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT),
                         0));
                 } else {
                     platform.setRotationSpeed(0);
