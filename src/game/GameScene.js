@@ -14,6 +14,9 @@ import GameUtils from '../utils/GameUtils';
 import Constants from '../utils/Constants';
 import Point from './physics/object/primitive/Point';
 
+const loseText = new PIXI.Sprite.fromImage('./images/game_over_splash_lost.png');
+const winText = new PIXI.Sprite.fromImage('./images/game_over_splash_won.png');
+
 export default class GameScene {
     constructor() {
         this.field = null;
@@ -30,13 +33,11 @@ export default class GameScene {
     }
 
     displayWinMessage() {
-        const winText = new PIXI.Sprite.fromImage('./images/game_over_splash_won.png');
         this.prepareCentralText(winText);
         this.addObject(winText);
     }
 
     displayLoseMessage() {
-        const loseText = new PIXI.Sprite.fromImage('./images/game_over_splash_lost.png');
         this.prepareCentralText(loseText);
         this.addObject(loseText);
     }
