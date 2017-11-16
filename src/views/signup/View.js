@@ -26,7 +26,7 @@ class SignupModalView extends View {
     }
 
     _setupSignupSubmit() {
-        this.signupForm.addEventListener('submit', function(event) {
+        this.signupForm.addEventListener('submit', (event) => {
             event.preventDefault();
 
             const model = this._createModel(this.signupForm);
