@@ -39,10 +39,17 @@ export default class GameManager {
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         this.scene.initBackground(this.app);
-        this.gameStrategy.initUI(this.scene);
+        this.gameStrategy.initUI();
 
         this.loopObj = new PhysicLoop(this);
         this.loopObj.initTick(this);
+
+        this.app.ticker.add(this._onTick, this);
+    }
+
+    _onTick(deltaTime) {
+        this.gameStrategy.gameplayTick(this.loopObj);
+        this.loopObj._mainTick(deltaTime);
     }
 
     onGameEnd() {

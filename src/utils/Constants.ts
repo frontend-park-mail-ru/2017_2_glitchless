@@ -28,6 +28,8 @@ export default {
     GAME_HP_CIRCLE_RADIUS: (1080 / 2 - 60) * 1.15,
     HP_COUNT: 5,
     GAME_PLATFORM_CONTROL_SPEED: 0.1,
+    GAME_PLATFORM_INERTION_COEFFICIENT: 1 / 2,
+    GAME_PLATFROM_MIN_SPEED: 0.01,
     CONTROL_PLATFORM_LEFT: 37,
     CONTROL_PLATFORM_UP: 38,
     CONTROL_PLATFORM_RIGHT: 39,
@@ -37,7 +39,7 @@ export default {
     COLLISION_DEBUG: false,
     VERTICAL_PRECISION: 5,
     FLOAT_PRECISION: 10,
-    COLLISION_PRECISION: 1.25,
+    COLLISION_PRECISION: 1.5,
     GameObjects: {
         laser: 'laser',
         platform: 'platform',
