@@ -28,7 +28,7 @@ deploy:
   script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/dist deploy@145.239.82.63:nginx/glitchless.ru/
   on:
     repo: frontend-park-mail-ru/2017_2_glitchless
-    branch: site-basel
+    branch: site-base
 
 before_install:
 - openssl aes-256-cbc -K $encrypted_1f3e1ce4cb85_key -iv $encrypted_1f3e1ce4cb85_iv
