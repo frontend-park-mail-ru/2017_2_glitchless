@@ -13,8 +13,9 @@ body {
     min-height: 450px;
     height: 100vh;
     margin: 0;
-    background: radial-gradient(ellipse farthest-corner at center top, $colour_main1 -50%, $colour_main1 150%);
+    //background: radial-gradient(ellipse farthest-corner at center top, $colour_main1 -50%, $colour_main1 150%);
+    background: $colour_main1_new;
 
     color: #fff;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Rubik', sans-serif, 'Roboto', sans-serif;
 }
