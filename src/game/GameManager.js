@@ -48,7 +48,10 @@ export default class GameManager {
     }
 
     _onTick(deltaTime) {
-        this.gameStrategy.gameplayTick(this.loopObj);
+        let elapsedMS = deltaTime /
+            PIXI.settings.TARGET_FPMS /
+            this.app.ticker.speed;
+        this.gameStrategy.gameplayTick(this.loopObj, elapsedMS);
         this.loopObj._mainTick(deltaTime);
     }
 

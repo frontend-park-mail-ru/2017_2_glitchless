@@ -76,10 +76,6 @@ export default class GameScene {
 
         const PlatformCircle1 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE1_RADIUS, center, 0);
         physicContext.gameManager.addObject('circle', PlatformCircle1);
-        const PlatformCircle2 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE2_RADIUS, center, 1);
-        physicContext.gameManager.addObject('circle', PlatformCircle2);
-        const PlatformCircle3 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE3_RADIUS, center, 2);
-        physicContext.gameManager.addObject('circle', PlatformCircle3);
 
         for (let i = 0; i < Constants.HP_COUNT * 2; i++) {
             const playerNum = i < Constants.HP_COUNT ? 0 : 1;

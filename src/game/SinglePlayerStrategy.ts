@@ -40,8 +40,9 @@ export default class SinglePlayerStrategy extends GameStrategy {
         this._drawForceFieldBars(this.scene);
     }
 
-    public gameplayTick(physicContext) {
+    public gameplayTick(physicContext, elapsedMS) {
         this.processBotLogic(physicContext);
+        this.replenishShields(physicContext, elapsedMS);
         this.processControls(physicContext, physicContext.spriteStorage.userPlatform);
     }
 
@@ -51,11 +52,12 @@ export default class SinglePlayerStrategy extends GameStrategy {
         const oldShieldValue = player.shield;
 
         let newShieldValue = player.shield - this.laserDamage;
-        player.shield = newShieldValue;
+
         if (newShieldValue <= 0) {
             newShieldValue = 0;
             forcefield.onChargeEnd();
         }
+        player.shield = newShieldValue;
 
         this.updateBar(playerNum, (newShieldValue / player.maxShield) * 100);
     }
@@ -100,21 +102,6 @@ export default class SinglePlayerStrategy extends GameStrategy {
     }
 
      private processControls(context, platform) {
-        if (this.downButton.isUp && this.upButton.isUp) {
-            this.verticalPressed = false;
-        }
-
-        if (!this.verticalPressed && this.downButton.isDown) {
-            this.verticalPressed = true;
-            platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
-            platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-        } else {
-            if (!this.verticalPressed && this.upButton.isDown) {
-                this.verticalPressed = true;
-                platform.circleLevel = (platform.circleLevel + 1) % 3;
-                platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-            }
-        }
 
         if (this.leftButton.isDown || this.qButton.isDown) {
             platform.setMoveDirection('left');
@@ -179,4 +166,14 @@ export default class SinglePlayerStrategy extends GameStrategy {
         }
     }
 
+    private replenishShields(physicContext, elapsedMS) {
+        this.players.forEach(function(player, playerNum) {
+            const newShieldVal = player.shield + Constants.SHIELD_REGEN_RATIO * elapsedMS / 1000;
+            player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
+            this.updateBar(playerNum, (player.shield / player.maxShield) * 100);
+            if (player.shield / player.maxShield > Constants.SHIELD_ACTIVATION_PERCENT / 100) {
+                physicContext.physicObjects.forcefield[playerNum].onEnable();
+            }
+        }, this);
+    }
 }

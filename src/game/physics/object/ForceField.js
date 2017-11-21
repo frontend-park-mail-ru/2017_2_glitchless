@@ -50,6 +50,11 @@ export default class ForceField extends PhysicsObject {
         this.sprite.alpha = 0;
     }
 
+    onEnable() {
+        this.off = false;
+        this.sprite.alpha = 1;
+    }
+
     setRotation(rotation, context) {
         super.setRotation(rotation, context);
         const radius = this.circle.R - Constants.GAME_PLATFORM_SIZE[0] / 4;
