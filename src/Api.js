@@ -7,6 +7,17 @@ export default class Api {
     }
 
     /**
+     * Sends HTTP GET request to server api.
+     *
+     * @param {String} path Path to api method
+     * @param {Object} data Object to send. It will be serialized to json
+     * @return {Promise} Promise of `fetch` function.
+     */
+    get(path, data = {}) {
+        return this._request('GET', path, data);
+    }
+
+    /**
      * Sends HTTP POST request to server api.
      *
      * @param {String} path Path to api method
@@ -14,8 +25,12 @@ export default class Api {
      * @return {Promise} Promise of `fetch` function.
      */
     post(path, data = {}) {
+        return this._request('POST', path, data);
+    }
+
+    _request(method, path, data) {
         return fetch(`${this.baseUrl}/${path}`, {
-            method: 'POST',
+            method: method,
             headers: {
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json',

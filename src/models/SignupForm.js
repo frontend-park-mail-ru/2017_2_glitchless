@@ -12,7 +12,7 @@ export default class SignupForm {
         this.email = null;
         this.password = null;
         this.passwordConfirmation = null;
-        this.api = serviceLocator.api;
+        this._api = serviceLocator.api;
     }
 
     /**
@@ -64,6 +64,6 @@ export default class SignupForm {
      * @return {Promise}
      */
     send() {
-        return this.api.post('signup', {login: this.login, email: this.email, password: this.password});
+        return this._api.post('signup', {login: this.login, email: this.email, password: this.password});
     }
 }

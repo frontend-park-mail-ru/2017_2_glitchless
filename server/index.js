@@ -5,38 +5,35 @@ const bodyParser = require('body-parser');
 const app = express();
 
 
-// api
-const data = {loginUsers: [], signupUsers: []};
-
-app.use(cors());
-app.use(bodyParser.json());
-
-app.post('/api/login', (req, res) => {
-    if (!data.signupUsers.includes(req.body.login)) {
-        res.status(400);
-        res.json({'ok': false, 'error': 'User don\'t exists'});
-        return;
-    }
-    data.loginUsers.push(req.body.login);
-    res.json({'ok': true});
-});
-
-app.post('/api/signup', (req, res) => {
-    if (data.signupUsers.includes(req.body.login)) {
-        res.status(400);
-        res.json({'ok': false, 'error': 'User has already signed up'});
-        return;
-    }
-    data.signupUsers.push(req.body.login);
-    res.json({'ok': true});
-});
-
-
 // static
 app.use(express.static('dist'));
 
 app.get('*', (req, res) => {
     res.sendFile('dist/index.html', {root: '.'});
+});
+
+
+// stub api
+app.use(cors());
+app.use(bodyParser.json());
+
+const leaderboardData = new Map();
+leaderboardData.set('Ansile', 1337);
+leaderboardData.set('LionZXY', 'kotlin.js');
+leaderboardData.set('reo7sp', 420);
+leaderboardData.set('StealthTech', 0);
+
+app.get('/api/leaderboard', (req, res) => {
+    const resJson = {'users': []};
+    leaderboardData.forEach((username, score) => {
+        resJson['users'].push({'user': username, 'score': score});
+    });
+    res.json(resJson);
+});
+
+app.post('/api/leaderboard', (req, res) => {
+    leaderboardData.set('reo7sp', req.body.score);
+    res.json({ok: true});
 });
 
 

@@ -4,6 +4,7 @@ import GameScene from './GameScene';
 import PhysicLoop from './physics/PhysicLoop';
 import SinglePlayerStrategy from './SinglePlayerStrategy';
 import EventBus from './GameEventBus';
+import ScoreManager from "./ScoreManager";
 
 export default class GameManager {
     constructor(serviceLocator) {
@@ -11,6 +12,7 @@ export default class GameManager {
         this.scene = new GameScene();
         this.eventBus = EventBus;
         this.gameStrategy = new SinglePlayerStrategy(this.scene);
+        this.scoreManager = new ScoreManager(this);
         EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
         EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
