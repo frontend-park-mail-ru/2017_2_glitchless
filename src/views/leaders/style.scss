@@ -1,16 +1,24 @@
+@import '../_sass_utils/palette';
+
+$opacity_header_background: .5;
+$opacity_header_background_col-side: .6;
+$opacity_entry_background: .3;
+$opacity_entry_background_col-sid: .4;
+
 .leaders {
     &__header {
+        color: $colour_plain_3;
         display: flex;
         align-items: center;
         justify-content: space-between;
         text-align: center;
         margin: -2px -16px;
 
-        background: rgba($colour_main2, .5);
+        background: rgba($colour_main2, $opacity_header_background);
 
         &__col-side {
             width: 100px;
-            background: rgba($colour_main2, .6);
+            background: rgba($colour_main2, $opacity_header_background_col-side);
             padding: 12px 5px;
         }
 
@@ -25,12 +33,12 @@
 
         margin: 0 -16px -2px -16px;
 
-        background: rgba($colour_main2, .2);
+        background: rgba($colour_main2, $opacity_entry_background);
 
         &__col-side {
             padding: 12px 5px;
             width: 100px;
-            background: rgba($colour_main2, .3);
+            background: rgba($colour_main2, $opacity_entry_background_col-sid);
         }
 
         &__col-main { }

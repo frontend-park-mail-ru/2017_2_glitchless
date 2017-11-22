@@ -1,3 +1,5 @@
+@import "palette";
+
 @mixin form-styling {
     text-align: center;
     display: block;
@@ -5,16 +7,58 @@
     &__field {
         margin-top: 10px;
         width: 90%;
-        border: 1px solid $colour_main1;
+        //border: 1px solid $colour_main1;
+        border: 1px solid $colour_main2_plain;
         height: 50px;
-        background: #F5F5F5;
+        //background: rgba(#F5F5F5, .9);
+        background: rgba(#000, .1);
+
         font-size: 12pt;
-        color: $colour_main1;
+        //color: $colour_main1;
+        color: $colour_plain_3;
         padding: 5px 10px 5px 10px;
         outline: none;
+        border-radius: 5px;
+
+        &::-webkit-input-placeholder { color: rgba(#fff, .5); }
+        &::-moz-placeholder          { color: rgba(#fff, .5); }/* Firefox 19+ */
+        &:-moz-placeholder           { color: rgba(#fff, .5); }/* Firefox 18- */
+        &:-ms-input-placeholder      { color: rgba(#fff, .5); }
+        &::-webkit-input-placeholder       {opacity: 1; transition: opacity 0.3s ease;}
+        &::-moz-placeholder                {opacity: 1; transition: opacity 0.3s ease;}
+        &:-moz-placeholder                 {opacity: 1; transition: opacity 0.3s ease;}
+        &:-ms-input-placeholder            {opacity: 1; transition: opacity 0.3s ease;}
+        &:focus::-webkit-input-placeholder {opacity: 0; transition: opacity 0.3s ease;}
+        &:focus::-moz-placeholder          {opacity: 0; transition: opacity 0.3s ease;}
+        &:focus:-moz-placeholder           {opacity: 0; transition: opacity 0.3s ease;}
+        &:focus:-ms-input-placeholder      {opacity: 0; transition: opacity 0.3s ease;}
     }
 
     &__button {
+        background: rgba(255, 255, 255, .2);
+        box-shadow: 3px 3px  rgba(0, 0, 0, .1);
+        border-radius: 0 7px;
+        border: none;
+        font-size: 14px;
+        min-width: 150px;
+        padding: 15px 40px;
+        transition: .5s;
+
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+            background: rgba(255, 255, 255, .4);
+            box-shadow: 3px 3px  rgba(0, 0, 0, .1);
+        }
+
+        &:active {
+            background: rgba(255, 255, 255, .1);
+            box-shadow: none;
+        }
+    }
+
+    &__buttonz {
         padding: 15px 50px;
         box-shadow: 0 5px 0 $colour_main4;
 
@@ -25,9 +69,12 @@
         }
 
         background: $colour_main1;
+        //background: $colour_main1_new;
         color: $colour_main2;
         font-size: 14pt;
         transition: .5s;
+
+        text-decoration: none;
 
         &:hover {
             background: $colour_main4;
@@ -38,7 +85,8 @@
     &__redirect-btn {
         margin: 0 5px;
         padding: 5px;
-        background: $colour_main4;
+        //background: $colour_main4;
+        background: rgba(#000, .1);
         text-decoration: none;
         color: $colour_main3;
         border-radius: 2px;

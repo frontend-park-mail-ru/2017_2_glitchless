@@ -1,23 +1,41 @@
 @import '../_sass_utils/_palette';
+@import '../_sass_utils/form';
 @mixin fullscreen {
     width: 100%;
     padding: 0;
 }
 
 .modal {
+    &-control {
+        text-align: center;
+        @include form-styling;
+
+        &__wrapper {
+            margin: 30px 0;
+        }
+
+        a, input {
+            margin-right: 15px;
+        }
+    }
+
     &__closer {
         padding: 2px 16px;
         background-color: $colour_main2;
-        color: $colour_main1;
+        //color: $colour_main1;
+        color: white;
         //display: inline;
         border-radius: 3px 3px 0 0;
     }
 
     &__header {
         padding: 2px 16px;
-        background-color: $colour_main2;
-        color: $colour_main1;
-        border-radius: 3px 3px 0 0;
+        //border-top-right-radius: 17px;
+        //border-top-right-radius: 10px;
+        border-radius: 10px 10px 0 0;
+        //background-color: $colour_main2;
+        background-color: rgba($colour_main2_plain, .7);
+        //border-radius: 3px 3px 0 0;
 
         &--fullscreen {
             @include fullscreen;
@@ -26,7 +44,8 @@
 
     &__body {
         padding: 2px 16px;
-        color: $colour_main1;
+        //color: $colour_main1;
+        color: white;
 
         &--fullscreen {
             @include fullscreen;
@@ -35,10 +54,15 @@
 
     &__footer {
         padding: 2px 16px;
-        background-color: $colour_main2;
+        //background-color: $colour_main2;
+        //background: rgba($colour_main2_plain, .7);
         font-size: 13px;
-        border-radius: 0 0 3px 3px;
-        color: $colour_main1;
+        //border-radius: 0 0 3px 3px;
+        //border-bottom-left-radius: 17px;
+        //border-top-left-radius: 10px;
+        //color: $colour_main1;
+        color: white;
+        //border-top: 1px solid $colour_plain_1;
 
         &--fullscreen {
             @include fullscreen;
@@ -48,13 +72,18 @@
     &__content {
         display: block;
         position: relative;
-        background-color: $colour_main3;
+        //background-color: $colour_main3;
+        background: $colour_main2_new;
+
         min-width: 500px;
         margin: auto;
         padding: 0;
 
-        border: 1px solid $colour_main1;
-        border-radius: 3px;
+        border: 1px solid rgba($colour_main1, .5);
+        //border-radius: 3px;
+        //border-radius: 0 17px 0 17px;
+        //border-radius: 0 10px 0 10px;
+        border-radius: 10px;
 
         width: 35%;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);

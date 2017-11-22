@@ -3,22 +3,51 @@ mixin modal(title, footer, fullscreen)
         if !fullscreen
             .modal__content
                 .modal__header
-                    a.modal__closer(href='/') ×
+                    //a.modal__closer(href='/') ×
                     h2 #{title}
 
                 .modal__body
                     block
-
-                .modal__footer
-                    h3 #{footer}
+                    //.modal-control__wrapper
+                    //    .modal-control
+                    //        a.modal_closer.modal-control__button(href='/') Return
+                if footer
+                    .modal__footer
+                        h3 #{footer}
         else
             .modal__content.modal__content--fullscreen
                 .modal__header
-                    a.modal__closer(href='/') ×
+                    //a.modal__closer(href='/') ×
                     h2 #{title}
 
                 .modal__body.modal__body--fullscreen
                     block
 
-                .modal__footer.modal__footer--fullscreen
-                    h3 #{footer}
+                if footer
+                    .modal__footer.modal__footer--fullscreen
+                        h3 #{footer}
+
+//mixin modal(title, footer, fullscreen)
+//    .modal
+//        if !fullscreen
+//            .modal__content
+//                .modal__header
+//                    a.modal__closer(href='/') ×
+//                    h2 #{title}
+//
+//                .modal__body
+//                    block
+//
+//                .modal__footer
+//                    h3 #{footer}
+//        else
+//            .modal__content.modal__content--fullscreen
+//                .modal__header
+//                    a.modal__closer(href='/') ×
+//                    h2 #{title}
+//
+//                .modal__body.modal__body--fullscreen
+//                    block
+//
+//                .modal__footer.modal__footer--fullscreen
+//                    h3 #{footer}
