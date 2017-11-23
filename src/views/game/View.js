@@ -8,9 +8,9 @@ export default class GameView extends View {
 
         const {appWidth, appHeight} = this._findAppWidthHeight();
         const gameField = this._setupAppCanvas(appWidth, appHeight);
-        this._setupGameManager(gameField, appWidth, appHeight, data);
+        this._setupGameManager(gameField, appWidth, appHeight);
 
-        this.gameManager.initiateGame();
+        this.gameManager.initiateGame(data);
     }
 
     close() {
@@ -49,8 +49,8 @@ export default class GameView extends View {
         return gameField;
     }
 
-    _setupGameManager(gameField, appWidth, appHeight, data) {
-        this.gameManager = new GameManager(this.serviceLocator, data);
+    _setupGameManager(gameField, appWidth, appHeight) {
+        this.gameManager = new GameManager(this.serviceLocator);
         this.gameManager.setGameField(gameField);
         this.gameManager.setResolution([appWidth, appHeight]);
     }

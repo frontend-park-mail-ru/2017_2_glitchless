@@ -3,5 +3,6 @@ export default class SpriteStorage {
         this.alien = null;
         this.userPlatform = null;
         this.enemyPlatform = null;
+        this.circle = null;
     }
 }

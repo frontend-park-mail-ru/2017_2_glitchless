@@ -3,6 +3,7 @@ import Constants from '../../utils/Constants';
 import GameScene from '../GameScene';
 import MagicTransport from '../io/MagicTransport';
 import Point from '../physics/object/primitive/Point';
+import Platform from '../physics/object/Platform';
 import Player from '../Player';
 import GameStrategy from './GameStrategy';
 import SyncDelegate from './mpdelegate/SyncDelegate';
@@ -19,6 +20,7 @@ export default class MultiplayerStrategy extends GameStrategy {
     private syncDelegate: SyncDelegate;
     private magicTransport: MagicTransport;
     private currentUserIsLeft: boolean;
+    private userPlatform: Platform;
 
     public constructor(scene, magicTransport, physicContext, fullSwap) {
         super();
@@ -46,6 +48,14 @@ export default class MultiplayerStrategy extends GameStrategy {
         const platformRight = fullSwap.platform_2;
 
         this.currentUserIsLeft = platformLeft.data === UserModel.loadCurrentSyncronized().login;
+        this.syncDelegate = new SyncDelegate(this.magicTransport, physicContext);
+        this.userPlatform = this.currentUserIsLeft
+            ? physicContext.spriteStorage.userPlatform
+            : physicContext.spriteStorage.enemyPlatform;
+
+        this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.userPlatform, platformLeft);
+        this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.enemyPlatform, platformRight);
+        this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.circle, circle);
 
         return;
     }
@@ -55,11 +65,23 @@ export default class MultiplayerStrategy extends GameStrategy {
     }
 
     public gameplayTick(physicContext, elapsedMS) {
+        this.processControls();
         return;
     }
 
+    private processControls() {
+        if (this.leftButton.isDown || this.qButton.isDown) {
+            this.userPlatform.setMoveDirection('left');
+        } else if (this.rightButton.isDown || this.eButton.isDown) {
+            this.userPlatform.setMoveDirection('right');
+        } else {
+            this.userPlatform.setMoveDirection('none');
+        }
+    }
+
+
     private _drawForceFieldBars(scene) {
-        this.forceFieldBarPos.forEach(function(position) {
+        this.forceFieldBarPos.forEach(function (position) {
             const forceFieldBar = new PIXI.Sprite(forceFieldBarTexture);
             const forceFieldBarBackground = new PIXI.Sprite(forceFieldBarBackgroundTexture);
             forceFieldBar.anchor.set(1);
