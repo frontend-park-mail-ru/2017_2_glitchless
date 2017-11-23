@@ -12,8 +12,10 @@ var View = /** @class */ (function () {
      * Initialize view in DOM element.
      *
      * @param root {Element} DOM element to initialize in
+     * @param data
      */
-    View.prototype.open = function (root) {
+    View.prototype.open = function (root, data) {
+        if (data === void 0) { data = null; }
     };
     /**
      * Process cleanup.

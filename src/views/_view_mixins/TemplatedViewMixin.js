@@ -22,13 +22,13 @@ export default function TemplatedViewMixin(initialClass) {
     const superClose = initialClass.prototype.close;
 
     const Mixin = {
-        open(root) {
+        open(root, data = null) {
             this.root = root;
             this.root.innerHTML = this.template();
 
             setTimeout(() => {
                 if (superOpen) {
-                    superOpen.call(this, this.root);
+                    superOpen.call(this, this.root, data);
                 }
             }, 0);
         },

@@ -1,9 +1,12 @@
+import EventBus from '../../utils/EventBus.js';
+
 const STATE_CONNECTING = 0; // Соединение ещё не открыто.
 const STATE_OPEN = 1; // Соединение открыто и готово к обмену данными.
 const STATE_CLOSING = 2; // Соединение в процессе закрытия.
 const STATE_CLOSED = 3; // Соединение закрыто или не может открыться.
 
 export default class MagicTransport {
+    public eventBus: EventBus;
     private websocketUrl: string;
     private socket: WebSocket;
     private objectQueue: object[];
@@ -11,6 +14,7 @@ export default class MagicTransport {
     constructor(websocketUrl: string) {
         this.websocketUrl = websocketUrl;
         this.objectQueue = [];
+        this.eventBus = new EventBus();
     }
 
     public openSocket() {
@@ -21,29 +25,7 @@ export default class MagicTransport {
         this.socket.onerror = this.onError.bind(this);
     }
 
-    private onOpen() {
-        console.log('Websocket: onOpen');
-        while (this.objectQueue.length > 0) {
-            this.send(this.objectQueue.pop());
-        }
-    }
-
-    private onMessage(data) {
-        console.log('Websocket: onMessage ');
-        console.log(data);
-    }
-
-    private onError(error) {
-        console.log('Websocket: onError ');
-        console.log(error);
-    }
-
-    private onClose(event) {
-        console.log('Websocket: onClose');
-        console.log(event);
-    }
-
-    private send(object) {
+    public send(object) {
         if (this.socket.readyState !== STATE_OPEN) {
             console.log('Object push to queue');
             console.log(object);
@@ -53,5 +35,33 @@ export default class MagicTransport {
         console.log('Sending:...');
         console.log(object);
         this.socket.send(JSON.stringify(object));
+    }
+
+    private onOpen() {
+        console.log('Websocket: onOpen');
+        while (this.objectQueue.length > 0) {
+            this.send(this.objectQueue.pop());
+        }
+
+        this.eventBus.emitEvent('ws_open');
+    }
+
+    private onMessage(message) {
+        console.log('Websocket: onMessage ');
+        const jsObject = JSON.parse(message.data);
+        console.log(jsObject);
+        this.eventBus.emitEvent(jsObject.type, jsObject);
+    }
+
+    private onError(error) {
+        console.log('Websocket: onError ');
+        console.log(error);
+        this.eventBus.emitEvent('ws_error', error);
+    }
+
+    private onClose(event) {
+        console.log('Websocket: onClose');
+        console.log(event);
+        this.eventBus.emitEvent('ws_close', event);
     }
 }

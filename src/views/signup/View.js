@@ -26,14 +26,15 @@ class SignupModalView extends View {
     }
 
     _setupSignupSubmit() {
+        const that = this;
         this.signupForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            const model = this._createModel(this.signupForm);
+            const model = that._createModel(this.signupForm);
 
             const validationResult = model.validate();
             if (!validationResult.ok) {
-                displayErrors(this.signupForm, validationResult.errors);
+                displayErrors(that.signupForm, validationResult.errors);
                 return;
             }
 
@@ -45,10 +46,10 @@ class SignupModalView extends View {
                         displayServerError(serverErrorField, json.message);
                         return;
                     }
-                    this.serviceLocator.user = UserModel.fromApiJson(json.message);
-                    this.serviceLocator.user.saveInLocalStorage();
-                    this.serviceLocator.router.changePage('/');
-                    this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
+                    that.serviceLocator.user = UserModel.fromApiJson(json.message);
+                    that.serviceLocator.user.saveInLocalStorage();
+                    that.serviceLocator.router.changePage('/');
+                    that.serviceLocator.eventBus.emitEvent('auth', that.serviceLocator.user);
                 })
                 .catch((res) => console.error(res));
         });

@@ -3,7 +3,7 @@ import GameManager from '../../game/GameManager';
 import Constants from '../../utils/Constants';
 
 export default class GameView extends View {
-    open(root) {
+    open(root, data) {
         this.root = root;
 
         const {appWidth, appHeight} = this._findAppWidthHeight();

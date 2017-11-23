@@ -6,7 +6,7 @@ import template from './template.pug';
 import UserModel from '../../models/UserModel';
 
 class MenuView extends View {
-    open(root) {
+    open(root, data = null) {
         this._setupChangePageOnClick();
         this._setupLogout();
         this._setupAuthListener();

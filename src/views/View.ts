@@ -14,8 +14,9 @@ export default class View {
      * Initialize view in DOM element.
      *
      * @param root {Element} DOM element to initialize in
+     * @param data
      */
-    public open(root) {
+    public open(root, data = null) {
     }
 
     /**
