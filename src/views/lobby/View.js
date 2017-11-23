@@ -26,7 +26,7 @@ class LobbyView extends View {
             }
             case 3: {
                 this._showText('Waiting room...');
-                break
+                break;
             }
             case 10: {
                 this._showText('Ready! Open game...');
@@ -35,12 +35,12 @@ class LobbyView extends View {
         }
     }
 
-    _onOpenGame(data){
+    _onOpenGame(data) {
         this.serviceLocator.router.changePage('/game', data);
     }
 
     onClose(event) {
-        this._showText(event.reasone)
+        this._showText(event.reason);
     }
 
     _showText(text) {

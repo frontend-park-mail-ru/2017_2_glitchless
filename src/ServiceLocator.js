@@ -15,7 +15,7 @@ export default class ServiceLocator {
         this.router = new Router(this);
         this.user = null;
         this.eventBus = new EventBus();
-        this.magicTransport = new MagicTransport("ws://" + BASE_URL + "/game", this.eventBus);
+        this.magicTransport = new MagicTransport('ws://' + BASE_URL + '/game', this.eventBus);
 
         window.serviceLocator = this;
     }
