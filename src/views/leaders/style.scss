@@ -6,7 +6,16 @@ $opacity_entry_background: .3;
 $opacity_entry_background_col-sid: .4;
 
 .leaders {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
     &__header {
+
+        @media only screen and (max-device-width: 768px) {
+            font-size: 6vw;
+        }
+
         color: $colour_plain_3;
         display: flex;
         align-items: center;
@@ -17,7 +26,7 @@ $opacity_entry_background_col-sid: .4;
         background: rgba($colour_main2, $opacity_header_background);
 
         &__col-side {
-            width: 100px;
+            //width: 100px;
             background: rgba($colour_main2, $opacity_header_background_col-side);
             padding: 12px 5px;
         }
@@ -26,18 +35,24 @@ $opacity_entry_background_col-sid: .4;
     }
 
     &__entry {
+        @media only screen and (max-device-width: 768px) {
+            font-size: 6vw;
+        }
+
         display: flex;
         align-items: center;
         justify-content: space-between;
         text-align: center;
 
-        margin: 0 -16px -2px -16px;
+        //margin: 0 -16px -2px -16px;
+        margin: 0 -4vw -1vw -4vw;
 
         background: rgba($colour_main2, $opacity_entry_background);
 
         &__col-side {
-            padding: 12px 5px;
-            width: 100px;
+            //padding: 12px 5px;
+            padding: 4vw 2vw;
+            //width: 100px;
             background: rgba($colour_main2, $opacity_entry_background_col-sid);
         }
 

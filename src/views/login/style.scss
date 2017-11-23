@@ -4,3 +4,9 @@
 .login-form {
     @include form-styling;
 }
+
+@media only screen and (max-device-width: 768px) {
+    .login-form {
+        font-size: 4vw;
+    }
+}

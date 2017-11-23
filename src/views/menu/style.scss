@@ -21,9 +21,10 @@ $breakpoint-tablet: 768px;
     text-align: center;
 }
 
-@media only screen and (max-width: $breakpoint-tablet) {
+@media only screen and (max-device-width: $breakpoint-tablet) {
     img.logo {
-        height: 25vh;
+        //height: 25vh;
+        width: 75vw;
         margin-top: 3vh;
         transition: .5s;
 
@@ -34,10 +35,10 @@ $breakpoint-tablet: 768px;
 
     .menu {
         position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
+        //left: 0;
+        //right: 0;
+        //top: 0;
+        //bottom: 0;
 
         font-size: 5vw;
 
@@ -70,7 +71,7 @@ $breakpoint-tablet: 768px;
     }
 }
 
-@media only screen and (min-width: $breakpoint-tablet) {
+@media screen and (min-device-width: $breakpoint-tablet) {
     img.logo {
         height: 150px;
         margin-bottom: 15px;

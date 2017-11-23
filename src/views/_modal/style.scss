@@ -6,6 +6,8 @@
 }
 
 .modal {
+    background: $colour_main1_new;
+
     &-control {
         text-align: center;
         @include form-styling;
@@ -19,81 +21,114 @@
         }
     }
 
-    &__closer {
-        padding: 2px 16px;
-        background-color: $colour_main2;
-        //color: $colour_main1;
-        color: white;
-        //display: inline;
-        border-radius: 3px 3px 0 0;
-    }
+}
 
-    &__header {
-        padding: 2px 16px;
-        //border-top-right-radius: 17px;
-        //border-top-right-radius: 10px;
-        border-radius: 10px 10px 0 0;
-        //background-color: $colour_main2;
-        background-color: rgba($colour_main2_plain, .7);
-        //border-radius: 3px 3px 0 0;
+@media only screen and (max-device-width: 768px) {
+    .modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        
+        &__closer {
+            display: none;
+        }
 
-        &--fullscreen {
-            @include fullscreen;
+        &__header {
+            text-align: center;
+            font-size: 5vw;
+        }
+
+        &__content {
+            padding: 5vw;
+            font-size: 3vw;
+            background: $colour_main2_new;
         }
     }
+}
 
-    &__body {
-        padding: 2px 16px;
-        //color: $colour_main1;
-        color: white;
-
-        &--fullscreen {
-            @include fullscreen;
+@media only screen and (min-device-width: 768px) {
+    .modal {
+        &__closer {
+            padding: 2px 16px;
+            background-color: $colour_main2;
+            //color: $colour_main1;
+            color: white;
+            //display: inline;
+            border-radius: 3px 3px 0 0;
         }
-    }
 
-    &__footer {
-        padding: 2px 16px;
-        //background-color: $colour_main2;
-        //background: rgba($colour_main2_plain, .7);
-        font-size: 13px;
-        //border-radius: 0 0 3px 3px;
-        //border-bottom-left-radius: 17px;
-        //border-top-left-radius: 10px;
-        //color: $colour_main1;
-        color: white;
-        //border-top: 1px solid $colour_plain_1;
+        &__header {
+            padding: 2px 16px;
+            //border-top-right-radius: 17px;
+            //border-top-right-radius: 10px;
+            border-radius: 10px 10px 0 0;
+            //background-color: $colour_main2;
+            background-color: rgba($colour_main2_plain, .7);
+            //border-radius: 3px 3px 0 0;
 
-        &--fullscreen {
-            @include fullscreen;
+            &--fullscreen {
+                @include fullscreen;
+            }
         }
-    }
 
-    &__content {
-        display: block;
-        position: relative;
-        //background-color: $colour_main3;
-        background: $colour_main2_new;
+        &__body {
+            padding: 2px 16px;
+            //color: $colour_main1;
+            color: white;
 
-        min-width: 500px;
-        margin: auto;
-        padding: 0;
+            &--fullscreen {
+                @include fullscreen;
+            }
+        }
 
-        border: 1px solid rgba($colour_main1, .5);
-        //border-radius: 3px;
-        //border-radius: 0 17px 0 17px;
-        //border-radius: 0 10px 0 10px;
-        border-radius: 10px;
+        &__footer {
+            padding: 2px 16px;
+            //background-color: $colour_main2;
+            //background: rgba($colour_main2_plain, .7);
+            font-size: 13px;
+            //border-radius: 0 0 3px 3px;
+            //border-bottom-left-radius: 17px;
+            //border-top-left-radius: 10px;
+            //color: $colour_main1;
+            color: white;
+            //border-top: 1px solid $colour_plain_1;
 
-        width: 35%;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-        -webkit-animation-name: slideFromTop;
-        -webkit-animation-duration: 0.4s;
-        animation-name: slideFromTop;
-        animation-duration: 0.4s;
+            &--fullscreen {
+                @include fullscreen;
+            }
+        }
 
-        &--fullscreen {
-            @include fullscreen;
+        &__content {
+            display: block;
+            position: relative;
+            //background-color: $colour_main3;
+            background: $colour_main2_new;
+
+            min-width: 500px;
+            margin: auto;
+            padding: 0;
+
+            border: 1px solid rgba($colour_main1, .5);
+            //border-radius: 3px;
+            //border-radius: 0 17px 0 17px;
+            //border-radius: 0 10px 0 10px;
+            border-radius: 10px;
+
+            width: 35%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: slideFromTop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideFromTop;
+            animation-duration: 0.4s;
+
+            &--fullscreen {
+                @include fullscreen;
+            }
         }
     }
 }
