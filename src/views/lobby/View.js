@@ -5,7 +5,7 @@ import template from './template.pug';
 
 class LobbyView extends View {
 
-    open(root) {
+    open(root, data = null) {
         this.progressText = document.getElementsByClassName('lobby__progresstext').item(0);
         this.serviceLocator.magicTransport.openSocket();
         this.serviceLocator.magicTransport.send({type: 'WantPlayMessage', state: 1});
@@ -36,7 +36,7 @@ class LobbyView extends View {
     }
 
     _onOpenGame(data) {
-        this.serviceLocator.router.changePage('/game', data);
+        this.serviceLocator.router.changePage('/play', data);
     }
 
     onClose(event) {

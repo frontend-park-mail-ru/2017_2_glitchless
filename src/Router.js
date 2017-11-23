@@ -56,7 +56,7 @@ export default class Router {
                 this._currentRouterGroup.close();
             }
             this._currentRouterGroup = routerGroup;
-            this._currentRouterGroup.open();
+            this._currentRouterGroup.open(data);
         }
         const changeData = this._currentRouterGroup.change(path, data);
         history.pushState(changeData.state, changeData.title, path);
@@ -211,9 +211,9 @@ class GameRouterGroup extends RouterGroup {
         return path === '/play';
     }
 
-    open() {
+    open(data = null) {
         this._view = new GameView(this.serviceLocator);
-        this._view.open(document.body);
+        this._view.open(document.body, data);
     }
 
     change() {

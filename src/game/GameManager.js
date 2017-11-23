@@ -2,15 +2,23 @@ import * as PIXI from 'pixi.js';
 import GameScene from './GameScene';
 
 import PhysicLoop from './physics/PhysicLoop';
-import SinglePlayerStrategy from './SinglePlayerStrategy';
+import SinglePlayerStrategy from './strategy/SinglePlayerStrategy';
 import EventBus from './GameEventBus';
+import MultiplayerStrategy from "./strategy/MultiplayerStrategy";
 
 export default class GameManager {
-    constructor(serviceLocator) {
+    constructor(serviceLocator, data) {
         this.serviceLocator = serviceLocator;
         this.scene = new GameScene();
         this.eventBus = EventBus;
-        this.gameStrategy = new SinglePlayerStrategy(this.scene);
+
+        if (data !== null && data.type === 'FullSwapScene') {
+            this.gameStrategy = new MultiplayerStrategy(this.scene, this.serviceLocator.magicTransport, data);
+        } else {
+            //TODO replace to this.gameStrategy = new SinglePlayerStrategy(this.scene);
+            this.gameStrategy = new MultiplayerStrategy(this.scene, this.serviceLocator.magicTransport, null);
+        }
+
         EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
         EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
@@ -56,7 +64,9 @@ export default class GameManager {
     }
 
     onGameEnd() {
-        setTimeout(function() {this.app.ticker.stop(); }.bind(this), 1000);
+        setTimeout(function () {
+            this.app.ticker.stop();
+        }.bind(this), 1000);
     }
 
     destroy() {

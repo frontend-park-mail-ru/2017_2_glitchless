@@ -31,6 +31,10 @@ export default class UserModel {
         });
     }
 
+    static loadCurrentSyncronized() {
+        return JSON.parse(localStorage.getItem('user'));
+    }
+
     /**
      * Parses server API response and creates model instance.
      *
