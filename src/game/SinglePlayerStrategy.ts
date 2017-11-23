@@ -2,8 +2,12 @@ import Constants from '../utils/Constants';
 import EventBus from './GameEventBus';
 import GameScene from './GameScene';
 import GameStrategy from './GameStrategy';
+
+import CollisionManager from './physics/CollisionManager';
 import ForceField from './physics/object/ForceField';
+import Platform from './physics/object/Platform';
 import Point from './physics/object/primitive/Point';
+
 import Player from './Player';
 
 const forceFieldBarTexture = PIXI.Texture.fromImage('./images/shield_gui_status.png');
@@ -12,8 +16,10 @@ export default class SinglePlayerStrategy extends GameStrategy {
     public players: Player[];
     public forceFieldBarPos: Point[];
     public forceFieldBars: PIXI.Sprite[];
+    public botPlatform: Platform;
     private laserDamage: number;
     private scene: GameScene;
+
     constructor(scene) {
         super();
         this.players = [new Player(0), new Player(1)];
@@ -30,8 +36,14 @@ export default class SinglePlayerStrategy extends GameStrategy {
         this.scene = scene;
     }
 
-    public initUI(scene) {
-        this._drawForceFieldBars(scene);
+    public initUI() {
+        this._drawForceFieldBars(this.scene);
+    }
+
+    public gameplayTick(physicContext, elapsedMS) {
+        this.processBotLogic(physicContext);
+        this.replenishShields(physicContext, elapsedMS);
+        this.processControls(physicContext, physicContext.spriteStorage.userPlatform);
     }
 
     public onForceFieldDepletion(forcefield: ForceField) {
@@ -40,11 +52,12 @@ export default class SinglePlayerStrategy extends GameStrategy {
         const oldShieldValue = player.shield;
 
         let newShieldValue = player.shield - this.laserDamage;
-        player.shield = newShieldValue;
+
         if (newShieldValue <= 0) {
             newShieldValue = 0;
             forcefield.onChargeEnd();
         }
+        player.shield = newShieldValue;
 
         this.updateBar(playerNum, (newShieldValue / player.maxShield) * 100);
     }
@@ -65,7 +78,8 @@ export default class SinglePlayerStrategy extends GameStrategy {
     }
 
     public onGameEnd(loser: number) {
-        const winner = (loser + 1) % 1;
+        const winner = (loser + 1) % 2;
+        console.log(winner);
         EventBus.emitEvent('player_won', winner);
     }
 
@@ -85,5 +99,81 @@ export default class SinglePlayerStrategy extends GameStrategy {
             scene.addObject(forceFieldBar);
             this.forceFieldBars.push(forceFieldBar);
         }.bind(this));
+    }
+
+     private processControls(context, platform) {
+
+        if (this.leftButton.isDown || this.qButton.isDown) {
+            platform.setMoveDirection('left');
+        } else if (this.rightButton.isDown || this.eButton.isDown) {
+            platform.setMoveDirection('right');
+        } else {
+            platform.setMoveDirection('none');
+        }
+    }
+
+    private processBotLogic(physicContext) {
+        const enemyPlatform = physicContext.spriteStorage.enemyPlatform;
+        const lasers = physicContext.physicObjects.laser;
+        const forcefield = physicContext.physicObjects.forcefield[1];
+        const platformCoords = enemyPlatform.getCoords().copy();
+        const mapCenter = physicContext._getCenterPoint();
+        const platformRotation = enemyPlatform.getRotation();
+        if (platformRotation < 90 || platformRotation > 358) {
+            enemyPlatform.setMoveDirection('right');
+            return;
+        }
+        if (platformRotation < 181) {
+            enemyPlatform.setMoveDirection('left');
+            return;
+        }
+
+        let minDistance = Infinity;
+        let closestLaser;
+        let dangerPoint;
+        lasers.forEach((laser) => {
+            const collision = CollisionManager.checkCollision(
+                laser.getCoords(), laser.getSpeed(), forcefield.collisionArc,
+                0, false, true);
+            if (!collision) {
+                return; // Laser is not going to hit our half of the field, no need to worry
+            }
+            const laserCoords = collision[0];
+            const distance = laserCoords.copy()
+                .apply(-platformCoords.x, -platformCoords.y)
+                .getLength();
+
+            if (distance >= minDistance) {
+                return; // We have more sudden threats to worry about
+            }
+
+            minDistance = distance;
+            closestLaser = laser;
+            dangerPoint = collision[0];
+        });
+
+        if (!closestLaser) {
+            enemyPlatform.setMoveDirection('none');
+            return; // No lasers are going for our half of the field, who are we to complain? Just chillax.
+        }
+
+        if (dangerPoint.y * 1
+            / Math.sin(Constants.GAME_FORCEFIELD_RADIUS / Constants.GAME_CIRCLE1_RADIUS * dangerPoint.y)
+            > platformCoords.y) {
+            enemyPlatform.setMoveDirection('left');
+        } else {
+            enemyPlatform.setMoveDirection('right');
+        }
+    }
+
+    private replenishShields(physicContext, elapsedMS) {
+        this.players.forEach(function(player, playerNum) {
+            const newShieldVal = player.shield + Constants.SHIELD_REGEN_RATIO * elapsedMS / 1000;
+            player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
+            this.updateBar(playerNum, (player.shield / player.maxShield) * 100);
+            if (player.shield / player.maxShield > Constants.SHIELD_ACTIVATION_PERCENT / 100) {
+                physicContext.physicObjects.forcefield[playerNum].onEnable();
+            }
+        }, this);
     }
 }

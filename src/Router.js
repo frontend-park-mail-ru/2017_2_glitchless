@@ -77,13 +77,13 @@ class RouterGroup {
     }
 
     /**
-     * Is executed than router switched to this group.
+     * Is executed when router switched to this group.
      */
     open() {
     }
 
     /**
-     * Is executed than router changes paths.
+     * Is executed when router changes paths.
      *
      * @param path {String} Url path
      * @param data
@@ -93,7 +93,7 @@ class RouterGroup {
     }
 
     /**
-     * Is executed than user goes back and forward in history.
+     * Is executed when user goes back and forward in history.
      *
      * @param path {String} Url path
      * @param state {Object} State object saved from change data
@@ -102,12 +102,12 @@ class RouterGroup {
     }
 
     /**
-     * Is executed than router matched another group and before router switched to it.
+     * Is executed when router matched another group and before router switched to it.
      */
     close() {
     }
 }
-/* eslint-enable */
+/* tslint:enable */
 
 class MenuRouterGroup extends RouterGroup {
     constructor(serviceLocator) {
@@ -220,6 +220,7 @@ class GameRouterGroup extends RouterGroup {
         return {title: 'Glitchless'};
     }
 
+    //tslint:disable-next-line:no-empty
     revert() {
     }
 
