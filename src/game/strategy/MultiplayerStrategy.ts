@@ -2,8 +2,8 @@ import UserModel from '../../models/UserModel.js';
 import Constants from '../../utils/Constants';
 import GameScene from '../GameScene';
 import MagicTransport from '../io/MagicTransport';
-import Point from '../physics/object/primitive/Point';
 import Platform from '../physics/object/Platform';
+import Point from '../physics/object/primitive/Point';
 import Player from '../Player';
 import GameStrategy from './GameStrategy';
 import SyncDelegate from './mpdelegate/SyncDelegate';
@@ -61,7 +61,7 @@ export default class MultiplayerStrategy extends GameStrategy {
     }
 
     public initUI() {
-        this._drawForceFieldBars(this.scene);
+        this.drawForceFieldBars(this.scene);
     }
 
     public gameplayTick(physicContext, elapsedMS) {
@@ -79,8 +79,7 @@ export default class MultiplayerStrategy extends GameStrategy {
         }
     }
 
-
-    private _drawForceFieldBars(scene) {
+    private drawForceFieldBars(scene) {
         this.forceFieldBarPos.forEach(function (position) {
             const forceFieldBar = new PIXI.Sprite(forceFieldBarTexture);
             const forceFieldBarBackground = new PIXI.Sprite(forceFieldBarBackgroundTexture);

@@ -4,7 +4,7 @@ import GameScene from './GameScene';
 import PhysicLoop from './physics/PhysicLoop';
 import SinglePlayerStrategy from './strategy/SinglePlayerStrategy';
 import EventBus from './GameEventBus';
-import MultiplayerStrategy from "./strategy/MultiplayerStrategy";
+import MultiplayerStrategy from './strategy/MultiplayerStrategy';
 
 export default class GameManager {
     constructor(serviceLocator) {
@@ -55,7 +55,9 @@ export default class GameManager {
 
     _initStrategy(physicObject, data) {
         if (data !== null && data.type === 'FullSwapScene') {
-            this.gameStrategy = new MultiplayerStrategy(this.scene, this.serviceLocator.magicTransport, physicObject, data);
+            this.gameStrategy = new MultiplayerStrategy(this.scene,
+                this.serviceLocator.magicTransport, physicObject,
+                data);
         } else {
             this.gameStrategy = new SinglePlayerStrategy(this.scene);
         }
