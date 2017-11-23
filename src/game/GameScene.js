@@ -21,6 +21,16 @@ export default class GameScene {
     constructor() {
         this.field = null;
         this.stage = null;
+        this.fontStyle = new PIXI.TextStyle({
+            fontFamily: 'Arial',
+            fontSize: 36,
+            fontWeight: 'bold',
+            fill: '#ffffff',
+            strokeThickness: 5,
+            
+        });
+        this.scoreMarginX = 100;
+        this.scoreMarginY = 100;
     }
 
     displayEndResult(winner) {
@@ -111,7 +121,7 @@ export default class GameScene {
         }
 
         for (let i = 0; i < 2; i++) {
-            const platform = new Platform(physicContext, PlatformCircle1);
+            const platform = new Platform(physicContext, PlatformCircle1, i);
             platform.setSpeed(new Point(0, 0));
             platform.setSpriteSize(Constants.GAME_PLATFORM_SIZE, physicContext.gameManager);
             platform.setRotation(90 + i * 180, physicContext);
@@ -122,6 +132,23 @@ export default class GameScene {
                 physicContext.spriteStorage.enemyPlatform = platform;
             }
         }
+    }
+
+    initScores() {
+        const score1Display = new PIXI.Text(0, this.fontStyle);
+        score1Display.anchor.set(0.5);
+        [score1Display.x, score1Display.y] = [this.scaleLength(this.scoreMarginX), this.scaleLength(this.scoreMarginY)];
+        const score2Display = new PIXI.Text(0, this.fontStyle);
+        score2Display.anchor.set(0.5);
+        [score2Display.x, score2Display.y] = [this.width - this.scaleLength(this.scoreMarginX), this.scaleLength(this.scoreMarginY)];
+        this.addObject(score1Display);
+        this.addObject(score2Display);
+
+        this.scoreFields = [score1Display, score2Display];
+    }
+
+    setScore(playerNum, score) {
+        this.scoreFields[playerNum].text = score;
     }
 
     setCoords(sprite, point) {

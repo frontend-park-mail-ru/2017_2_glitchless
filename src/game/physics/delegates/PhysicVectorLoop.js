@@ -70,7 +70,7 @@ export default class PhysicVectorLoop {
                 const collision = CollisionManager.getReflection(laser.getCoords(),
                     laser.getSpeed(), platformArc, elapsedMS);
                 if (collision) {
-                    laser.onCollision(collision);
+                    laser.onCollision(collision, platform);
                 }
             });
         });
@@ -119,7 +119,7 @@ export default class PhysicVectorLoop {
                     laser.getSpeed(), hpblock.collisionArc, elapsedMS);
                 if (collision) {
                     laser.forDestroy = true;
-                    hpblock.onCollision();
+                    hpblock.onCollision(laser);
                 }
             });
 

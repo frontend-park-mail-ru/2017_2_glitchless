@@ -38,9 +38,10 @@ export default class SinglePlayerStrategy extends GameStrategy {
 
     public initUI() {
         this._drawForceFieldBars(this.scene);
+        this.scene.initScores();
     }
 
-    public gameplayTick(physicContext, elapsedMS) {
+    public gameplayTick(physicContext, elapsedMS: number) {
         this.processBotLogic(physicContext);
         this.replenishShields(physicContext, elapsedMS);
         this.processControls(physicContext, physicContext.spriteStorage.userPlatform);
@@ -62,18 +63,36 @@ export default class SinglePlayerStrategy extends GameStrategy {
         this.updateBar(playerNum, (newShieldValue / player.maxShield) * 100);
     }
 
-    public onHpLoss(hpblock) {
+    /*
+    * @param {[HealthBlock, Laser]} blockAndLaser hpblock and laser that hit it,
+    *    mashed into one array because of EventBus argument providing scheme
+    */
+    public onHpLoss(blockAndLaser) {
+        const hpblock = blockAndLaser[0];
+        const laser = blockAndLaser[1];
         const playerNum = hpblock.playerNumber;
-        console.log(playerNum);
+
+        if (Constants.GAME_DEBUG) {
+            console.log(playerNum);
+        }
+
         const player = this.players[playerNum];
         player.health -= 1;
-        console.log(player);
+
+        if (laser.reflected && laser.lastReflectedBy !== playerNum) {
+            this.givePoints(laser.lastReflectedBy, Constants.POINTS_HP_HIT);
+        }
+
+        if (Constants.GAME_DEBUG) {
+            console.log(player);
+        }
+
         if (player.health === 0) {
             this.onGameEnd(playerNum);
         }
     }
 
-    public updateBar(num, percent) {
+    public updateBar(num: number, percent: number) {
         this.forceFieldBars[num].height = this.scene.scaleLength(Constants.GAME_FORCEFIELD_BAR_SIZE[1]) * percent / 100;
     }
 
@@ -81,6 +100,11 @@ export default class SinglePlayerStrategy extends GameStrategy {
         const winner = (loser + 1) % 2;
         console.log(winner);
         EventBus.emitEvent('player_won', winner);
+    }
+
+    private givePoints(playerNum, points: number) {
+        this.players[playerNum].score += points;
+        this.scene.setScore(playerNum, this.players[playerNum].score);
     }
 
     private _drawForceFieldBars(scene) {
@@ -101,7 +125,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
         }.bind(this));
     }
 
-     private processControls(context, platform) {
+    private processControls(context, platform) {
 
         if (this.leftButton.isDown || this.qButton.isDown) {
             platform.setMoveDirection('left');
@@ -166,7 +190,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
         }
     }
 
-    private replenishShields(physicContext, elapsedMS) {
+    private replenishShields(physicContext, elapsedMS: number) {
         this.players.forEach(function(player, playerNum) {
             const newShieldVal = player.shield + Constants.SHIELD_REGEN_RATIO * elapsedMS / 1000;
             player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
