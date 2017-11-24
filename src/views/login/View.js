@@ -27,12 +27,10 @@ class LoginModalView extends View {
     _initForm() {
         initDisplayErrorsForm(this.loginForm);
 
-        const that = this;
-
-        this.loginForm.addEventListener('submit', function(event) {
+        this.loginForm.addEventListener('submit', (event) => {
             event.preventDefault();
 
-            const model = that._createModel();
+            const model = this._createModel();
 
             const validationResult = model.validate();
             if (!validationResult.ok) {
@@ -47,10 +45,10 @@ class LoginModalView extends View {
                         displayServerError(serverErrorField, json.message);
                         return;
                     }
-                    that.serviceLocator.user = UserModel.fromApiJson(json.message);
-                    that.serviceLocator.user.saveInLocalStorage();
-                    that.serviceLocator.router.changePage('/');
-                    that.serviceLocator.eventBus.emitEvent('auth', that.serviceLocator.user);
+                    this.serviceLocator.user = UserModel.fromApiJson(json.message);
+                    this.serviceLocator.user.saveInLocalStorage();
+                    this.serviceLocator.router.changePage('/');
+                    this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
                 })
                 .catch((res) => console.error(res));
         });

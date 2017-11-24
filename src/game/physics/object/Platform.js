@@ -6,11 +6,13 @@ import Point from './primitive/Point';
 const basicPlatformTexture = PIXI.Texture.fromImage('./images/platform.png');
 
 export default class Platform extends PhysicsEntitiy {
-    constructor(context, circle) {
+    constructor(context, circle, playerNum) {
         const basicPlatformSprite = new PIXI.Sprite(basicPlatformTexture);
         super(basicPlatformSprite, context);
         this.circle = circle;
         this.circleLevel = 0;
+        this.direction = 0;
+        this.playerNum = playerNum;
     }
 
     getEdgePoints() {
@@ -38,6 +40,22 @@ export default class Platform extends PhysicsEntitiy {
     setCircle(circle, context) {
         this.circle = circle;
         this.setRotation(this.getRotation(), context);
+    }
+
+    setMoveDirection(direction) {
+        if (direction === 'right') {
+            this.direction = -1;
+            return;
+        }
+        if (direction === 'left') {
+            this.direction = +1;
+            return;
+        }
+        if (direction === 'none') {
+            this.direction = 0;
+            return;
+        }
+        throw new TypeError(direction);
     }
 
     getRotation() {

@@ -41,7 +41,7 @@ class SignupModalView extends View {
                 .then((res) => res.json())
                 .then((json) => {
                     if (!json.successful) {
-                        const serverErrorField = document.getElementById('login-form__server-errors');
+                        const serverErrorField = document.getElementById('signup-form__server-errors');
                         displayServerError(serverErrorField, json.message);
                         return;
                     }

@@ -4,6 +4,7 @@ import GameScene from './GameScene';
 import PhysicLoop from './physics/PhysicLoop';
 import SinglePlayerStrategy from './SinglePlayerStrategy';
 import EventBus from './GameEventBus';
+import ScoreManager from "./ScoreManager";
 
 export default class GameManager {
     constructor(serviceLocator) {
@@ -11,6 +12,7 @@ export default class GameManager {
         this.scene = new GameScene();
         this.eventBus = EventBus;
         this.gameStrategy = new SinglePlayerStrategy(this.scene);
+        this.scoreManager = new ScoreManager(this);
         EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
         EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
@@ -39,10 +41,20 @@ export default class GameManager {
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         this.scene.initBackground(this.app);
-        this.gameStrategy.initUI(this.scene);
+        this.gameStrategy.initUI();
 
         this.loopObj = new PhysicLoop(this);
         this.loopObj.initTick(this);
+
+        this.app.ticker.add(this._onTick, this);
+    }
+
+    _onTick(deltaTime) {
+        let elapsedMS = deltaTime /
+            PIXI.settings.TARGET_FPMS /
+            this.app.ticker.speed;
+        this.gameStrategy.gameplayTick(this.loopObj, elapsedMS);
+        this.loopObj._mainTick(deltaTime);
     }
 
     onGameEnd() {

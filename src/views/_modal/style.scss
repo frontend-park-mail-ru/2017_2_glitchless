@@ -1,70 +1,128 @@
 @import '../_sass_utils/_palette';
+@import '../_sass_utils/form';
+@import '../_sass_utils/constants';
+
 @mixin fullscreen {
     width: 100%;
     padding: 0;
 }
 
 .modal {
-    &__closer {
-        padding: 2px 16px;
-        background-color: $colour_main2;
-        color: $colour_main1;
-        //display: inline;
-        border-radius: 3px 3px 0 0;
-    }
+    &-control {
+        text-align: center;
+        @include form-styling;
 
-    &__header {
-        padding: 2px 16px;
-        background-color: $colour_main2;
-        color: $colour_main1;
-        border-radius: 3px 3px 0 0;
+        &__wrapper {
+            margin: 30px 0;
+        }
 
-        &--fullscreen {
-            @include fullscreen;
+        a, input {
+            margin-right: 15px;
         }
     }
 
-    &__body {
-        padding: 2px 16px;
-        color: $colour_main1;
+}
 
-        &--fullscreen {
-            @include fullscreen;
-        }
+@media only screen and (max-device-width: $breakpoint-tablet) {
+    .modal-wrapper {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $colour_main1_new;
     }
 
-    &__footer {
-        padding: 2px 16px;
-        background-color: $colour_main2;
-        font-size: 13px;
-        border-radius: 0 0 3px 3px;
-        color: $colour_main1;
+    .modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        
+        &__closer {
+            display: none;
+        }
 
-        &--fullscreen {
-            @include fullscreen;
+        &__header {
+            text-align: center;
+            font-size: 5vw;
+        }
+
+        &__content {
+            padding: 5vw;
+            font-size: 3vw;
         }
     }
+}
 
-    &__content {
-        display: block;
-        position: relative;
-        background-color: $colour_main3;
-        min-width: 500px;
-        margin: auto;
-        padding: 0;
+@media only screen and (min-device-width: $breakpoint-tablet) {
+    .modal {
+        &__closer {
+            padding: 2px 16px;
+            background-color: $colour_main2;
+            color: white;
+            border-radius: 3px 3px 0 0;
+        }
 
-        border: 1px solid $colour_main1;
-        border-radius: 3px;
+        &__header {
+            padding: 2px 16px;
+            border-radius: 10px 10px 0 0;
+            background-color: rgba($colour_main2_plain, .7);
 
-        width: 35%;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-        -webkit-animation-name: slideFromTop;
-        -webkit-animation-duration: 0.4s;
-        animation-name: slideFromTop;
-        animation-duration: 0.4s;
+            &--fullscreen {
+                @include fullscreen;
+            }
+        }
 
-        &--fullscreen {
-            @include fullscreen;
+        &__body {
+            padding: 2px 16px;
+            //color: $colour_main1;
+            color: white;
+
+            &--fullscreen {
+                @include fullscreen;
+            }
+        }
+
+        &__footer {
+            padding: 2px 16px;
+            font-size: 13px;
+            color: white;
+
+            &--fullscreen {
+                @include fullscreen;
+            }
+        }
+
+        &__content {
+            display: block;
+            position: relative;
+            background: $colour_main2_new;
+
+            min-width: 500px;
+            margin: auto;
+            padding: 0;
+
+            border: 1px solid rgba($colour_main1, .5);
+            border-radius: 10px;
+
+            width: 35%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: slideFromTop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideFromTop;
+            animation-duration: 0.4s;
+
+            &--fullscreen {
+                @include fullscreen;
+            }
         }
     }
 }

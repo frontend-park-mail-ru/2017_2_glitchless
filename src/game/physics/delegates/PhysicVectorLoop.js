@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import ButtonHandler from '../helpers/ButtonHandler';
 import Constants from '../../../utils/Constants';
 import CollisionManager from '../CollisionManager';
-import { Arc, Circle } from '../PhysicPrimitives';
+import {Arc, Circle} from '../PhysicPrimitives';
 
 export default class PhysicVectorLoop {
     constructor() {
@@ -18,34 +18,28 @@ export default class PhysicVectorLoop {
     }
 
     processPhysicLoop(context, elapsedMS) {
-        this._processPlatformLogic(context.spriteStorage.userPlatform, context);
+        this._processPlatformLogic(context.physicObjects.platform);
         this._processCollisions(context, elapsedMS);
     }
 
-    _processPlatformLogic(platform, context) {
-        if (this.downButton.isUp && this.upButton.isUp) {
-            this.verticalPressed = false;
-        }
-
-        if (!this.verticalPressed && this.downButton.isDown) {
-            this.verticalPressed = true;
-            platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
-            platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-        } else {
-            if (!this.verticalPressed && this.upButton.isDown) {
-                this.verticalPressed = true;
-                platform.circleLevel = (platform.circleLevel + 1) % 3;
-                platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
+    _processPlatformLogic(platforms) {
+        platforms.forEach((platform) => {
+            if (platform.direction === 0) {
+                if (platform.getRotationSpeed() > Constants.GAME_PLATFROM_MIN_SPEED) {
+                    platform.setRotationSpeed(Math.max(
+                        platform.getRotationSpeed()
+                        - (platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0));
+                } else if (platform.getRotationSpeed() < Constants.GAME_PLATFROM_MIN_SPEED) {
+                    platform.setRotationSpeed(Math.min(
+                        platform.getRotationSpeed()
+                        + Math.abs(platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0));
+                } else {
+                    platform.setRotationSpeed(0);
+                }
+                return;
             }
-        }
-
-        if (this.leftButton.isDown || this.qButton.isDown) {
-            platform.setRotationSpeed(Constants.GAME_PLATFORM_CONTROL_SPEED);
-        } else if (this.rightButton.isDown || this.eButton.isDown) {
-            platform.setRotationSpeed(-Constants.GAME_PLATFORM_CONTROL_SPEED);
-        } else {
-            platform.setRotationSpeed(0);
-        }
+            platform.setRotationSpeed(Constants.GAME_PLATFORM_CONTROL_SPEED * platform.direction);
+        });
     }
 
     _processCollisions(context, elapsedMS) {
@@ -76,7 +70,7 @@ export default class PhysicVectorLoop {
                 const collision = CollisionManager.getReflection(laser.getCoords(),
                     laser.getSpeed(), platformArc, elapsedMS);
                 if (collision) {
-                    laser.onCollision(collision);
+                    laser.onCollision(collision, platform);
                 }
             });
         });
@@ -89,7 +83,7 @@ export default class PhysicVectorLoop {
             }
 
             const collision = CollisionManager.checkCollision(laser.getCoords(),
-                    laser.getSpeed(), alien.collisionCircle, elapsedMS, true);
+                laser.getSpeed(), alien.collisionCircle, elapsedMS, true);
             if (collision) {
                 laser.forDestroy = true;
             }
@@ -97,13 +91,12 @@ export default class PhysicVectorLoop {
 
         //TODO: Absorbing lasers that hit forcefields, depleting forcefields
         context.physicObjects.forcefield.forEach((forcefield) => {
+            if (forcefield.off) {
+                return;
+            }
             context.physicObjects.laser.forEach((laser) => {
-                if (forcefield.off) {
-                    return;
-                }
-                const forcefieldCollisionArc = Arc.fromPoints(...(forcefield.getEdgePoints()), forcefield.getCoords());
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
-                        laser.getSpeed(), forcefieldCollisionArc, elapsedMS);
+                    laser.getSpeed(), forcefield.collisionArc, elapsedMS);
                 if (collision) {
                     laser.forDestroy = true;
                     forcefield.onCollision(collision);
@@ -122,12 +115,11 @@ export default class PhysicVectorLoop {
         //TODO: depleting health
         context.physicObjects.hpblock.forEach((hpblock) => {
             context.physicObjects.laser.forEach((laser) => {
-                const hpblockCollisionArc = Arc.fromPoints(...(hpblock.getEdgePoints()), hpblock.getCoords());
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
-                        laser.getSpeed(), hpblockCollisionArc, elapsedMS);
+                    laser.getSpeed(), hpblock.collisionArc, elapsedMS);
                 if (collision) {
                     laser.forDestroy = true;
-                    hpblock.onCollision();
+                    hpblock.onCollision(laser);
                 }
             });
 

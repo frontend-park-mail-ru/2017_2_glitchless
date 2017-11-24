@@ -19,8 +19,8 @@ export default class HealthBlock extends PhysicsObject {
         this.collisionArc = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
     }
 
-    onCollision() {
-        EventBus.emitEvent('hpblock_hit', this);
+    onCollision(laser) {
+        EventBus.emitEvent('hpblock_hit', [this, laser]);
         this.destroy();
     }
 

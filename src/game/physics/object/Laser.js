@@ -12,9 +12,10 @@ export default class Laser extends PhysicsEntity {
         this.setSpeed(speed);
     }
 
-    onCollision(collision) {
+    onCollision(collision, platform) {
         this.setSpeed(collision[1].copy());
         this.reflected = true;
+        this.lastReflectedBy = platform.playerNum;
     }
 
     setSpeed(speed) {
