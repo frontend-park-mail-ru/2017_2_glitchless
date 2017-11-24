@@ -31,6 +31,14 @@ export default class SyncDelegate {
         console.log('Change platform speed');
     }
 
+    public applyServerSwapCommit(data) {
+        const object = this.idToObject[data.objectId];
+        const newPoint = new Point(data.coord.posX, data.coord.posY);
+        object.setCoords(newPoint, this.physicContext);
+        object.setRotation(data.rotation, this.physicContext);
+        object.setRotationSpeed(data.rotationSpeed);
+    }
+
     public sync() {
         this.flushToCommit();
     }

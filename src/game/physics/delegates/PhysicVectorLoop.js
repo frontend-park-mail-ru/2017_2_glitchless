@@ -43,7 +43,7 @@ export default class PhysicVectorLoop {
 
             platform.setRotationSpeed(newRotationSpeed);
 
-            if (newRotationSpeed !== currentSpeed) {
+            if (Math.abs(newRotationSpeed - currentSpeed) >= Constants.GAME_PLATFROM_MIN_SPEED) {
                 GameEventBus.emitEvent('change_platform_speed', platform);
             }
         });
