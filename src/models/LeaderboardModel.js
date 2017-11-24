@@ -26,7 +26,7 @@ export default class LeaderboardModel {
     }
 
     get currentUserScore() {
-        return this._scores.get(this._currentUserName);
+        return this._scores.has(this._currentUserName) ? this._scores.get(this._currentUserName) : 0;
     }
 
     set currentUserScore(value) {
@@ -65,11 +65,11 @@ export default class LeaderboardModel {
 
     saveCurrentUserScore() {
         this._saveToLocalStorage();
-        return this._api.post('leaderboard', {score: this._scores.get(this._currentUserName)})
+        return this._api.post('leaderboard', {score: this.currentUserScore})
     }
 
     canSaveCurrentUserScore() {
-        return this._scores.has(this._currentUserName);
+        return !!this._currentUserName
     }
 
     sync() {
