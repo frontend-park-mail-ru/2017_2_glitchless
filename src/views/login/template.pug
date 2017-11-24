@@ -7,8 +7,12 @@ include ../_modal/index
         each field in input_fields
             input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
         div(id='login-form__server-errors', style='visibility: hidden;') errors placeholder
-        p
-            input.login-form__button(type='submit')
+        //p
+            //input.login-form__button(type='submit')
+            //.modal-control__wrapper
+        .modal-control
+            input.login-form__button(type='submit', value='Submit')
+            a.modal_closer.modal-control__button(href='/') Return
         p
             | Don't have an account? 
             a.login-form__redirect-btn(href='/signup') Sign up
