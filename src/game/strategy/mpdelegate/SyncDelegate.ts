@@ -24,6 +24,13 @@ export default class SyncDelegate {
         GameEventBus.subscribeOn('change_platform_speed', (data) => {
             this.onChangeSpeedPlatform(data);
         }, this);
+        this.magicTransport.eventBus.subscribeOn('ServerSnapMessage', (data) => {
+            this.applyServerSwapCommit(data);
+        }, this);
+
+        this.magicTransport.eventBus.subscribeOn('LightSnapMessage', (data) => {
+            this.applyLightServerSwapCommit(data);
+        }, this);
     }
 
     public onChangeSpeedPlatform(object: Platform) {
@@ -37,6 +44,27 @@ export default class SyncDelegate {
         object.setCoords(newPoint, this.physicContext);
         object.setRotation(data.rotation, this.physicContext);
         object.setRotationSpeed(data.rotationSpeed);
+    }
+
+    public applyLightServerSwapCommit(data) {
+        const commitId = Math.max(data.commitId, this.firstExistCommit);
+        const object = this.idToObject[data.objectId];
+        const newPoint = new Point(data.coord.posX, data.coord.posY);
+        object.setCoords(newPoint, this.physicContext);
+        object.setRotation(data.rotation, this.physicContext);
+
+        for (let i = commitId; i < this.counter - 1; i++) {
+            this.applyToObject(object, this.commits[i]);
+        }
+
+        const lastCommitTmp = this.commits[this.counter];
+        const currentTime = performance.now();
+        const lastCommit = {
+                speed: lastCommitTmp.speed,
+                timestamp_start: lastCommitTmp.timestamp_start,
+                timestamp_end: currentTime
+            };
+        this.applyToObject(object, lastCommit);
     }
 
     public sync() {
@@ -75,6 +103,16 @@ export default class SyncDelegate {
 
         this.commits[commitId] = {speed, timestamp_start: now};
         this.magicTransport.send({type: 'ClientCommitMessage', commitNumber: commitId, objectId, speed});
+    }
+
+
+    private applyToObject(object, commit) {
+        const diffTime = commit.timestamp_end - commit.timestamp_start;
+
+        if (object instanceof Platform) {
+            const diff = commit.speed.x * diffTime;
+            object.setRotation(object.getRotation() + diff);
+        }
     }
 
 }
