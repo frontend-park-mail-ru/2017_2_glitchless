@@ -11,4 +11,6 @@
                 {trigger: '/about', label: 'About'}]
             each page in pages
                 .menu__item-wrapper
-                    .menu__item.modal-trigger(modal-trigger=page['trigger']) #{page['label']}
+                    .menu__item.modal-trigger(data-modal-trigger=page['trigger']) #{page['label']}
+            .menu__item-wrapper
+                .menu__item#logout-button Logout

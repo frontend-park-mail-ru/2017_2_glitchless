@@ -34,9 +34,10 @@ class LeadersModalView extends View {
             }
             const newElem = document.createElement('div');
             const position = i + 1;
-            newElem.innerHTML = rowTemplate({position, nickname, score});
             entriesRoot.appendChild(newElem);
+            newElem.outerHTML = rowTemplate({position, nickname, score});
             i++;
+
         });
     }
 

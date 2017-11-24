@@ -20,7 +20,7 @@ for (let i = 1; i <= 20; i++) {
 
 app.get('/api/leaderboard', (req, res) => {
     console.log('Leaderboard get');
-    const resJson = {'scores': []};
+    const resJson = {"scores": []};
     leaderboardData.forEach((username, score) => {
         resJson['scores'].push({'user': username, 'score': score});
     });

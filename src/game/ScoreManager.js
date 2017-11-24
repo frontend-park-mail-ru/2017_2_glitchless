@@ -8,7 +8,9 @@ export default class ScoreManager {
             const currentUserIsWinner = winner === 0;
             const onWinScoreChange = 1;
             const onLoseScoreChange = -1;
-            this.leaderboard.incrementCurrentUserNameScore(currentUserIsWinner ? onWinScoreChange : onLoseScoreChange);
+
+            const deltaScore = (currentUserIsWinner ? onWinScoreChange : onLoseScoreChange);
+            this.leaderboard.currentUserScore = this.leaderboard.currentUserScore + deltaScore;
             this.leaderboard.sync();
         });
     }

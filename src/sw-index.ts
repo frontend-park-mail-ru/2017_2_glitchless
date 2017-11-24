@@ -65,6 +65,9 @@ self.addEventListener('fetch', (event) => {
 function _tryInvalidateCacheRedownload(event) {
     return fetch(event.request).then((response) => {
         caches.open(cacheName).then((cache) => {
+            if (response.bodyUsed) {
+                return;
+            }
             cache.put(event.request, response.clone());
         });
         return response;
