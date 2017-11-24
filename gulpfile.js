@@ -7,6 +7,7 @@ const gulpSourcemaps = require('gulp-sourcemaps');
 const gulpPlumber = require('gulp-plumber');
 const gulpInsert = require('gulp-insert');
 const gulpIf = require('gulp-if');
+const gulpAutoprefixer = require('gulp-autoprefixer');
 
 
 // js
@@ -41,12 +42,12 @@ const webpackConfig = {
     }
 };
 
-function jsBuildPipe(inputFilepath, outputFilename, doWatch) {
+const jsBuildPipe = (inputFilepath, outputFilename, doWatch) => {
     return gulp.src(inputFilepath)
         .pipe(webpack(Object.assign({}, webpackConfig, {watch: doWatch, output: {filename: outputFilename}})))
         .pipe(gulpIf((file) => file.path.endsWith('.js'), gulpInsert.prepend('"use strict";\n')))
         .pipe(gulp.dest('dist/'));
-}
+};
 
 gulp.task('js:build', () => {
     return jsBuildPipe('src/index.ts', 'app.js', false);
@@ -82,6 +83,7 @@ const cssPipe = (p) => {
     return p
         .pipe(gulpSourcemaps.init())
         .pipe(gulpSass())
+        .pipe(gulpAutoprefixer())
         .pipe(gulpRename('app.css'))
         .pipe(gulpSourcemaps.write('.'))
         .pipe(gulp.dest('dist'));
