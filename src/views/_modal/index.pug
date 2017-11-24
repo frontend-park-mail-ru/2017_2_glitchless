@@ -1,53 +1,24 @@
 mixin modal(title, footer, fullscreen)
-    .modal
-        if !fullscreen
-            .modal__content
-                .modal__header
-                    //a.modal__closer(href='/') ×
-                    h2 #{title}
+    .modal-wrapper
+        .modal
+            if !fullscreen
+                .modal__content
+                    .modal__header
+                        h2 #{title}
 
-                .modal__body
-                    block
-                    //.modal-control__wrapper
-                    //    .modal-control
-                    //        a.modal_closer.modal-control__button(href='/') Return
-                if footer
-                    .modal__footer
-                        h3 #{footer}
-        else
-            .modal__content.modal__content--fullscreen
-                .modal__header
-                    //a.modal__closer(href='/') ×
-                    h2 #{title}
+                    .modal__body
+                        block
+                    if footer
+                        .modal__footer
+                            h3 #{footer}
+            else
+                .modal__content.modal__content--fullscreen
+                    .modal__header
+                        h2 #{title}
 
-                .modal__body.modal__body--fullscreen
-                    block
+                    .modal__body.modal__body--fullscreen
+                        block
 
-                if footer
-                    .modal__footer.modal__footer--fullscreen
-                        h3 #{footer}
-
-//mixin modal(title, footer, fullscreen)
-//    .modal
-//        if !fullscreen
-//            .modal__content
-//                .modal__header
-//                    a.modal__closer(href='/') ×
-//                    h2 #{title}
-//
-//                .modal__body
-//                    block
-//
-//                .modal__footer
-//                    h3 #{footer}
-//        else
-//            .modal__content.modal__content--fullscreen
-//                .modal__header
-//                    a.modal__closer(href='/') ×
-//                    h2 #{title}
-//
-//                .modal__body.modal__body--fullscreen
-//                    block
-//
-//                .modal__footer.modal__footer--fullscreen
-//                    h3 #{footer}
+                    if footer
+                        .modal__footer.modal__footer--fullscreen
+                            h3 #{footer}

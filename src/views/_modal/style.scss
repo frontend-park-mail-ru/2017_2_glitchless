@@ -1,13 +1,13 @@
 @import '../_sass_utils/_palette';
 @import '../_sass_utils/form';
+@import '../_sass_utils/constants';
+
 @mixin fullscreen {
     width: 100%;
     padding: 0;
 }
 
 .modal {
-    background: $colour_main1_new;
-
     &-control {
         text-align: center;
         @include form-styling;
@@ -23,7 +23,19 @@
 
 }
 
-@media only screen and (max-device-width: 768px) {
+@media only screen and (max-device-width: $breakpoint-tablet) {
+    .modal-wrapper {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $colour_main1_new;
+    }
+
     .modal {
         display: flex;
         align-items: center;
@@ -46,30 +58,23 @@
         &__content {
             padding: 5vw;
             font-size: 3vw;
-            background: $colour_main2_new;
         }
     }
 }
 
-@media only screen and (min-device-width: 768px) {
+@media only screen and (min-device-width: $breakpoint-tablet) {
     .modal {
         &__closer {
             padding: 2px 16px;
             background-color: $colour_main2;
-            //color: $colour_main1;
             color: white;
-            //display: inline;
             border-radius: 3px 3px 0 0;
         }
 
         &__header {
             padding: 2px 16px;
-            //border-top-right-radius: 17px;
-            //border-top-right-radius: 10px;
             border-radius: 10px 10px 0 0;
-            //background-color: $colour_main2;
             background-color: rgba($colour_main2_plain, .7);
-            //border-radius: 3px 3px 0 0;
 
             &--fullscreen {
                 @include fullscreen;
@@ -88,15 +93,8 @@
 
         &__footer {
             padding: 2px 16px;
-            //background-color: $colour_main2;
-            //background: rgba($colour_main2_plain, .7);
             font-size: 13px;
-            //border-radius: 0 0 3px 3px;
-            //border-bottom-left-radius: 17px;
-            //border-top-left-radius: 10px;
-            //color: $colour_main1;
             color: white;
-            //border-top: 1px solid $colour_plain_1;
 
             &--fullscreen {
                 @include fullscreen;
@@ -106,7 +104,6 @@
         &__content {
             display: block;
             position: relative;
-            //background-color: $colour_main3;
             background: $colour_main2_new;
 
             min-width: 500px;
@@ -114,9 +111,6 @@
             padding: 0;
 
             border: 1px solid rgba($colour_main1, .5);
-            //border-radius: 3px;
-            //border-radius: 0 17px 0 17px;
-            //border-radius: 0 10px 0 10px;
             border-radius: 10px;
 
             width: 35%;

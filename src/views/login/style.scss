@@ -1,11 +1,12 @@
 @import '../_sass_utils/_form';
 @import '../_sass_utils/_palette';
+@import '../_sass_utils/constants';
 
 .login-form {
     @include form-styling;
 }
 
-@media only screen and (max-device-width: 768px) {
+@media only screen and (max-device-width: $breakpoint-tablet) {
     .login-form {
         font-size: 4vw;
     }

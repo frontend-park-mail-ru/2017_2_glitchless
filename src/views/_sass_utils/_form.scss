@@ -1,11 +1,12 @@
 @import "palette";
+@import '../_sass_utils/constants';
 
 @mixin form-styling {
     text-align: center;
     display: block;
 
 
-    @media only screen and (max-device-width: 768px) {
+    @media only screen and (max-device-width: $breakpoint-tablet) {
         font-size: 4vw;
 
         &__field {
@@ -19,7 +20,7 @@
         }
     }
 
-    @media only screen and (min-device-width: 768px) {
+    @media only screen and (min-device-width: $breakpoint-tablet) {
         &__field {
             font-size: 12pt;
             padding: 5px 10px 5px 10px;
@@ -32,20 +33,13 @@
     }
 
     &__field {
-        //font-size: 12pt;
         margin-top: 10px;
         width: 90%;
-        //border: 1px solid $colour_main1;
         border: 1px solid $colour_main2_plain;
         height: 50px;
-        //background: rgba(#F5F5F5, .9);
         background: rgba(#000, .1);
 
-//        font-size: 12pt;
-        //color: $colour_main1;
         color: $colour_plain_3;
-        //padding: 5px 10px 5px 10px;
-        //padding: 4vw;
         outline: none;
         border-radius: 5px;
 
@@ -64,15 +58,11 @@
     }
 
     &__button {
-        //font-size: 12pt;
         background: rgba(255, 255, 255, .2);
         box-shadow: 3px 3px  rgba(0, 0, 0, .1);
         border-radius: 0 7px;
         border: none;
-        //font-size: 14px;
         min-width: 150px;
-        //padding: 15px 40px;
-        //padding: 3vw 8vw;
         transition: .5s;
 
         color: white;
@@ -100,7 +90,6 @@
         }
 
         background: $colour_main1;
-        //background: $colour_main1_new;
         color: $colour_main2;
         font-size: 14pt;
         transition: .5s;
@@ -116,7 +105,6 @@
     &__redirect-btn {
         margin: 0 5px;
         padding: 5px;
-        //background: $colour_main4;
         background: rgba(#000, .1);
         text-decoration: none;
         color: $colour_main3;

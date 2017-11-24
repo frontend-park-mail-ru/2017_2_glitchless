@@ -7,16 +7,40 @@ include ../_modal/index
                    {position: '3', nickname: 'reo7sp', score: '420'},
                    {position: '4', nickname: 'StealthTech', score: '0'}]
 
-  .leaders__header
-    .leaders__header__col-side #
-    .leaders__header__col-main Nickname
-    .leaders__header__col-side Rhythm
-  each entry in entries
-    .leaders__entry
-      .leaders__entry__col-side #{entry.position}
-      .leaders__entry__col-main #{entry.nickname}
-      .leaders__entry__col-side #{entry.score}
+  table.leaders
+    thead
+      tr.leaders__header
+        th.leaders__header__col-side #
+        th.leaders__header__col-main Nickname
+        th.leaders__header__col-side Rhythm
+    tbody
+      each entry in entries
+        tr.leaders__entry
+          td.leaders__entry__col-side #{entry.position}
+          td.leaders__entry__col-main #{entry.nickname}
+          td.leaders__entry__col-side #{entry.score}
 
-  .modal-control__wrapper
+  .modal-control__wrapper.bumper-top
     .modal-control
         a.modal_closer.modal-control__button(href='/') Return
+
+//+modal('Leaders')
+//  -
+//    var entries = [{position: '1', nickname: 'Ansile', score:'1337'},
+//                   {position: '2', nickname: 'LionZXY', score:'kotlin.js'},
+//                   {position: '3', nickname: 'reo7sp', score: '420'},
+//                   {position: '4', nickname: 'StealthTech', score: '0'}]
+//
+//  .leaders__header
+//    .leaders__header__col-side #
+//    .leaders__header__col-main Nickname
+//    .leaders__header__col-side Rhythm
+//  each entry in entries
+//    .leaders__entry
+//      .leaders__entry__col-side #{entry.position}
+//      .leaders__entry__col-main #{entry.nickname}
+//      .leaders__entry__col-side #{entry.score}
+//
+//  .modal-control__wrapper
+//    .modal-control
+//        a.modal_closer.modal-control__button(href='/') Return
