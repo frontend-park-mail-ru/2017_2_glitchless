@@ -38,10 +38,12 @@ export default class SinglePlayerStrategy extends GameStrategy {
 
     public initUI() {
         this._drawForceFieldBars(this.scene);
+        this.scene.initScores();
     }
 
-    public gameplayTick(physicContext) {
+    public gameplayTick(physicContext, elapsedMS: number) {
         this.processBotLogic(physicContext);
+        this.replenishShields(physicContext, elapsedMS);
         this.processControls(physicContext, physicContext.spriteStorage.userPlatform);
     }
 
@@ -51,27 +53,46 @@ export default class SinglePlayerStrategy extends GameStrategy {
         const oldShieldValue = player.shield;
 
         let newShieldValue = player.shield - this.laserDamage;
-        player.shield = newShieldValue;
+
         if (newShieldValue <= 0) {
             newShieldValue = 0;
             forcefield.onChargeEnd();
         }
+        player.shield = newShieldValue;
 
         this.updateBar(playerNum, (newShieldValue / player.maxShield) * 100);
     }
 
-    public onHpLoss(hpblock) {
+    /*
+    * @param {[HealthBlock, Laser]} blockAndLaser hpblock and laser that hit it,
+    *    mashed into one array because of EventBus argument providing scheme
+    */
+    public onHpLoss(blockAndLaser) {
+        const hpblock = blockAndLaser[0];
+        const laser = blockAndLaser[1];
         const playerNum = hpblock.playerNumber;
-        console.log(playerNum);
+
+        if (Constants.GAME_DEBUG) {
+            console.log(playerNum);
+        }
+
         const player = this.players[playerNum];
         player.health -= 1;
-        console.log(player);
+
+        if (laser.reflected && laser.lastReflectedBy !== playerNum) {
+            this.givePoints(laser.lastReflectedBy, Constants.POINTS_HP_HIT);
+        }
+
+        if (Constants.GAME_DEBUG) {
+            console.log(player);
+        }
+
         if (player.health === 0) {
             this.onGameEnd(playerNum);
         }
     }
 
-    public updateBar(num, percent) {
+    public updateBar(num: number, percent: number) {
         this.forceFieldBars[num].height = this.scene.scaleLength(Constants.GAME_FORCEFIELD_BAR_SIZE[1]) * percent / 100;
     }
 
@@ -79,6 +100,11 @@ export default class SinglePlayerStrategy extends GameStrategy {
         const winner = (loser + 1) % 2;
         console.log(winner);
         EventBus.emitEvent('player_won', winner);
+    }
+
+    private givePoints(playerNum, points: number) {
+        this.players[playerNum].score += points;
+        this.scene.setScore(playerNum, this.players[playerNum].score);
     }
 
     private _drawForceFieldBars(scene) {
@@ -99,22 +125,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
         }.bind(this));
     }
 
-     private processControls(context, platform) {
-        if (this.downButton.isUp && this.upButton.isUp) {
-            this.verticalPressed = false;
-        }
-
-        if (!this.verticalPressed && this.downButton.isDown) {
-            this.verticalPressed = true;
-            platform.circleLevel = (platform.circleLevel - 1) >= 0 ? platform.circleLevel - 1 : 2;
-            platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-        } else {
-            if (!this.verticalPressed && this.upButton.isDown) {
-                this.verticalPressed = true;
-                platform.circleLevel = (platform.circleLevel + 1) % 3;
-                platform.setCircle(context.physicObjects.circle[platform.circleLevel], context);
-            }
-        }
+    private processControls(context, platform) {
 
         if (this.leftButton.isDown || this.qButton.isDown) {
             platform.setMoveDirection('left');
@@ -179,4 +190,14 @@ export default class SinglePlayerStrategy extends GameStrategy {
         }
     }
 
+    private replenishShields(physicContext, elapsedMS: number) {
+        this.players.forEach(function(player, playerNum) {
+            const newShieldVal = player.shield + Constants.SHIELD_REGEN_RATIO * elapsedMS / 1000;
+            player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
+            this.updateBar(playerNum, (player.shield / player.maxShield) * 100);
+            if (player.shield / player.maxShield > Constants.SHIELD_ACTIVATION_PERCENT / 100) {
+                physicContext.physicObjects.forcefield[playerNum].onEnable();
+            }
+        }, this);
+    }
 }

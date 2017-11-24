@@ -27,7 +27,7 @@ class LoginModalView extends View {
     _initForm() {
         initDisplayErrorsForm(this.loginForm);
 
-        this.loginForm.addEventListener('submit', function(event) {
+        this.loginForm.addEventListener('submit', (event) => {
             event.preventDefault();
 
             const model = this._createModel();
