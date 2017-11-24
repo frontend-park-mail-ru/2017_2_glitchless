@@ -26,18 +26,16 @@ class LeadersModalView extends View {
         entriesRoot.innerHTML = '';
 
         let i = 0;
-        this.serviceLocator.leaderboard.scores.forEach((nickname, score) => {
+        this.serviceLocator.leaderboard.scoresSorted.forEach((entry) => {
             const loopPageId = Math.floor(i / this.entriesPerPage);
             if (this.pageId !== loopPageId) {
                 i++;
                 return;
             }
             const newElem = document.createElement('div');
-            const position = i + 1;
             entriesRoot.appendChild(newElem);
-            newElem.outerHTML = rowTemplate({position, nickname, score});
+            newElem.outerHTML = rowTemplate({position: i + 1, nickname: entry.user, score: entry.score});
             i++;
-
         });
     }
 

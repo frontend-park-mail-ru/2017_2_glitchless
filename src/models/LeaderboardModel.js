@@ -14,6 +14,17 @@ export default class LeaderboardModel {
         return this._scores;
     }
 
+    get scoresSorted() {
+        const array = [];
+        this._scores.forEach((score, user) => {
+            array.push({user, score});
+        });
+
+        array.sort((a, b) => b.score - a.score);
+
+        return array;
+    }
+
     get currentUserScore() {
         return this._scores.get(this._currentUserName);
     }
@@ -70,7 +81,7 @@ export default class LeaderboardModel {
 
     _saveToLocalStorage() {
         const serializedLeaderboard = JSON.stringify(
-            {_isDirty: this._isDirty, _currentUserName: this._currentUserName, _scores: mapToObj(this._scores)});
+            {isDirty: this._isDirty, currentUserName: this._currentUserName, scores: mapToObj(this._scores)});
 
         localStorage.setItem('leaderboard', serializedLeaderboard)
     }
@@ -82,8 +93,8 @@ export default class LeaderboardModel {
         }
         const serializedLeaderboardObj = JSON.parse(serializedLeaderboard);
 
-        this._isDirty = serializedLeaderboardObj._isDirty;
-        this._currentUserName = serializedLeaderboardObj._currentUserName;
-        this._scores = objToMap(serializedLeaderboardObj._scores);
+        this._isDirty = serializedLeaderboardObj.isDirty;
+        this._currentUserName = serializedLeaderboardObj.currentUserName;
+        this._scores = objToMap(serializedLeaderboardObj.scores);
     }
 }

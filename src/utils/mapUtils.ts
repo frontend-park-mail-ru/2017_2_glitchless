@@ -14,7 +14,7 @@ export function mapToObj(map, obj = null) {
     if (obj === null) {
         obj = {};
     }
-    map.forEach((k, v) => {
+    map.forEach((v, k) => {
         obj[k] = v;
     });
     return obj;
