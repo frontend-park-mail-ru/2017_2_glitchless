@@ -35,4 +35,17 @@
 
         &__col-main { }
     }
+
+    &__pagination-buttons {
+        text-align: center;
+    }
+
+    &__pagination-button {
+        background: none;
+        border: none;
+        font-size: 32px;
+        cursor: pointer;
+        color: $colour_main1;
+        outline: none;
+    }
 }

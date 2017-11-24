@@ -14,6 +14,9 @@ leaderboardData.set('Ansile', 1337);
 leaderboardData.set('LionZXY', 'kotlin.js');
 leaderboardData.set('reo7sp', 420);
 leaderboardData.set('StealthTech', 0);
+for (let i = 1; i <= 20; i++) {
+    leaderboardData.set('some guy ' + i, -i);
+}
 
 app.get('/api/leaderboard', (req, res) => {
     console.log('Leaderboard get');
