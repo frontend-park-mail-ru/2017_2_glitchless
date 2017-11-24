@@ -13,6 +13,6 @@ export default class ServiceLocator {
         this.router = new Router(this);
         this.eventBus = new EventBus();
         this.user = null;
-        this.leaderboard = new LeaderboardModel();
+        this.leaderboard = new LeaderboardModel(this);
     }
 }

@@ -22,12 +22,28 @@ const images = [
     'spacestation.png',
 ].map((it) => '/images/' + it);
 
+const cssjs = [
+    '/app.css',
+    '/app.js',
+];
+
+const paths = [
+    '/',
+    '/play',
+    '/about',
+    '/signup',
+    '/login',
+    '/leaders',
+];
+
+const dataToCache = images.concat(cssjs).concat(paths);
+
 const cacheName = 'v1';
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(cacheName).then((cache) => {
-            return cache.addAll(images);
+            return cache.addAll(dataToCache);
         }),
     );
 });
@@ -35,21 +51,22 @@ self.addEventListener('install', (event) => {
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
-            if (!response) {
-                return _downloadAssetAndSaveToCache(event);
+            const isInCache = !!response;
+            if (!isInCache) {
+                return fetch(event.request);
             }
-            return response;
+            return _tryInvalidateCacheRedownload(event).catch(() => {
+                return response;
+            });
         }),
     );
 });
 
-function _downloadAssetAndSaveToCache(event) {
+function _tryInvalidateCacheRedownload(event) {
     return fetch(event.request).then((response) => {
         caches.open(cacheName).then((cache) => {
             cache.put(event.request, response.clone());
         });
         return response;
-    }).catch(() => {
-        return caches.match('/images/404.png');
     });
 }

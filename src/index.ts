@@ -7,5 +7,9 @@ window.onload = () => {
 
     authUser(serviceLocator);
     serviceLocator.router.init();
-    navigator.serviceWorker.register('/sw.js');
+    serviceLocator.leaderboard.sync();
+
+    if ('serviceWorker' in window.navigator) {
+        window.navigator.serviceWorker.register('/sw.js');
+    }
 };

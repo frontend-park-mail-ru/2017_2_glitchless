@@ -13,7 +13,7 @@ export default class Api {
      * @param {Object} data Object to send. It will be serialized to json
      * @return {Promise} Promise of `fetch` function.
      */
-    get(path, data = {}) {
+    get(path, data = null) {
         return this._request('GET', path, data);
     }
 
@@ -24,12 +24,12 @@ export default class Api {
      * @param {Object} data Object to send. It will be serialized to json
      * @return {Promise} Promise of `fetch` function.
      */
-    post(path, data = {}) {
+    post(path, data = null) {
         return this._request('POST', path, data);
     }
 
-    _request(method, path, data) {
-        return fetch(`${this.baseUrl}/${path}`, {
+    _request(method, path, data = null) {
+        const fetchOptions = {
             method: method,
             headers: {
                 'Accept': 'application/json, text/plain, */*',
@@ -37,7 +37,10 @@ export default class Api {
             },
             credentials: 'include',
             mode: 'cors',
-            body: JSON.stringify(data),
-        });
+        };
+        if (data) {
+            fetchOptions.body = JSON.stringify(data);
+        }
+        return fetch(`${this.baseUrl}/${path}`, fetchOptions);
     }
 }

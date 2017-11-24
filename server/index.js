@@ -5,14 +5,6 @@ const bodyParser = require('body-parser');
 const app = express();
 
 
-// static
-app.use(express.static('dist'));
-
-app.get('*', (req, res) => {
-    res.sendFile('dist/index.html', {root: '.'});
-});
-
-
 // stub api
 app.use(cors());
 app.use(bodyParser.json());
@@ -24,16 +16,26 @@ leaderboardData.set('reo7sp', 420);
 leaderboardData.set('StealthTech', 0);
 
 app.get('/api/leaderboard', (req, res) => {
-    const resJson = {'users': []};
+    console.log('Leaderboard get');
+    const resJson = {'scores': []};
     leaderboardData.forEach((username, score) => {
-        resJson['users'].push({'user': username, 'score': score});
+        resJson['scores'].push({'user': username, 'score': score});
     });
     res.json(resJson);
 });
 
 app.post('/api/leaderboard', (req, res) => {
+    console.log('Leaderboard set ', req.body.score);
     leaderboardData.set('reo7sp', req.body.score);
     res.json({ok: true});
+});
+
+
+// static
+app.use(express.static('dist'));
+
+app.get('*', (req, res) => {
+    res.sendFile('dist/index.html', {root: '.'});
 });
 
 

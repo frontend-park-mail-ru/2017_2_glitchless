@@ -2,24 +2,29 @@ export default class LeaderboardModel {
     constructor(serviceLocator) {
         this.scores = new Map();
         this.currentUserName = null;
+        this.isDirty = false;
         this._api = serviceLocator.stubApi;
 
         this._loadFromLocalStorage();
     }
 
     incrementCurrentUserNameScore(value) {
-        this._saveToLocalStorage();
         this.scores.set(this.currentUserName, this.scores.get(this.currentUserName) + value);
+        this.isDirty = true;
     }
 
     load() {
         return this._api.get('leaderboard')
-            .then((response) => response.json())
+            .then((response) => {
+                return response.json();
+            })
             .then((json) => {
                 this.scores = new Map();
                 json.scores.forEach((entry) => {
                     this.scores.set(entry.user, entry.score);
                 });
+            }).then(() => {
+                this._saveToLocalStorage();
             });
     }
 
@@ -33,15 +38,18 @@ export default class LeaderboardModel {
     }
 
     sync() {
+        if (!this.isDirty) {
+            return this.load();
+        }
         return this.saveCurrentUserScore().then(() => this.load());
     }
 
     _saveToLocalStorage() {
-        let serializedLeaderboard = {};
+        let scores = {};
         this.scores.forEach((k, v) => {
-            serializedLeaderboard[k] = v;
+            scores[k] = v;
         });
-        serializedLeaderboard = JSON.stringify(serializedLeaderboard);
+        const serializedLeaderboard = JSON.stringify({isDirty: this.isDirty, scores});
 
         localStorage.setItem('leaderboard', serializedLeaderboard)
     }
@@ -53,9 +61,12 @@ export default class LeaderboardModel {
         }
         const serializedLeaderboardObj = JSON.parse(serializedLeaderboard);
 
-        for (const k in serializedLeaderboardObj) {
-            if (serializedLeaderboardObj.hasOwnProperty(k)) {
-                this.scores[k] = serializedLeaderboardObj[k];
+        this.isDirty = serializedLeaderboardObj.isDirty;
+
+        const scores = serializedLeaderboardObj.scores;
+        for (const k in scores) {
+            if (scores.hasOwnProperty(k)) {
+                this.scores.set(k, scores[k]);
             }
         }
     }
