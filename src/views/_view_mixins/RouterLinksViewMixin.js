@@ -14,7 +14,7 @@ export default function RouterLinksViewMixin(initialClass) {
     const superOpen = initialClass.prototype.open;
 
     const Mixin = {
-        open(root) {
+        open(root, data = null) {
             Array.from(root.getElementsByTagName('a')).forEach(elem => {
                 elem.addEventListener('click', (event) => {
                     event.preventDefault();
@@ -23,7 +23,7 @@ export default function RouterLinksViewMixin(initialClass) {
             });
 
             if (superOpen) {
-                superOpen.call(this, root);
+                superOpen.call(this, root, data);
             }
         },
     };

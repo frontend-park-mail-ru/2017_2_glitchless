@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import ButtonHandler from '../helpers/ButtonHandler';
 import Constants from '../../../utils/Constants';
 import CollisionManager from '../CollisionManager';
+import GameEventBus from '../../GameEventBus';
 import {Arc, Circle} from '../PhysicPrimitives';
 
 export default class PhysicVectorLoop {
@@ -24,21 +25,27 @@ export default class PhysicVectorLoop {
 
     _processPlatformLogic(platforms) {
         platforms.forEach((platform) => {
+            const currentSpeed = platform.getRotationSpeed();
+            let newRotationSpeed;
             if (platform.direction === 0) {
-                if (platform.getRotationSpeed() > Constants.GAME_PLATFROM_MIN_SPEED) {
-                    platform.setRotationSpeed(Math.max(
-                        platform.getRotationSpeed()
-                        - (platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0));
-                } else if (platform.getRotationSpeed() < Constants.GAME_PLATFROM_MIN_SPEED) {
-                    platform.setRotationSpeed(Math.min(
-                        platform.getRotationSpeed()
-                        + Math.abs(platform.getRotationSpeed() * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0));
+                if (currentSpeed > Constants.GAME_PLATFROM_MIN_SPEED) {
+                    newRotationSpeed = Math.max(
+                        currentSpeed - (currentSpeed * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0);
+                } else if (currentSpeed < Constants.GAME_PLATFROM_MIN_SPEED) {
+                    newRotationSpeed = Math.min(
+                        currentSpeed + Math.abs(currentSpeed * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0);
                 } else {
-                    platform.setRotationSpeed(0);
+                    newRotationSpeed = 0;
                 }
-                return;
+            } else {
+                newRotationSpeed = Constants.GAME_PLATFORM_CONTROL_SPEED * platform.direction;
             }
-            platform.setRotationSpeed(Constants.GAME_PLATFORM_CONTROL_SPEED * platform.direction);
+
+            platform.setRotationSpeed(newRotationSpeed);
+
+            if (Math.abs(newRotationSpeed - currentSpeed) >= Constants.GAME_PLATFROM_MIN_SPEED) {
+                GameEventBus.emitEvent('change_platform_speed', platform);
+            }
         });
     }
 
@@ -55,7 +62,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...platform.getEdgePoints(), platform.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
@@ -106,7 +113,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...forcefield.getEdgePoints(), forcefield.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
@@ -126,7 +133,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...hpblock.getEdgePoints(), hpblock.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));

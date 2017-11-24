@@ -1,17 +1,18 @@
-import Constants from '../utils/Constants';
-import EventBus from './GameEventBus';
-import GameScene from './GameScene';
+import Constants from '../../utils/Constants';
+import EventBus from '../GameEventBus';
+import GameScene from '../GameScene';
 import GameStrategy from './GameStrategy';
 
-import CollisionManager from './physics/CollisionManager';
-import ForceField from './physics/object/ForceField';
-import Platform from './physics/object/Platform';
-import Point from './physics/object/primitive/Point';
+import CollisionManager from '../physics/CollisionManager';
+import ForceField from '../physics/object/ForceField';
+import Platform from '../physics/object/Platform';
+import Point from '../physics/object/primitive/Point';
 
-import Player from './Player';
+import Player from '../Player';
 
 const forceFieldBarTexture = PIXI.Texture.fromImage('./images/shield_gui_status.png');
 const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage('./images/shield_gui_background.png');
+
 export default class SinglePlayerStrategy extends GameStrategy {
     public players: Player[];
     public forceFieldBarPos: Point[];

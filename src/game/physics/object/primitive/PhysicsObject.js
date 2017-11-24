@@ -20,6 +20,7 @@ export default class PhysicsObject {
         this.setCoords(coords, context);
         this.isStatic = true;
         this.destroyListeners = [];
+        this.multiplayerId = -1;
     }
 
     onDraw(stage) {

@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import PhysicsEntitiy from './primitive/PhysicsEntity';
 import Constants from '../../../utils/Constants';
 import Point from './primitive/Point';
+import GameEventBus from '../../GameEventBus';
 
 const basicPlatformTexture = PIXI.Texture.fromImage('./images/platform.png');
 
@@ -57,6 +58,7 @@ export default class Platform extends PhysicsEntitiy {
         }
         throw new TypeError(direction);
     }
+
 
     getRotation() {
         return super.getRotation();

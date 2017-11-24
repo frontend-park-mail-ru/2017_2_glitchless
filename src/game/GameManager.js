@@ -2,8 +2,9 @@ import * as PIXI from 'pixi.js';
 import GameScene from './GameScene';
 
 import PhysicLoop from './physics/PhysicLoop';
-import SinglePlayerStrategy from './SinglePlayerStrategy';
+import SinglePlayerStrategy from './strategy/SinglePlayerStrategy';
 import EventBus from './GameEventBus';
+import MultiplayerStrategy from './strategy/MultiplayerStrategy';
 import ScoreManager from "./ScoreManager";
 
 export default class GameManager {
@@ -11,12 +12,7 @@ export default class GameManager {
         this.serviceLocator = serviceLocator;
         this.scene = new GameScene();
         this.eventBus = EventBus;
-        this.gameStrategy = new SinglePlayerStrategy(this.scene);
         this.scoreManager = new ScoreManager(this);
-        EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
-        EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
-        EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
-        EventBus.subscribeOn('player_won', this.onGameEnd, this);
     }
 
     /**
@@ -34,17 +30,19 @@ export default class GameManager {
         this.scene.height = resolution[1];
     }
 
-    initiateGame() {
+    initiateGame(data) {
         this.app = new PIXI.Application(this.scene.width, this.scene.height, {backgroundColor: 0xFFFFFF});
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         this.scene.initBackground(this.app);
-        this.gameStrategy.initUI();
 
         this.loopObj = new PhysicLoop(this);
         this.loopObj.initTick(this);
+
+        this._initStrategy(this.loopObj, data);
+        this.gameStrategy.initUI();
 
         this.app.ticker.add(this._onTick, this);
     }
@@ -57,8 +55,25 @@ export default class GameManager {
         this.loopObj._mainTick(deltaTime);
     }
 
+    _initStrategy(physicObject, data) {
+        if (data !== null && data.type === 'FullSwapScene') {
+            this.gameStrategy = new MultiplayerStrategy(this.scene,
+                this.serviceLocator.magicTransport, physicObject,
+                data);
+        } else {
+            this.gameStrategy = new SinglePlayerStrategy(this.scene);
+        }
+
+        EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
+        EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
+        EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
+        EventBus.subscribeOn('player_won', this.onGameEnd, this);
+    }
+
     onGameEnd() {
-        setTimeout(function() {this.app.ticker.stop(); }.bind(this), 1000);
+        setTimeout(function () {
+            this.app.ticker.stop();
+        }.bind(this), 1000);
     }
 
     destroy() {

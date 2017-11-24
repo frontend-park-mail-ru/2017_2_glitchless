@@ -85,6 +85,7 @@ export default class GameScene {
 
         const PlatformCircle1 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE1_RADIUS, center, 0);
         physicContext.gameManager.addObject('circle', PlatformCircle1);
+        physicContext.spriteStorage.circle = PlatformCircle1;
 
         for (let i = 0; i < Constants.HP_COUNT * 2; i++) {
             const playerNum = i < Constants.HP_COUNT ? 0 : 1;
