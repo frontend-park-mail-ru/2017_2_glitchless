@@ -30,6 +30,7 @@ const cssjs = [
 const paths = [
     '/',
     '/play',
+    '/lobby',
     '/about',
     '/signup',
     '/login',
