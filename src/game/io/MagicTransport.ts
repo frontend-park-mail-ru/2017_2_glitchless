@@ -34,7 +34,9 @@ export default class MagicTransport {
         }
         console.log('Sending:...');
         console.log(object);
-        this.socket.send(JSON.stringify(object));
+        setTimeout(function () {
+            this.socket.send(JSON.stringify(object));
+        }.bind(this), 1);
     }
 
     private onOpen() {

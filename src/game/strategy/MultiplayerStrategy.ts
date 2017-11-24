@@ -66,7 +66,7 @@ export default class MultiplayerStrategy extends GameStrategy {
 
     public gameplayTick(physicContext, elapsedMS) {
         this.processControls();
-        return;
+        this.syncDelegate.sync();
     }
 
     private processControls() {
@@ -95,5 +95,10 @@ export default class MultiplayerStrategy extends GameStrategy {
             scene.addObject(forceFieldBar);
             this.forceFieldBars.push(forceFieldBar);
         }, this);
+    }
+
+    public onHpLoss(hpblock) {
+        //TODO
+        return;
     }
 }
