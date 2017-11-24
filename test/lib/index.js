@@ -1,4 +1,4 @@
-const displayTests = require('./displayTests.js');
-const suite = require('../tests.js');
+const displayTests = require('./displayTests.ts');
+const suite = require('../tests');
 
 displayTests(document.getElementById('tests-container'), suite.run());

@@ -1,9 +1,9 @@
-@import "page_block_login/index";
-@import "page_block_signup/index";
-@import "page_block_about/index";
-@import "page_block_leaders/index";
-@import "menu/index";
-@import "_modal/index";
+@import "login/style";
+@import "signup/style";
+@import "about/style";
+@import "leaders/style";
+@import "menu/style";
+@import "_modal/style";
 
 body {
     display: flex;
@@ -13,8 +13,23 @@ body {
     min-height: 450px;
     height: 100vh;
     margin: 0;
-    background: radial-gradient(ellipse farthest-corner at center top, $colour_main1 -50%, $colour_main1 150%);
+    background: $colour_main1_new;
 
     color: #fff;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Rubik', sans-serif, 'Roboto', sans-serif;
+}
+
+@media only screen and (max-device-width: $breakpoint-tablet) {
+    .bumper-top {
+        margin-top: 6vw;
+    }
+
+    .bumper-top-bottom {
+        margin-top: 6vw;
+        margin-bottom: 6vw;
+    }
+}
+
+.hidden {
+    display: none;
 }

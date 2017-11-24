@@ -1,9 +1,9 @@
-const validations = require('../utils/validations.js');
+import { validateEmail, validatePassword } from '../utils/validations';
 
 /**
  * Model of signup form.
  */
-class SignupForm {
+export default class SignupForm {
     /**
      * @param serviceLocator Instance of service locator.
      */
@@ -12,7 +12,7 @@ class SignupForm {
         this.email = null;
         this.password = null;
         this.passwordConfirmation = null;
-        this.api = serviceLocator.api;
+        this._api = serviceLocator.api;
     }
 
     /**
@@ -38,12 +38,12 @@ class SignupForm {
             errors.push({field: 'login', message: 'Login can\'t be empty'});
         }
 
-        const emailValidation = validations.validateEmail(this.email);
+        const emailValidation = validateEmail(this.email);
         if (emailValidation !== true) {
             errors.push({field: 'email', message: emailValidation});
         }
 
-        const passwordValidation = validations.validatePassword(this.password);
+        const passwordValidation = validatePassword(this.password);
         if (passwordValidation !== true) {
             errors.push({field: 'password', message: passwordValidation});
         }
@@ -64,8 +64,6 @@ class SignupForm {
      * @return {Promise}
      */
     send() {
-        return this.api.post('signup', {login: this.login, email: this.email, password: this.password});
+        return this._api.post('signup', {login: this.login, email: this.email, password: this.password});
     }
 }
-
-module.exports = SignupForm;

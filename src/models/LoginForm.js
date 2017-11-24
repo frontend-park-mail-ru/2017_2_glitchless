@@ -1,16 +1,16 @@
-const validations = require('../utils/validations.js');
+import { validatePassword } from '../utils/validations';
 
 /**
  * Model of login form.
  */
-class LoginForm {
+export default class LoginForm {
     /**
      * @param serviceLocator Instance of service locator.
      */
     constructor(serviceLocator) {
         this.login = null;
         this.password = null;
-        this.api = serviceLocator.api;
+        this._api = serviceLocator.api;
     }
 
     /**
@@ -21,6 +21,7 @@ class LoginForm {
      *   ok: {Boolean},  // True if validation is ok, else false
      *   errors: {Array},  // Empty array if validation is ok, else array of errors
      * }
+     *
      * Spec of error object:
      * {
      *   field: {String},  // Name of the field
@@ -36,7 +37,7 @@ class LoginForm {
             errors.push({field: 'login', message: 'Login can\'t be empty'});
         }
 
-        const passwordValidation = validations.validatePassword(this.password);
+        const passwordValidation = validatePassword(this.password);
         if (passwordValidation !== true) {
             errors.push({field: 'password', message: passwordValidation});
         }
@@ -53,8 +54,6 @@ class LoginForm {
      * @return {Promise}
      */
     send() {
-        return this.api.post('login', {login: this.login, password: this.password});
+        return this._api.post('login', {login: this.login, password: this.password});
     }
 }
-
-module.exports = LoginForm;

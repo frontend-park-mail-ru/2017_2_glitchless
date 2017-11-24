@@ -1,9 +1,20 @@
 /**
  * Sends requests to server api.
  */
-class Api {
+export default class Api {
     constructor(baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    /**
+     * Sends HTTP GET request to server api.
+     *
+     * @param {String} path Path to api method
+     * @param {Object} data Object to send. It will be serialized to json
+     * @return {Promise} Promise of `fetch` function.
+     */
+    get(path, data = null) {
+        return this._request('GET', path, data);
     }
 
     /**
@@ -13,18 +24,23 @@ class Api {
      * @param {Object} data Object to send. It will be serialized to json
      * @return {Promise} Promise of `fetch` function.
      */
-    post(path, data = {}) {
-        return fetch(`${this.baseUrl}/${path}`, {
-            method: 'POST',
+    post(path, data = null) {
+        return this._request('POST', path, data);
+    }
+
+    _request(method, path, data = null) {
+        const fetchOptions = {
+            method: method,
             headers: {
                 'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             credentials: 'include',
             mode: 'cors',
-            body: JSON.stringify(data)
-        });
+        };
+        if (data) {
+            fetchOptions.body = JSON.stringify(data);
+        }
+        return fetch(`${this.baseUrl}/${path}`, fetchOptions);
     }
 }
-
-module.exports = Api;

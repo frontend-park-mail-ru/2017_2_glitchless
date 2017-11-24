@@ -1,36 +1,46 @@
-/* eslint-disable no-console */
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
 
-const data = {loginUsers: [], signupUsers: []};
 
+// stub api
 app.use(cors());
 app.use(bodyParser.json());
 
+const leaderboardData = new Map();
+leaderboardData.set('Ansile', 1337);
+leaderboardData.set('LionZXY', 'kotlin.js');
+leaderboardData.set('reo7sp', 420);
+leaderboardData.set('StealthTech', 0);
+for (let i = 1; i <= 20; i++) {
+    leaderboardData.set('some guy ' + i, -i);
+}
+
+app.get('/api/leaderboard', (req, res) => {
+    console.log('Leaderboard get');
+    const resJson = {"scores": []};
+    leaderboardData.forEach((score, username) => {
+        resJson['scores'].push({'user': username, 'score': score});
+    });
+    res.json(resJson);
+});
+
+app.post('/api/leaderboard', (req, res) => {
+    console.log('Leaderboard set ', req.body.score);
+    leaderboardData.set('reo7sp', req.body.score);
+    res.json({ok: true});
+});
+
+
+// static
 app.use(express.static('dist'));
 
-app.post('/api/login', (req, res) => {
-    if (!data.signupUsers.includes(req.body.login)) {
-        res.status(400);
-        res.json({'ok': false, 'error': 'User don\'t exists'});
-        return;
-    }
-    data.loginUsers.push(req.body.login);
-    res.json({'ok': true});
+app.get('*', (req, res) => {
+    res.sendFile('dist/index.html', {root: '.'});
 });
 
-app.post('/api/signup', (req, res) => {
-    if (data.signupUsers.includes(req.body.login)) {
-        res.status(400);
-        res.json({'ok': false, 'error': 'User has already signed up'});
-        return;
-    }
-    data.signupUsers.push(req.body.login);
-    res.json({'ok': true});
-});
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {

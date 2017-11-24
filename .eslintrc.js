@@ -15,7 +15,6 @@ module.exports = {
         "no-const-assign": 2,
         "no-constant-condition": 2,
         "no-control-regex": 2,
-        "no-debugger": 2,
         "no-delete-var": 2,
         "no-dupe-args": 2,
         "no-dupe-class-members": 2,

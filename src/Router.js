@@ -1,46 +1,230 @@
+import MenuView from './views/menu/View';
+import EmptyView from './views/empty/View';
+import GameView from './views/game/View';
+import AboutView from './views/about/View';
+import LeadersView from './views/leaders/View';
+import LoginView from './views/login/View';
+import SignupView from './views/signup/View';
+import LobbyView from './views/lobby/View';
+
 /**
  * Changes the page according to url hash.
  */
-class Router {
+export default class Router {
+    constructor(serviceLocator) {
+        this.serviceLocator = serviceLocator;
+
+        this._routerGroups = [
+            new MenuRouterGroup(this.serviceLocator),
+            new GameRouterGroup(this.serviceLocator),
+        ];
+        this._currentRouterGroup = null;
+    }
+
     /**
      * Setups listeners and initializes the page.
      */
     init() {
-        this._initListener();
-        this._setPageFromLocationHash();
+        window.onpopstate = (event) => {
+            const path = location.pathname;
+            const routerGroup = this._routerGroups.find(g => g.isPathOfGroup(path));
+
+            if (this._currentRouterGroup !== routerGroup) {
+                if (this._currentRouterGroup) {
+                    this._currentRouterGroup.close();
+                }
+                this._currentRouterGroup = routerGroup;
+                this._currentRouterGroup.open();
+            }
+            this._currentRouterGroup.revert(path, event.state);
+        };
+
+        this.changePage(location.pathname);
     }
 
     /**
      * Changes page block.
      *
-     * @param page Name of page block
+     * @param path {String} Path part of the URL string
+     * @param data
      */
-    changePage(page) {
-        location.hash = '#' + page;
-    }
+    changePage(path, data = null) {
+        const routerGroup = this._routerGroups.find(g => g.isPathOfGroup(path));
 
-    _initListener() {
-        window.onhashchange = () => {
-            this._setPageFromLocationHash();
-        };
-    }
-
-    _setPageFromLocationHash() {
-        let page = location.hash.slice(1);
-        if (page === '') {
-            page = null;
+        if (this._currentRouterGroup !== routerGroup) {
+            if (this._currentRouterGroup) {
+                this._currentRouterGroup.close();
+            }
+            this._currentRouterGroup = routerGroup;
+            this._currentRouterGroup.open(data);
         }
-        this._showCurrentBlock(page);
-    }
-
-    _showCurrentBlock(page) {
-        Array.from(document.getElementsByClassName('page_block')).forEach((el) => {
-            el.style.display = 'none';
-        });
-        if (page !== null) {
-            document.getElementById(`page_block_${page}`).style.display = 'block';
-        }
+        const changeData = this._currentRouterGroup.change(path, data);
+        history.pushState(changeData.state, changeData.title, path);
     }
 }
 
-module.exports = Router;
+/* tslint:disable:no-empty */
+class RouterGroup {
+    constructor(serviceLocator) {
+        this.serviceLocator = serviceLocator;
+    }
+
+    /**
+     * @param path {String} Url path
+     * @return {bool} True if path matches this group, else false.
+     */
+    isPathOfGroup(path) {
+    }
+
+    /**
+     * Is executed when router switched to this group.
+     */
+    open() {
+    }
+
+    /**
+     * Is executed when router changes paths.
+     *
+     * @param path {String} Url path
+     * @param data
+     * @return {Object} Change data
+     */
+    change(path, data = null) {
+    }
+
+    /**
+     * Is executed when user goes back and forward in history.
+     *
+     * @param path {String} Url path
+     * @param state {Object} State object saved from change data
+     */
+    revert(path, state) {
+    }
+
+    /**
+     * Is executed when router matched another group and before router switched to it.
+     */
+    close() {
+    }
+}
+/* tslint:enable */
+
+class MenuRouterGroup extends RouterGroup {
+    constructor(serviceLocator) {
+        super(serviceLocator);
+
+        this._routes = {
+            '/': {
+                viewClass: EmptyView,
+                title: 'Glitchless',
+            },
+            '/about': {
+                viewClass: AboutView,
+                title: 'About',
+            },
+            '/leaders': {
+                viewClass: LeadersView,
+                title: 'Leaders',
+            },
+            '/login': {
+                viewClass: LoginView,
+                title: 'Login',
+            },
+            '/signup': {
+                viewClass: SignupView,
+                title: 'Sign up',
+            },
+            '/lobby': {
+                viewClass: LobbyView,
+                title: 'Lobby search',
+            },
+        };
+
+        this._menuView = new MenuView(this.serviceLocator);
+        this._modalSpan = null;
+        this._currentModalView = null;
+        this._modalViewCache = {};
+    }
+
+    isPathOfGroup(path) {
+        return this._routes.hasOwnProperty(path);
+    }
+
+    open() {
+        const root = document.body;
+
+        root.innerHTML = '';
+
+        const menuSpan = document.createElement('span');
+        root.appendChild(menuSpan);
+        this._menuView.open(menuSpan);
+
+        const modalSpan = document.createElement('span');
+        root.appendChild(modalSpan);
+        this._modalSpan = modalSpan;
+    }
+
+    change(path, data = null) {
+        if (this._currentModalView) {
+            this._currentModalView.close();
+        }
+
+        const viewClass = this._routes[path].viewClass;
+        const title = this._routes[path].title;
+        this._currentModalView = new viewClass(this.serviceLocator);
+        this._currentModalView.open(this._modalSpan, data);
+
+        const viewId = Math.random().toString();
+        this._modalViewCache[viewId] = this._currentModalView;
+        return {title, state: {viewId}};
+    }
+
+    revert(path, state) {
+        if (this._currentModalView) {
+            this._currentModalView.close();
+        }
+
+        if (state && state.viewId && this._modalViewCache.hasOwnProperty(state.viewId)) {
+            this._currentModalView = this._modalViewCache[state.viewId];
+            this._currentModalView.open(this._modalSpan);
+        } else {
+            this.change(path);
+        }
+    }
+
+    close() {
+        if (this._currentModalView) {
+            this._currentModalView.close();
+        }
+        this._menuView.close();
+        document.body.innerHTML = '';
+    }
+}
+
+class GameRouterGroup extends RouterGroup {
+    constructor(serviceLocator) {
+        super(serviceLocator);
+        this._view = null;
+    }
+
+    isPathOfGroup(path) {
+        return path === '/play';
+    }
+
+    open(data = null) {
+        this._view = new GameView(this.serviceLocator);
+        this._view.open(document.body, data);
+    }
+
+    change() {
+        return {title: 'Glitchless'};
+    }
+
+    //tslint:disable-next-line:no-empty
+    revert() {
+    }
+
+    close() {
+        this._view.close();
+    }
+}

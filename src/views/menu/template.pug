@@ -1,0 +1,19 @@
+.menu-wrapper
+    .menu
+        img.logo(src='images/rhythm_blast_v1a.png')
+        //.menu__header Rhythm Blast
+        .menu__container
+            -
+                var pages = [
+                    {trigger: '/play', label: 'Play singleplayer'},
+                    {trigger: '/lobby', label: 'Play multiplayer'},
+                    {trigger: '/signup', label: 'Sign Up'},
+                    {trigger: '/login', label: 'Sign In'},
+                    {trigger: '/leaders', label: 'Leaders'},
+                    {trigger: '/about', label: 'About'}
+                ]
+            each page in pages
+                .menu__item-wrapper
+                    .menu__item.modal-trigger(data-modal-trigger=page['trigger']) #{page['label']}
+            .menu__item-wrapper
+                .menu__item#logout-button Logout

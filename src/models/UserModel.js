@@ -1,7 +1,7 @@
 /**
  * Represents user session.
  */
-class UserModel {
+export default class UserModel {
     constructor() {
         this.login = '';
         this.email = '';
@@ -22,13 +22,23 @@ class UserModel {
         }
 
         return new Promise((resolve, reject) => {
-            let model = JSON.parse(localStorage.getItem('user'));
-            if (model !== undefined) {
-                resolve(model);
+            const jsonStr = localStorage.getItem('user');
+            if (!jsonStr) {
+                reject();
                 return;
             }
-            reject();
+            const json = JSON.parse(jsonStr);
+            if (!json) {
+                reject();
+                return;
+            }
+            const model = UserModel.fromApiJson(json);
+            resolve(model);
         });
+    }
+
+    static loadCurrentSyncronized() {
+        return JSON.parse(localStorage.getItem('user'));
     }
 
     /**
@@ -48,12 +58,14 @@ class UserModel {
      * Saves current object in localStorage
      */
     saveInLocalStorage() {
-        localStorage.setItem('user', JSON.stringify(this));
+        try {
+            localStorage.setItem('user', JSON.stringify(this));
+        } catch (exception) {
+            console.log('Error while write to storage!!!\n' + exception);
+        }
     }
 
     static clearInLocalStorage() {
         localStorage.removeItem('user');
     }
 }
-
-module.exports = UserModel;

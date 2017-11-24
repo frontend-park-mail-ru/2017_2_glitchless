@@ -1,7 +1,7 @@
-const assert = require('./lib/assert.js');
-const TestSuite = require('./lib/TestSuite.js');
+const assert = require('./lib/assert.ts');
+const TestSuite = require('./lib/TestSuite.ts');
 
-const validations = require('../src/utils/validations.js');
+const validations = require('../src/utils/validations.ts');
 
 const suite = new TestSuite();
 
