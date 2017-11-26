@@ -42,7 +42,7 @@ export default class GameManager {
         this.loopObj.initTick(this);
 
         this._initStrategy(this.loopObj, data);
-        this.gameStrategy.initUI();
+        this.gameStrategy.initUI(this.loopObj);
 
         this.app.ticker.add(this._onTick, this);
     }

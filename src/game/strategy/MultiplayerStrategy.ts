@@ -52,6 +52,7 @@ export default class MultiplayerStrategy extends GameStrategy {
         this.userPlatform = this.currentUserIsLeft
             ? physicContext.spriteStorage.userPlatform
             : physicContext.spriteStorage.enemyPlatform;
+        physicContext.spriteStorage.needUpdatePlatorm = [this.userPlatform];
 
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.userPlatform, platformLeft);
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.enemyPlatform, platformRight);
@@ -60,7 +61,7 @@ export default class MultiplayerStrategy extends GameStrategy {
         return;
     }
 
-    public initUI() {
+    public initUI(physicContext) {
         this.drawForceFieldBars(this.scene);
     }
 

@@ -37,10 +37,14 @@ export default class SinglePlayerStrategy extends GameStrategy {
         this.scene = scene;
     }
 
-    public initUI() {
+    public initUI(physicContext) {
         this._drawForceFieldBars(this.scene);
+
+        physicContext.spriteStorage.needUpdatePlatorm.push(physicContext.spriteStorage.userPlatform);
+        physicContext.spriteStorage.needUpdatePlatorm.push(physicContext.spriteStorage.enemyPlatform);
+
         this.scene.initScores();
-    }
+       }
 
     public gameplayTick(physicContext, elapsedMS: number) {
         this.processBotLogic(physicContext);

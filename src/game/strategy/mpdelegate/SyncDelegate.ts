@@ -24,18 +24,18 @@ export default class SyncDelegate {
         GameEventBus.subscribeOn('change_platform_speed', (data) => {
             this.onChangeSpeedPlatform(data);
         }, this);
+
         this.magicTransport.eventBus.subscribeOn('ServerSnapMessage', (data) => {
             this.applyServerSwapCommit(data);
         }, this);
 
-        this.magicTransport.eventBus.subscribeOn('LightSnapMessage', (data) => {
+        this.magicTransport.eventBus.subscribeOn('LightServerSnapMessage', (data) => {
             this.applyLightServerSwapCommit(data);
         }, this);
     }
 
     public onChangeSpeedPlatform(object: Platform) {
         this.pendingProcessToSend[object.multiplayerId] = new Point(object.getRotationSpeed(), 0);
-        console.log('Change platform speed');
     }
 
     public applyServerSwapCommit(data) {
@@ -48,6 +48,7 @@ export default class SyncDelegate {
 
     public applyLightServerSwapCommit(data) {
         const commitId = Math.max(data.commitId, this.firstExistCommit);
+
         const object = this.idToObject[data.objectId];
         const newPoint = new Point(data.coord.posX, data.coord.posY);
         object.setCoords(newPoint, this.physicContext);
@@ -60,10 +61,10 @@ export default class SyncDelegate {
         const lastCommitTmp = this.commits[this.counter];
         const currentTime = performance.now();
         const lastCommit = {
-                speed: lastCommitTmp.speed,
-                timestamp_start: lastCommitTmp.timestamp_start,
-                timestamp_end: currentTime
-            };
+            speed: lastCommitTmp.speed,
+            timestamp_end: currentTime,
+            timestamp_start: lastCommitTmp.timestamp_start,
+        };
         this.applyToObject(object, lastCommit);
     }
 
@@ -90,6 +91,24 @@ export default class SyncDelegate {
         }
     }
 
+    /**
+     * Мы храним на клиенте все отправленные коммиты (на самом деле, нет, но будет проще считать что все).
+     * Само сохранение коммита выглядит так:
+     * Commit {
+     *   commitId: number; // Уникальный порядковый номер коммита. Считаем, что если этот id больше => коммит был позже.
+     *   speed: Speed; // Скорость, которую сервер у себя сеттит.
+     *   timestamp_start; // Когда было изменение
+     *   timestamp_end; // Когда следующее изменение произошло.
+     * }
+     * Как только сервер присылает аппрув коммита #3 (а у нас последний коммит #5) с координатами мы делаем следующее:
+     * - Принимаем координаты #3
+     * - Вычисляем diffX, diffY через #4.diffTimestamp * #4.speed
+     * - Добавляем эти коорды к объекту
+     * - Вычисляем diffX, diffY через (perfomance.now - #5.timestamp_start) * #5.speed
+     * - Добавляем коорды
+     * @param objectId
+     * @param speed
+     */
     private processObject(objectId, speed) {
         const now = performance.now();
         const lastCommit = this.commits[this.counter];
@@ -105,13 +124,12 @@ export default class SyncDelegate {
         this.magicTransport.send({type: 'ClientCommitMessage', commitNumber: commitId, objectId, speed});
     }
 
-
     private applyToObject(object, commit) {
         const diffTime = commit.timestamp_end - commit.timestamp_start;
 
         if (object instanceof Platform) {
             const diff = commit.speed.x * diffTime;
-            object.setRotation(object.getRotation() + diff);
+            object.setRotation(object.getRotation() + diff, this.physicContext);
         }
     }
 
