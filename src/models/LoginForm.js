@@ -10,7 +10,7 @@ export default class LoginForm {
     constructor(serviceLocator) {
         this.login = null;
         this.password = null;
-        this.api = serviceLocator.api;
+        this._api = serviceLocator.api;
     }
 
     /**
@@ -54,6 +54,6 @@ export default class LoginForm {
      * @return {Promise}
      */
     send() {
-        return this.api.post('login', {login: this.login, password: this.password});
+        return this._api.post('login', {login: this.login, password: this.password});
     }
 }

@@ -7,6 +7,7 @@ const gulpSourcemaps = require('gulp-sourcemaps');
 const gulpPlumber = require('gulp-plumber');
 const gulpInsert = require('gulp-insert');
 const gulpIf = require('gulp-if');
+const gulpAutoprefixer = require('gulp-autoprefixer');
 
 
 // js
@@ -38,24 +39,30 @@ const webpackConfig = {
     devtool: 'source-map',
     resolve: {
         extensions: ['.ts', '.js']
-    },
-    output: {
-        filename: 'app.js'
     }
 };
 
-gulp.task('js:build', () => {
-    return gulp.src('src/index.ts')
-        .pipe(webpack(webpackConfig))
+const jsBuildPipe = (inputFilepath, outputFilename, doWatch) => {
+    return gulp.src(inputFilepath)
+        .pipe(webpack(Object.assign({}, webpackConfig, {watch: doWatch, output: {filename: outputFilename}})))
         .pipe(gulpIf((file) => file.path.endsWith('.js'), gulpInsert.prepend('"use strict";\n')))
         .pipe(gulp.dest('dist/'));
+};
+
+gulp.task('js:build', () => {
+    return jsBuildPipe('src/index.ts', 'app.js', false);
 });
 
 gulp.task('js:watch', () => {
-    return gulp.src('src/index.ts')
-        .pipe(webpack(Object.assign({}, webpackConfig, {watch: true})))
-        .pipe(gulpIf((file) => file.path.endsWith('.js'), gulpInsert.prepend('"use strict";\n')))
-        .pipe(gulp.dest('dist/'));
+    return jsBuildPipe('src/index.ts', 'app.js', true);
+});
+
+gulp.task('sw-js:build', () => {
+    return jsBuildPipe('src/sw-index.ts', 'app.js', false);
+});
+
+gulp.task('sw-js:watch', () => {
+    return jsBuildPipe('src/sw-index.ts', 'sw.js', true);
 });
 
 
@@ -76,6 +83,7 @@ const cssPipe = (p) => {
     return p
         .pipe(gulpSourcemaps.init())
         .pipe(gulpSass())
+        .pipe(gulpAutoprefixer())
         .pipe(gulpRename('app.css'))
         .pipe(gulpSourcemaps.write('.'))
         .pipe(gulp.dest('dist'));
@@ -135,8 +143,8 @@ gulp.task('test-html:watch', () => {
 
 // main
 
-gulp.task('build', ['js:build', 'css:build', 'html:build', 'other:build']);
-gulp.task('watch', ['js:watch', 'css:watch', 'css:build-dev', 'html:build', 'other:watch', 'other:build']);
+gulp.task('build', ['js:build', 'sw-js:build', 'css:build', 'html:build', 'other:build']);
+gulp.task('watch', ['js:watch', 'sw-js:watch', 'css:watch', 'css:build-dev', 'html:build', 'other:watch', 'other:build']);
 
 gulp.task('test', ['test-js:watch', 'test-html:watch', 'test-html:build-dev']);
 

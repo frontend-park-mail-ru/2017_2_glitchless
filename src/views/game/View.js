@@ -3,14 +3,14 @@ import GameManager from '../../game/GameManager';
 import Constants from '../../utils/Constants';
 
 export default class GameView extends View {
-    open(root) {
+    open(root, data = null) {
         this.root = root;
 
         const {appWidth, appHeight} = this._findAppWidthHeight();
         const gameField = this._setupAppCanvas(appWidth, appHeight);
         this._setupGameManager(gameField, appWidth, appHeight);
 
-        this.gameManager.initiateGame();
+        this.gameManager.initiateGame(data);
     }
 
     close() {

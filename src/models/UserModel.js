@@ -22,13 +22,23 @@ export default class UserModel {
         }
 
         return new Promise((resolve, reject) => {
-            let model = JSON.parse(localStorage.getItem('user'));
-            if (model !== undefined) {
-                resolve(model);
+            const jsonStr = localStorage.getItem('user');
+            if (!jsonStr) {
+                reject();
                 return;
             }
-            reject();
+            const json = JSON.parse(jsonStr);
+            if (!json) {
+                reject();
+                return;
+            }
+            const model = UserModel.fromApiJson(json);
+            resolve(model);
         });
+    }
+
+    static loadCurrentSyncronized() {
+        return JSON.parse(localStorage.getItem('user'));
     }
 
     /**

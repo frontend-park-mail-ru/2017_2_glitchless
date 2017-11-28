@@ -20,6 +20,19 @@ $opacity_entry_background_col-sid: .4;
         padding: 1vw;
         background: rgba(#000, .1);
     }
+
+    &__pagination-buttons {
+        text-align: right;
+    }
+
+    &__pagination-button {
+        background: none;
+        border: none;
+        font-size: 32px;
+        cursor: pointer;
+        color: darken($colour_main1, 10%);
+        outline: none;
+    }
 }
 
 @media only screen and (max-device-width: $breakpoint-tablet) {

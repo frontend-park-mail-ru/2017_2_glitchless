@@ -2,16 +2,18 @@ import * as PIXI from 'pixi.js';
 import PhysicsEntitiy from './primitive/PhysicsEntity';
 import Constants from '../../../utils/Constants';
 import Point from './primitive/Point';
+import GameEventBus from '../../GameEventBus';
 
 const basicPlatformTexture = PIXI.Texture.fromImage('./images/platform.png');
 
 export default class Platform extends PhysicsEntitiy {
-    constructor(context, circle) {
+    constructor(context, circle, playerNum) {
         const basicPlatformSprite = new PIXI.Sprite(basicPlatformTexture);
         super(basicPlatformSprite, context);
         this.circle = circle;
         this.circleLevel = 0;
         this.direction = 0;
+        this.playerNum = playerNum;
     }
 
     getEdgePoints() {
@@ -56,6 +58,7 @@ export default class Platform extends PhysicsEntitiy {
         }
         throw new TypeError(direction);
     }
+
 
     getRotation() {
         return super.getRotation();

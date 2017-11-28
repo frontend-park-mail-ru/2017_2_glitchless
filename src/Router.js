@@ -5,6 +5,7 @@ import AboutView from './views/about/View';
 import LeadersView from './views/leaders/View';
 import LoginView from './views/login/View';
 import SignupView from './views/signup/View';
+import LobbyView from './views/lobby/View';
 
 /**
  * Changes the page according to url hash.
@@ -45,8 +46,9 @@ export default class Router {
      * Changes page block.
      *
      * @param path {String} Path part of the URL string
+     * @param data
      */
-    changePage(path) {
+    changePage(path, data = null) {
         const routerGroup = this._routerGroups.find(g => g.isPathOfGroup(path));
 
         if (this._currentRouterGroup !== routerGroup) {
@@ -54,9 +56,9 @@ export default class Router {
                 this._currentRouterGroup.close();
             }
             this._currentRouterGroup = routerGroup;
-            this._currentRouterGroup.open();
+            this._currentRouterGroup.open(data);
         }
-        const changeData = this._currentRouterGroup.change(path);
+        const changeData = this._currentRouterGroup.change(path, data);
         history.pushState(changeData.state, changeData.title, path);
     }
 }
@@ -84,9 +86,10 @@ class RouterGroup {
      * Is executed when router changes paths.
      *
      * @param path {String} Url path
+     * @param data
      * @return {Object} Change data
      */
-    change(path) {
+    change(path, data = null) {
     }
 
     /**
@@ -131,6 +134,10 @@ class MenuRouterGroup extends RouterGroup {
                 viewClass: SignupView,
                 title: 'Sign up',
             },
+            '/lobby': {
+                viewClass: LobbyView,
+                title: 'Lobby search',
+            },
         };
 
         this._menuView = new MenuView(this.serviceLocator);
@@ -157,7 +164,7 @@ class MenuRouterGroup extends RouterGroup {
         this._modalSpan = modalSpan;
     }
 
-    change(path) {
+    change(path, data = null) {
         if (this._currentModalView) {
             this._currentModalView.close();
         }
@@ -165,7 +172,7 @@ class MenuRouterGroup extends RouterGroup {
         const viewClass = this._routes[path].viewClass;
         const title = this._routes[path].title;
         this._currentModalView = new viewClass(this.serviceLocator);
-        this._currentModalView.open(this._modalSpan);
+        this._currentModalView.open(this._modalSpan, data);
 
         const viewId = Math.random().toString();
         this._modalViewCache[viewId] = this._currentModalView;
@@ -204,9 +211,9 @@ class GameRouterGroup extends RouterGroup {
         return path === '/play';
     }
 
-    open() {
+    open(data = null) {
         this._view = new GameView(this.serviceLocator);
-        this._view.open(document.body);
+        this._view.open(document.body, data);
     }
 
     change() {

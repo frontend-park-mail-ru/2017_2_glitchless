@@ -1,6 +1,7 @@
 /* tslint:disable no-empty*/
-import Constants from '../utils/Constants';
-import ButtonHandler from './physics/helpers/ButtonHandler';
+import Constants from '../../utils/Constants';
+import ButtonHandler from '../physics/helpers/ButtonHandler';
+
 export default abstract class GameStrategy {
     protected leftButton: ButtonHandler;
     protected rightButton: ButtonHandler;
@@ -9,6 +10,7 @@ export default abstract class GameStrategy {
     protected upButton: ButtonHandler;
     protected downButton: ButtonHandler;
     protected verticalPressed: boolean;
+
     constructor() {
         this.leftButton = new ButtonHandler(Constants.CONTROL_PLATFORM_LEFT);
         this.rightButton = new ButtonHandler(Constants.CONTROL_PLATFORM_RIGHT);

@@ -26,7 +26,7 @@ class SignupModalView extends View {
     }
 
     _setupSignupSubmit() {
-        this.signupForm.addEventListener('submit', function(event) {
+        this.signupForm.addEventListener('submit', (event) => {
             event.preventDefault();
 
             const model = this._createModel(this.signupForm);
@@ -41,7 +41,7 @@ class SignupModalView extends View {
                 .then((res) => res.json())
                 .then((json) => {
                     if (!json.successful) {
-                        const serverErrorField = document.getElementById('login-form__server-errors');
+                        const serverErrorField = document.getElementById('signup-form__server-errors');
                         displayServerError(serverErrorField, json.message);
                         return;
                     }

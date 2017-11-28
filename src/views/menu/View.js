@@ -6,10 +6,11 @@ import template from './template.pug';
 import UserModel from '../../models/UserModel';
 
 class MenuView extends View {
-    open(root) {
+    open(root, data = null) {
         this._setupChangePageOnClick();
         this._setupLogout();
         this._setupAuthListener();
+        this._syncButtonsWithUserState(this.serviceLocator.user);
     }
 
     get template() {
@@ -20,7 +21,7 @@ class MenuView extends View {
         const menuOpenerButtons = Array.from(this.root.getElementsByClassName('modal-trigger'));
         menuOpenerButtons.forEach((el) => {
             el.addEventListener('click', () => {
-                const page = el.getAttribute('modal-trigger');
+                const page = el.getAttribute('data-modal-trigger');
                 this.serviceLocator.router.changePage(page);
             });
         });
@@ -32,32 +33,35 @@ class MenuView extends View {
             this.serviceLocator.api.post('logout')
                 .then((answer) => answer.json())
                 .then((json) => {
-                    console.log(json);
                     if (json.successful) {
-                        this.serviceLocator.eventBus.emitEvent('auth', null);
                         UserModel.clearInLocalStorage();
+                        this.serviceLocator.eventBus.emitEvent('auth', null);
                     }
                 });
         });
     }
 
     _setupAuthListener() {
-        const logoutButton = document.getElementById('logout-button');
         this.serviceLocator.eventBus.subscribeOn('auth', (userModel) => {
-            if (userModel && userModel.login) {
-                console.log(userModel.login);
-                Array.from(this.root.getElementsByClassName('menu__user__name')).forEach((el) => {
-                    el.innerText = userModel.login;
-                });
-                logoutButton.style.display = 'block';
-            }
-            if (!userModel || !userModel.login) {
-                Array.from(this.root.getElementsByClassName('menu__user__name')).forEach((el) => {
-                    el.innerText = 'Unauth User';
-                });
-                logoutButton.style.display = 'none';
-            }
+            this._syncButtonsWithUserState(userModel);
         });
+    }
+
+    _syncButtonsWithUserState(user) {
+        const loginButton = this.root.querySelector('[data-modal-trigger="/login"]').parentNode;
+        const signupButton = this.root.querySelector('[data-modal-trigger="/signup"]').parentNode;
+        const logoutButton = document.getElementById('logout-button').parentNode;
+
+        const isLoginned = user && user.login;
+        if (isLoginned) {
+            loginButton.classList.add('hidden');
+            signupButton.classList.add('hidden');
+            logoutButton.classList.remove('hidden');
+        } else {
+            loginButton.classList.remove('hidden');
+            signupButton.classList.remove('hidden');
+            logoutButton.classList.add('hidden');
+        }
     }
 }
 
