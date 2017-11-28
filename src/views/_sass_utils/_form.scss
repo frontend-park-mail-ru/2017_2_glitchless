@@ -5,18 +5,32 @@
     text-align: center;
     display: block;
 
-
     @media only screen and (max-device-width: $breakpoint-tablet) {
-        font-size: 4vw;
+        font-size: 3vw;
 
-        &__field {
-            font-size: 6vw;
-            padding: 4vw;
+        @media (orientation: portrait) {
+            &__field {
+                font-size: 6vw;
+                padding: 4vw;
+            }
+
+            &__button {
+                font-size: 4vw;
+                padding: 3vw 8vw;
+            }
         }
 
-        &__button {
-            font-size: 4vw;
-            padding: 3vw 8vw;
+        @media (orientation: landscape) {
+
+            &__field {
+                font-size: 3vw;
+                padding: 1vh 2vw;
+            }
+
+            &__button {
+                font-size: 2vw;
+                padding: 2vw 8vw;
+            }
         }
     }
 

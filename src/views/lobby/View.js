@@ -1,6 +1,7 @@
 import View from '../View';
 import TemplatedViewMixin from '../_view_mixins/TemplatedViewMixin';
 import RouterLinksViewMixin from '../_view_mixins/RouterLinksViewMixin';
+import ModalShadeViewMixin from '../_view_mixins/ModalShadeViewMixin';
 import template from './template.pug';
 
 class LobbyView extends View {
@@ -48,4 +49,4 @@ class LobbyView extends View {
     }
 }
 
-export default TemplatedViewMixin(RouterLinksViewMixin(LobbyView));
+export default TemplatedViewMixin(RouterLinksViewMixin(ModalShadeViewMixin(LobbyView)));

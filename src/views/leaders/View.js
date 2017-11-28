@@ -1,6 +1,7 @@
 import View from '../View';
 import TemplatedViewMixin from '../_view_mixins/TemplatedViewMixin';
 import RouterLinksViewMixin from '../_view_mixins/RouterLinksViewMixin';
+import ModalShadeViewMixin from '../_view_mixins/ModalShadeViewMixin';
 import template from './template.pug';
 import rowTemplate from './row-template.pug';
 
@@ -58,6 +59,6 @@ class LeadersModalView extends View {
     }
 }
 
-LeadersModalView = TemplatedViewMixin(RouterLinksViewMixin(LeadersModalView));
+LeadersModalView = TemplatedViewMixin(RouterLinksViewMixin(ModalShadeViewMixin(LeadersModalView)));
 
 export default LeadersModalView;

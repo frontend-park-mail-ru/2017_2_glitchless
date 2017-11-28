@@ -17,36 +17,26 @@
     align-items: center;
 }
 
+#menu-shader {
+    transition: .5s;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(black, .5);
+
+    @media only screen and (max-device-width: $breakpoint-tablet) {
+        display: none;
+    }
+}
+
 .menu {
     text-align: center;
 }
 
 @media only screen and (max-device-width: $breakpoint-tablet) {
-    img.logo {
-        //height: 25vh;
-        width: 75vw;
-        margin-top: 3vh;
-        transition: .5s;
-
-        &:hover {
-            height: 27vh;
-        }
-    }
-
     .menu {
-        position: absolute;
-
-        font-size: 5vw;
-
-
-        &__header {
-            font-size: 7vw;
-        }
-
-        &__item-wrapper {
-            padding: 2vw 15vw;
-        }
-
         &__item {
             background: rgba(255, 255, 255, .2);
             box-shadow: 3px 3px  rgba(0, 0, 0, .1);
@@ -62,6 +52,65 @@
             &:active {
                 background: rgba(255, 255, 255, .1);
                 box-shadow: none;
+            }
+        }
+    }
+
+    @media (orientation: portrait) {
+        img.logo {
+            //height: 25vh;
+            width: 75vw;
+            margin-top: 3vh;
+            transition: .5s;
+
+            &:hover {
+                height: 27vh;
+            }
+        }
+
+        .menu {
+            position: absolute;
+            font-size: 5vw;
+
+            &__header {
+                font-size: 7vw;
+            }
+
+            &__item-wrapper {
+                padding: 2vw 15vw;
+            }
+        }
+    }
+
+    @media (orientation: landscape) {
+        img.logo {
+            width: 40vw;
+            margin-bottom: 3vh;
+            transition: .5s;
+
+            &:hover {
+                height: 27vh;
+            }
+        }
+
+        .menu {
+            &__header {
+                font-size: 2vw;
+            }
+
+            &__item {
+                padding: 2vw;
+                font-size: 2vw;
+            }
+
+            &__item-wrapper {
+                margin-bottom: 2vw;
+            }
+
+            &__container {
+                padding: 1vw;
+                //background: rgba(red, .3);
+                column-count: 3;
             }
         }
     }

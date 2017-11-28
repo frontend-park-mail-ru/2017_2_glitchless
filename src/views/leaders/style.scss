@@ -6,6 +6,7 @@ $opacity_header_background_col-side: .6;
 $opacity_entry_background: .3;
 $opacity_entry_background_col-sid: .4;
 
+
 .leaders {
     text-align: center;
     margin-top: 15px;
@@ -36,11 +37,25 @@ $opacity_entry_background_col-sid: .4;
 }
 
 @media only screen and (max-device-width: $breakpoint-tablet) {
-    .leaders {
-        margin-bottom: 15px;
-        font-size: 5vw;
-        td, th {
-            padding: 4vw;
+    @media (orientation: portrait) {
+        .leaders {
+            margin-bottom: 15px;
+            font-size: 5vw;
+
+            td, th {
+                padding: 4vw;
+            }
+        }
+    }
+
+    @media (orientation: landscape) {
+        .leaders {
+            font-size: 3vh;
+
+            td, th {
+                padding: 2vh 5vw;
+            }
         }
     }
 }
+

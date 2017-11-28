@@ -1,0 +1,25 @@
+@media only screen and (max-device-width: $breakpoint-tablet) {
+  @media (orientation: portrait) {
+    .modal {
+      &__header > h2 {
+        font-size: 5vh;
+      }
+    }
+  }
+
+  @media (orientation: landscape) {
+    .modal {
+      &__header > h2 {
+        font-size: 8vh;
+      }
+
+      &__footer {
+        display: none;
+      }
+    }
+
+    .about-content {
+      font-size: 2vh;
+    }
+  }
+}

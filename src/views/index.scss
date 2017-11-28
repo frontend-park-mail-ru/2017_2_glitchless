@@ -28,6 +28,14 @@ body {
         margin-top: 6vw;
         margin-bottom: 6vw;
     }
+
+    html, body {
+        overflow-x: hidden;
+    }
+
+    body {
+        position: relative
+    }
 }
 
 .hidden {
