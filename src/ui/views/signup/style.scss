@@ -1,0 +1,6 @@
+@import '../../../utils/sass/palette';
+@import '../../../utils/sass/form';
+
+.signup-form {
+    @include form-styling;
+}

@@ -4,7 +4,9 @@ import Point from './primitive/Point';
 import Constants from '../../../utils/Constants';
 import { Circle } from '../PhysicPrimitives';
 
-const basicAlienSprite = PIXI.Sprite.fromImage('./images/spacestation.png');
+import spacestation_png from '../../../ui/images/spacestation.png';
+
+const basicAlienSprite = PIXI.Sprite.fromImage(spacestation_png);
 
 export default class Alien extends PhysicsObject {
     constructor(context, coords = new Point(0, 0)) {

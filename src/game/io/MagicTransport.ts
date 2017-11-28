@@ -1,4 +1,4 @@
-import EventBus from '../../utils/EventBus.js';
+import EventBus from '../../services/EventBus.js';
 
 const STATE_CONNECTING = 0; // Соединение ещё не открыто.
 const STATE_OPEN = 1; // Соединение открыто и готово к обмену данными.

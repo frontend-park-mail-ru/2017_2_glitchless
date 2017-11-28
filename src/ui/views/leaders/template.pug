@@ -1,0 +1,22 @@
+include ../../abstractViews/modal/index
+
++modal('Leaders')
+    table.leaders
+        thead
+            tr.leaders__header
+                th.leaders__header__col-side #
+                th.leaders__header__col-main Nickname
+                th.leaders__header__col-side Rhythm
+
+        tbody#leaders
+
+    .leaders__pagination-buttons
+        button#leaders-pagination-prev.leaders__pagination-button ←
+        button#leaders-pagination-next.leaders__pagination-button →
+
+    .modal-control__wrapper.bumper-top-bottom
+
+    .modal-control
+        a.modal_closer.modal-control__button(href='/') Return
+
+    .modal-control__wrapper.bumper-top

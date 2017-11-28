@@ -1,0 +1,46 @@
+@import '../../../utils/sass/palette';
+@import '../../../utils/sass/constants';
+
+$opacity_header_background: .5;
+$opacity_header_background_col-side: .6;
+$opacity_entry_background: .3;
+$opacity_entry_background_col-sid: .4;
+
+.leaders {
+    text-align: center;
+    margin-top: 15px;
+    width: 100%;
+
+    th {
+        padding: 1vw;
+        background: rgba(#000, .15);
+    }
+
+    td {
+        padding: 1vw;
+        background: rgba(#000, .1);
+    }
+
+    &__pagination-buttons {
+        text-align: right;
+    }
+
+    &__pagination-button {
+        background: none;
+        border: none;
+        font-size: 32px;
+        cursor: pointer;
+        color: darken($colour_main1, 10%);
+        outline: none;
+    }
+}
+
+@media only screen and (max-device-width: $breakpoint-tablet) {
+    .leaders {
+        margin-bottom: 15px;
+        font-size: 5vw;
+        td, th {
+            padding: 4vw;
+        }
+    }
+}

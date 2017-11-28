@@ -1,0 +1,20 @@
+include ../../abstractViews/modal/index
+
++modal('Sign up')
+	form#signup-form.signup-form(action='')
+		-
+			var input_fields = [{type:'text', name:'email', placeholder:'E-mail'},
+								{type:'text', name:'login', placeholder:'Nickname'},
+								{type:'password', name:'password', placeholder:'Password'},
+								{type:'password', name:'passwordConfirmation', placeholder:'Confirm password'}];
+		each field in input_fields
+			input.signup-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
+		div(id='signup-form__server-errors', style='visibility: hidden;') errors placeholder
+		//p
+			//input.signup-form__button(type='submit', value='Submit')
+		.modal-control
+			input.login-form__button(type='submit', value='Submit')
+			a.modal_closer.modal-control__button(href='/') Return
+		p
+			| Already registered? 
+			a.signup-form__redirect-btn(href='/login') Sign in

@@ -4,7 +4,9 @@ import { Circle } from '../PhysicPrimitives.js';
 import PhysicsObject from './primitive/PhysicsObject.js';
 import Point from './primitive/Point.js';
 
-const basicBounderTexture = PIXI.Texture.fromImage('./images/bounder.png');
+import * as bounder_png from '../../../ui/images/bounder.png';
+
+const basicBounderTexture = PIXI.Texture.fromImage(bounder_png);
 
 export default class Bounder extends PhysicsObject {
     public circle: Circle;
