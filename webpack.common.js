@@ -1,4 +1,17 @@
+const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+
 module.exports = {
+    entry: {
+        main: './src/index.ts'
+    },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].[chunkhash].js'
+    },
     module: {
         rules: [
             {
@@ -19,15 +32,6 @@ module.exports = {
             {
                 test: /\.pug$/,
                 use: 'pug-loader'
-            },
-            {
-                test: /(^|\/)index\.html$/,
-                use: {
-                    loader: 'file-loader',
-                    options: {
-                        name: 'index.html'
-                    }
-                }
             },
             {
                 test: /\.scss$/,
@@ -56,6 +60,17 @@ module.exports = {
                 ]
             },
             {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: 'css-loader',
+                    }
+                ]
+            },
+            {
                 test: /\.(png|jpg)$/,
                 use: [
                     {
@@ -72,6 +87,18 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.ts', '.scss', '.html', '.png', '.jpg']
-    }
+        extensions: ['.js', '.ts', '.scss', '.png', '.jpg']
+    },
+    plugins: [
+        new CleanWebpackPlugin(['dist']),
+        new webpack.HashedModuleIdsPlugin(),
+        new HtmlWebpackPlugin({
+            template: 'src/ui/index.html',
+            inject: 'head',
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true
+            }
+        })
+    ]
 };

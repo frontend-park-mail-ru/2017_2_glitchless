@@ -1,13 +1,13 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
+const commonConfig = require('./webpack.common.js');
 
-module.exports = merge(common, {
-    devtool: 'source-map',
+module.exports = merge(commonConfig, {
+    devtool: 'eval-source-map',
     watch: true,
     plugins: [
         new webpack.DefinePlugin({
             ENV_PRODUCTION: JSON.stringify(false)
-        }),
+        })
     ]
 });
