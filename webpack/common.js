@@ -1,17 +1,8 @@
-const webpack = require('webpack');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 
 module.exports = {
-    entry: {
-        main: './src/index.ts'
-    },
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name].[chunkhash].js'
-    },
     module: {
         rules: [
             {
@@ -90,15 +81,10 @@ module.exports = {
         extensions: ['.js', '.ts', '.scss', '.png', '.jpg']
     },
     plugins: [
-        new CleanWebpackPlugin(['dist']),
-        new webpack.HashedModuleIdsPlugin(),
-        new HtmlWebpackPlugin({
-            template: 'src/ui/index.html',
-            inject: 'head',
-            minify: {
-                collapseWhitespace: true,
-                removeComments: true
-            }
-        })
-    ]
+        new webpack.HashedModuleIdsPlugin()
+    ],
+    output: {
+        path: path.resolve(__dirname, '../dist'),
+        filename: '[name].[chunkhash].js'
+    }
 };

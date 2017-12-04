@@ -1,31 +1,21 @@
-const images = [
-    '404.png',
-    'background.png',
-    'bounder.png',
-    'energy_block.png',
-    'energy_block_gui_cyan.png',
-    'energy_block_gui_red.png',
-    'energy_block_large.png',
-    'game_over_splash_lost.png',
-    'game_over_splash_won.png',
-    'glitchless.jpg',
-    'laser.png',
-    'laser_large.png',
-    'laser_small.png',
-    'photo_2017-11-07_22-25-34.jpg',
-    'platform.png',
-    'rhythm_blast_v1a.png',
-    'shield_cyan.png',
-    'shield_gui_background.png',
-    'shield_gui_status.png',
-    'shield_red.png',
-    'spacestation.png',
-].map((it) => '/images/' + it);
+self.addEventListener('install', (event) => {
+    event.waitUntil(
+        caches.open(ENV_SW_CACHE_NAME).then((cache) => {
+            return cache.addAll(ENV_SW_ASSETS);
+        }),
+    );
+});
 
-const cssjs = [
-    '/app.css',
-    '/app.js',
-];
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            const cachesToRemove = cacheNames.filter((cacheName) => cacheName !== ENV_SW_CACHE_NAME);
+            return Promise.all(
+                cachesToRemove.map((cacheName) => caches.delete(cacheName)),
+            );
+        }),
+    );
+});
 
 const paths = [
     '/',
@@ -37,40 +27,17 @@ const paths = [
     '/leaders',
 ];
 
-const dataToCache = images.concat(cssjs).concat(paths);
-
-const cacheName = 'v1';
-
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(cacheName).then((cache) => {
-            return cache.addAll(dataToCache);
-        }),
-    );
-});
-
 self.addEventListener('fetch', (event) => {
+    let cacheQuery = event.request;
+
+    const isPathFetch = paths.some((p) => event.request.url.endsWith(p));
+    if (isPathFetch) {
+        cacheQuery = '/index.html';
+    }
+
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            const isInCache = !!response;
-            if (!isInCache) {
-                return fetch(event.request);
-            }
-            return _tryInvalidateCacheRedownload(event).catch(() => {
-                return response;
-            });
+        caches.match(cacheQuery).then((response) => {
+            return response || fetch(event.request);
         }),
     );
 });
-
-function _tryInvalidateCacheRedownload(event) {
-    return fetch(event.request).then((response) => {
-        caches.open(cacheName).then((cache) => {
-            if (response.bodyUsed) {
-                return;
-            }
-            cache.put(event.request, response.clone());
-        });
-        return response;
-    });
-}
