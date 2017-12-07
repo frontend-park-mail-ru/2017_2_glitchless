@@ -1,7 +1,7 @@
 .menu-wrapper
     .menu
         img.logo(src=require('../../images/rhythm_blast_v1a.png'))
-        //.menu__header Rhythm Blast
+
         .menu__container
             -
                 var pages = [
@@ -14,7 +14,9 @@
                 ]
             each page in pages
                 .menu__item-wrapper
-                    .menu__item.modal-trigger(data-modal-trigger=page['trigger']) #{page['label']}
+                    a.menu__item.modal-trigger(href=page['trigger']) #{page['label']}
+
             .menu__item-wrapper
                 .menu__item#logout-button Logout
+
 #menu-shader.hidden

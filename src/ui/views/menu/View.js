@@ -7,7 +7,6 @@ import UserModel from '../../../models/UserModel';
 
 class MenuView extends View {
     open(root, data = null) {
-        this._setupChangePageOnClick();
         this._setupLogout();
         this._setupAuthListener();
         this._syncButtonsWithUserState(this.serviceLocator.user);
@@ -15,16 +14,6 @@ class MenuView extends View {
 
     get template() {
         return template;
-    }
-
-    _setupChangePageOnClick() {
-        const menuOpenerButtons = Array.from(this.root.getElementsByClassName('modal-trigger'));
-        menuOpenerButtons.forEach((el) => {
-            el.addEventListener('click', () => {
-                const page = el.getAttribute('data-modal-trigger');
-                this.serviceLocator.router.changePage(page);
-            });
-        });
     }
 
     _setupLogout() {
