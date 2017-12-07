@@ -17,7 +17,7 @@
         }
 
         a, input {
-            margin-right: 15px;
+            margin: 0 10px;
         }
     }
 
@@ -50,14 +50,45 @@
             display: none;
         }
 
-        &__header {
-            text-align: center;
-            font-size: 5vw;
+        @media (orientation: portrait) {
+            &__header {
+                text-align: center;
+                font-size: 7vw;
+            }
+
+            &__content {
+                padding: 5vw;
+                font-size: 3vw;
+            }
+
+            &__additional-text {
+                font-size: 3vh;
+                margin-top: 3vh;
+                margin-bottom: 5vh;
+            }
         }
 
-        &__content {
-            padding: 5vw;
-            font-size: 3vw;
+        @media (orientation: landscape) {
+            &__header {
+                text-align: center;
+                font-size: 5vw;
+
+                h2 {
+                    margin: 0;
+                    margin-bottom: 2vh;
+                }
+            }
+
+            &__content {
+                padding: 2vw;
+                font-size: 1vw;
+            }
+
+            &__additional-text {
+                font-size: 2vw;
+                margin-top: 3vh;
+                margin-bottom: 5vh;
+            }
         }
     }
 }
@@ -123,6 +154,11 @@
             &--fullscreen {
                 @include fullscreen;
             }
+        }
+
+        &__additional-text {
+            margin-top: 3vh;
+            margin-bottom: 3vh;
         }
     }
 }

@@ -1,6 +1,7 @@
 import View from '../View';
 import TemplatedViewMixin from '../../mixins/TemplatedViewMixin';
 import RouterLinksViewMixin from '../../mixins/RouterLinksViewMixin';
+import ModalShadeViewMixin from '../../mixins/ModalShadeViewMixin';
 import template from './template.pug';
 import './style.scss'
 import { initDisplayErrorsForm, displayErrors, displayServerError } from '../../../utils/formDisplayErrors';
@@ -71,6 +72,6 @@ class SignupModalView extends View {
     }
 }
 
-SignupModalView = TemplatedViewMixin(RouterLinksViewMixin(SignupModalView));
+SignupModalView = TemplatedViewMixin(RouterLinksViewMixin(ModalShadeViewMixin(SignupModalView)));
 
 export default SignupModalView;
