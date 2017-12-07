@@ -33,21 +33,25 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
-                            importLoaders: 3
+                            importLoaders: 1
+                        }
+                    },
+                    {
+                        loader: 'resolve-url-loader',
+                        options: {
+                            sourceMap: false
                         }
                     },
                     {
                         loader: 'postcss-loader',
                         options: {
                             ident: 'postcss',
+                            sourceMap: true,
                             plugins: (loader) => [
                                 require('autoprefixer')(),
                                 require('cssnano')()
                             ]
                         }
-                    },
-                    {
-                        loader: 'resolve-url-loader'
                     },
                     {
                         loader: 'sass-loader',

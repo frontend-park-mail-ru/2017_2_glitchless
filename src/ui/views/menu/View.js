@@ -44,8 +44,8 @@ class MenuView extends View {
     }
 
     _syncButtonsWithUserState(user) {
-        const loginButton = this.root.querySelector('[data-modal-trigger="/login"]').parentNode;
-        const signupButton = this.root.querySelector('[data-modal-trigger="/signup"]').parentNode;
+        const loginButton = this.root.querySelector('[href="/login"]').parentNode;
+        const signupButton = this.root.querySelector('[href="/signup"]').parentNode;
         const logoutButton = document.getElementById('logout-button').parentNode;
 
         const isLoginned = user && user.login;

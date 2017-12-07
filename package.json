@@ -20,6 +20,10 @@
     "type": "git",
     "url": "git://github.com/frontend-park-mail-ru/2017_2_glitchless.git"
   },
+  "browserslist": [
+    "> 5%",
+    "last 2 versions"
+  ],
   "dependencies": {
     "@types/pixi.js": "^4.6.0",
     "ajv-keywords": "^2.1.1",
