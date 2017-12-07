@@ -25,7 +25,7 @@ module.exports = {
                 use: 'pug-loader'
             },
             {
-                test: /\.scss$/,
+                test: /\.s?css$/,
                 use: [
                     {
                         loader: 'style-loader'
@@ -33,12 +33,13 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
-                            importLoaders: 1
+                            importLoaders: 3
                         }
                     },
                     {
                         loader: 'postcss-loader',
                         options: {
+                            ident: 'postcss',
                             plugins: (loader) => [
                                 require('autoprefixer')(),
                                 require('cssnano')()
@@ -46,18 +47,13 @@ module.exports = {
                         }
                     },
                     {
-                        loader: 'sass-loader'
-                    }
-                ]
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    {
-                        loader: 'style-loader'
+                        loader: 'resolve-url-loader'
                     },
                     {
-                        loader: 'css-loader',
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true
+                        }
                     }
                 ]
             },
@@ -74,7 +70,14 @@ module.exports = {
                         loader: 'image-webpack-loader'
                     }
                 ]
-            }
+            },
+            {
+                test: /\.(ttf|eot|woff|woff2)$/,
+                loader: 'file-loader',
+                options: {
+                    name: 'fonts/[name].[ext]',
+                },
+            },
         ]
     },
     resolve: {
