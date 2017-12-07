@@ -9,6 +9,7 @@ import './style.scss'
 class LeadersModalView extends View {
     constructor(serviceLocator) {
         super(serviceLocator);
+        this.leaderboard = this.serviceLocator.leaderboard;
         this.pageId = 0;
         this.entriesPerPage = 4;
     }
@@ -18,8 +19,19 @@ class LeadersModalView extends View {
     }
 
     open(root) {
-        this._fillEntries();
-        this._setupPagination();
+        this._doWhenLoaded(() => {
+            this._fillEntries();
+            this._setupOfflineNotice();
+            this._setupPagination();
+        });
+    }
+
+    _doWhenLoaded(func) {
+        if (this.leaderboard.isLoading) {
+            setTimeout(this._doWhenLoaded.bind(this, func), 100);
+            return;
+        }
+        func();
     }
 
     _fillEntries() {
@@ -28,7 +40,7 @@ class LeadersModalView extends View {
         entriesRoot.innerHTML = '';
 
         let i = 0;
-        this.serviceLocator.leaderboard.scoresSorted.forEach((entry) => {
+        this.leaderboard.scoresSorted.forEach((entry) => {
             const loopPageId = Math.floor(i / this.entriesPerPage);
             if (this.pageId !== loopPageId) {
                 i++;
@@ -51,12 +63,17 @@ class LeadersModalView extends View {
         });
 
         document.getElementById('leaders-pagination-next').addEventListener('click', () => {
-            if (this.pageId >= Math.floor(this.serviceLocator.leaderboard.scores.size / this.entriesPerPage) - 1) {
+            if (this.pageId >= Math.floor(this.leaderboard.scores.size / this.entriesPerPage) - 1) {
                 return;
             }
             this.pageId++;
             this._fillEntries();
         });
+    }
+
+    _setupOfflineNotice() {
+        const offlineElem = this.root.getElementsByClassName('leaders-controls__offline')[0];
+        offlineElem.classList.toggle('hidden', !this.leaderboard.isOffline);
     }
 }
 

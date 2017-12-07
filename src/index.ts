@@ -9,14 +9,15 @@ import leaderboardInit from './initializers/leaderboard';
 import routerInit from './initializers/router';
 import serviceWorkerInit from './initializers/serviceWorker';
 
+function runLater(func) {
+    setTimeout(func, 0);
+}
+
 window.onload = () => {
     const serviceLocator = new ServiceLocator();
 
-    routerInit(serviceLocator);
+    runLater(() => authUser(serviceLocator));
+    leaderboardInit(serviceLocator);
     serviceWorkerInit(serviceLocator);
-
-    setTimeout(() => {
-        authUser(serviceLocator);
-        leaderboardInit(serviceLocator);
-    }, 0);
+    routerInit(serviceLocator);
 };

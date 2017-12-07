@@ -10,9 +10,12 @@ include ../../abstractViews/modal/index
 
         tbody#leaders
 
-    .leaders__pagination-buttons
-        button#leaders-pagination-prev.leaders__pagination-button ←
-        button#leaders-pagination-next.leaders__pagination-button →
+    .leaders__controls.leaders-controls
+        .leaders-controls__offline.hidden 💔 &nbsp;Offline mode
+
+        .leaders-controls__pagination-buttons
+            button#leaders-pagination-prev.leaders__pagination-button ←
+            button#leaders-pagination-next.leaders__pagination-button →
 
     .modal-control__wrapper
         .modal-control

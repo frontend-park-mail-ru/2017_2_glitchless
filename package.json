@@ -8,8 +8,8 @@
     "postinstall": "npm run build",
     "lint": "tslint -c tslint.json 'src/**/*.ts' ; tslint -c tslint.json 'src/**/*.js'",
     "lint-fix": "tslint -c tslint.json 'src/**/*.ts' --fix ; tslint -c tslint.json 'src/**/*.js' --fix",
-    "build": "webpack --config webpack.prod.js && webpack --config webpack.prod.sw.js",
-    "build-dev": "webpack --config webpack.dev.js && webpack --config webpack.dev.sw.js",
+    "build": "webpack --progress --config webpack.prod.js && webpack --config webpack.prod.sw.js",
+    "build-dev": "webpack --progress --config webpack.dev.js && webpack --config webpack.dev.sw.js",
     "build-test": "webpack --config webpack.test.js",
     "watch": "webpack --watch --config webpack.dev.js",
     "watch-test": "webpack --watch --config webpack.test.js"

@@ -22,10 +22,6 @@ $opacity_entry_background_col-sid: .4;
         background: rgba(#000, .1);
     }
 
-    &__pagination-buttons {
-        text-align: right;
-    }
-
     &__pagination-button {
         background: none;
         border: none;
@@ -33,6 +29,22 @@ $opacity_entry_background_col-sid: .4;
         cursor: pointer;
         color: darken($colour_main1, 10%);
         outline: none;
+    }
+}
+
+.leaders-controls {
+    height: 48px;
+    position: relative;
+
+    &__offline {
+        position: absolute;
+        top: 16px;
+    }
+
+    &__pagination-buttons {
+        position: absolute;
+        top: 8px;
+        right: 0;
     }
 }
 
