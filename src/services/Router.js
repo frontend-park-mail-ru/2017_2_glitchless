@@ -1,11 +1,11 @@
-import MenuView from '../ui/views/menu/View';
-import EmptyView from '../ui/views/empty/View';
-import GameView from '../ui/views/game/View';
-import AboutView from '../ui/views/about/View';
-import LeadersView from '../ui/views/leaders/View';
-import LoginView from '../ui/views/login/View';
-import SignupView from '../ui/views/signup/View';
-import LobbyView from '../ui/views/lobby/View';
+import MenuView from '../ui/views/menu';
+import EmptyView from '../ui/views/empty';
+import GameView from '../ui/views/game';
+import AboutView from '../ui/views/about';
+import LeadersView from '../ui/views/leaders';
+import LoginView from '../ui/views/login';
+import SignupView from '../ui/views/signup';
+import LobbyView from '../ui/views/lobby';
 
 /**
  * Changes the page according to url hash.
