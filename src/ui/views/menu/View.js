@@ -7,6 +7,7 @@ import UserModel from '../../../models/UserModel';
 
 class MenuView extends View {
     open(root, data = null) {
+        this._setupShade();
         this._setupLogout();
         this._setupAuthListener();
         this._syncButtonsWithUserState(this.serviceLocator.user);
@@ -14,6 +15,12 @@ class MenuView extends View {
 
     get template() {
         return template;
+    }
+
+    _setupShade() {
+        document.getElementById('menu-shader').addEventListener('click', () => {
+            this.serviceLocator.router.changePage('/');
+        });
     }
 
     _setupLogout() {
