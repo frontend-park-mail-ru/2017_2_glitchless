@@ -51,7 +51,11 @@ class SignupModalView extends View {
                     this.serviceLocator.router.changePage('/');
                     this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
                 })
-                .catch((res) => console.error(res));
+                .catch((res) => {
+                    const errorElem = document.getElementById('signup-form-server-error');
+                    errorElem.classList.remove('hidden');
+                    errorElem.textContent = 'Cannot connect to auth server';
+                });
         });
     }
 

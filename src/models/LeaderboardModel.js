@@ -65,7 +65,10 @@ export default class LeaderboardModel {
 
     saveCurrentUserScore() {
         this._saveToLocalStorage();
-        return this._api.post('leaderboard', {score: this.currentUserScore})
+        return this._api.post('leaderboard', {score: this.currentUserScore}).then(() => {
+            this._isDirty = false;
+            this._saveToLocalStorage();
+        })
     }
 
     canSaveCurrentUserScore() {

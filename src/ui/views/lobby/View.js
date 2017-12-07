@@ -6,12 +6,16 @@ import template from './template.pug';
 import './style.scss'
 
 class LobbyView extends View {
-
     open(root, data = null) {
-        this.progressText = document.getElementsByClassName('lobby__progresstext').item(0);
+        this.progressTextElem = root.getElementsByClassName('lobby__progresstext').item(0);
+        this.waitingLabelElem = root.getElementsByClassName('lobby__waitinglabel').item(0);
+        this.returnButtonElem = root.getElementsByClassName('modal-control').item(0);
+        this.isGameAborted = false;
+
         this.serviceLocator.magicTransport.openSocket();
         this.serviceLocator.magicTransport.send({type: 'WantPlayMessage', state: 1});
         this.serviceLocator.magicTransport.eventBus.subscribeOn('ws_close', this.onClose, this);
+        this.serviceLocator.magicTransport.eventBus.subscribeOn('ws_error', this.onError, this);
         this.serviceLocator.magicTransport.eventBus.subscribeOn('GameInitState', this.onNewSocketMessage, this);
         this.serviceLocator.magicTransport.eventBus.subscribeOn('FullSwapScene', this._onOpenGame, this);
     }
@@ -42,11 +46,34 @@ class LobbyView extends View {
     }
 
     onClose(event) {
-        this._showText(event.reason);
+        let message = 'Game closed';
+        if (event.reason) {
+            message += ': ' + event.reason;
+        }
+        this._abortGameAndShowText(message);
+    }
+
+    onError(event) {
+        let message = 'Cannot connect to game server';
+        if (event.reason) {
+            message += ': ' + event.reason;
+        }
+        this._abortGameAndShowText(message);
     }
 
     _showText(text) {
-        this.progressText.innerText = text;
+        this.progressTextElem.textContent = text;
+    }
+
+    _abortGameAndShowText(text) {
+        if (this.isGameAborted) {
+            return;
+        }
+        this.isGameAborted = true;
+
+        this.waitingLabelElem.classList.add('hidden');
+        this.returnButtonElem.classList.remove('hidden');
+        this.progressTextElem.textContent = text;
     }
 }
 

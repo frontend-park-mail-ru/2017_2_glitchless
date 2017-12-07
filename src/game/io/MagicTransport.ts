@@ -10,11 +10,13 @@ export default class MagicTransport {
     private websocketUrl: string;
     private socket: WebSocket;
     private objectQueue: object[];
+    private doDebugLog: boolean;
 
-    constructor(websocketUrl: string) {
+    constructor(websocketUrl: string, {debug = false} = {}) {
         this.websocketUrl = websocketUrl;
         this.objectQueue = [];
         this.eventBus = new EventBus();
+        this.doDebugLog = debug;
     }
 
     public openSocket() {
@@ -27,18 +29,24 @@ export default class MagicTransport {
 
     public send(object) {
         if (this.socket.readyState !== STATE_OPEN) {
-            console.log('Object push to queue');
-            console.log(object);
+            if (this.doDebugLog) {
+                console.log('Object push to queue');
+                console.log(object);
+            }
             this.objectQueue.push(object);
             return;
         }
-        console.log('Sending:...');
-        console.log(object);
+        if (this.doDebugLog) {
+            console.log('Sending:...');
+            console.log(object);
+        }
         this.socket.send(JSON.stringify(object));
     }
 
     private onOpen() {
-        console.log('Websocket: onOpen');
+        if (this.doDebugLog) {
+            console.log('Websocket: onOpen');
+        }
         while (this.objectQueue.length > 0) {
             this.send(this.objectQueue.pop());
         }
@@ -47,21 +55,29 @@ export default class MagicTransport {
     }
 
     private onMessage(message) {
-        console.log('Websocket: onMessage ');
+        if (this.doDebugLog) {
+            console.log('Websocket: onMessage ');
+        }
         const jsObject = JSON.parse(message.data);
-        console.log(jsObject);
+        if (this.doDebugLog) {
+            console.log(jsObject);
+        }
         this.eventBus.emitEvent(jsObject.type, jsObject);
     }
 
     private onError(error) {
-        console.log('Websocket: onError ');
-        console.log(error);
+        if (this.doDebugLog) {
+            console.log('Websocket: onError ');
+            console.log(error);
+        }
         this.eventBus.emitEvent('ws_error', error);
     }
 
     private onClose(event) {
-        console.log('Websocket: onClose');
-        console.log(event);
+        if (this.doDebugLog) {
+            console.log('Websocket: onClose');
+            console.log(event);
+        }
         this.eventBus.emitEvent('ws_close', event);
     }
 }

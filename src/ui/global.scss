@@ -23,9 +23,26 @@ body {
         margin-top: 6vw;
     }
 
+    .bumper-bottom {
+        margin-bottom: 6vw;
+    }
+
     .bumper-top-bottom {
         margin-top: 6vw;
         margin-bottom: 6vw;
+    }
+
+    .mini-bumper-top {
+        margin-top: 3vw;
+    }
+
+    .mini-bumper-bottom {
+        margin-bottom: 3vw;
+    }
+
+    .mini-bumper-top-bottom {
+        margin-top: 3vw;
+        margin-bottom: 3vw;
     }
 
     html, body {
@@ -38,5 +55,5 @@ body {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }

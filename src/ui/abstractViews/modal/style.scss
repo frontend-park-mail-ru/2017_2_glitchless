@@ -7,20 +7,17 @@
     padding: 0;
 }
 
-.modal {
-    &-control {
-        text-align: center;
-        @include form-styling;
+.modal-control {
+    text-align: center;
+    @include form-styling;
 
-        &__wrapper {
-            margin: 30px 0;
-        }
-
-        a, input {
-            margin: 0 10px;
-        }
+    &__wrapper {
+        margin: 30px 0;
     }
 
+    a, input {
+        margin: 0 10px;
+    }
 }
 
 @media only screen and (max-device-width: $breakpoint-tablet) {

@@ -116,6 +116,7 @@
             box-shadow: none;
         }
     }
+
     &__redirect-btn {
         margin: 0 5px;
         padding: 5px;
@@ -128,5 +129,9 @@
         &:hover {
             opacity: .7;
         }
+    }
+
+    &__server-error {
+        //padding: 8px 0;
     }
 }
