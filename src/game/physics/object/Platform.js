@@ -59,7 +59,6 @@ export default class Platform extends PhysicsEntitiy {
         throw new TypeError(direction);
     }
 
-
     getRotation() {
         return super.getRotation();
     }

@@ -14,7 +14,7 @@ export default class ServiceLocator {
     constructor() {
         this.api = new Api('http://' + BASE_URL + '/api');
         this.stubApi = new Api('/api');
-        this.magicTransport = new MagicTransport("ws://" + BASE_URL + "/game");
+        this.magicTransport = new MagicTransport('ws://' + BASE_URL + '/game');
         this.router = new Router(this);
         this.eventBus = new EventBus();
         this.user = null;

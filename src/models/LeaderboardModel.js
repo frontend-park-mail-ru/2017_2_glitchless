@@ -65,11 +65,11 @@ export default class LeaderboardModel {
 
     saveCurrentUserScore() {
         this._saveToLocalStorage();
-        return this._api.post('leaderboard', {score: this.currentUserScore})
+        return this._api.post('leaderboard', {score: this.currentUserScore});
     }
 
     canSaveCurrentUserScore() {
-        return !!this._currentUserName
+        return !!this._currentUserName;
     }
 
     sync() {
@@ -83,7 +83,7 @@ export default class LeaderboardModel {
         const serializedLeaderboard = JSON.stringify(
             {isDirty: this._isDirty, currentUserName: this._currentUserName, scores: mapToObj(this._scores)});
 
-        localStorage.setItem('leaderboard', serializedLeaderboard)
+        localStorage.setItem('leaderboard', serializedLeaderboard);
     }
 
     _loadFromLocalStorage() {
