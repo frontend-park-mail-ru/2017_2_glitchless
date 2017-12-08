@@ -11,7 +11,7 @@ script:
 - npm run lint
 
 addons:
-  ssh_known_hosts: 94.25.170.10
+  ssh_known_hosts: 54.36.181.198
 
 deploy:
 - provider: heroku
@@ -24,7 +24,7 @@ deploy:
     branch: site-base
 - provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/dist/ frontenddeploy@94.25.170.10:/nginx/glitchless.ru/
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/dist/ frontenddeploy@54.36.181.198:/nginx/glitchless.ru/
   on:
     repo: frontend-park-mail-ru/2017_2_glitchless
     branch: site-base
