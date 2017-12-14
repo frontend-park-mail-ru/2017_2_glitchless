@@ -62,7 +62,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...platform.getEdgePoints(), platform.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
@@ -113,7 +113,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...forcefield.getEdgePoints(), forcefield.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
@@ -133,7 +133,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = [...hpblock.getEdgePoints(), hpblock.getCoords()];
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));

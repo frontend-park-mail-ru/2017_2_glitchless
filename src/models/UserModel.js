@@ -16,8 +16,8 @@ export default class UserModel {
      */
     static loadCurrent(loadFromServer = false, serviceLocator = null) {
         if (loadFromServer) {
-            return serviceLocator.api.post('user')
-                .then((dataFromServer) => dataFromServer.json())
+            return serviceLocator.api.get('user')
+                .then((dataFromServer) => dataFromServer.json(), {})
                 .then((json) => UserModel.fromApiJson(json));
         }
 
