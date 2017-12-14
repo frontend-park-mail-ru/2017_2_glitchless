@@ -60,10 +60,10 @@ export default class SyncDelegate {
         const lastCommitTmp = this.commits[this.counter];
         const currentTime = performance.now();
         const lastCommit = {
-                speed: lastCommitTmp.speed,
-                timestamp_start: lastCommitTmp.timestamp_start,
-                timestamp_end: currentTime
-            };
+            speed: lastCommitTmp.speed,
+            timestamp_end: currentTime,
+            timestamp_start: lastCommitTmp.timestamp_start,
+        };
         this.applyToObject(object, lastCommit);
     }
 
@@ -104,7 +104,6 @@ export default class SyncDelegate {
         this.commits[commitId] = {speed, timestamp_start: now};
         this.magicTransport.send({type: 'ClientCommitMessage', commitNumber: commitId, objectId, speed});
     }
-
 
     private applyToObject(object, commit) {
         const diffTime = commit.timestamp_end - commit.timestamp_start;

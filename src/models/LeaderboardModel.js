@@ -95,7 +95,7 @@ export default class LeaderboardModel {
     }
 
     canSaveCurrentUserScore() {
-        return !!this._currentUserName
+        return !!this._currentUserName;
     }
 
     sync() {
@@ -109,7 +109,7 @@ export default class LeaderboardModel {
         const serializedLeaderboard = JSON.stringify(
             {isDirty: this._isDirty, currentUserName: this._currentUserName, scores: mapToObj(this._scores)});
 
-        localStorage.setItem('leaderboard', serializedLeaderboard)
+        localStorage.setItem('leaderboard', serializedLeaderboard);
     }
 
     _loadFromLocalStorage() {

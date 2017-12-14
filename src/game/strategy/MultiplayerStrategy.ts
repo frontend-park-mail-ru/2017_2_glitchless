@@ -72,6 +72,11 @@ export default class MultiplayerStrategy extends GameStrategy {
         this.syncDelegate.sync();
     }
 
+    public onHpLoss(hpblock) {
+        // TODO
+        return;
+    }
+
     private processControls() {
         if (this.leftButton.isDown || this.qButton.isDown) {
             this.userPlatform.setMoveDirection('left');
@@ -98,10 +103,5 @@ export default class MultiplayerStrategy extends GameStrategy {
             scene.addObject(forceFieldBar);
             this.forceFieldBars.push(forceFieldBar);
         }, this);
-    }
-
-    public onHpLoss(hpblock) {
-        //TODO
-        return;
     }
 }
