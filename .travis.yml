@@ -1,37 +1,27 @@
-language: node_js
+sudo: required
 
-node_js:
-- '6'
-
-cache:
-  directories:
-  - node_modules
-script:
-- npm run build
-- npm run lint
+services:
+  - docker
 
 addons:
   ssh_known_hosts: 54.36.181.198
 
+script:
+  - docker build -t rhythm_blast/frontend .
+  - docker run --rm rhythm_blast/frontend "npm run lint"
+
 deploy:
-- provider: heroku
-  skip_cleanup: true
-  api_key:
-    secure: Zzv/almN56Ms46mDLSwWW/Sg5cgBs/sd2SnJVqMI3iTFV4xmET8v46Vd1sn/KXmYMcYXxmTACN4osvj01aNplN4z6bOJlholjHlEZG7i/4Zalvnxgm63NqGxtdiiomsJuOmVXMx32xZCGQ1483uBa4OddIcBnsxM5iwoyJ3KYWCwteVC4KrsBK42nwe1vPaAtum3No1VCa8jRyTSmAYLatQSF3qvBCTAXvEETh0Sy5MU5i6dMqakHjMUrYoIu4zAuu1K0cUilJ30K2JPLHgIeBO+jlmqmalQrNM1dQW0W4GikCftHbB5Sgoxu6LpMOCtyGU4JFoMYeo/hWJ6ZDAFp0BKKDoJDx/MX3ho10XZ8wZETZRULnQnwcR1bQXm7Y13KLSWSdo6fzQuKMISbT3fwxo5pB6ByHgNgJwxIV4RTeCjERgip3VZFqX4saQtPE4XIL3uJ6FEKTrvqT3iGnhS3Bu4ye317/Fh9jGOuSbYAkeOPkJSeUN55mBiQw0Qb0vHJfVd0ORIDXCpNGVfjHXT7II39X40gYzDm6JobRxMDklLu5JjE6otkZ694suF9usNm9Mh+hZ0uHg8+v+R6OEn5WfbDoulVkP4hzabOCZSxIMKZBj4XCSCAhPfValbUDWQ2vB1VRfdilOAVaQexj8nLW9SdhHiagDmB9OFivoeYzY=
-  app: glitchless
-  on:
-    repo: frontend-park-mail-ru/2017_2_glitchless
-    branch: site-base
 - provider: script
-  skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/dist/ frontenddeploy@54.36.181.198:/nginx/glitchless.ru/
+  script:
+    - docker login http://registry.glitchless.ru:5000
+    - docker push rhythm_blast/frontend
+    - ssh ansible@54.36.181.198 "cd ansible && ansible-playbook playbook.yml"
   on:
     repo: frontend-park-mail-ru/2017_2_glitchless
     branch: site-base
 
 before_install:
-- openssl aes-256-cbc -K $encrypted_84b92aa8c331_key -iv $encrypted_84b92aa8c331_iv
-  -in deploy_rsa.enc -out /tmp/deploy_rsa -d
-- eval "$(ssh-agent -s)"
-- chmod 600 /tmp/deploy_rsa
-- ssh-add /tmp/deploy_rsa
+  - openssl aes-256-cbc -K $encrypted_84b92aa8c331_key -iv $encrypted_84b92aa8c331_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 /tmp/deploy_rsa
+  - ssh-add /tmp/deploy_rsa
