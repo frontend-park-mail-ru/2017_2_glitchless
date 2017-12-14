@@ -2,7 +2,7 @@ import View from '../View';
 import TemplatedViewMixin from '../../mixins/TemplatedViewMixin';
 import RouterLinksViewMixin from '../../mixins/RouterLinksViewMixin';
 import template from './template.pug';
-import './style.scss'
+import './style.scss';
 import UserModel from '../../../models/UserModel';
 
 class MenuView extends View {

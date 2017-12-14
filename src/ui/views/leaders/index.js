@@ -4,7 +4,7 @@ import RouterLinksViewMixin from '../../mixins/RouterLinksViewMixin';
 import ModalShadeViewMixin from '../../mixins/ModalShadeViewMixin';
 import template from './template.pug';
 import rowTemplate from './row-template.pug';
-import './style.scss'
+import './style.scss';
 
 class LeadersModalView extends View {
     constructor(serviceLocator) {

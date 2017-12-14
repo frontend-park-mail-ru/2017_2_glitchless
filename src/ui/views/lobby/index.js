@@ -3,7 +3,7 @@ import TemplatedViewMixin from '../../mixins/TemplatedViewMixin';
 import RouterLinksViewMixin from '../../mixins/RouterLinksViewMixin';
 import ModalShadeViewMixin from '../../mixins/ModalShadeViewMixin';
 import template from './template.pug';
-import './style.scss'
+import './style.scss';
 
 class LobbyView extends View {
     open(root, data = null) {

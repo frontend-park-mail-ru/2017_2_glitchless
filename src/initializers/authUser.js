@@ -5,5 +5,6 @@ export default function(serviceLocator) {
         serviceLocator.user = user;
         serviceLocator.eventBus.emitEvent('auth', user);
     }).catch((e) => {
+        // ignore
     });
 }

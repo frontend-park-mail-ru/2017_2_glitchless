@@ -17,7 +17,7 @@ export default function ModalShadeViewMixin(initialClass) {
             if (superClose) {
                 superClose.call(this);
             }
-        }
+        },
     };
 
     Object.assign(initialClass.prototype, Mixin);
