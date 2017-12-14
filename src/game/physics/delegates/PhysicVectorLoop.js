@@ -19,34 +19,34 @@ export default class PhysicVectorLoop {
     }
 
     processPhysicLoop(context, elapsedMS) {
-        this._processPlatformLogic(context.physicObjects.platform);
+        context.spriteStorage.needUpdatePlatorm.forEach(
+            (item) => this._processPlatformLogic(item)
+        );
         this._processCollisions(context, elapsedMS);
     }
 
-    _processPlatformLogic(platforms) {
-        platforms.forEach((platform) => {
-            const currentSpeed = platform.getRotationSpeed();
-            let newRotationSpeed;
-            if (platform.direction === 0) {
-                if (currentSpeed > Constants.GAME_PLATFROM_MIN_SPEED) {
-                    newRotationSpeed = Math.max(
-                        currentSpeed - (currentSpeed * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0);
-                } else if (currentSpeed < Constants.GAME_PLATFROM_MIN_SPEED) {
-                    newRotationSpeed = Math.min(
-                        currentSpeed + Math.abs(currentSpeed * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0);
-                } else {
-                    newRotationSpeed = 0;
-                }
+    _processPlatformLogic(platform) {
+        const currentSpeed = platform.getRotationSpeed();
+        let newRotationSpeed;
+        if (platform.direction === 0) {
+            if (currentSpeed > Constants.GAME_PLATFROM_MIN_SPEED) {
+                newRotationSpeed = Math.max(
+                    currentSpeed - (currentSpeed * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0);
+            } else if (currentSpeed < Constants.GAME_PLATFROM_MIN_SPEED) {
+                newRotationSpeed = Math.min(
+                    currentSpeed + Math.abs(currentSpeed * Constants.GAME_PLATFORM_INERTION_COEFFICIENT), 0);
             } else {
-                newRotationSpeed = Constants.GAME_PLATFORM_CONTROL_SPEED * platform.direction;
+                newRotationSpeed = 0;
             }
+        } else {
+            newRotationSpeed = Constants.GAME_PLATFORM_CONTROL_SPEED * platform.direction;
+        }
 
-            platform.setRotationSpeed(newRotationSpeed);
+        platform.setRotationSpeed(newRotationSpeed);
 
-            if (Math.abs(newRotationSpeed - currentSpeed) >= Constants.GAME_PLATFROM_MIN_SPEED) {
-                GameEventBus.emitEvent('change_platform_speed', platform);
-            }
-        });
+        if (newRotationSpeed !== currentSpeed) {
+            GameEventBus.emitEvent('change_platform_speed', platform);
+        }
     }
 
     _processCollisions(context, elapsedMS) {

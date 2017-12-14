@@ -4,5 +4,6 @@ export default class SpriteStorage {
         this.userPlatform = null;
         this.enemyPlatform = null;
         this.circle = null;
+        this.needUpdatePlatorm = [];
     }
 }
