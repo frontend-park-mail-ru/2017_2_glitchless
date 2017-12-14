@@ -12,7 +12,7 @@ export default class ServiceLocator {
     constructor() {
         this.api = new Api(`${ENV_API_BASE_URL}/api`);
         this.stubApi = new Api('/api');
-        this.magicTransport = new MagicTransport(`ws://${ENV_API_BASE_URL}/game`, {debug: false});
+        this.magicTransport = new MagicTransport(`${ENV_API_WS_URL}/game`, {debug: true});
 
         this.router = new Router(this);
         this.eventBus = new EventBus();

@@ -31,7 +31,12 @@ class LobbyView extends View {
                 break;
             }
             case 3: {
-                this._showText('Waiting room...');
+                this._showText('Please wait while your resource loading');
+                this.serviceLocator.magicTransport.send({type: 'WantPlayMessage', state: 4});
+                break;
+            }
+            case 4: {
+                this._showText('Waiting while player loading resource');
                 break;
             }
             case 10: {
