@@ -2,11 +2,14 @@ import PhysicsObject from './primitive/PhysicsObject';
 import * as PIXI from 'pixi.js';
 import Point from './primitive/Point.js';
 import Constants from '../../../utils/Constants';
-import { Arc, Circle } from '../PhysicPrimitives.js';
+import { Arc } from '../PhysicPrimitives.js';
 import EventBus from '../../GameEventBus';
 
-const cyanForceFieldTexture = PIXI.Texture.fromImage('./images/shield_cyan.png');
-const redForceFieldTexture = PIXI.Texture.fromImage('./images/shield_red.png');
+import shield_cyan_png from '../../../ui/images/shield_cyan.png';
+import shield_red_png from '../../../ui/images/shield_red.png';
+
+const cyanForceFieldTexture = PIXI.Texture.fromImage(shield_cyan_png);
+const redForceFieldTexture = PIXI.Texture.fromImage(shield_red_png);
 const basicForceFieldTextures = [cyanForceFieldTexture, redForceFieldTexture];
 export default class ForceField extends PhysicsObject {
     constructor(context, coords = new Point(0, 0), alignmentCircle, id) {

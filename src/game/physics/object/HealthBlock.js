@@ -5,7 +5,9 @@ import Constants from '../../../utils/Constants';
 import { Arc, Circle } from '../PhysicPrimitives.js';
 import EventBus from '../../GameEventBus';
 
-const basicHealthBlockTexture = PIXI.Texture.fromImage('./images/energy_block.png');
+import energy_block_png from '../../../ui/images/energy_block.png';
+
+const basicHealthBlockTexture = PIXI.Texture.fromImage(energy_block_png);
 
 export default class HealthBlock extends PhysicsObject {
     constructor(context, coords = new Point(0, 0), alignmentCircle, id) {

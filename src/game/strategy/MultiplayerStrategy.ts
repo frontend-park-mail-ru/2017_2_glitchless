@@ -8,8 +8,11 @@ import Player from '../Player';
 import GameStrategy from './GameStrategy';
 import SyncDelegate from './mpdelegate/SyncDelegate';
 
-const forceFieldBarTexture = PIXI.Texture.fromImage('./images/shield_gui_status.png');
-const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage('./images/shield_gui_background.png');
+import * as shield_gui_background_png from '../../ui/images/shield_gui_background.png';
+import * as shield_gui_status_png from '../../ui/images/shield_gui_status.png';
+
+const forceFieldBarTexture = PIXI.Texture.fromImage(shield_gui_status_png);
+const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage(shield_gui_background_png);
 
 export default class MultiplayerStrategy extends GameStrategy {
     public players: Player[];
@@ -70,6 +73,11 @@ export default class MultiplayerStrategy extends GameStrategy {
         this.syncDelegate.sync();
     }
 
+    public onHpLoss(hpblock) {
+        // TODO
+        return;
+    }
+
     private processControls() {
         if (this.leftButton.isDown || this.qButton.isDown) {
             this.userPlatform.setMoveDirection('left');
@@ -96,10 +104,5 @@ export default class MultiplayerStrategy extends GameStrategy {
             scene.addObject(forceFieldBar);
             this.forceFieldBars.push(forceFieldBar);
         }, this);
-    }
-
-    public onHpLoss(hpblock) {
-        //TODO
-        return;
     }
 }

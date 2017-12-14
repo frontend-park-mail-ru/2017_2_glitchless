@@ -1,0 +1,21 @@
+include ../../abstractViews/modal/template
+
++modal('Sign in')
+    form#login-form.login-form(action='')
+        -
+            var input_fields = [{type: 'text', name:'login', placeholder:'Nickname'}, {type: 'password', name:'password', placeholder:'Password'}];
+        each field in input_fields
+            input.login-form__field(type=field['type'], name=field['name'], placeholder=field['placeholder'])
+
+        .mini-bumper-top &nbsp;
+
+        #login-form-server-error.login-form__server-error.hidden
+
+        .mini-bumper-bottom &nbsp;
+
+        .modal-control
+            input.login-form__button(type='submit', value='Submit')
+            a.modal_closer.modal-control__button(href='/') Return
+
+        .modal__additional-text Don't have an account?
+            a.login-form__redirect-btn(href='/signup') Sign up

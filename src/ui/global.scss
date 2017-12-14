@@ -1,0 +1,59 @@
+@import '~normalize.css/normalize.css';
+@import '~rubik-font/css/rubik.css';
+
+@import '../utils/sass/palette';
+@import '../utils/sass/constants';
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 450px;
+    height: 100vh;
+    margin: 0;
+    background: $colour_main1_new;
+
+    color: #fff;
+    font-family: 'Rubik', sans-serif, 'Roboto', sans-serif;
+}
+
+@media only screen and (max-device-width: $breakpoint-tablet) {
+    .bumper-top {
+        margin-top: 6vw;
+    }
+
+    .bumper-bottom {
+        margin-bottom: 6vw;
+    }
+
+    .bumper-top-bottom {
+        margin-top: 6vw;
+        margin-bottom: 6vw;
+    }
+
+    .mini-bumper-top {
+        margin-top: 3vw;
+    }
+
+    .mini-bumper-bottom {
+        margin-bottom: 3vw;
+    }
+
+    .mini-bumper-top-bottom {
+        margin-top: 3vw;
+        margin-bottom: 3vw;
+    }
+
+    html, body {
+        overflow-x: hidden;
+    }
+
+    body {
+        position: relative
+    }
+}
+
+.hidden {
+    display: none !important;
+}

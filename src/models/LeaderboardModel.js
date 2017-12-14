@@ -5,6 +5,8 @@ export default class LeaderboardModel {
         this._scores = new Map();
         this._currentUserName = null;
         this._isDirty = false;
+        this._isOffline = false;
+        this._isLoading = false;
         this._api = serviceLocator.stubApi;
 
         this._loadFromLocalStorage();
@@ -26,7 +28,7 @@ export default class LeaderboardModel {
     }
 
     get currentUserScore() {
-        return this._scores.get(this._currentUserName);
+        return this._scores.has(this._currentUserName) ? this._scores.get(this._currentUserName) : 0;
     }
 
     set currentUserScore(value) {
@@ -48,7 +50,16 @@ export default class LeaderboardModel {
         return this._isDirty;
     }
 
+    get isOffline() {
+        return this._isOffline;
+    }
+
+    get isLoading() {
+        return this._isLoading;
+    }
+
     load() {
+        this._isLoading = true;
         return this._api.get('leaderboard')
             .then((response) => {
                 return response.json();
@@ -59,17 +70,32 @@ export default class LeaderboardModel {
                     this._scores.set(entry.user, entry.score);
                 });
             }).then(() => {
+                this._isDirty = false;
+                this._isOffline = false;
+                this._isLoading = false;
                 this._saveToLocalStorage();
+            }).catch(() => {
+                this._isOffline = true;
+                this._isLoading = false;
             });
     }
 
     saveCurrentUserScore() {
         this._saveToLocalStorage();
-        return this._api.post('leaderboard', {score: this._scores.get(this._currentUserName)})
+        this._isLoading = true;
+        return this._api.post('leaderboard', {score: this.currentUserScore}).then(() => {
+            this._isDirty = false;
+            this._isOffline = false;
+            this._isLoading = false;
+            this._saveToLocalStorage();
+        }).catch(() => {
+            this._isOffline = true;
+            this._isLoading = false;
+        });
     }
 
     canSaveCurrentUserScore() {
-        return this._scores.has(this._currentUserName);
+        return !!this._currentUserName;
     }
 
     sync() {
@@ -83,7 +109,7 @@ export default class LeaderboardModel {
         const serializedLeaderboard = JSON.stringify(
             {isDirty: this._isDirty, currentUserName: this._currentUserName, scores: mapToObj(this._scores)});
 
-        localStorage.setItem('leaderboard', serializedLeaderboard)
+        localStorage.setItem('leaderboard', serializedLeaderboard);
     }
 
     _loadFromLocalStorage() {

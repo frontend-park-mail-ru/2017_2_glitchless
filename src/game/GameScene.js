@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js';
 
 import Alien from './physics/object/Alien';
 import Platform from './physics/object/Platform';
-import Laser from './physics/object/Laser';
 import HealthBlock from './physics/object/HealthBlock';
 import ForceField from './physics/object/ForceField';
 import Bounder from './physics/object/Bounder';
@@ -14,8 +13,12 @@ import GameUtils from '../utils/GameUtils';
 import Constants from '../utils/Constants';
 import Point from './physics/object/primitive/Point';
 
-const loseText = new PIXI.Sprite.fromImage('./images/game_over_splash_lost.png');
-const winText = new PIXI.Sprite.fromImage('./images/game_over_splash_won.png');
+import game_over_splash_lost_png from '../ui/images/game_over_splash_lost.png';
+import game_over_splash_won_png from '../ui/images/game_over_splash_won.png';
+import background_png from '../ui/images/background.png';
+
+const loseText = new PIXI.Sprite.fromImage(game_over_splash_lost_png);
+const winText = new PIXI.Sprite.fromImage(game_over_splash_won_png);
 
 export default class GameScene {
     constructor() {
@@ -70,7 +73,7 @@ export default class GameScene {
 
         PIXI.loader.add('./images/background.png').load(function() {
             const slide = GameUtils.makeBackgroundCoverWithSprite(
-                bgSize, PIXI.Sprite.fromImage('./images/background.png'), 'cover');
+                bgSize, PIXI.Sprite.fromImage(background_png), 'cover');
             container.addChild(slide);
         });
     }
