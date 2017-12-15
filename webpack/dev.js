@@ -6,7 +6,8 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             ENV_PRODUCTION: JSON.stringify(false),
-            ENV_API_BASE_URL: JSON.stringify('localhost:8081')
+            ENV_API_URL: JSON.stringify('http://localhost:8081/api'),
+            ENV_WS_URL: JSON.stringify('ws://localhost:8081/game')
         })
     ]
 };
