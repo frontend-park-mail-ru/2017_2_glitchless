@@ -7,7 +7,7 @@ export default class LeaderboardModel {
         this._isDirty = false;
         this._isOffline = false;
         this._isLoading = false;
-        this._api = serviceLocator.stubApi;
+        this._api = serviceLocator.api;
 
         this._loadFromLocalStorage();
     }
@@ -66,7 +66,7 @@ export default class LeaderboardModel {
             })
             .then((json) => {
                 this._scores = new Map();
-                json.scores.forEach((entry) => {
+                json.message.forEach((entry) => {
                     this._scores.set(entry.user, entry.score);
                 });
             }).then(() => {
