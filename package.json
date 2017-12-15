@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node server",
-    "postinstall": "npm run build",
     "lint": "tslint -c tslint.json 'src/**/*.ts' ; tslint -c tslint.json 'src/**/*.js'",
     "lint-fix": "tslint -c tslint.json 'src/**/*.ts' --fix ; tslint -c tslint.json 'src/**/*.js' --fix",
     "build": "webpack --progress --config webpack.prod.js && webpack --config webpack.prod.sw.js",
