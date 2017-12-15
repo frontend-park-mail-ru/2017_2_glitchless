@@ -7,14 +7,14 @@ addons:
   ssh_known_hosts: 54.36.181.198
 
 script:
-  - docker build -t rhythm_blast/frontend .
-  - docker run --rm rhythm_blast/frontend npm run lint
+  - docker build -t rhythm_blast/frontend:latest .
+  - docker run --rm rhythm_blast/frontend:latest npm run lint
 
 deploy:
   - provider: script
     script:
       - docker login https://registry.glitchless.ru -u null -p null &&
-            docker push registry.glitchless.ru/rhythm_blast/frontend &&
+            docker push registry.glitchless.ru/rhythm_blast/frontend:latest &&
             ssh ansible@54.36.181.198 "cd ansible && ansible-playbook playbook.yml"
     on:
       branch: site-base
