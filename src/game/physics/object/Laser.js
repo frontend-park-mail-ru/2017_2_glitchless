@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
 import PhysicsEntity from './primitive/PhysicsEntity';
-import Constants from '../../../utils/Constants';
 import utils from '../../../utils/GameUtils';
 
-const basicLaserTexture = PIXI.Texture.fromImage('./images/laser_small.png');
+import laser_small_png from '../../../ui/images/laser_small.png';
+
+const basicLaserTexture = PIXI.Texture.fromImage(laser_small_png);
 
 export default class Laser extends PhysicsEntity {
     constructor(speed, context) {

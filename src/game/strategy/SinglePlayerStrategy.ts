@@ -10,8 +10,11 @@ import Point from '../physics/object/primitive/Point';
 
 import Player from '../Player';
 
-const forceFieldBarTexture = PIXI.Texture.fromImage('./images/shield_gui_status.png');
-const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage('./images/shield_gui_background.png');
+import * as shield_gui_background_png from '../../ui/images/shield_gui_background.png';
+import * as shield_gui_status_png from '../../ui/images/shield_gui_status.png';
+
+const forceFieldBarTexture = PIXI.Texture.fromImage(shield_gui_status_png);
+const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage(shield_gui_background_png);
 
 export default class SinglePlayerStrategy extends GameStrategy {
     public players: Player[];
@@ -37,10 +40,14 @@ export default class SinglePlayerStrategy extends GameStrategy {
         this.scene = scene;
     }
 
-    public initUI() {
+    public initUI(physicContext) {
         this._drawForceFieldBars(this.scene);
+
+        physicContext.spriteStorage.needUpdatePlatorm.push(physicContext.spriteStorage.userPlatform);
+        physicContext.spriteStorage.needUpdatePlatorm.push(physicContext.spriteStorage.enemyPlatform);
+
         this.scene.initScores();
-    }
+       }
 
     public gameplayTick(physicContext, elapsedMS: number) {
         this.processBotLogic(physicContext);

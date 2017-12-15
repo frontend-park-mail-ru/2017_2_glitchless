@@ -1,19 +1,23 @@
 import 'babel-polyfill';
-import authUser from './authUser';
-import leaderboardInit from './leaderboardInit';
-import ServiceLocator from './ServiceLocator';
+
+import './ui/global.scss';
+
+import ServiceLocator from './services/ServiceLocator';
+
+import authUser from './initializers/authUser';
+import leaderboardInit from './initializers/leaderboard';
+import routerInit from './initializers/router';
+import serviceWorkerInit from './initializers/serviceWorker';
+
+function runLater(func) {
+    setTimeout(func, 0);
+}
 
 window.onload = () => {
     const serviceLocator = new ServiceLocator();
 
-    serviceLocator.router.init();
-
-    setTimeout(() => {
-        authUser(serviceLocator);
-        leaderboardInit(serviceLocator);
-    }, 0);
-
-    if ('serviceWorker' in window.navigator) {
-        window.navigator.serviceWorker.register('/sw.js');
-    }
+    runLater(() => authUser(serviceLocator));
+    leaderboardInit(serviceLocator);
+    serviceWorkerInit(serviceLocator);
+    routerInit(serviceLocator);
 };

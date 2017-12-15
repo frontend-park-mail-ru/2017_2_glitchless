@@ -1,0 +1,137 @@
+@import './palette';
+@import './constants';
+
+@mixin form-styling {
+    text-align: center;
+    display: block;
+
+    @media only screen and (max-device-width: $breakpoint-tablet) {
+        font-size: 3vw;
+
+        @media (orientation: portrait) {
+            &__field {
+                font-size: 6vw;
+                padding: 4vw;
+            }
+
+            &__button {
+                font-size: 4vw;
+                padding: 3vw 8vw;
+            }
+        }
+
+        @media (orientation: landscape) {
+
+            &__field {
+                font-size: 3vw;
+                padding: 1vh 2vw;
+            }
+
+            &__button {
+                font-size: 2vw;
+                padding: 2vw 8vw;
+            }
+        }
+    }
+
+    @media only screen and (min-device-width: $breakpoint-tablet) {
+        &__field {
+            font-size: 12pt;
+            padding: 5px 10px 5px 10px;
+        }
+
+        &__button {
+            font-size: 12pt;
+            padding: 15px 40px;
+        }
+    }
+
+    &__field {
+        margin-top: 10px;
+        width: 90%;
+        border: 1px solid $colour_main2_plain;
+        height: 50px;
+        background: rgba(#000, .1);
+
+        color: $colour_plain_3;
+        outline: none;
+        border-radius: 5px;
+
+        &::-webkit-input-placeholder { color: rgba(#fff, .5); }
+        &::-moz-placeholder          { color: rgba(#fff, .5); }/* Firefox 19+ */
+        &:-moz-placeholder           { color: rgba(#fff, .5); }/* Firefox 18- */
+        &:-ms-input-placeholder      { color: rgba(#fff, .5); }
+        &::-webkit-input-placeholder       {opacity: 1; transition: opacity 0.3s ease;}
+        &::-moz-placeholder                {opacity: 1; transition: opacity 0.3s ease;}
+        &:-moz-placeholder                 {opacity: 1; transition: opacity 0.3s ease;}
+        &:-ms-input-placeholder            {opacity: 1; transition: opacity 0.3s ease;}
+        &:focus::-webkit-input-placeholder {opacity: 0; transition: opacity 0.3s ease;}
+        &:focus::-moz-placeholder          {opacity: 0; transition: opacity 0.3s ease;}
+        &:focus:-moz-placeholder           {opacity: 0; transition: opacity 0.3s ease;}
+        &:focus:-ms-input-placeholder      {opacity: 0; transition: opacity 0.3s ease;}
+    }
+
+    &__button {
+        background: rgba(255, 255, 255, .2);
+        box-shadow: 3px 3px  rgba(0, 0, 0, .1);
+        border-radius: 0 7px;
+        border: none;
+        min-width: 150px;
+        transition: .5s;
+
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+            background: rgba(255, 255, 255, .4);
+            box-shadow: 3px 3px  rgba(0, 0, 0, .1);
+        }
+
+        &:active {
+            background: rgba(255, 255, 255, .1);
+            box-shadow: none;
+        }
+    }
+
+    &__buttonz {
+        padding: 15px 50px;
+        box-shadow: 0 5px 0 $colour_main4;
+
+        border: 0;
+
+        &:active {
+            box-shadow: 0 0 20px rgba(0,0,0,.8);
+        }
+
+        background: $colour_main1;
+        color: $colour_main2;
+        font-size: 14pt;
+        transition: .5s;
+
+        text-decoration: none;
+
+        &:hover {
+            background: $colour_main4;
+            color: $colour_main3;
+            box-shadow: none;
+        }
+    }
+
+    &__redirect-btn {
+        margin: 0 5px;
+        padding: 5px;
+        background: rgba(#000, .1);
+        text-decoration: none;
+        color: $colour_main3;
+        border-radius: 2px;
+        transition: .5s;
+
+        &:hover {
+            opacity: .7;
+        }
+    }
+
+    &__server-error {
+        //padding: 8px 0;
+    }
+}

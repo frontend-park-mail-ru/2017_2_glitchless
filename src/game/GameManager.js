@@ -5,7 +5,7 @@ import PhysicLoop from './physics/PhysicLoop';
 import SinglePlayerStrategy from './strategy/SinglePlayerStrategy';
 import EventBus from './GameEventBus';
 import MultiplayerStrategy from './strategy/MultiplayerStrategy';
-import ScoreManager from "./ScoreManager";
+import ScoreManager from './ScoreManager';
 
 export default class GameManager {
     constructor(serviceLocator) {
@@ -42,7 +42,7 @@ export default class GameManager {
         this.loopObj.initTick(this);
 
         this._initStrategy(this.loopObj, data);
-        this.gameStrategy.initUI();
+        this.gameStrategy.initUI(this.loopObj);
 
         this.app.ticker.add(this._onTick, this);
     }
@@ -71,7 +71,7 @@ export default class GameManager {
     }
 
     onGameEnd() {
-        setTimeout(function () {
+        setTimeout(function() {
             this.app.ticker.stop();
         }.bind(this), 1000);
     }

@@ -1,0 +1,13 @@
+@import '../../../utils/sass/form';
+@import '../../../utils/sass/palette';
+@import '../../../utils/sass/constants';
+
+.login-form {
+    @include form-styling;
+}
+
+@media only screen and (max-device-width: $breakpoint-tablet) {
+    .login-form {
+        font-size: 4vw;
+    }
+}

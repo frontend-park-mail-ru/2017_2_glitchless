@@ -1,0 +1,14 @@
+@import '../../../utils/sass/palette';
+@import '../../../utils/sass/form';
+
+.signup-form {
+    @include form-styling;
+
+    @media only screen and (max-device-width: $breakpoint-tablet) {
+        @media (orientation: landscape) {
+            &__fields {
+                column-count: 2;
+            }
+        }
+    }
+}

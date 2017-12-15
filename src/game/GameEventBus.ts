@@ -1,4 +1,5 @@
-import EventBus from '../utils/EventBus';
+import EventBus from '../services/EventBus';
+
 let instance;
 if (!instance) {
     instance = new EventBus();

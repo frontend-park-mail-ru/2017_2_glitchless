@@ -8,8 +8,11 @@ import Player from '../Player';
 import GameStrategy from './GameStrategy';
 import SyncDelegate from './mpdelegate/SyncDelegate';
 
-const forceFieldBarTexture = PIXI.Texture.fromImage('./images/shield_gui_status.png');
-const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage('./images/shield_gui_background.png');
+import * as shield_gui_background_png from '../../ui/images/shield_gui_background.png';
+import * as shield_gui_status_png from '../../ui/images/shield_gui_status.png';
+
+const forceFieldBarTexture = PIXI.Texture.fromImage(shield_gui_status_png);
+const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage(shield_gui_background_png);
 
 export default class MultiplayerStrategy extends GameStrategy {
     public players: Player[];
@@ -52,6 +55,7 @@ export default class MultiplayerStrategy extends GameStrategy {
         this.userPlatform = this.currentUserIsLeft
             ? physicContext.spriteStorage.userPlatform
             : physicContext.spriteStorage.enemyPlatform;
+        physicContext.spriteStorage.needUpdatePlatorm = [this.userPlatform];
 
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.userPlatform, platformLeft);
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.enemyPlatform, platformRight);
@@ -60,13 +64,18 @@ export default class MultiplayerStrategy extends GameStrategy {
         return;
     }
 
-    public initUI() {
+    public initUI(physicContext) {
         this.drawForceFieldBars(this.scene);
     }
 
     public gameplayTick(physicContext, elapsedMS) {
         this.processControls();
         this.syncDelegate.sync();
+    }
+
+    public onHpLoss(hpblock) {
+        // TODO
+        return;
     }
 
     private processControls() {
@@ -95,10 +104,5 @@ export default class MultiplayerStrategy extends GameStrategy {
             scene.addObject(forceFieldBar);
             this.forceFieldBars.push(forceFieldBar);
         }, this);
-    }
-
-    public onHpLoss(hpblock) {
-        //TODO
-        return;
     }
 }
