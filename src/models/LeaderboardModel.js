@@ -7,7 +7,7 @@ export default class LeaderboardModel {
         this._isDirty = false;
         this._isOffline = false;
         this._isLoading = false;
-        this._api = serviceLocator.stubApi;
+        this._api = serviceLocator.api;
 
         this._loadFromLocalStorage();
     }

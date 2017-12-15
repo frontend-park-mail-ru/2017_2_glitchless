@@ -11,7 +11,6 @@ import LeaderboardModel from '../models/LeaderboardModel';
 export default class ServiceLocator {
     constructor() {
         this.api = new Api(`http://${ENV_API_BASE_URL}/api`);
-        this.stubApi = new Api('/api');
         this.magicTransport = new MagicTransport(`ws://${ENV_API_BASE_URL}/game`, {debug: false});
 
         this.router = new Router(this);
