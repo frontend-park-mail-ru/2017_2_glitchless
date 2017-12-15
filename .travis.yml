@@ -8,7 +8,7 @@ addons:
 
 script:
   - docker build -t rhythm_blast/frontend .
-  - docker run --rm rhythm_blast/frontend "npm run lint"
+  - docker run --rm rhythm_blast/frontend npm run lint
 
 deploy:
   - provider: script
