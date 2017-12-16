@@ -4,7 +4,7 @@ import RouterLinksViewMixin from '../../mixins/RouterLinksViewMixin';
 import ModalShadeViewMixin from '../../mixins/ModalShadeViewMixin';
 import template from './template.pug';
 import './style.scss';
-import { initDisplayErrorsForm, displayErrors, displayServerError } from '../../../utils/formDisplayErrors';
+import {initDisplayErrorsForm, displayErrors, displayServerError} from '../../../utils/formDisplayErrors';
 import SignupForm from '../../../models/SignupForm';
 import UserModel from '../../../models/UserModel';
 
@@ -54,7 +54,14 @@ class SignupModalView extends View {
                 .catch((res) => {
                     const errorElem = document.getElementById('signup-form-server-error');
                     errorElem.classList.remove('hidden');
-                    errorElem.textContent = 'Cannot connect to auth server';
+                    if (res !== null) {
+                        const jsn = res.json();
+                        if (jsn !== null && res.hasOwnProperty('message')) {
+                            errorElem.textContent = jsn.message;
+                            return;
+                        }
+                    }
+                    errorElem.textContent = 'Unknown error';
                 });
         });
     }
