@@ -77,6 +77,17 @@ export default class SyncDelegate {
         this.idToObject[swap.objectId] = object;
 
         object.setCoords(new Point(swap.coord.posX, swap.coord.posY), this.physicContext);
+        object.setRotation(swap.rotation, this.physicContext);
+
+        if (object.isStatic) {
+            return;
+        }
+
+        if (swap.speed !== null) {
+            object.setSpeed(swap.speed);
+        }
+
+        object.setRotationSpeed(swap.rotationspeed);
     }
 
     private flushToCommit() {

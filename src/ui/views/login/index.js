@@ -58,7 +58,7 @@ class LoginModalView extends View {
                     if (res !== null) {
                         const jsn = res.json;
                         console.log(jsn);
-                        if (jsn !== null && res.hasOwnProperty("message")) {
+                        if (jsn !== null && res.hasOwnProperty('message')) {
                             errorElem.textContent = jsn.message;
                             return;
                         }

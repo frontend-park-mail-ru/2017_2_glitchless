@@ -56,7 +56,7 @@ class SignupModalView extends View {
                     errorElem.classList.remove('hidden');
                     if (res !== null) {
                         const jsn = res.json();
-                        if (jsn !== null && res.hasOwnProperty("message")) {
+                        if (jsn !== null && res.hasOwnProperty('message')) {
                             errorElem.textContent = jsn.message;
                             return;
                         }
