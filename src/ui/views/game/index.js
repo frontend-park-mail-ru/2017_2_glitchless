@@ -1,6 +1,9 @@
 import View from '../View';
 import GameManager from '../../../game/GameManager';
 import Constants from '../../../utils/Constants';
+import Router from '../../../services/Router';
+
+import './style.scss';
 
 export default class GameView extends View {
     open(root, data = null) {
@@ -9,11 +12,13 @@ export default class GameView extends View {
         const {appWidth, appHeight} = this._findAppWidthHeight();
         const gameField = this._setupAppCanvas(appWidth, appHeight);
         this._setupGameManager(gameField, appWidth, appHeight);
-
         this.gameManager.initiateGame(data);
     }
 
     close() {
+        this.gameManager.destroy();
+        this.gameManager = null;
+        delete this;
     }
 
     _findAppWidthHeight() {
@@ -49,8 +54,32 @@ export default class GameView extends View {
     }
 
     _setupGameManager(gameField, appWidth, appHeight) {
-        this.gameManager = new GameManager(this.serviceLocator);
+        this.gameManager = new GameManager(this.serviceLocator, this.addRestartButton.bind(this));
         this.gameManager.setGameField(gameField);
         this.gameManager.setResolution([appWidth, appHeight]);
+    }
+
+    refresh() {
+        if (!this.serviceLocator.gameRefreshed) {
+            const currentUrlPath = location.pathname;
+            console.log(currentUrlPath);
+            serviceLocator.router.changePage('/');
+            this.serviceLocator.router.changePage(currentUrlPath);
+        }
+        else {
+            location.reload();
+        }
+
+        this.serviceLocator.gameRefreshed = !this.serviceLocator.gameRefreshed;
+    }
+
+    addRestartButton() {
+        const restartButton = document.createElement('button');
+        restartButton.innerHTML = 'Restart the game';
+        restartButton.classList.add('restart-button');
+        restartButton.onclick = this.refresh.bind(this);
+        restartButton.style.position = 'absolute';
+        restartButton.style.top = '70%';
+        document.body.appendChild(restartButton);
     }
 }

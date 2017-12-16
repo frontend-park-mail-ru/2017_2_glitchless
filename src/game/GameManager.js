@@ -8,11 +8,12 @@ import MultiplayerStrategy from './strategy/MultiplayerStrategy';
 import ScoreManager from './ScoreManager';
 
 export default class GameManager {
-    constructor(serviceLocator) {
+    constructor(serviceLocator, gameRestartFunc) {
         this.serviceLocator = serviceLocator;
         this.scene = new GameScene();
         this.eventBus = EventBus;
         this.scoreManager = new ScoreManager(this);
+        this.restart = gameRestartFunc;
     }
 
     /**
@@ -72,7 +73,7 @@ export default class GameManager {
 
     onGameEnd() {
         setTimeout(function() {
-            this.app.ticker.stop();
+            this.restart();
         }.bind(this), 1000);
     }
 
