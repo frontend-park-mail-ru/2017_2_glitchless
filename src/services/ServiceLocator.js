@@ -10,8 +10,8 @@ import LeaderboardModel from '../models/LeaderboardModel';
 
 export default class ServiceLocator {
     constructor() {
-        this.api = new Api(ENV_API_URL);
-        this.magicTransport = new MagicTransport(ENV_WS_URL, {debug: false});
+        this.api = new Api(ENV_API_BASE_URL);
+        this.magicTransport = new MagicTransport(ENV_API_WS_URL, {debug: !ENV_PRODUCTION});
 
         this.router = new Router(this);
         this.eventBus = new EventBus();
