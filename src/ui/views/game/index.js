@@ -14,7 +14,6 @@ export default class GameView extends View {
     }
 
     close() {
-        location.reload();
     }
 
     _findAppWidthHeight() {

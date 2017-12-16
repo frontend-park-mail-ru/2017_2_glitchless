@@ -22,8 +22,8 @@ export default class ButtonOnKeyboard {
             }
             this.isDown = true;
             this.isUp = false;
+            event.preventDefault();
         }
-        event.preventDefault();
     }
 
     _upHandler(event) {
@@ -33,7 +33,7 @@ export default class ButtonOnKeyboard {
             }
             this.isDown = false;
             this.isUp = true;
+            event.preventDefault();
         }
-        event.preventDefault();
     }
 }
