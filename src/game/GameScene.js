@@ -33,6 +33,7 @@ export default class GameScene {
         });
         this.scoreMarginX = 100;
         this.scoreMarginY = 100;
+        this.loader = new PIXI.loaders.Loader();
     }
 
     displayEndResult(winner) {
@@ -71,7 +72,7 @@ export default class GameScene {
 
         app.stage.addChild(container);
 
-        PIXI.loader.add(background_png).load(function() {
+        this.loader.add(background_png).load(function() {
             const slide = GameUtils.makeBackgroundCoverWithSprite(
                 bgSize, new PIXI.Sprite.fromImage(background_png), 'cover');
             container.addChild(slide);
@@ -84,7 +85,6 @@ export default class GameScene {
         const alien = new Alien(physicContext, center);
         alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, physicContext.gameManager);
         physicContext.gameManager.addObject('alien', alien);
-        physicContext.spriteStorage.alien = alien;
 
         const PlatformCircle1 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE1_RADIUS, center, 0);
         physicContext.gameManager.addObject('circle', PlatformCircle1);

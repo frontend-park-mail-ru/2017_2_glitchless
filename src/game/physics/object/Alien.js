@@ -6,11 +6,11 @@ import { Circle } from '../PhysicPrimitives';
 
 import spacestation_png from '../../../ui/images/spacestation.png';
 
-const basicAlienSprite = PIXI.Sprite.fromImage(spacestation_png);
+const basicAlienTexture = PIXI.Texture.fromImage(spacestation_png);
 
 export default class Alien extends PhysicsObject {
     constructor(context, coords = new Point(0, 0)) {
-        super(basicAlienSprite, context, coords);
+        super(new PIXI.Sprite(basicAlienTexture), context, coords);
         this.collisionCircle = new Circle(Constants.GAME_ALIEN_SIZE[0] / 2, coords.copy());
     }
 }
