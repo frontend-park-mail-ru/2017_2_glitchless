@@ -18,7 +18,7 @@ export default class HealthBlock extends PhysicsObject {
     }
 
     refreshCollisionArc() {
-        this.collisionArc = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
+        this.collisionArc = Arc.fromPoints(...this.getEdgePoints());
     }
 
     onCollision(laser) {
@@ -41,7 +41,7 @@ export default class HealthBlock extends PhysicsObject {
         const pointRight = new Point(coord.x + deltaXRight,
             coord.y + deltaYRight);
 
-        return [pointLeft, pointRight];
+        return [pointLeft, pointRight, coord];
     }
 
     setRotation(rotation, context) {

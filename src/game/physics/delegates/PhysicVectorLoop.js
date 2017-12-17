@@ -50,10 +50,10 @@ export default class PhysicVectorLoop {
 
         //Reflecting lasers from platform
         context.physicObjects.platform.forEach((platform) => {
-            const platformArc = Arc.fromPoints(...(platform.getEdgePoints()), platform.getCoords());
+            const platformArc = Arc.fromPoints(...platform.getEdgePoints());
 
             if (Constants.COLLISION_DEBUG) {
-                const points = [...platform.getEdgePoints(), platform.getCoords()];
+                const points = platform.getEdgePoints();
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
                 points.forEach(function(physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
@@ -104,7 +104,7 @@ export default class PhysicVectorLoop {
             });
 
             if (Constants.COLLISION_DEBUG) {
-                const points = [...forcefield.getEdgePoints(), forcefield.getCoords()];
+                const points = forcefield.getEdgePoints();
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
                 points.forEach(function(physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
@@ -124,7 +124,7 @@ export default class PhysicVectorLoop {
             });
 
             if (Constants.COLLISION_DEBUG) {
-                const points = [...hpblock.getEdgePoints(), hpblock.getCoords()];
+                const points = hpblock.getEdgePoints();
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
                 points.forEach(function(physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
