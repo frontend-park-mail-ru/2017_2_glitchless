@@ -41,7 +41,7 @@ export default class SyncDelegate {
 
         const speed = direction * Constants.GAME_PLATFORM_CONTROL_SPEED;
 
-        this.pendingProcessToSend[platform.multiplayerId] = new Point(speed, 0);
+        this.processObject(platform.multiplayerId, new Point(speed, 0));
     }
 
     public applyServerSwapCommit(data) {
@@ -71,11 +71,8 @@ export default class SyncDelegate {
             timestamp_end: currentTime,
             timestamp_start: lastCommitTmp.timestamp_start,
         };
-        this.applyToObject(object, lastCommit);
-    }
 
-    public sync() {
-        this.flushToCommit();
+        this.applyToObject(object, lastCommit);
     }
 
     public applySwapSnapshot(object: PhysicsObject, swap) {
@@ -94,18 +91,6 @@ export default class SyncDelegate {
         }
 
         object.setRotationSpeed(swap.rotationspeed);
-    }
-
-    private flushToCommit() {
-        for (const objectId of Object.keys(this.pendingProcessToSend)) {
-            const speed = this.pendingProcessToSend[objectId];
-
-            if (speed !== null) {
-                this.pendingProcessToSend[objectId] = null;
-
-                this.processObject(objectId, speed);
-            }
-        }
     }
 
     /**

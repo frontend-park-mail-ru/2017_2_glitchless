@@ -72,7 +72,6 @@ export default class MultiplayerStrategy extends GameStrategy {
 
     public gameplayTick(physicContext, elapsedMS) {
         this.processControls();
-        this.syncDelegate.sync();
     }
 
     public onHpLoss(hpblock) {
