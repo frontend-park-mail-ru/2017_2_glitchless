@@ -27,8 +27,11 @@
     "@types/pixi.js": "^4.6.0",
     "ajv-keywords": "^2.1.1",
     "babel-polyfill": "^6.26.0",
+    "kotlin": "^1.2.10",
+    "kotlin-loader": "0.0.1",
     "pixi.js": "^4.6.1",
-    "resolve-url-loader": "^2.2.0"
+    "resolve-url-loader": "^2.2.0",
+    "webpack-kotlin-loader": "^0.3.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.6",

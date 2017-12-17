@@ -16,6 +16,19 @@ module.exports = {
                 }
             },
             {
+                test: /\.kt$/,
+                exclude: /node_modules/,
+                loader: 'webpack-kotlin-loader',
+                options: {
+                    srcRoots: [
+                        path.resolve(__dirname, '../src'),
+                    ],
+                    compilerOptions: {
+                        noWarn: true
+                    }
+                }
+            },
+            {
                 test: /\.ts$/,
                 exclude: /node_modules/,
                 use: 'ts-loader'
@@ -85,7 +98,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.ts', '.scss', '.png', '.jpg']
+        extensions: ['.js', '.ts', '.scss', '.png', '.jpg', '.kt']
     },
     plugins: [
         new webpack.HashedModuleIdsPlugin()
