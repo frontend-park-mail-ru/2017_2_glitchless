@@ -35,8 +35,6 @@ export default class Platform extends PhysicsEntitiy {
             centralY + deltaYRight);
         const pointCentral = new Point(centralX, centralY);
 
-        console.log(lengthHypotenuse * Math.sin(rotation) + ' ' + lengthHypotenuse * Math.cos(rotation));
-
         return [pointLeft, pointRight, pointCentral];
     }
 
