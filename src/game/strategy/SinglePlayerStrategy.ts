@@ -153,11 +153,11 @@ export default class SinglePlayerStrategy extends GameStrategy {
         const mapCenter = physicContext._getCenterPoint();
         const platformRotation = enemyPlatform.getRotation();
         if (platformRotation < 90 || platformRotation > 358) {
-            enemyPlatform.setMoveDirection('right');
+            enemyPlatform.setMoveDirection(Direction.RIGHT);
             return;
         }
         if (platformRotation < 181) {
-            enemyPlatform.setMoveDirection('left');
+            enemyPlatform.setMoveDirection(Direction.LEFT);
             return;
         }
 
@@ -186,16 +186,16 @@ export default class SinglePlayerStrategy extends GameStrategy {
         });
 
         if (!closestLaser) {
-            enemyPlatform.setMoveDirection('none');
+            enemyPlatform.setMoveDirection(Direction.NONE);
             return; // No lasers are going for our half of the field, who are we to complain? Just chillax.
         }
 
         if (dangerPoint.y * 1
             / Math.sin(Constants.GAME_FORCEFIELD_RADIUS / Constants.GAME_CIRCLE1_RADIUS * dangerPoint.y)
             > platformCoords.y) {
-            enemyPlatform.setMoveDirection('left');
+            enemyPlatform.setMoveDirection(Direction.LEFT);
         } else {
-            enemyPlatform.setMoveDirection('right');
+            enemyPlatform.setMoveDirection(Direction.RIGHT);
         }
     }
 
