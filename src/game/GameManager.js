@@ -8,12 +8,13 @@ import MultiplayerStrategy from './strategy/MultiplayerStrategy';
 import ScoreManager from './ScoreManager';
 
 export default class GameManager {
-    constructor(serviceLocator, gameRestartFunc) {
+    constructor(serviceLocator, gameRestartFunc, newWindowSizeCalcFunc) {
         this.serviceLocator = serviceLocator;
         this.scene = new GameScene();
         this.eventBus = EventBus;
         this.scoreManager = new ScoreManager(this);
         this.restart = gameRestartFunc;
+        this.findNewWindowSize = newWindowSizeCalcFunc;
     }
 
     /**
@@ -32,9 +33,13 @@ export default class GameManager {
     }
 
     initiateGame(data) {
-        this.app = new PIXI.Application(this.scene.width, this.scene.height, {backgroundColor: 0xFFFFFF});
+        this.app = new PIXI.Application(this.scene.width, this.scene.height, {transparent: true});
+        
+        this.scene.setRenderer(this.app.renderer);
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
+        this.scene.initContainer();
+
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         this.scene.initBackground(this.app);
@@ -52,8 +57,14 @@ export default class GameManager {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.app.ticker.speed;
+
+        const {appWidth, appHeight} = this.findNewWindowSize();
+        this.setResolution([appWidth, appHeight]);
+        this.app.renderer.resize(appWidth, window.innerHeight);
+
         this.gameStrategy.gameplayTick(this.loopObj, elapsedMS);
         this.loopObj._mainTick(deltaTime);
+        this.scene.Tick();
     }
 
     _initStrategy(physicObject, data) {
@@ -73,6 +84,7 @@ export default class GameManager {
 
     onGameEnd() {
         setTimeout(function() {
+            this.app.ticker.stop();
             this.restart();
         }.bind(this), 1000);
     }
@@ -83,7 +95,7 @@ export default class GameManager {
 
     addObject(tag, physicObject) {
         this.loopObj.addObjectToPhysic(tag, physicObject);
-        physicObject.onDraw(this.app.stage);
+        physicObject.onDraw(this.scene.mainScene);
         physicObject.subscribeToDestroy((item) => {
             item.onDestroy();
         });

@@ -36,6 +36,10 @@ export default class GameScene {
         this.loader = new PIXI.loaders.Loader();
     }
 
+    setRenderer(renderer) {
+        this.renderer = renderer;
+    }
+
     displayEndResult(winner) {
         console.log(winner);
         if (winner === 0) {
@@ -65,18 +69,23 @@ export default class GameScene {
         textSprite.y = center.y;
     }
 
+    initContainer() {
+        this.container = new PIXI.Container();
+        this.stage.addChild(this.container);
+        this.mainScene = this.container;
+    }
+
     initBackground(app) {
-        const bgSize = {x: this.width, y: this.height};
-
-        const container = new PIXI.Container();
-
-        app.stage.addChild(container);
-
-        this.loader.add(background_png).load(function() {
-            const slide = GameUtils.makeBackgroundCoverWithSprite(
-                bgSize, new PIXI.Sprite.fromImage(background_png), 'cover');
-            container.addChild(slide);
-        });
+        this.initialWidth = this.oldWidth = this.width;
+        this.initialHeight = this.oldHeight = this.height;
+    }
+    
+    Tick() {
+        this.container.scale.x *= this.height / this.oldHeight;
+        this.container.scale.y *= this.width / this.oldWidth;
+        this.container.y = (this.renderer.height - this.container.height) / 2;
+        this.oldWidth = this.width;
+        this.oldHeight = this.height;
     }
 
     initField(physicContext) {
@@ -198,6 +207,16 @@ export default class GameScene {
         return [Math.round(x * xScale), Math.round(y * yScale)];
     }
 
+    scaleStaticCoords(coords, initialRes = Constants.INITIAL_RES) {
+        const x = coords[0];
+        const y = coords[1];
+
+        const xScale = this.initialWidth / initialRes[0];
+        const yScale = this.initialHeight / initialRes[1];
+
+        return [Math.round(x * xScale), Math.round(y * yScale)];
+    }
+
     /**
      * Scales coordinates from initial to final resolution, rounding to the nearest whole number
      *
@@ -213,6 +232,12 @@ export default class GameScene {
         return new Point(Math.round(point.x * xScale), Math.round(point.y * yScale));
     }
 
+    scaleStaticPoint(point, initialRes = Constants.INITIAL_RES) {
+        const xScale = this.initialWidth / initialRes[0];
+        const yScale = this.initialHeight / initialRes[1];
+        return new Point(Math.round(point.x * xScale), Math.round(point.y * yScale));
+    }
+
     getCenterPoint() {
         return new Point(this.width / 2, this.height / 2);
     }
@@ -223,6 +248,7 @@ export default class GameScene {
      * @param {Sprite} sprite Object's sprite
      */
     addObject(sprite) {
-        this.stage.addChild(sprite);
+        console.log(this.mainScene);
+        this.mainScene.addChild(sprite);
     }
 }
