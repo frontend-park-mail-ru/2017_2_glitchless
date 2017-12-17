@@ -26,13 +26,18 @@ export default class Platform extends PhysicsEntitiy {
         const deltaYLeft = lengthHypotenuse * Math.sin(rotation + angle);
         const deltaXRight = lengthHypotenuse * Math.cos(rotation - angle);
         const deltaYRight = lengthHypotenuse * Math.sin(rotation - angle);
+        const centralX = coord.x - (lengthHypotenuse / 4) * Math.sin(rotation);
+        const centralY = coord.y + (lengthHypotenuse / 4) * Math.cos(rotation);
 
-        const pointLeft = new Point(coord.x - deltaXLeft,
-            coord.y - deltaYLeft);
-        const pointRight = new Point(coord.x + deltaXRight,
-            coord.y + deltaYRight);
+        const pointLeft = new Point(centralX - deltaXLeft,
+            centralY - deltaYLeft);
+        const pointRight = new Point(centralX + deltaXRight,
+            centralY + deltaYRight);
+        const pointCentral = new Point(centralX, centralY);
 
-        return [pointLeft, pointRight];
+        console.log(lengthHypotenuse * Math.sin(rotation) + ' ' + lengthHypotenuse * Math.cos(rotation));
+
+        return [pointLeft, pointRight, pointCentral];
     }
 
     getCircle() {
