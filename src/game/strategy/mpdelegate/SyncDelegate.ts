@@ -35,9 +35,9 @@ export default class SyncDelegate {
         }, this);
     }
 
-    public onChangeDirection(data) {
-        const platform: Platform = data.platform;
-        const direction: Direction = data.direction;
+    public onChangeDirection(platformDirectionSnap) {
+        const platform: Platform = platformDirectionSnap.platform;
+        const direction: Direction = platformDirectionSnap.direction;
 
         const speed = direction * Constants.GAME_PLATFORM_CONTROL_SPEED;
 
