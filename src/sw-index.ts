@@ -17,7 +17,7 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-const paths = [
+const htmlPaths = [
     '/',
     '/play',
     '/lobby',
@@ -30,8 +30,9 @@ const paths = [
 self.addEventListener('fetch', (event) => {
     let cacheQuery = event.request;
 
-    const isPathFetch = paths.some((p) => event.request.url.endsWith(p));
-    if (isPathFetch) {
+    const path = /\/\/(.+?)(\/.+?$)/.exec(event.request.url)[2];
+    const isHtmlPathFetch = htmlPaths.indexOf(path) !== -1;
+    if (isHtmlPathFetch) {
         cacheQuery = '/index.html';
     }
 
