@@ -79,7 +79,7 @@ export default class GameScene {
         this.initialWidth = this.oldWidth = this.width;
         this.initialHeight = this.oldHeight = this.height;
     }
-    
+
     Tick() {
         this.container.scale.x *= this.height / this.oldHeight;
         this.container.scale.y *= this.width / this.oldWidth;

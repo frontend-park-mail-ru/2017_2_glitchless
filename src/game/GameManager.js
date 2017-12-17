@@ -34,12 +34,11 @@ export default class GameManager {
 
     initiateGame(data) {
         this.app = new PIXI.Application(this.scene.width, this.scene.height, {transparent: true});
-        
+
         this.scene.setRenderer(this.app.renderer);
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
         this.scene.initContainer();
-
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         this.scene.initBackground(this.app);

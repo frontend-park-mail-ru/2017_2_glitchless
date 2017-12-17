@@ -35,7 +35,7 @@ export default class GameView extends View {
     }
 
     _findAppWidthHeightInner() {
-
+        return;
     }
 
     _setupAppCanvas(appWidth, appHeight) {
@@ -56,7 +56,7 @@ export default class GameView extends View {
         // gameField.style.marginLeft = (-appWidth / 2) + 'px';
         // gameField.style.width = appWidth + 'px';
         // gameField.style.height = appHeight + 'px';
-        gameField.style.backgroundImage = 'url('+background_png+')';
+        gameField.style.backgroundImage = 'url(' + background_png + ')';
         gameFieldWrapper.appendChild(gameField);
 
         return gameField;
