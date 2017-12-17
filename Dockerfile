@@ -1,7 +1,7 @@
 FROM nginx
 
 RUN apt-get update -qq && \
-    apt-get install -qq -y build-essential libpng-dev curl gnupg && \
+    apt-get install -qq -y build-essential libpng-dev curl gnupg default-jdk && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get install -qq -y nodejs
 
