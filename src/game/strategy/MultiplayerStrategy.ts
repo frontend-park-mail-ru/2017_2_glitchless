@@ -95,7 +95,7 @@ export default class MultiplayerStrategy extends GameStrategy {
         this.userPlatform.setMoveDirection(newDirection);
 
         if (newDirection !== oldDirection) {
-            GameEventBus.emitEvent('change_direction', [this.userPlatform, newDirection]);
+            GameEventBus.emitEvent('change_direction', {platform: this.userPlatform, direction: newDirection});
         }
     }
 

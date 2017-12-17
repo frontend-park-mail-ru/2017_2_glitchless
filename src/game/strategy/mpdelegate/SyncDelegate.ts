@@ -36,8 +36,8 @@ export default class SyncDelegate {
     }
 
     public onChangeDirection(data) {
-        const platform: Platform = data[0];
-        const direction: Direction = data[1];
+        const platform: Platform = data.platform;
+        const direction: Direction = data.direction;
 
         const speed = direction * Constants.GAME_PLATFORM_CONTROL_SPEED;
 

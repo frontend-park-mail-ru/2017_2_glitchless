@@ -65,8 +65,7 @@ export default class GameView extends View {
             console.log(currentUrlPath);
             serviceLocator.router.changePage('/');
             this.serviceLocator.router.changePage(currentUrlPath);
-        }
-        else {
+        } else {
             location.reload();
         }
 
