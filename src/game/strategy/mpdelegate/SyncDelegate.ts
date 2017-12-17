@@ -1,7 +1,8 @@
+import Constants from '../../../utils/Constants';
 import GameEventBus from '../../GameEventBus';
 import MagicTransport from '../../io/MagicTransport';
+import {Direction} from '../../physics/object/Direction';
 import Platform from '../../physics/object/Platform';
-import PhysicsEntity from '../../physics/object/primitive/PhysicsEntity.js';
 import PhysicsObject from '../../physics/object/primitive/PhysicsObject.js';
 import Point from '../../physics/object/primitive/Point.js';
 
@@ -21,8 +22,8 @@ export default class SyncDelegate {
     constructor(magicTransport: MagicTransport, physicContext) {
         this.magicTransport = magicTransport;
         this.physicContext = physicContext;
-        GameEventBus.subscribeOn('change_platform_speed', (data) => {
-            this.onChangeSpeedPlatform(data);
+        GameEventBus.subscribeOn('change_direction', (data) => {
+            this.onChangeDirection(data);
         }, this);
 
         this.magicTransport.eventBus.subscribeOn('ServerSnapMessage', (data) => {
@@ -34,8 +35,13 @@ export default class SyncDelegate {
         }, this);
     }
 
-    public onChangeSpeedPlatform(object: Platform) {
-        this.pendingProcessToSend[object.multiplayerId] = new Point(object.getRotationSpeed(), 0);
+    public onChangeDirection(data) {
+        const platform: Platform = data[0];
+        const direction: Direction = data[1];
+
+        const speed = direction * Constants.GAME_PLATFORM_CONTROL_SPEED;
+
+        this.pendingProcessToSend[platform.multiplayerId] = new Point(speed, 0);
     }
 
     public applyServerSwapCommit(data) {

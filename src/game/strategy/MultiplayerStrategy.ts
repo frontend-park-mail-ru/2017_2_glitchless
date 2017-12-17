@@ -1,5 +1,6 @@
 import UserModel from '../../models/UserModel.js';
 import Constants from '../../utils/Constants';
+import GameEventBus from '../GameEventBus';
 import GameScene from '../GameScene';
 import MagicTransport from '../io/MagicTransport';
 import Platform from '../physics/object/Platform';
@@ -10,6 +11,7 @@ import SyncDelegate from './mpdelegate/SyncDelegate';
 
 import * as shield_gui_background_png from '../../ui/images/shield_gui_background.png';
 import * as shield_gui_status_png from '../../ui/images/shield_gui_status.png';
+import {Direction} from '../physics/object/Direction';
 
 const forceFieldBarTexture = PIXI.Texture.fromImage(shield_gui_status_png);
 const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage(shield_gui_background_png);
@@ -79,12 +81,21 @@ export default class MultiplayerStrategy extends GameStrategy {
     }
 
     private processControls() {
+        const oldDirection = this.userPlatform.getDirection();
+        let newDirection = Direction.NONE;
+
         if (this.leftButton.isDown || this.qButton.isDown) {
-            this.userPlatform.setMoveDirection('left');
+            newDirection = Direction.LEFT;
         } else if (this.rightButton.isDown || this.eButton.isDown) {
-            this.userPlatform.setMoveDirection('right');
+            newDirection = Direction.RIGHT;
         } else {
-            this.userPlatform.setMoveDirection('none');
+            newDirection = Direction.NONE;
+        }
+
+        this.userPlatform.setMoveDirection(newDirection);
+
+        if (newDirection !== oldDirection) {
+            GameEventBus.emitEvent('change_direction', [this.userPlatform, newDirection]);
         }
     }
 

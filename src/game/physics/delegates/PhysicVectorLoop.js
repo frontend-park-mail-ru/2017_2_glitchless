@@ -2,17 +2,14 @@ import * as PIXI from 'pixi.js';
 import ButtonHandler from '../helpers/ButtonHandler';
 import Constants from '../../../utils/Constants';
 import CollisionManager from '../CollisionManager';
-import GameEventBus from '../../GameEventBus';
-import {Arc, Circle} from '../PhysicPrimitives';
+import {Arc} from '../PhysicPrimitives';
 
 export default class PhysicVectorLoop {
     constructor() {
         this.leftButton = new ButtonHandler(Constants.CONTROL_PLATFORM_LEFT);
-        this.upButton = new ButtonHandler(Constants.CONTROL_PLATFORM_UP);
         this.qButton = new ButtonHandler(Constants.CONTROL_PLATFORM_Q);
         this.eButton = new ButtonHandler(Constants.CONTROL_PLATFORM_E);
         this.rightButton = new ButtonHandler(Constants.CONTROL_PLATFORM_RIGHT);
-        this.downButton = new ButtonHandler(Constants.CONTROL_PLATFORM_DOWN);
         if (Constants.COLLISION_DEBUG) {
             this.graphics = new PIXI.Graphics();
         }
@@ -43,15 +40,11 @@ export default class PhysicVectorLoop {
         }
 
         platform.setRotationSpeed(newRotationSpeed);
-
-        if (newRotationSpeed !== currentSpeed) {
-            GameEventBus.emitEvent('change_platform_speed', platform);
-        }
     }
 
     _processCollisions(context, elapsedMS) {
+        const graphics = this.graphics;
         if (Constants.COLLISION_DEBUG) {
-            var graphics = this.graphics;
             graphics.clear();
         }
 

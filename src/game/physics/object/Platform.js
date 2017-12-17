@@ -4,6 +4,7 @@ import Constants from '../../../utils/Constants';
 import Point from './primitive/Point';
 
 import platform_png from '../../../ui/images/platform.png';
+import {Direction} from './Direction';
 
 const basicPlatformTexture = PIXI.Texture.fromImage(platform_png);
 
@@ -12,7 +13,6 @@ export default class Platform extends PhysicsEntitiy {
         const basicPlatformSprite = new PIXI.Sprite(basicPlatformTexture);
         super(basicPlatformSprite, context);
         this.circle = circle;
-        this.circleLevel = 0;
         this.direction = 0;
         this.playerNum = playerNum;
     }
@@ -45,19 +45,23 @@ export default class Platform extends PhysicsEntitiy {
     }
 
     setMoveDirection(direction) {
-        if (direction === 'right') {
+        if (direction === Direction.RIGHT) {
             this.direction = -1;
             return;
         }
-        if (direction === 'left') {
+        if (direction === Direction.LEFT) {
             this.direction = +1;
             return;
         }
-        if (direction === 'none') {
+        if (direction === Direction.NONE) {
             this.direction = 0;
             return;
         }
         throw new TypeError(direction);
+    }
+
+    getDirection() {
+        return this.direction;
     }
 
     getRotation() {
