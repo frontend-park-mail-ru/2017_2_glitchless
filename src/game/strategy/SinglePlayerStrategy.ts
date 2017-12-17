@@ -12,6 +12,7 @@ import Player from '../Player';
 
 import * as shield_gui_background_png from '../../ui/images/shield_gui_background.png';
 import * as shield_gui_status_png from '../../ui/images/shield_gui_status.png';
+import {Direction} from '../physics/object/Direction';
 
 const forceFieldBarTexture = PIXI.Texture.fromImage(shield_gui_status_png);
 const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage(shield_gui_background_png);
@@ -136,11 +137,11 @@ export default class SinglePlayerStrategy extends GameStrategy {
     private processControls(context, platform) {
 
         if (this.leftButton.isDown || this.qButton.isDown) {
-            platform.setMoveDirection('left');
+            platform.setMoveDirection(Direction.LEFT);
         } else if (this.rightButton.isDown || this.eButton.isDown) {
-            platform.setMoveDirection('right');
+            platform.setMoveDirection(Direction.RIGHT);
         } else {
-            platform.setMoveDirection('none');
+            platform.setMoveDirection(Direction.NONE);
         }
     }
 
