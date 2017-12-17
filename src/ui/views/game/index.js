@@ -1,7 +1,6 @@
 import View from '../View';
 import GameManager from '../../../game/GameManager';
 import Constants from '../../../utils/Constants';
-import Router from '../../../services/Router';
 
 import './style.scss';
 import background_png from '../../images/background.png';
@@ -15,8 +14,8 @@ export default class GameView extends View {
         this._setupGameManager(gameField, appWidth, appHeight);
         this.gameManager.initiateGame(data);
         document.body.style.overflow = 'hidden';
-        document.addEventListener("keydown", function(e) {
-          if (e.keyCode == 70) {
+        document.addEventListener('keydown', function(e) {
+          if (e.keyCode === 70) {
             this.toggleFullScreen();
           }
         }.bind(this), false);
