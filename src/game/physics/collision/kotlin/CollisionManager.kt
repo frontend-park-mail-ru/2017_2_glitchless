@@ -1,11 +1,12 @@
 package ru.glitchless.game.collision
 
-import ru.glitchless.game.collision.`object`.Arc
-import ru.glitchless.game.collision.`object`.Circle
-import ru.glitchless.game.collision.`object`.CollisionPoint
-import ru.glitchless.game.collision.`object`.Line
+import ru.glitchless.game.collision.data.Arc
+import ru.glitchless.game.collision.data.Circle
+import ru.glitchless.game.collision.data.CollisionPoint
+import ru.glitchless.game.collision.data.Line
 import ru.glitchless.game.collision.utils.Constant
-import kotlin.js.Math;
+
+import kotlin.math.*
 
 /**
  * @param {Line} line
@@ -21,13 +22,13 @@ fun findIntersection(lineInput: Line, circle: Circle): Array<CollisionPoint> {
 
     if (line.isVertical) {
         val x0 = line.C;
-        if (circle.radius < Math.abs(line.C)) {
+        if (circle.radius < abs(line.C)) {
             return arrayOf();
         }
-        if (Math.abs(Math.abs(line.C) - circle.radius) < EPS) {
+        if (abs(abs(line.C) - circle.radius) < EPS) {
             return arrayOf(CollisionPoint(line.C.toFloat(), circle.center.y));
         }
-        val tmpSqrt = Math.sqrt(r * r - Math.pow((x0), 2.0));
+        val tmpSqrt = sqrt(r * r - x0.pow(2));
         val y1 = circle.center.y + tmpSqrt;
         val y2 = circle.center.y - tmpSqrt;
         return arrayOf(CollisionPoint((x0 + endShift[0]).toFloat(), y1.toFloat()),
@@ -36,13 +37,13 @@ fun findIntersection(lineInput: Line, circle: Circle): Array<CollisionPoint> {
 
     if (line.isHorizontal) {
         val y0 = -line.C;
-        if (circle.radius < Math.abs(line.C)) {
+        if (circle.radius < abs(line.C)) {
             return arrayOf();
         }
-        if (Math.abs(Math.abs(line.C) - circle.radius) < EPS) {
+        if (abs(abs(line.C) - circle.radius) < EPS) {
             return arrayOf(CollisionPoint(line.C.toFloat(), circle.center.x));
         }
-        val tmpSqrt = Math.sqrt(r * r - Math.pow((y0), 2.0));
+        val tmpSqrt = sqrt(r * r - y0.pow(2));
         val x1 = circle.center.x + tmpSqrt;
         val x2 = circle.center.x - tmpSqrt;
 
@@ -60,11 +61,11 @@ fun findIntersection(lineInput: Line, circle: Circle): Array<CollisionPoint> {
     if (c * c > r * r * (a * a + b * b) + EPS) {
         return arrayOf();
     }
-    if (Math.abs(c * c - r * r * (a * a + b * b)) < EPS) {
+    if (abs(c * c - r * r * (a * a + b * b)) < EPS) {
         return arrayOf(CollisionPoint((x0 + endShift[0]).toFloat(), (y0 - endShift[1]).toFloat()));
     }
     val d = r * r - c * c / (a * a + b * b);
-    val mult = Math.sqrt(d / (a * a + b * b));
+    val mult = sqrt(d / (a * a + b * b));
 
     val ax = x0 + b * mult;
     val bx = x0 - b * mult;
@@ -73,6 +74,7 @@ fun findIntersection(lineInput: Line, circle: Circle): Array<CollisionPoint> {
     return arrayOf(CollisionPoint((ax + endShift[0]).toFloat(), (ay - endShift[1]).toFloat()),
             CollisionPoint((bx + endShift[0]).toFloat(), (by - endShift[1]).toFloat()));
 }
+/* tslint:enable */
 
 /**
  * @param {Point} point
@@ -137,17 +139,17 @@ fun getReflection(point: CollisionPoint, vector: CollisionPoint, arc: Arc, elaps
     val speed = vector.getLength();
 
     val relativeCollision = arc.centrate(collision);
-    val angle = radianLimit(-Math.atan2(relativeCollision.y.toDouble(), relativeCollision.x.toDouble()) + Math.PI / 2);
+    val angle = radianLimit(-atan2(relativeCollision.y.toDouble(), relativeCollision.x.toDouble()) + PI / 2);
     var reflectionAngle: Double;
 
     if (line.isVertical || line.isHorizontal) {
-        reflectionAngle = radianLimit(angle + Math.PI);
+        reflectionAngle = radianLimit(angle + PI);
     } else {
         val tmp = minDist(line.getSlope(), angle)
         val diffAngle = tmp[0];
         val sign = tmp[1];
         // tslint:disable-next-line
-        reflectionAngle = radianLimit(angle + Math.PI * sign);
+        reflectionAngle = radianLimit(angle + PI * sign);
     }
 
     val resultTrajectory = Line.fromSlopeAndPoint(reflectionAngle, collision);
@@ -171,16 +173,16 @@ fun simpleTest() {
 
 fun radianLimit(radian: Double): Double {
     if (radian >= 0) {
-        if (radian <= Math.PI) {
+        if (radian <= PI) {
             return radian;
         }
-        return -Math.PI + radian % Math.PI;
+        return -PI + radian % PI;
     }
 
-    if (radian >= -Math.PI) {
+    if (radian >= -PI) {
         return radian;
     }
-    return Math.PI + radian % Math.PI;
+    return PI + radian % PI;
 }
 
 fun main(args: Array<String>) {
@@ -188,14 +190,14 @@ fun main(args: Array<String>) {
 }
 
 fun minDist(radian1: Double, radian2: Double): Array<Double> {
-    val sign1 = Math.signum(radian1);
-    val sign2 = Math.signum(radian2);
-    if (Math.signum(radian1) == Math.signum(radian2)) {
-        val diffsign = if (Math.abs(radian2) > Math.abs(radian1)) -1 else 1;
-        return arrayOf(Math.abs(radian2 - radian1) % Math.PI, diffsign.toDouble());
+    val sign1 = sign(radian1);
+    val sign2 = sign(radian2);
+    if (sign(radian1) == sign(radian2)) {
+        val diffsign = if (abs(radian2) > abs(radian1)) -1 else 1;
+        return arrayOf(abs(radian2 - radian1) % PI, diffsign.toDouble());
     }
-    val simpleDiff = Math.abs(radian2 - radian1);
-    val reverseDiff = Math.abs(radian1 - sign1 * Math.PI) + Math.abs(radian2 - sign2 * Math.PI);
+    val simpleDiff = abs(radian2 - radian1);
+    val reverseDiff = abs(radian1 - sign1 * PI) + abs(radian2 - sign2 * PI);
     if (simpleDiff < reverseDiff) {
         return arrayOf(simpleDiff, sign1);
     }

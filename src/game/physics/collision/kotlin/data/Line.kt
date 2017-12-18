@@ -1,6 +1,8 @@
-package ru.glitchless.game.collision.`object`
-import kotlin.js.Math;
+package ru.glitchless.game.collision.data
+
 import ru.glitchless.game.collision.utils.Constant
+
+import kotlin.math.*;
 
 /**
  * Creates a line defined by equation Ax + By + C  = 0, where A, B, C are constants, x, y - coordinate variables
@@ -74,11 +76,11 @@ class Line(val A: Double,
     fun setBounds(bounds: Array<CollisionPoint>) {
         this.bounds = bounds;
 
-        val minX = Math.min(bounds[0].x, bounds[1].x);
-        val maxX = Math.max(bounds[0].x, bounds[1].x);
+        val minX = min(bounds[0].x, bounds[1].x);
+        val maxX = max(bounds[0].x, bounds[1].x);
 
-        val minY = Math.min(bounds[0].y, bounds[1].y);
-        val maxY = Math.max(bounds[0].y, bounds[1].y);
+        val minY = min(bounds[0].y, bounds[1].y);
+        val maxY = max(bounds[0].y, bounds[1].y);
 
         this.sortedBounds = arrayOf(arrayOf(minX, minY),
                 arrayOf(maxX, maxY));
@@ -101,7 +103,7 @@ class Line(val A: Double,
         if (this.isVertical) {
             return 0.0;
         }
-        return Math.atan2(-this.A, this.B);
+        return atan2(-this.A, this.B);
     }
 
     fun getPointByDist(dist: Int): CollisionPoint {
@@ -168,11 +170,11 @@ class Line(val A: Double,
          * @return {Line} Line, passing through point1 and point2
          */
         fun fromPoints(point1: CollisionPoint, point2: CollisionPoint, isVector: Boolean = false): Line {
-            if (Math.abs(point2.x - point1.x) < Constant.EPSILON * Constant.FLOAT_PRECISION) {
+            if (abs(point2.x - point1.x) < Constant.EPSILON * Constant.FLOAT_PRECISION) {
                 return Line.createVertical(point1.x.toDouble(), arrayOf(point1, point2), isVector);
             }
 
-            if (Math.abs(point2.y - point1.y) < Constant.EPSILON * Constant.FLOAT_PRECISION) {
+            if (abs(point2.y - point1.y) < Constant.EPSILON * Constant.FLOAT_PRECISION) {
                 return Line.createHorizontal((-point1.y).toDouble(), arrayOf(point1, point2), isVector);
             }
 
@@ -184,14 +186,14 @@ class Line(val A: Double,
 
         fun fromSlopeAndPoint(slope: Double, point: CollisionPoint, isVector: Boolean = true): Line {
             val A = 1.0;
-            val B = -1 / Math.tan(slope);
+            val B = -1 / tan(slope);
             val C = -(point.x + B * point.y);
             var vectorDirectionByX: Boolean = false;
             var vectorDirectionByY: Boolean = false;
 
             if (isVector) {
                 vectorDirectionByX = slope >= 0;
-                vectorDirectionByY = slope >= -Math.PI / 2 && slope < Math.PI / 2;
+                vectorDirectionByY = slope >= -PI / 2 && slope < PI / 2;
             }
 
             var incrementX: Int;

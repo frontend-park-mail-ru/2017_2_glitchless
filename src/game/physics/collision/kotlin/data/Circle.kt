@@ -1,7 +1,7 @@
-package ru.glitchless.game.collision.`object`
+package ru.glitchless.game.collision.data
 
 import ru.glitchless.game.collision.utils.Constant
-import kotlin.js.Math;
+import kotlin.math.*
 
 open class Circle(public val radius: Double,
                   public val center: CollisionPoint) {
@@ -31,14 +31,14 @@ open class Circle(public val radius: Double,
             var point3 = pointThirdy;
 
             //To prevent cases where ma == 0
-            if (Math.abs(point2.y - point1.y) < Constant.EPSILON) {
+            if (abs(point2.y - point1.y) < Constant.EPSILON) {
                 point3 = point2.also { point2 = point3 }
             }
 
             //To prevent cases where ma == Infinity or mb == Infinity
-            if (Math.abs(point3.x - point2.x) < Constant.EPSILON) {
+            if (abs(point3.x - point2.x) < Constant.EPSILON) {
                 point2 = point1.also { point1 = point2 }
-            } else if (Math.abs(point2.x - point1.x) < Constant.EPSILON) {
+            } else if (abs(point2.x - point1.x) < Constant.EPSILON) {
                 point2 = point3.also { point3 = point2 }
             }
             val ma = (point2.y - point1.y) / (point2.x - point1.x);
@@ -47,8 +47,8 @@ open class Circle(public val radius: Double,
                     ma * (point2.x + point3.x)) / (2 * (mb - ma));
             val centerY = (-centerX + (point1.x + point2.x) / 2) / ma + (point1.y + point2.y) / 2;
 
-            val radius = Math.sqrt(Math.pow((centerX - point1.x).toDouble(), 2.0) + Math.pow((centerY - point1.y).toDouble(), 2.0));
-            return Circle(radius, CollisionPoint(centerX, centerY));
+            val radius = sqrt((centerX - point1.x).pow(2) + (centerY - point1.y).pow(2));
+            return Circle(radius.toDouble(), CollisionPoint(centerX, centerY));
         }
     }
 }

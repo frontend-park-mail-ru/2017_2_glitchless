@@ -1,5 +1,7 @@
-package ru.glitchless.game.collision.`object`
-import kotlin.js.Math;
+package ru.glitchless.game.collision.data
+
+import kotlin.math.*
+
 class CollisionPoint(public var x: Float,
                      public var y: Float) {
     fun copy(): CollisionPoint {
@@ -49,6 +51,6 @@ class CollisionPoint(public var x: Float,
      * @return {Point}
      */
     fun getLength(): Float {
-        return Math.sqrt((this.x * this.x + this.y * this.y).toDouble()).toFloat();
+        return sqrt((this.x * this.x + this.y * this.y).toDouble()).toFloat();
     }
 }

@@ -1,5 +1,6 @@
-package ru.glitchless.game.collision.`object`
-import kotlin.js.Math;
+package ru.glitchless.game.collision.data
+
+import kotlin.math.*
 
 class Arc(radius: Double,
           private val boundingPoints: Array<CollisionPoint>,
@@ -30,12 +31,12 @@ class Arc(radius: Double,
         val relBound2 = this.centrate(this.bound2);
         val relMidPoint = this.centrate(this.midPoint);
 
-        val angleBound1 = Math.atan2(relBound1.y.toDouble(), relBound1.x.toDouble());
-        val angleBound2 = Math.atan2(relBound2.y.toDouble(), relBound2.x.toDouble());
-        this.angleMidPoint = Math.atan2(relMidPoint.y.toDouble(), relMidPoint.x.toDouble());
+        val angleBound1 = atan2(relBound1.y.toDouble(), relBound1.x.toDouble());
+        val angleBound2 = atan2(relBound2.y.toDouble(), relBound2.x.toDouble());
+        this.angleMidPoint = atan2(relMidPoint.y.toDouble(), relMidPoint.x.toDouble());
 
-        this.angleBound1 = Math.min(angleBound1, angleBound2);
-        this.angleBound2 = Math.max(angleBound1, angleBound2);
+        this.angleBound1 = min(angleBound1, angleBound2);
+        this.angleBound2 = max(angleBound1, angleBound2);
 
         this.reversed = !(this.angleMidPoint > this.angleBound1 && this.angleMidPoint < this.angleBound2);
 
@@ -49,7 +50,7 @@ class Arc(radius: Double,
      */
     fun contains(point: CollisionPoint): Boolean {
         val relPoint = this.centrate(point);
-        val anglePoint = Math.atan2(relPoint.y.toDouble(), relPoint.x.toDouble());
+        val anglePoint = atan2(relPoint.y.toDouble(), relPoint.x.toDouble());
         if (!this.reversed) {
             return this.angleBound1 < anglePoint && this.angleBound2 > anglePoint;
         }
