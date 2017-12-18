@@ -4,7 +4,7 @@ import RouterLinksViewMixin from '../../mixins/RouterLinksViewMixin';
 import ModalShadeViewMixin from '../../mixins/ModalShadeViewMixin';
 import template from './template.pug';
 import './style.scss';
-import { initDisplayErrorsForm, displayErrors, displayServerError } from '../../../utils/formDisplayErrors';
+import { displayErrors, displayServerError } from '../../../utils/formDisplayErrors';
 import LoginForm from '../../../models/LoginForm';
 import UserModel from '../../../models/UserModel';
 
@@ -26,7 +26,9 @@ class LoginModalView extends View {
     }
 
     _initForm() {
-        initDisplayErrorsForm(this.loginForm);
+        this._initiateEmptyErrors();
+
+        this._initiateOnInputChecks();
 
         this.loginForm.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -53,6 +55,34 @@ class LoginModalView extends View {
                     this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
                 });
         });
+    }
+
+    /**
+     * Initiate empty field errors (so you can't submit an empty form)
+     */
+    _initiateEmptyErrors() {
+        const model = this._createModel(this.loginForm);
+        const validationResult = model.validate();
+        if (!validationResult.ok) {
+            displayErrors(this.loginForm, validationResult.errors);
+        }
+    }
+
+    _initiateOnInputChecks() {
+        Array.prototype.forEach.call(this.loginForm.elements, function(element) {
+            element.oninput = function(event) {
+                const model = this._createModel(this.loginForm);
+                Array.prototype.forEach.call(this.loginForm.elements, (elem) => {
+                    elem.setCustomValidity('');
+                });
+
+                const validationResult = model.validate();
+                if (!validationResult.ok) {
+                    displayErrors(this.loginForm, validationResult.errors);
+                    return;
+                }
+            }.bind(this);
+        }.bind(this));
     }
 
     _createModel() {
