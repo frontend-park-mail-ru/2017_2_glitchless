@@ -51,7 +51,7 @@ class SignupModalView extends View {
                     this.serviceLocator.user.saveInLocalStorage();
                     this.serviceLocator.router.changePage('/');
                     this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
-                })
+                });
         });
     }
 

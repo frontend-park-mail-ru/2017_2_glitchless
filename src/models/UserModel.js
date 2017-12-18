@@ -18,7 +18,7 @@ export default class UserModel {
         if (loadFromServer) {
             return serviceLocator.api.get('user')
                 .then((dataFromServer) => dataFromServer.json(), {})
-                .then((json) => UserModel.fromApiJson(json));
+                .then((json) => UserModel.fromApiJson(json.message));
         }
 
         return new Promise((resolve, reject) => {

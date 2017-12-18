@@ -40,6 +40,7 @@ class LoginModalView extends View {
             }
             model.send()
                 .then((res) => res.json())
+                .catch((res) => res.json())
                 .then((json) => {
                     if (!json.successful) {
                         const serverErrorField = document.getElementById('login-form-server-error');
@@ -50,11 +51,6 @@ class LoginModalView extends View {
                     this.serviceLocator.user.saveInLocalStorage();
                     this.serviceLocator.router.changePage('/');
                     this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
-                })
-                .catch((res) => {
-                    const errorElem = document.getElementById('login-form-server-error');
-                    errorElem.classList.remove('hidden');
-                    errorElem.textContent = 'Unknown error';
                 });
         });
     }
