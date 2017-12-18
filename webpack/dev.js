@@ -7,7 +7,7 @@ module.exports = {
         new webpack.DefinePlugin({
             ENV_PRODUCTION: JSON.stringify(false),
             ENV_API_BASE_URL: JSON.stringify('http://glitchless.ru/api'),
-            ENV_API_WS_URL: JSON.stringify('ws://localhost:8081/game')
+            ENV_API_WS_URL: JSON.stringify('ws://glitchless.ru/game')
         })
     ]
 };

@@ -62,7 +62,9 @@ module.exports = {
                             sourceMap: true,
                             plugins: (loader) => [
                                 require('autoprefixer')(),
-                                require('cssnano')()
+                                require('cssnano')({
+                                    reduceIdents: false
+                                })
                             ]
                         }
                     },

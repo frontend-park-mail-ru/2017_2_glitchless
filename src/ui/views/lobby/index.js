@@ -10,6 +10,7 @@ class LobbyView extends View {
         this.progressTextElem = root.getElementsByClassName('lobby__progresstext').item(0);
         this.waitingLabelElem = root.getElementsByClassName('lobby__waitinglabel').item(0);
         this.returnButtonElem = root.getElementsByClassName('modal-control').item(0);
+        this.loaderSpinner = root.getElementsByClassName('lobby__loader').item(0);
         this.isGameAborted = false;
 
         this.serviceLocator.magicTransport.openSocket();
@@ -27,16 +28,16 @@ class LobbyView extends View {
     onNewSocketMessage(data) {
         switch (data.state) {
             case 2: {
-                this._showText('Waiting player...');
+                this._showText('Waiting for player2 to connect...');
                 break;
             }
             case 3: {
-                this._showText('Please wait while your resource loading');
+                this._showText('Please wait while your resources are loading');
                 this.serviceLocator.magicTransport.send({type: 'WantPlayMessage', state: 4});
                 break;
             }
             case 4: {
-                this._showText('Waiting while player loading resource');
+                this._showText('Waiting while player2 is loading resources');
                 break;
             }
             case 10: {
@@ -51,7 +52,7 @@ class LobbyView extends View {
     }
 
     onClose(event) {
-        let message = 'Game closed';
+        let message = 'Game session closed';
         if (event.reason) {
             message += ': ' + event.reason;
         }
@@ -76,6 +77,7 @@ class LobbyView extends View {
         }
         this.isGameAborted = true;
 
+        this.loaderSpinner.classList.add('hidden');
         this.waitingLabelElem.classList.add('hidden');
         this.returnButtonElem.classList.remove('hidden');
         this.progressTextElem.textContent = text;

@@ -2,10 +2,10 @@ include ../../abstractViews/modal/template
 
 +modal('Initializing game')
     .bumber-top &nbsp;
-
-    .lobby__waitinglabel Waiting...
-    .lobby__progresstext Wait resource loading
-
+    .lobby
+        .lobby__loader
+        .lobby__waitinglabel Waiting...
+        .lobby__progresstext Wait for player2 to connect...
     .bumber-bottom &nbsp;
 
     .modal-control.modal-control__wrapper.hidden
