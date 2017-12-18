@@ -42,7 +42,7 @@ class LoginModalView extends View {
                 .then((res) => res.json())
                 .then((json) => {
                     if (!json.successful) {
-                        const serverErrorField = document.getElementById('login-form__server-errors');
+                        const serverErrorField = document.getElementById('login-form-server-error');
                         displayServerError(serverErrorField, json.message);
                         return;
                     }

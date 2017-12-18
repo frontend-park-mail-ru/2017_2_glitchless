@@ -20,7 +20,7 @@ export function initDisplayErrorsForm(form) {
  */
 export function displayServerError(errorField, error) {
     errorField.innerText = error;
-    errorField.style.visibility = 'visible';
+    errorField.classList.remove('hidden');
 }
 
 /**

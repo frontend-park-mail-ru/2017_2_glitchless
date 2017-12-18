@@ -40,10 +40,11 @@ class SignupModalView extends View {
 
             model.send()
                 .then((res) => res.json())
+                .catch((res) => res.json())
                 .then((json) => {
                     if (!json.successful) {
-                        const serverErrorField = document.getElementById('signup-form__server-errors');
-                        displayServerError(serverErrorField, json.message);
+                        const errorElem = document.getElementById('signup-form-server-error');
+                        displayServerError(errorElem, json.message);
                         return;
                     }
                     this.serviceLocator.user = UserModel.fromApiJson(json.message);
@@ -51,11 +52,6 @@ class SignupModalView extends View {
                     this.serviceLocator.router.changePage('/');
                     this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
                 })
-                .catch((res) => {
-                    const errorElem = document.getElementById('signup-form-server-error');
-                    errorElem.classList.remove('hidden');
-                    errorElem.textContent = 'Unknown error';
-                });
         });
     }
 
