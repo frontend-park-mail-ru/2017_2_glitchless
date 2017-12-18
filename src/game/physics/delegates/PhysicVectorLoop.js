@@ -1,8 +1,7 @@
 import * as PIXI from 'pixi.js';
 import ButtonHandler from '../helpers/ButtonHandler';
 import Constants from '../../../utils/Constants';
-import CollisionManager from '../CollisionManager';
-import {Arc} from '../PhysicPrimitives';
+import * as collisionModule from '../collision/CollisionAPI';
 
 export default class PhysicVectorLoop {
     constructor() {
@@ -55,7 +54,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = platform.getEdgePoints();
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
@@ -106,7 +105,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = forcefield.getEdgePoints();
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
@@ -126,7 +125,7 @@ export default class PhysicVectorLoop {
             if (Constants.COLLISION_DEBUG) {
                 const points = hpblock.getEdgePoints();
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function(physicPoint) {
+                points.forEach(function (physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
