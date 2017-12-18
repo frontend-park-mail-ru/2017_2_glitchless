@@ -54,15 +54,6 @@ class LoginModalView extends View {
                 .catch((res) => {
                     const errorElem = document.getElementById('login-form-server-error');
                     errorElem.classList.remove('hidden');
-                    console.log(res);
-                    if (res !== null) {
-                        const jsn = res.json;
-                        console.log(jsn);
-                        if (jsn !== null && res.hasOwnProperty('message')) {
-                            errorElem.textContent = jsn.message;
-                            return;
-                        }
-                    }
                     errorElem.textContent = 'Unknown error';
                 });
         });

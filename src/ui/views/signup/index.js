@@ -54,13 +54,6 @@ class SignupModalView extends View {
                 .catch((res) => {
                     const errorElem = document.getElementById('signup-form-server-error');
                     errorElem.classList.remove('hidden');
-                    if (res !== null) {
-                        const jsn = res.json();
-                        if (jsn !== null && res.hasOwnProperty('message')) {
-                            errorElem.textContent = jsn.message;
-                            return;
-                        }
-                    }
                     errorElem.textContent = 'Unknown error';
                 });
         });
