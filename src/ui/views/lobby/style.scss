@@ -1,32 +1,41 @@
 .lobby {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
+  &__waitinglabel {
+    font-size: 5vh;
+  }
 
-    &__waitinglabel {
-        font-size: 5vh;
-    }
+  &__progresstext {
 
-    &__progresstext {
+  }
 
-    }
-    
-    &__loader {
-    	margin-top: 10px;
-    	margin-bottom: 20px;
-		border: 16px solid #f3f3f3;
-		border-radius: 50%;
-		border-top: 16px solid rgba(0, 0, 0, 0.3);
-		width: 5em;
-		height: 5em;
-		max-width: 120px;
-		max-height: 120px;
-		animation: spin 2s linear infinite;
-	}
+  &__loader {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid rgba(0, 0, 0, 0.3);
+    width: 5em;
+    height: 5em;
+    max-width: 120px;
+    max-height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  &__linktext {
+    display: none;
+    padding-top: 3px;
+    cursor: pointer;
+  }
 }
 
 @keyframes spin {
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

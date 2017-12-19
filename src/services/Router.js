@@ -147,7 +147,7 @@ class MenuRouterGroup extends RouterGroup {
     }
 
     isPathOfGroup(path) {
-        return this._routes.hasOwnProperty(path);
+        return this._routes.hasOwnProperty(path) || path.startsWith('/lobby');
     }
 
     open() {
@@ -167,6 +167,11 @@ class MenuRouterGroup extends RouterGroup {
     change(path, data = null) {
         if (this._currentModalView) {
             this._currentModalView.close();
+        }
+
+        if (path.startsWith('/lobby')) {
+            data = path.split('/')[2];
+            path = '/lobby';
         }
 
         const viewClass = this._routes[path].viewClass;

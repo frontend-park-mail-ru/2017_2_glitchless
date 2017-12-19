@@ -9,7 +9,7 @@ module.exports = {
             minify: {
                 collapseWhitespace: true,
                 removeComments: true
-            }
+            },
         })
     ]
 };
