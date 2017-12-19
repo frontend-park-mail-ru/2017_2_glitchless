@@ -30,7 +30,7 @@ const htmlPaths = [
 self.addEventListener('fetch', (event) => {
     let cacheQuery = event.request;
 
-    const path = /\/\/(.+?)(\/.+?$)/.exec(event.request.url)[2];
+    const path = /\/\/(.+?)(\/.*?$)/.exec(event.request.url)[2];
     const isHtmlPathFetch = htmlPaths.indexOf(path) !== -1;
     if (isHtmlPathFetch) {
         cacheQuery = '/index.html';
