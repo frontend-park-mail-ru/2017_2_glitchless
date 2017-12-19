@@ -11,7 +11,8 @@ import UserModel from '../../../models/UserModel';
 class SignupModalView extends View {
     open() {
         this.signupForm = document.getElementById('signup-form');
-        // initDisplayErrorsForm(this.signupForm);
+
+        this._validateSubmitWithContext = this._validateSubmit.bind(this);
         this._setupSignupSubmit();
         if (this._savedModel) {
             this._fillForm(this._savedModel);
@@ -23,7 +24,11 @@ class SignupModalView extends View {
     }
 
     close() {
+        this.signupForm.removeEventListener('submit', this._validateSubmitWithContext);
         this._savedModel = this._createModel();
+        Array.prototype.forEach.call(this.signupForm.elements, (element) => {
+            element.oninput = null;
+        });
     }
 
     _setupSignupSubmit() {
@@ -31,32 +36,34 @@ class SignupModalView extends View {
 
         this._initiateOnInputChecks();
 
-        this.signupForm.addEventListener('submit', (event) => {
-            event.preventDefault();
+        this.signupForm.addEventListener('submit', this._validateSubmitWithContext);
+    }
 
-            const model = this._createModel(this.signupForm);
+    _validateSubmit(event) {
+        event.preventDefault();
 
-            const validationResult = model.validate();
-            if (!validationResult.ok) {
-                displayErrors(this.signupForm, validationResult.errors);
-                return;
-            }
+        const model = this._createModel(this.signupForm);
 
-            model.send()
-                .then((res) => res.json())
-                .catch((res) => res.json())
-                .then((json) => {
-                    if (!json.successful) {
-                        const errorElem = document.getElementById('signup-form-server-error');
-                        displayServerError(errorElem, json.message);
-                        return;
-                    }
-                    this.serviceLocator.user = UserModel.fromApiJson(json.message);
-                    this.serviceLocator.user.saveInLocalStorage();
-                    this.serviceLocator.router.changePage('/');
-                    this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
-                });
-        });
+        const validationResult = model.validate();
+        if (!validationResult.ok) {
+            displayErrors(this.signupForm, validationResult.errors);
+            return;
+        }
+
+        model.send()
+            .then((res) => res.json())
+            .catch((res) => res.json())
+            .then((json) => {
+                if (!json.successful) {
+                    const errorElem = document.getElementById('signup-form-server-error');
+                    displayServerError(errorElem, json.message);
+                    return;
+                }
+                this.serviceLocator.user = UserModel.fromApiJson(json.message);
+                this.serviceLocator.user.saveInLocalStorage();
+                this.serviceLocator.router.changePage('/');
+                this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
+            });
     }
 
     /**

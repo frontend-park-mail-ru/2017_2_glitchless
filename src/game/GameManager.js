@@ -89,6 +89,7 @@ export default class GameManager {
     }
 
     destroy() {
+        this.gameStrategy.destroy();
         this.app.destroy(true);
     }
 

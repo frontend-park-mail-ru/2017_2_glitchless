@@ -13,15 +13,21 @@ export default class GameView extends View {
         const gameField = this._setupAppCanvas(appWidth, appHeight);
         this._setupGameManager(gameField, appWidth, appHeight);
         this.gameManager.initiateGame(data);
-        document.body.style.overflow = 'hidden';
-        document.addEventListener('keydown', function(e) {
+
+        this.fullScreenOpener = function(e) {
           if (e.keyCode === 70) {
             this.toggleFullScreen();
+            e.preventDefault();
           }
-        }.bind(this), false);
+        }.bind(this);
+
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('keydown', this.fullScreenOpener, false);
     }
 
     close() {
+        document.removeEventListener('keydown', this.fullScreenOpener, false);
+
         document.body.style.overflow = 'auto';
         this.gameManager.destroy();
         this.gameManager = null;
