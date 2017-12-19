@@ -48,6 +48,7 @@ class Arc(radius: Double,
      *
      * @return {Boolean}
      */
+    @JsName("contains")
     fun contains(point: CollisionPoint): Boolean {
         val relPoint = this.centrate(point);
         val anglePoint = atan2(relPoint.y.toDouble(), relPoint.x.toDouble());
@@ -68,6 +69,7 @@ class Arc(radius: Double,
          *
          * @return {Arc}
          */
+        @JsName("fromPoints")
         fun fromPoints(boundingPoint1: CollisionPoint, boundingPoint2: CollisionPoint, midPoint: CollisionPoint): Arc {
             val circle = Circle.fromPoints(boundingPoint1, boundingPoint2, midPoint);
             return Arc.fromCircle(circle, arrayOf(boundingPoint1, boundingPoint2, midPoint));
@@ -81,6 +83,7 @@ class Arc(radius: Double,
          *
          * @return {Arc}
          */
+        @JsName("fromCircle")
         fun fromCircle(circle: Circle, boundingPoints: Array<CollisionPoint>): Arc {
             return Arc(circle.radius, boundingPoints, circle.center);
         }

@@ -1,7 +1,9 @@
+import kt from 'kotlinApp';
+const Arc = kt.ru.glitchless.game.collision.data.Arc;
+
 import * as PIXI from 'pixi.js';
 import ButtonHandler from '../helpers/ButtonHandler';
 import Constants from '../../../utils/Constants';
-import * as collisionModule from '../collision/CollisionAPI';
 
 export default class PhysicVectorLoop {
     constructor() {

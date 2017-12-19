@@ -185,10 +185,6 @@ fun radianLimit(radian: Double): Double {
     return PI + radian % PI;
 }
 
-fun main(args: Array<String>) {
-    simpleTest()
-}
-
 fun minDist(radian1: Double, radian2: Double): Array<Double> {
     val sign1 = sign(radian1);
     val sign2 = sign(radian2);

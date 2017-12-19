@@ -1,9 +1,11 @@
+import * as kt from 'kotlinApp';
+const checkCollision = kt.ru.glitchless.game.collision.checkCollision;
+
 import Constants from '../../utils/Constants';
 import EventBus from '../GameEventBus';
 import GameScene from '../GameScene';
 import GameStrategy from './GameStrategy';
 
-import CollisionManager from '../physics/CollisionManager';
 import ForceField from '../physics/object/ForceField';
 import Platform from '../physics/object/Platform';
 import Point from '../physics/object/primitive/Point';
@@ -165,7 +167,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
         let closestLaser;
         let dangerPoint;
         lasers.forEach((laser) => {
-            const collision = CollisionManager.checkCollision(
+            const collision = checkCollision(
                 laser.getCoords(), laser.getSpeed(), forcefield.collisionArc,
                 0, false, true);
             if (!collision) {

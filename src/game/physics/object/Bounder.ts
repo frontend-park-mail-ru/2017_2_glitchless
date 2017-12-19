@@ -1,7 +1,9 @@
+import ktRequire from '../../../ktRequire';
+const Circle = ktRequire('ru.glitchless.game.collision.data.Circle');
+
 import * as PIXI from 'pixi.js';
 import Constants from '../../../utils/Constants';
-import { Circle } from '../PhysicPrimitives.js';
-import PhysicsObject from './primitive/PhysicsObject.js';
+import PhysicsObject from './primitive/PhysicsObject';
 import Point from './primitive/Point.js';
 
 import * as bounder_png from '../../../ui/images/bounder.png';
@@ -10,6 +12,7 @@ const basicBounderTexture = PIXI.Texture.fromImage(bounder_png);
 
 export default class Bounder extends PhysicsObject {
     public circle: Circle;
+
     constructor(context, coords = new Point(0, 0), alignmentCircle) {
         const basicBounderSprite = new PIXI.Sprite(basicBounderTexture);
         super(basicBounderSprite, context, coords);

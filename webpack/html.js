@@ -1,6 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-
 module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
@@ -8,8 +7,8 @@ module.exports = {
             inject: 'head',
             minify: {
                 collapseWhitespace: true,
-                removeComments: true
-            }
-        })
-    ]
+                removeComments: true,
+            },
+        }),
+    ],
 };

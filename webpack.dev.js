@@ -1,22 +1,26 @@
 const merge = require('webpack-merge');
 
-
 module.exports = [
     merge([
         {
-            entry: './src/index.ts'
+            entry: {
+                main: './src/index.ts',
+            },
         },
         require('./webpack/common'),
         require('./webpack/dev'),
+        require('./webpack/kotlin'),
         require('./webpack/html'),
-        require('./webpack/clean')
+        require('./webpack/clean'),
     ]),
     merge([
         {
-            entry: './src/sw-cleaner-index.ts'
+            entry: {
+                main: './src/sw-cleaner-index.ts',
+            },
         },
         require('./webpack/common'),
         require('./webpack/dev'),
-        require('./webpack/sw')
+        require('./webpack/sw'),
     ]),
 ];

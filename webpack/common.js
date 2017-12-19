@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 
-
 module.exports = {
     module: {
         rules: [
@@ -11,9 +10,9 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env']
-                    }
-                }
+                        presets: ['env'],
+                    },
+                },
             },
             {
                 test: /\.kt$/,
@@ -24,36 +23,36 @@ module.exports = {
                         path.resolve(__dirname, '../src'),
                     ],
                     compilerOptions: {
-                        noWarn: true
-                    }
-                }
+                        noWarn: true,
+                    },
+                },
             },
             {
                 test: /\.ts$/,
                 exclude: /node_modules/,
-                use: 'ts-loader'
+                use: 'ts-loader',
             },
             {
                 test: /\.pug$/,
-                use: 'pug-loader'
+                use: 'pug-loader',
             },
             {
                 test: /\.s?css$/,
                 use: [
                     {
-                        loader: 'style-loader'
+                        loader: 'style-loader',
                     },
                     {
                         loader: 'css-loader',
                         options: {
-                            importLoaders: 1
-                        }
+                            importLoaders: 1,
+                        },
                     },
                     {
                         loader: 'resolve-url-loader',
                         options: {
-                            sourceMap: false
-                        }
+                            sourceMap: false,
+                        },
                     },
                     {
                         loader: 'postcss-loader',
@@ -62,17 +61,17 @@ module.exports = {
                             sourceMap: true,
                             plugins: (loader) => [
                                 require('autoprefixer')(),
-                                require('cssnano')()
-                            ]
-                        }
+                                require('cssnano')(),
+                            ],
+                        },
                     },
                     {
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: true
-                        }
-                    }
-                ]
+                            sourceMap: true,
+                        },
+                    },
+                ],
             },
             {
                 test: /\.(png|jpg)$/,
@@ -80,13 +79,13 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            outputPath: 'images/'
-                        }
+                            outputPath: 'images/',
+                        },
                     },
                     {
-                        loader: 'image-webpack-loader'
-                    }
-                ]
+                        loader: 'image-webpack-loader',
+                    },
+                ],
             },
             {
                 test: /\.(ttf|eot|woff|woff2)$/,
@@ -95,16 +94,16 @@ module.exports = {
                     name: 'fonts/[name].[ext]',
                 },
             },
-        ]
+        ],
     },
     resolve: {
-        extensions: ['.js', '.ts', '.scss', '.png', '.jpg', '.kt']
+        extensions: ['.js', '.ts', '.scss', '.png', '.jpg', '.kt'],
     },
     plugins: [
-        new webpack.HashedModuleIdsPlugin()
+        new webpack.HashedModuleIdsPlugin(),
     ],
     output: {
         path: path.resolve(__dirname, '../dist'),
-        filename: '[name].[chunkhash].js'
-    }
+        filename: '[name].[chunkhash].js',
+    },
 };

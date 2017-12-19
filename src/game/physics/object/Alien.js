@@ -1,8 +1,10 @@
+import * as kt from 'kotlinApp';
+const Circle = kt.ru.glitchless.game.collision.data.Circle;
+
 import * as PIXI from 'pixi.js';
 import PhysicsObject from './primitive/PhysicsObject';
 import Point from './primitive/Point';
 import Constants from '../../../utils/Constants';
-import { Circle } from '../PhysicPrimitives';
 
 import spacestation_png from '../../../ui/images/spacestation.png';
 

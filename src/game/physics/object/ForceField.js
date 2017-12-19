@@ -1,8 +1,10 @@
+import * as kt from 'kotlinApp';
+const Arc = kt.ru.glitchless.game.collision.data.Arc;
+
 import PhysicsObject from './primitive/PhysicsObject';
 import * as PIXI from 'pixi.js';
 import Point from './primitive/Point.js';
 import Constants from '../../../utils/Constants';
-import {Arc} from '../PhysicPrimitives.js';
 import EventBus from '../../GameEventBus';
 
 import shield_cyan_png from '../../../ui/images/shield_cyan.png';
