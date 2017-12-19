@@ -2,7 +2,7 @@ FROM nginx
 
 RUN apt-get update -qq && \
     mkdir -p /usr/share/man/man1 && \
-    apt-get install -qq -y --allow-unauthenticated build-essential gnupg curl libpng-dev default-jdk && \
+    apt-get install -qq -y build-essential gnupg curl libpng-dev default-jdk && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get install -qq -y nodejs
 
