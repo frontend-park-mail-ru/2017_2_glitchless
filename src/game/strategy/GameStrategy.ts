@@ -9,6 +9,7 @@ export default abstract class GameStrategy {
     protected eButton: ButtonHandler;
     protected upButton: ButtonHandler;
     protected downButton: ButtonHandler;
+    protected buttons: ButtonHandler[];
     protected verticalPressed: boolean;
 
     constructor() {
@@ -18,6 +19,8 @@ export default abstract class GameStrategy {
         this.eButton = new ButtonHandler(Constants.CONTROL_PLATFORM_E);
         this.upButton = new ButtonHandler(Constants.CONTROL_PLATFORM_UP);
         this.downButton = new ButtonHandler(Constants.CONTROL_PLATFORM_DOWN);
+        this.buttons = [this.leftButton, this.rightButton, this.qButton,
+            this.eButton, this.upButton, this.downButton];
     }
 
     public onHealthDepletion(healthBlock) {
@@ -27,5 +30,13 @@ export default abstract class GameStrategy {
     }
 
     public onGameEnd(loser) {
+    }
+
+    public destroy() {
+        this.buttons.forEach((button) => {
+            console.log(button);
+            console.log(button.destroy);
+            button.destroy();
+        });
     }
 }

@@ -6,13 +6,17 @@ export default class ButtonOnKeyboard {
         this.press = undefined;
         this.release = undefined;
 
-        window.addEventListener(
-            'keydown', this._downHandler.bind(this), false,
+        this._downHandlerWithContext = this._downHandler.bind(this);
+        document.addEventListener(
+            'keydown', this._downHandlerWithContext, false,
         );
 
-        window.addEventListener(
-            'keyup', this._upHandler.bind(this), false,
+        this._upHandlerWithContext = this._upHandler.bind(this);
+        document.addEventListener(
+            'keyup', this._upHandlerWithContext, false,
         );
+
+        this.destroy = this.destroy.bind(this);
     }
 
     _downHandler(event) {
@@ -22,7 +26,6 @@ export default class ButtonOnKeyboard {
             }
             this.isDown = true;
             this.isUp = false;
-            event.preventDefault();
         }
     }
 
@@ -33,7 +36,16 @@ export default class ButtonOnKeyboard {
             }
             this.isDown = false;
             this.isUp = true;
-            event.preventDefault();
         }
+    }
+
+    destroy() {
+        document.removeEventListener(
+            'keydown', this._downHandlerWithContext, false,
+        );
+
+        document.removeEventListener(
+            'keyup', this._upHandlerWithContext, false,
+        );
     }
 }
