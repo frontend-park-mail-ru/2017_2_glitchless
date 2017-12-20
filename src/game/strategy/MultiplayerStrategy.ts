@@ -83,9 +83,9 @@ export default class MultiplayerStrategy extends GameStrategy {
         const oldDirection = this.userPlatform.getDirection();
         let newDirection = Direction.NONE;
 
-        if (this.leftButton.isDown || this.qButton.isDown) {
+        if (this.leftButton.isDown || this.qButton.isDown || this.touchHandler.leftTouches) {
             newDirection = Direction.LEFT;
-        } else if (this.rightButton.isDown || this.eButton.isDown) {
+        } else if (this.rightButton.isDown || this.eButton.isDown || this.touchHandler.rightTouches) {
             newDirection = Direction.RIGHT;
         } else {
             newDirection = Direction.NONE;
