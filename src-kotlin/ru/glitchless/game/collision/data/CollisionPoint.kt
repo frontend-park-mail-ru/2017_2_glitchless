@@ -15,6 +15,7 @@ class CollisionPoint(public var x: Float,
      *
      * @return {Point}
      */
+    @JsName("apply")
     fun apply(deltaX: Float, deltaY: Float): CollisionPoint {
         this.x += deltaX;
         this.y += deltaY;
@@ -27,6 +28,7 @@ class CollisionPoint(public var x: Float,
      *
      * @return {Point}
      */
+    @JsName("mult")
     fun mult(multiplier: Float): CollisionPoint {
         this.x *= multiplier;
         this.y *= multiplier;
@@ -39,6 +41,7 @@ class CollisionPoint(public var x: Float,
      *
      * @return {Point}
      */
+    @JsName("devide")
     fun divide(divider: Float): CollisionPoint {
         this.x /= divider;
         this.y /= divider;
@@ -50,6 +53,7 @@ class CollisionPoint(public var x: Float,
      *
      * @return {Point}
      */
+    @JsName("getLength")
     fun getLength(): Float {
         return sqrt((this.x * this.x + this.y * this.y).toDouble()).toFloat();
     }

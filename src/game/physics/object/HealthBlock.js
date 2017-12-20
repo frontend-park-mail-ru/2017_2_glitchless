@@ -20,7 +20,7 @@ export default class HealthBlock extends PhysicsObject {
     }
 
     refreshCollisionArc() {
-        this.collisionArc = Arc.fromPoints(...this.getEdgePoints());
+        this.collisionArc = Arc.Companion.fromPoints(...this.getEdgePoints());
     }
 
     onCollision(laser) {
@@ -48,7 +48,7 @@ export default class HealthBlock extends PhysicsObject {
 
     setRotation(rotation, context) {
         super.setRotation(rotation, context);
-        const radius = this.circle.R - Constants.GAME_PLATFORM_SIZE[0] / 4;
+        const radius = this.circle.radius - Constants.GAME_PLATFORM_SIZE[0] / 4;
         const rotationRadian = rotation / Constants.GAME_ROTATION_COEFFICIENT;
         const deltaX = radius * Math.sin(rotationRadian);
         const deltaY = radius * Math.cos(rotationRadian);

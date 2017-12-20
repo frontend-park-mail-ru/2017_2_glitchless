@@ -11,7 +11,7 @@ import * as bounder_png from '../../../ui/images/bounder.png';
 const basicBounderTexture = PIXI.Texture.fromImage(bounder_png);
 
 export default class Bounder extends PhysicsObject {
-    public circle: Circle;
+    public circle;
 
     constructor(context, coords = new Point(0, 0), alignmentCircle) {
         const basicBounderSprite = new PIXI.Sprite(basicBounderTexture);
@@ -21,7 +21,7 @@ export default class Bounder extends PhysicsObject {
 
     public setRotation(rotation, context) {
         super.setRotation(rotation, context);
-        const radius = this.circle.R - Constants.GAME_PLATFORM_SIZE[0] / 4;
+        const radius = this.circle.radius - Constants.GAME_PLATFORM_SIZE[0] / 4;
         const rotationRadian = rotation / Constants.GAME_ROTATION_COEFFICIENT;
         const deltaX = radius * Math.sin(rotationRadian);
         const deltaY = radius * Math.cos(rotationRadian);

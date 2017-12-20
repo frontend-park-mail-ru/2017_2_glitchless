@@ -14,6 +14,7 @@ import kotlin.math.*
  *
  * @return {Point[]} Points of intersection
  */
+@JsName("findIntersection")
 fun findIntersection(lineInput: Line, circle: Circle): Array<CollisionPoint> {
     var line = lineInput;
     val endShift = arrayOf(circle.center.x, -circle.center.y);
@@ -87,6 +88,7 @@ fun findIntersection(lineInput: Line, circle: Circle): Array<CollisionPoint> {
  *
  * @return {[Point, Line] | Boolean} Point of collision and old trajectory line if collision exists, else false
  */
+@JsName("checkCollision")
 fun checkCollision(point: CollisionPoint, vector: CollisionPoint, arc: Arc, elapsedMS: Double,
                    fullCircle: Boolean = false, isRay: Boolean = false): Array<Any>? {
     val speed = vector.getLength();
@@ -131,6 +133,8 @@ fun checkCollision(point: CollisionPoint, vector: CollisionPoint, arc: Arc, elap
  *
  * @return {[Point, Point] | Boolean} Point of collision and new speed vector if collision exists, else false
  */
+
+@JsName("getReflection")
 fun getReflection(point: CollisionPoint, vector: CollisionPoint, arc: Arc, elapsedMS: Double): Array<CollisionPoint>? {
     val collisionResult = checkCollision(point, vector, arc, elapsedMS) ?: return null;
 
@@ -153,7 +157,7 @@ fun getReflection(point: CollisionPoint, vector: CollisionPoint, arc: Arc, elaps
     }
 
     val resultTrajectory = Line.fromSlopeAndPoint(reflectionAngle, collision);
-    return arrayOf(collision, resultTrajectory.getVector(speed.toInt()));
+    return arrayOf(collision, resultTrajectory.getVector(speed));
 }
 
 fun simpleTest() {

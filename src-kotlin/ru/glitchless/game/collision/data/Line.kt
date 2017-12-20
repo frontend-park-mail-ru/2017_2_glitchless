@@ -106,18 +106,18 @@ class Line(val A: Double,
         return atan2(-this.A, this.B);
     }
 
-    fun getPointByDist(dist: Int): CollisionPoint {
+    fun getPointByDist(dist: Float): CollisionPoint {
         return this.getVector(dist)
                 .apply(this.bounds[0].x, this.bounds[0].y);
     }
 
-    fun getVector(length: Int): CollisionPoint {
+    fun getVector(length: Float): CollisionPoint {
         if (!this.isVector) {
             throw RuntimeException("Ambiguous without direction");
         }
         val point = CollisionPoint(this.bounds[1].x - this.bounds[0].x, this.bounds[1].y - this.bounds[0].y);
         point.divide(point.getLength());
-        return point.mult(length.toFloat());
+        return point.mult(length);
     }
 
     companion object {
