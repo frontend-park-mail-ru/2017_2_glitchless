@@ -26,6 +26,7 @@ export default class ButtonOnKeyboard {
             }
             this.isDown = true;
             this.isUp = false;
+            event.preventDefault();
         }
     }
 
@@ -36,6 +37,7 @@ export default class ButtonOnKeyboard {
             }
             this.isDown = false;
             this.isUp = true;
+            event.preventDefault();
         }
     }
 
