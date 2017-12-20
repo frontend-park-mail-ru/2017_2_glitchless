@@ -13,6 +13,7 @@ COPY package-lock.json .
 RUN npm install
 
 COPY src src
+COPY src-kotlin src-kotlin
 COPY test test
 COPY server server
 COPY webpack webpack
