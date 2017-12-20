@@ -40,7 +40,7 @@ export default class GameManager {
         this.scene.stage = this.app.stage;
         this.scene.initContainer();
 
-        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
         this.scene.initBackground(this.app);
 
         this.loopObj = new PhysicLoop(this);
