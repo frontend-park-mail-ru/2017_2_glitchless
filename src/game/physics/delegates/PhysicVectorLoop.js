@@ -6,10 +6,6 @@ import {Arc} from '../PhysicPrimitives';
 
 export default class PhysicVectorLoop {
     constructor() {
-        this.leftButton = new ButtonHandler(Constants.CONTROL_PLATFORM_LEFT);
-        this.qButton = new ButtonHandler(Constants.CONTROL_PLATFORM_Q);
-        this.eButton = new ButtonHandler(Constants.CONTROL_PLATFORM_E);
-        this.rightButton = new ButtonHandler(Constants.CONTROL_PLATFORM_RIGHT);
         if (Constants.COLLISION_DEBUG) {
             this.graphics = new PIXI.Graphics();
         }
