@@ -1,6 +1,4 @@
 import * as kt from 'kotlinApp';
-const checkCollision = kt.ru.glitchless.game.collision.checkCollision;
-
 import Constants from '../../utils/Constants';
 import EventBus from '../GameEventBus';
 import GameScene from '../GameScene';
@@ -10,11 +8,14 @@ import ForceField from '../physics/object/ForceField';
 import Platform from '../physics/object/Platform';
 import Point from '../physics/object/primitive/Point';
 
+import Laser from '../physics/object/Laser';
 import Player from '../Player';
 
 import * as shield_gui_background_png from '../../ui/images/shield_gui_background.png';
 import * as shield_gui_status_png from '../../ui/images/shield_gui_status.png';
 import {Direction} from '../physics/object/Direction';
+
+const checkCollision = kt.ru.glitchless.game.collision.checkCollision;
 
 const forceFieldBarTexture = PIXI.Texture.fromImage(shield_gui_status_png);
 const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage(shield_gui_background_png);
@@ -26,6 +27,10 @@ export default class SinglePlayerStrategy extends GameStrategy {
     public botPlatform: Platform;
     private laserDamage: number;
     private scene: GameScene;
+    private anglePoints = [new Point(0.1, -0.05), new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
+        new Point(0.1, -0.05), new Point(0.1, 0), new Point(0.1, 0.05), new Point(0.1, 0.1)];
+    private angleCounter = 0;
+    private counter = 0;
 
     constructor(scene) {
         super();
@@ -50,11 +55,12 @@ export default class SinglePlayerStrategy extends GameStrategy {
         physicContext.spriteStorage.needUpdatePlatorm.push(physicContext.spriteStorage.enemyPlatform);
 
         this.scene.initScores();
-       }
+    }
 
     public gameplayTick(physicContext, elapsedMS: number) {
         this.processBotLogic(physicContext);
         this.replenishShields(physicContext, elapsedMS);
+        this.processLaserCreate(physicContext, elapsedMS);
         this.processControls(physicContext, physicContext.spriteStorage.userPlatform);
     }
 
@@ -119,7 +125,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
     }
 
     private _drawForceFieldBars(scene) {
-        this.forceFieldBarPos.forEach(function(position) {
+        this.forceFieldBarPos.forEach(function (position) {
             const forceFieldBar = new PIXI.Sprite(forceFieldBarTexture);
             const forceFieldBarBackground = new PIXI.Sprite(forceFieldBarBackgroundTexture);
             forceFieldBar.anchor.set(1);
@@ -202,7 +208,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
     }
 
     private replenishShields(physicContext, elapsedMS: number) {
-        this.players.forEach(function(player, playerNum) {
+        this.players.forEach(function (player, playerNum) {
             const newShieldVal = player.shield + Constants.SHIELD_REGEN_RATIO * elapsedMS / 1000;
             player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
             this.updateBar(playerNum, (player.shield / player.maxShield) * 100);
@@ -210,5 +216,20 @@ export default class SinglePlayerStrategy extends GameStrategy {
                 physicContext.physicObjects.forcefield[playerNum].onEnable();
             }
         }, this);
+    }
+
+    private processLaserCreate(physicContext, elapsedMS: number) {
+        this.counter += elapsedMS;
+        if (this.counter > 1000) {
+            this.counter = 0;
+            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-2);
+            const laser = new Laser(physicContext);
+            laser.setCoords(physicContext._getCenterPoint(), physicContext);
+            laser.setSpriteSize(Constants.GAME_LASER_SIZE, physicContext.gameManager);
+            laser.setSpeed(laserSpeed);
+            physicContext.gameManager.addObject('laser', laser);
+            this.angleCounter++;
+        }
+
     }
 }

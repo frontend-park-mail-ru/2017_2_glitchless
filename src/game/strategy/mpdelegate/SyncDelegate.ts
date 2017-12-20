@@ -2,6 +2,7 @@ import Constants from '../../../utils/Constants';
 import GameEventBus from '../../GameEventBus';
 import MagicTransport from '../../io/MagicTransport';
 import {Direction} from '../../physics/object/Direction';
+import Laser from '../../physics/object/Laser';
 import Platform from '../../physics/object/Platform';
 import PhysicsObject from '../../physics/object/primitive/PhysicsObject.js';
 import Point from '../../physics/object/primitive/Point.js';
@@ -33,6 +34,10 @@ export default class SyncDelegate {
         this.magicTransport.eventBus.subscribeOn('LightServerSnapMessage', (data) => {
             this.applyLightServerSwapCommit(data);
         }, this);
+
+        this.magicTransport.eventBus.subscribeOn('CreateObjectMessage', (data) => {
+            this.createObjectEvent(data);
+        }, this);
     }
 
     public onChangeDirection(platformDirectionSnap) {
@@ -50,6 +55,10 @@ export default class SyncDelegate {
         object.setCoords(newPoint, this.physicContext);
         object.setRotation(data.rotation, this.physicContext);
         object.setRotationSpeed(data.rotationSpeed);
+
+        if (data.speed !== null) {
+            object.setSpeed(data.speed);
+        }
     }
 
     public applyLightServerSwapCommit(data) {
@@ -91,6 +100,26 @@ export default class SyncDelegate {
         }
 
         object.setRotationSpeed(swap.rotationspeed);
+    }
+
+    public createObjectEvent(data) {
+        let entity;
+        switch (data.objectType) {
+            case 'Laser': {
+                entity = new Laser(this.physicContext);
+                entity.setSpriteSize(Constants.GAME_LASER_SIZE, this.physicContext.gameManager);
+                this.physicContext.gameManager.addObject('laser', entity);
+                break;
+            }
+            default: {
+                console.log(data);
+            }
+        }
+
+        entity.multiplayerId = data.objectId;
+        this.idToObject[data.objectId] = entity;
+
+        this.applyServerSwapCommit(data);
     }
 
     /**

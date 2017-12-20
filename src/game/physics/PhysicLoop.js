@@ -1,7 +1,5 @@
 import * as PIXI from 'pixi.js';
 
-import Laser from './object/Laser';
-
 import SpriteStorage from './delegates/SpriteStorage';
 import Constants from '../../utils/Constants';
 
@@ -35,16 +33,6 @@ export default class PhysicLoop {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.gameManager.app.ticker.speed;
-        this.timeSum += elapsedMS;
-        if (this.timeSum > 1000) {
-            this.timeSum = 0;
-            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-2);
-            const laser = new Laser(laserSpeed, this);
-            laser.setCoords(this._getCenterPoint(), this);
-            laser.setSpriteSize(Constants.GAME_LASER_SIZE, this.gameManager);
-            this.gameManager.addObject('laser', laser);
-            this.angleCounter++;
-        }
 
         this.physicDelegate.processPhysicLoop(this, elapsedMS);
         this.vectorToPointDelegate.processVector(this.physicEntities, this, elapsedMS);
