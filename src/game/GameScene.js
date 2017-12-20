@@ -1,3 +1,6 @@
+import * as kt from 'kotlinApp';
+const Circle = kt.ru.glitchless.game.collision.data.Circle;
+
 import * as PIXI from 'pixi.js';
 
 import Alien from './physics/object/Alien';
@@ -7,15 +10,11 @@ import ForceField from './physics/object/ForceField';
 import Bounder from './physics/object/Bounder';
 import PlatformCircle from './physics/object/PlatformKirkle';
 
-import {Circle} from './physics/PhysicPrimitives';
-
-import GameUtils from '../utils/GameUtils';
 import Constants from '../utils/Constants';
 import Point from './physics/object/primitive/Point';
 
 import game_over_splash_lost_png from '../ui/images/game_over_splash_lost.png';
 import game_over_splash_won_png from '../ui/images/game_over_splash_won.png';
-import background_png from '../ui/images/background.png';
 
 const loseText = new PIXI.Sprite.fromImage(game_over_splash_lost_png);
 const winText = new PIXI.Sprite.fromImage(game_over_splash_won_png);
@@ -117,7 +116,7 @@ export default class GameScene {
             forceField.setSpriteSize(Constants.GAME_FORCEFIELD_SIZE, physicContext.gameManager);
             forceField.setRotation(90 + i * 180, physicContext);
             const coords = forceField.getCoords();
-            forceField.setCoords(new Point(coords.x, coords.y - i * 1), physicContext);
+            forceField.setCoords(new Point(coords.x, coords.y - i), physicContext);
             physicContext.gameManager.addObject('forcefield', forceField);
         }
 
@@ -128,7 +127,7 @@ export default class GameScene {
             bounder.setSpriteSize(Constants.GAME_BOUNDER_SIZE, physicContext.gameManager);
             bounder.setRotation(i * 180, physicContext);
             const coords = bounder.getCoords();
-            bounder.setCoords(new Point(coords.x, coords.y - i * 1), physicContext);
+            bounder.setCoords(new Point(coords.x, coords.y - i), physicContext);
             physicContext.gameManager.addObject('bounder', bounder);
         }
 

@@ -1,23 +1,14 @@
 import * as PIXI from 'pixi.js';
 
-import Alien from './object/Alien';
-import Platform from './object/Platform';
 import Laser from './object/Laser';
-import HealthBlock from './object/HealthBlock';
-import ForceField from './object/ForceField';
-import Bounder from './object/Bounder';
-import PlatformCircle from './object/PlatformKirkle';
 
 import SpriteStorage from './delegates/SpriteStorage';
 import Constants from '../../utils/Constants';
-import utils from '../../utils/GameUtils';
 
 import VectorToPointLoop from './delegates/VectorToPointLoop';
 import PhysicVectorLoop from './delegates/PhysicVectorLoop';
 
 import Point from './object/primitive/Point';
-import CollisionManager from './CollisionManager';
-import { Arc, Circle } from './PhysicPrimitives';
 
 export default class PhysicLoop {
     constructor(gameManager) {

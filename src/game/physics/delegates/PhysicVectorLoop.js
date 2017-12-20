@@ -1,8 +1,10 @@
+import * as kt from 'kotlinApp';
+const Arc = kt.ru.glitchless.game.collision.data.Arc;
+const CollisionManager = kt.ru.glitchless.game.collision;
+
 import * as PIXI from 'pixi.js';
 import ButtonHandler from '../helpers/ButtonHandler';
 import Constants from '../../../utils/Constants';
-import CollisionManager from '../CollisionManager';
-import {Arc} from '../PhysicPrimitives';
 
 export default class PhysicVectorLoop {
     constructor() {
@@ -50,7 +52,7 @@ export default class PhysicVectorLoop {
 
         //Reflecting lasers from platform
         context.physicObjects.platform.forEach((platform) => {
-            const platformArc = Arc.fromPoints(...platform.getEdgePoints());
+            const platformArc = Arc.Companion.fromPoints(...platform.getEdgePoints());
 
             if (Constants.COLLISION_DEBUG) {
                 const points = platform.getEdgePoints();

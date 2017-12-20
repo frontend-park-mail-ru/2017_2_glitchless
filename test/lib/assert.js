@@ -26,5 +26,5 @@ function notEqual(a, b) {
 
 module.exports = {
     equal,
-    notEqual
+    notEqual,
 };
