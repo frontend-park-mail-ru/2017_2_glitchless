@@ -81,15 +81,7 @@ export default class MultiplayerStrategy extends GameStrategy {
 
     private processControls() {
         const oldDirection = this.userPlatform.getDirection();
-        let newDirection = Direction.NONE;
-
-        if (this.leftButton.isDown || this.qButton.isDown || this.touchHandler.leftTouches) {
-            newDirection = Direction.LEFT;
-        } else if (this.rightButton.isDown || this.eButton.isDown || this.touchHandler.rightTouches) {
-            newDirection = Direction.RIGHT;
-        } else {
-            newDirection = Direction.NONE;
-        }
+        const newDirection = this.getPlatformDirection();
 
         this.userPlatform.setMoveDirection(newDirection);
 

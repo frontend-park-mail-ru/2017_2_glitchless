@@ -2,6 +2,7 @@
 import Constants from '../../utils/Constants';
 import ButtonHandler from '../physics/helpers/ButtonHandler';
 import TouchHandler from '../physics/helpers/TouchHandler';
+import {Direction} from '../physics/object/Direction';
 
 export default abstract class GameStrategy {
     protected leftButton: ButtonHandler;
@@ -48,5 +49,17 @@ export default abstract class GameStrategy {
         });
 
         this.touchHandler.destroy();
+    }
+
+    public getPlatformDirection() {
+        if (this.leftButton.isDown || this.qButton.isDown
+            || this.touchHandler.leftActive && !this.touchHandler.rightActive) {
+            return Direction.LEFT;
+        } else if (this.rightButton.isDown || this.eButton.isDown
+            || this.touchHandler.rightActive && !this.touchHandler.leftActive) {
+            return Direction.RIGHT;
+        } else {
+            return Direction.NONE;
+        }
     }
 }

@@ -143,15 +143,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
     }
 
     private processControls(context, platform) {
-        if (this.leftButton.isDown || this.qButton.isDown
-            || this.touchHandler.leftActive && !this.touchHandler.rightActive) {
-            platform.setMoveDirection(Direction.LEFT);
-        } else if (this.rightButton.isDown || this.eButton.isDown
-            || this.touchHandler.rightActive && !this.touchHandler.leftActive) {
-            platform.setMoveDirection(Direction.RIGHT);
-        } else {
-            platform.setMoveDirection(Direction.NONE);
-        }
+        platform.setMoveDirection(this.getPlatformDirection());
     }
 
     private processBotLogic(physicContext) {
