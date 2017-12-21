@@ -21,7 +21,7 @@ export default class GameView extends View {
           }
         }.bind(this);
 
-        document.body.style.overflow = 'hidden';
+        // document.body.style.overflow = 'hidden';
         document.addEventListener('keydown', this.fullScreenOpener, false);
     }
 
@@ -50,15 +50,18 @@ export default class GameView extends View {
 
     _setupAppCanvas(appWidth, appHeight) {
         this.root.innerHTML = '';
+        this.root.classList.add('fullscreen');
 
         const gameFieldWrapper = document.createElement('div');
-        gameFieldWrapper.style.width = '100%';
-        gameFieldWrapper.style.height = '100%';
+        gameFieldWrapper.style.width = '' + window.innerWidth;
+        gameFieldWrapper.style.height = '100vh';
         // gameFieldWrapper.style.backgroundColor = 'black';
         this.root.appendChild(gameFieldWrapper);
 
         const gameField = document.createElement('div');
+        gameField.style.height = '100vh';
         gameField.classList.add('game-background');
+        gameField.classList.add('fullscreen');
         // gameField.style.position = 'absolute';
         // gameField.style.top = '50%';
         // gameField.style.left = '50%';
