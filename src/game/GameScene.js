@@ -92,6 +92,7 @@ export default class GameScene {
 
         const alien = new Alien(physicContext, center);
         alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, physicContext.gameManager);
+        physicContext.spriteStorage.alien = alien;
         physicContext.gameManager.addObject('alien', alien);
 
         const PlatformCircle1 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE1_RADIUS, center, 0);
