@@ -66,7 +66,6 @@ export default class GameView extends View {
         versionDisplay.style.bottom = '0';
         versionDisplay.innerHTML = versionNumber;
 
-
         gameFieldWrapper.appendChild(versionDisplay);
         const gameField = document.createElement('div');
         gameField.style.height = '100vh';
@@ -82,7 +81,7 @@ export default class GameView extends View {
         gameField.style.backgroundImage = 'url(' + background_png + ')';
         gameFieldWrapper.appendChild(gameField);
 
-        setTimeout(function () { window.scrollTo(0, 1); }, 100);
+        setTimeout(function() { window.scrollTo(0, 1); }, 100);
 
         this.gameField = gameField;
         return gameField;
