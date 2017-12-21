@@ -28,7 +28,7 @@ export default class GameView extends View {
     close() {
         document.removeEventListener('keydown', this.fullScreenOpener, false);
 
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = '';
         this.gameManager.destroy();
         this.gameManager = null;
         delete this;
@@ -55,17 +55,15 @@ export default class GameView extends View {
         const gameFieldWrapper = document.createElement('div');
         gameFieldWrapper.style.width = '' + window.innerWidth;
         gameFieldWrapper.style.height = '100vh';
-        // gameFieldWrapper.style.backgroundColor = 'black';
         this.root.appendChild(gameFieldWrapper);
 
-        const versionNumber = 'v0.8.1'; //change this if you're not sure if your changes are passing through
+        const versionNumber = 'v0.8.2'; //change this if you're not sure if your changes are passing through
         const versionDisplay = document.createElement('div');
         versionDisplay.style.position = 'fixed';
         versionDisplay.style.zIndex = '10';
         versionDisplay.style.left = '5px';
         versionDisplay.style.bottom = '0';
         versionDisplay.innerHTML = versionNumber;
-
 
         gameFieldWrapper.appendChild(versionDisplay);
         const gameField = document.createElement('div');
@@ -82,7 +80,7 @@ export default class GameView extends View {
         gameField.style.backgroundImage = 'url(' + background_png + ')';
         gameFieldWrapper.appendChild(gameField);
 
-        setTimeout(function () { window.scrollTo(0, 1); }, 100);
+        setTimeout(function() { window.scrollTo(0, 1); }, 100);
 
         this.gameField = gameField;
         return gameField;
