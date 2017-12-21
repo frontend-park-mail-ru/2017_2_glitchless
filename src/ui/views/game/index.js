@@ -58,6 +58,16 @@ export default class GameView extends View {
         // gameFieldWrapper.style.backgroundColor = 'black';
         this.root.appendChild(gameFieldWrapper);
 
+        const versionNumber = 'v0.8.1'; //change this if you're not sure if your changes are passing through
+        const versionDisplay = document.createElement('div');
+        versionDisplay.style.position = 'fixed';
+        versionDisplay.style.zIndex = '10';
+        versionDisplay.style.left = '5px';
+        versionDisplay.style.bottom = '0';
+        versionDisplay.innerHTML = versionNumber;
+
+
+        gameFieldWrapper.appendChild(versionDisplay);
         const gameField = document.createElement('div');
         gameField.style.height = '100vh';
         gameField.classList.add('game-background');
