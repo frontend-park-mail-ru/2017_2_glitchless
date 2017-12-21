@@ -10,7 +10,7 @@ import ScoreManager from './ScoreManager';
 export default class GameManager {
     constructor(serviceLocator, gameRestartFunc, newWindowSizeCalcFunc) {
         this.serviceLocator = serviceLocator;
-        this.scene = new GameScene();
+        this.scene = new GameScene(this);
         this.eventBus = EventBus;
         this.scoreManager = new ScoreManager(this);
         this.restart = gameRestartFunc;
@@ -47,6 +47,7 @@ export default class GameManager {
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
         this.scene.initContainer();
+        this.scene.initVisualEffectsManager();
 
         console.log(window.devicePixelRatio);
         this.scene.initBackground(this.app);
@@ -73,7 +74,7 @@ export default class GameManager {
         }
         this.gameStrategy.gameplayTick(this.loopObj, elapsedMS);
         this.loopObj._mainTick(deltaTime);
-        this.scene.Tick();
+        this.scene.tick(deltaTime);
     }
 
     _initStrategy(physicObject, data) {

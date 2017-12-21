@@ -3,7 +3,7 @@ import GameManager from '../../../game/GameManager';
 import Constants from '../../../utils/Constants';
 
 import './style.scss';
-import background_png from '../../images/background.png';
+import background_jpg from '../../images/background.jpg';
 
 export default class GameView extends View {
     open(root, data = null) {
@@ -62,18 +62,33 @@ export default class GameView extends View {
         gameField.style.height = '100vh';
         gameField.classList.add('game-background');
         gameField.classList.add('fullscreen');
-        // gameField.style.position = 'absolute';
-        // gameField.style.top = '50%';
-        // gameField.style.left = '50%';
-        // gameField.style.marginTop = (-appHeight / 2) + 'px';
-        // gameField.style.marginLeft = (-appWidth / 2) + 'px';
-        // gameField.style.width = appWidth + 'px';
-        // gameField.style.height = appHeight + 'px';
-        gameField.style.backgroundImage = 'url(' + background_png + ')';
+        this._moveBackgroundAngle = 1.2;
+        this._moveBackground();
+        gameField.style.backgroundImage = 'url(' + background_jpg + ')';
         gameFieldWrapper.appendChild(gameField);
 
         this.gameField = gameField;
         return gameField;
+    }
+
+    _moveBackground() {
+        setTimeout(() => {
+            let backgroundWidth = window.innerWidth + 300;
+            const backgroundHeight = window.innerHeight + 300;
+            if (backgroundHeight > backgroundWidth) {
+                backgroundWidth = backgroundHeight / 800 * 1280;
+            }
+            this.gameField.style.backgroundSize = `${backgroundWidth}px ${backgroundHeight}px`;
+
+            this.gameField.style.backgroundPositionX = `${Math.cos(this._moveBackgroundAngle) * 150 - 150}px`;
+            this.gameField.style.backgroundPositionY = `${-Math.sin(this._moveBackgroundAngle) * 150 - 150}px`;
+
+            this._moveBackgroundAngle += 0.005;
+            if (this._moveBackgroundAngle > 6.28) {
+                this._moveBackgroundAngle = 0;
+            }
+            this._moveBackground();
+        }, 25);
     }
 
     toggleFullScreen() {
