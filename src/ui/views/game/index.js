@@ -63,9 +63,15 @@ export default class GameView extends View {
         versionDisplay.style.zIndex = '10';
         versionDisplay.style.left = '5px';
         versionDisplay.style.bottom = '0';
+        versionDisplay.style.userSelect = 'none';
         versionDisplay.innerHTML = versionNumber;
-
         gameFieldWrapper.appendChild(versionDisplay);
+
+        const scrollHolder = document.createElement('div');
+        scrollHolder.style.width = '0';
+        scrollHolder.style.height = '110%';
+        gameFieldWrapper.appendChild(scrollHolder);
+
         const gameField = document.createElement('div');
         gameField.style.height = '100vh';
         gameField.classList.add('game-background');

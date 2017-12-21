@@ -4,7 +4,7 @@ import utils from '../../../utils/GameUtils';
 import * as kt from 'kotlinApp';
 const CollisionPoint = kt.ru.glitchless.game.collision.data.CollisionPoint;
 
-import laser_small_png from '../../../ui/images/laser_small.png';
+import laser_small_png from '../../../ui/images/laser_red.png';
 
 const basicLaserTexture = PIXI.Texture.fromImage(laser_small_png);
 

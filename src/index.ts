@@ -7,7 +7,6 @@ import authUser from './initializers/authUser';
 import leaderboardInit from './initializers/leaderboard';
 import routerInit from './initializers/router';
 import serviceWorkerInit from './initializers/serviceWorker';
-import stopLoader from './initializers/stopLoader';
 
 function runLater(func) {
     setTimeout(func, 0);
