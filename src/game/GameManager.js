@@ -40,7 +40,7 @@ export default class GameManager {
         // }
 
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-        this.app = new PIXI.Application(this.scene.width, 
+        this.app = new PIXI.Application(this.scene.width,
             this.scene.height, {transparent: true});
 
         this.scene.setRenderer(this.app.renderer);
