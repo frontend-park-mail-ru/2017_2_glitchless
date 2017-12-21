@@ -15,6 +15,7 @@ export default class GameManager {
         this.scoreManager = new ScoreManager(this);
         this.restart = gameRestartFunc;
         this.findNewWindowSize = newWindowSizeCalcFunc;
+        // PIXI.settings.RESOLUTION = window.devicePixelRatio;
     }
 
     /**
@@ -28,19 +29,26 @@ export default class GameManager {
      * @param {Number[]} resolution Resolution in which the game will be rendered.
      */
     setResolution(resolution) {
-        this.scene.width = resolution[0];
-        this.scene.height = resolution[1];
+        this.scene.width = resolution[0] / PIXI.settings.RESOLUTION;
+        this.scene.height = resolution[1] / PIXI.settings.RESOLUTION;
     }
 
     initiateGame(data) {
-        this.app = new PIXI.Application(this.scene.width, this.scene.height, {transparent: true});
+
+        // if (window.devicePixelRatio !== 1) {
+        //     this.disableResize = true;
+        // }
+
+        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+        this.app = new PIXI.Application(this.scene.width,
+            this.scene.height, {transparent: true});
 
         this.scene.setRenderer(this.app.renderer);
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
         this.scene.initContainer();
 
-        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+        console.log(window.devicePixelRatio);
         this.scene.initBackground(this.app);
 
         this.loopObj = new PhysicLoop(this);
@@ -50,17 +58,19 @@ export default class GameManager {
         this.gameStrategy.initUI(this.loopObj);
 
         this.app.ticker.add(this._onTick, this);
+        console.log(PIXI.settings.SCALE_MODE);
+        console.log(PIXI.settings.RESOLUTION);
     }
 
     _onTick(deltaTime) {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.app.ticker.speed;
-
-        const {appWidth, appHeight} = this.findNewWindowSize();
-        this.setResolution([appWidth, appHeight]);
-        this.app.renderer.resize(appWidth, window.innerHeight);
-
+        if (!this.disableResize) {
+            const {appWidth, appHeight} = this.findNewWindowSize();
+            this.setResolution([appWidth, appHeight]);
+            this.app.renderer.resize(appWidth, window.innerHeight);
+        }
         this.gameStrategy.gameplayTick(this.loopObj, elapsedMS);
         this.loopObj._mainTick(deltaTime);
         this.scene.Tick();
