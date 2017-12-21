@@ -61,6 +61,7 @@ export default class MultiplayerStrategy extends GameStrategy {
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.userPlatform, platformLeft);
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.enemyPlatform, platformRight);
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.circle, circle);
+        this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.alien, fullSwap.alien);
 
         const hpBlockArray = fullSwap.hpblock;
         const gameHpArray = physicContext.spriteStorage.sortedHpBlock;
