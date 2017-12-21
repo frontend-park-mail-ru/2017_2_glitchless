@@ -1,6 +1,4 @@
 import * as kt from 'kotlinApp';
-const Circle = kt.ru.glitchless.game.collision.data.Circle;
-
 import * as PIXI from 'pixi.js';
 
 import Alien from './physics/object/Alien';
@@ -15,6 +13,8 @@ import Point from './physics/object/primitive/Point';
 
 import game_over_splash_lost_png from '../ui/images/game_over_splash_lost.png';
 import game_over_splash_won_png from '../ui/images/game_over_splash_won.png';
+
+const Circle = kt.ru.glitchless.game.collision.data.Circle;
 
 const loseText = new PIXI.Sprite.fromImage(game_over_splash_lost_png);
 const winText = new PIXI.Sprite.fromImage(game_over_splash_won_png);
@@ -98,6 +98,8 @@ export default class GameScene {
         physicContext.gameManager.addObject('circle', PlatformCircle1);
         physicContext.spriteStorage.circle = PlatformCircle1;
 
+        let hpBlockArray = [];
+
         for (let i = 0; i < Constants.HP_COUNT * 2; i++) {
             const playerNum = i < Constants.HP_COUNT ? 0 : 1;
             const hpblock = new HealthBlock(physicContext,
@@ -106,24 +108,31 @@ export default class GameScene {
             hpblock.setSpriteSize(Constants.GAME_HEALTHBLOCK_SIZE, physicContext.gameManager);
             hpblock.setRotation(i * Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) +
                 Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) / 2, physicContext);
+            hpBlockArray.push(hpblock);
             physicContext.gameManager.addObject('hpblock', hpblock);
         }
 
+        physicContext.spriteStorage.setHpBlockArray(hpBlockArray);
+        let fieldArray = [];
+
         for (let i = 0; i < 2; i++) {
             const forceField = new ForceField(physicContext,
-                    new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
-                    new Circle(Constants.GAME_FORCEFIELD_RADIUS, center), i);
+                new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                new Circle(Constants.GAME_FORCEFIELD_RADIUS, center), i);
             forceField.setSpriteSize(Constants.GAME_FORCEFIELD_SIZE, physicContext.gameManager);
             forceField.setRotation(90 + i * 180, physicContext);
             const coords = forceField.getCoords();
             forceField.setCoords(new Point(coords.x, coords.y - i), physicContext);
+            fieldArray.push(forceField);
             physicContext.gameManager.addObject('forcefield', forceField);
         }
 
+        physicContext.spriteStorage.setFieldArrayBlock(fieldArray);
+
         for (let i = 0; i < 2; i++) {
             const bounder = new Bounder(physicContext,
-                    new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
-                    new Circle(Constants.GAME_FORCEFIELD_RADIUS, center));
+                new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                new Circle(Constants.GAME_FORCEFIELD_RADIUS, center));
             bounder.setSpriteSize(Constants.GAME_BOUNDER_SIZE, physicContext.gameManager);
             bounder.setRotation(i * 180, physicContext);
             const coords = bounder.getCoords();
