@@ -50,7 +50,7 @@ export default class GameView extends View {
 
     _setupAppCanvas(appWidth, appHeight) {
         this.root.innerHTML = '';
-        this.root.classList.add('fullscreen');
+        // this.root.classList.add('fullscreen');
 
         const gameFieldWrapper = document.createElement('div');
         gameFieldWrapper.style.width = '' + window.innerWidth;
@@ -58,6 +58,16 @@ export default class GameView extends View {
         // gameFieldWrapper.style.backgroundColor = 'black';
         this.root.appendChild(gameFieldWrapper);
 
+        const versionNumber = 'v0.8.1'; //change this if you're not sure if your changes are passing through
+        const versionDisplay = document.createElement('div');
+        versionDisplay.style.position = 'fixed';
+        versionDisplay.style.zIndex = '10';
+        versionDisplay.style.left = '5px';
+        versionDisplay.style.bottom = '0';
+        versionDisplay.innerHTML = versionNumber;
+
+
+        gameFieldWrapper.appendChild(versionDisplay);
         const gameField = document.createElement('div');
         gameField.style.height = '100vh';
         gameField.classList.add('game-background');
@@ -71,6 +81,8 @@ export default class GameView extends View {
         // gameField.style.height = appHeight + 'px';
         gameField.style.backgroundImage = 'url(' + background_png + ')';
         gameFieldWrapper.appendChild(gameField);
+
+        setTimeout(function () { window.scrollTo(0, 1); }, 100);
 
         this.gameField = gameField;
         return gameField;

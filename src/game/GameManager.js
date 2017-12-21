@@ -35,10 +35,6 @@ export default class GameManager {
 
     initiateGame(data) {
 
-        // if (window.devicePixelRatio !== 1) {
-        //     this.disableResize = true;
-        // }
-
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
         this.app = new PIXI.Application(this.scene.width,
             this.scene.height, {transparent: true});
@@ -105,6 +101,8 @@ export default class GameManager {
 
     addObject(tag, physicObject) {
         this.loopObj.addObjectToPhysic(tag, physicObject);
+        physicObject.initialWidth = this.scene.width;
+        physicObject.initialHeight = this.scene.height;
         physicObject.onDraw(this.scene.mainScene);
         physicObject.subscribeToDestroy((item) => {
             item.onDestroy();
