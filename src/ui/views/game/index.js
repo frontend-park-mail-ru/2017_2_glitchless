@@ -28,7 +28,7 @@ export default class GameView extends View {
     close() {
         document.removeEventListener('keydown', this.fullScreenOpener, false);
 
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = '';
         this.gameManager.destroy();
         this.gameManager = null;
         delete this;
@@ -50,13 +50,12 @@ export default class GameView extends View {
 
     _setupAppCanvas(appWidth, appHeight) {
         this.root.innerHTML = '';
-        this.root.classList.add('fullscreen');
+        // this.root.classList.add('fullscreen');
 
         const gameFieldWrapper = document.createElement('div');
         gameFieldWrapper.style.position = 'relative';
         gameFieldWrapper.style.width = '100%';
         gameFieldWrapper.style.height = '100%';
-        // gameFieldWrapper.style.backgroundColor = 'black';
         this.root.appendChild(gameFieldWrapper);
 
         const background = document.createElement('div');
@@ -72,6 +71,16 @@ export default class GameView extends View {
         this._moveBackgroundAngle = 1.2;
         this._moveBackground();
         gameFieldWrapper.appendChild(background);
+
+        const versionNumber = 'v0.8.2'; //change this if you're not sure if your changes are passing through
+        const versionDisplay = document.createElement('div');
+        versionDisplay.style.position = 'fixed';
+        versionDisplay.style.zIndex = '10';
+        versionDisplay.style.left = '5px';
+        versionDisplay.style.bottom = '0';
+        versionDisplay.style.userSelect = 'none';
+        versionDisplay.innerHTML = versionNumber;
+        gameFieldWrapper.appendChild(versionDisplay);
 
         const gameField = document.createElement('div');
         gameField.style.height = '100vh';
@@ -94,6 +103,13 @@ export default class GameView extends View {
         this.serviceLocator.eventBus.subscribeOn('game_health_block_beat_player_right',
             () => this._startGlow('-90'), this);
         gameFieldWrapper.appendChild(glow);
+
+        const scrollHolder = document.createElement('div');
+        scrollHolder.style.width = '0';
+        scrollHolder.style.height = '110%';
+        gameFieldWrapper.appendChild(scrollHolder);
+
+        setTimeout(function() { window.scrollTo(0, 1); }, 100);
 
         this.gameField = gameField;
         return gameField;

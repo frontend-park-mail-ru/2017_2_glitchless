@@ -11,7 +11,6 @@ import SyncDelegate from './mpdelegate/SyncDelegate';
 
 import * as shield_gui_background_png from '../../ui/images/shield_gui_background.png';
 import * as shield_gui_status_png from '../../ui/images/shield_gui_status.png';
-import {Direction} from '../physics/object/Direction';
 
 const forceFieldBarTexture = PIXI.Texture.fromImage(shield_gui_status_png);
 const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage(shield_gui_background_png);
@@ -62,6 +61,29 @@ export default class MultiplayerStrategy extends GameStrategy {
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.userPlatform, platformLeft);
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.enemyPlatform, platformRight);
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.circle, circle);
+        this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.alien, fullSwap.alien);
+
+        const hpBlockArray = fullSwap.hpblock;
+        const gameHpArray = physicContext.spriteStorage.sortedHpBlock;
+
+        const fieldBlockArray = fullSwap.forceFields;
+        const gameFieldArray = physicContext.spriteStorage.sortedFieldBlock;
+
+        if (hpBlockArray.length !== gameHpArray.length) {
+            throw TypeError('Wrong lenght');
+        }
+
+        if (fieldBlockArray.length !== gameFieldArray.length) {
+            throw TypeError('Wrong lenght');
+        }
+
+        for (let i = 0; i < hpBlockArray.length; i++) {
+            this.syncDelegate.applySwapSnapshot(gameHpArray[i], hpBlockArray[i]);
+        }
+
+        for (let i = 0; i < fieldBlockArray.length; i++) {
+            this.syncDelegate.applySwapSnapshot(gameFieldArray[i], fieldBlockArray[i]);
+        }
 
         return;
     }
