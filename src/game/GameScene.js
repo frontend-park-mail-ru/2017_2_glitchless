@@ -17,7 +17,6 @@ import VisualEffectsManager from './VisualEffectsManager';
 
 import game_over_splash_lost_png from '../ui/images/game_over_splash_lost.png';
 import game_over_splash_won_png from '../ui/images/game_over_splash_won.png';
-import {maxShield} from "./Player";
 
 const loseText = new PIXI.Sprite.fromImage(game_over_splash_lost_png);
 const winText = new PIXI.Sprite.fromImage(game_over_splash_won_png);
