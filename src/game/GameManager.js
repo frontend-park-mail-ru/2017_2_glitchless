@@ -40,7 +40,9 @@ export default class GameManager {
         this.scene.stage = this.app.stage;
         this.scene.initContainer();
 
-        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+        console.log(window.devicePixelRatio);
+        PIXI.settings.RESOLUTION = window.devicePixelRatio;
         this.scene.initBackground(this.app);
 
         this.loopObj = new PhysicLoop(this);
@@ -50,6 +52,8 @@ export default class GameManager {
         this.gameStrategy.initUI(this.loopObj);
 
         this.app.ticker.add(this._onTick, this);
+        console.log(PIXI.settings.SCALE_MODE);
+        console.log(PIXI.settings.RESOLUTION);
     }
 
     _onTick(deltaTime) {
