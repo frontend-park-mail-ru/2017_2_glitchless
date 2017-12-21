@@ -15,10 +15,10 @@ export default class GameView extends View {
         this.gameManager.initiateGame(data);
 
         this.fullScreenOpener = function(e) {
-          if (e.keyCode === 70) {
-            this.toggleFullScreen();
-            e.preventDefault();
-          }
+            if (e.keyCode === 70) {
+                this.toggleFullScreen();
+                e.preventDefault();
+            }
         }.bind(this);
 
         // document.body.style.overflow = 'hidden';
@@ -53,19 +53,47 @@ export default class GameView extends View {
         this.root.classList.add('fullscreen');
 
         const gameFieldWrapper = document.createElement('div');
-        gameFieldWrapper.style.width = '' + window.innerWidth;
-        gameFieldWrapper.style.height = '100vh';
+        gameFieldWrapper.style.position = 'relative';
+        gameFieldWrapper.style.width = '100%';
+        gameFieldWrapper.style.height = '100%';
         // gameFieldWrapper.style.backgroundColor = 'black';
         this.root.appendChild(gameFieldWrapper);
 
-        const gameField = document.createElement('div');
-        gameField.style.height = '100vh';
-        gameField.classList.add('game-background');
-        gameField.classList.add('fullscreen');
+        const background = document.createElement('div');
+        background.classList.add('game-background');
+        background.classList.add('fullscreen');
+        background.style.position = 'absolute';
+        background.style.top = '0';
+        background.style.left = '0';
+        background.style.background = `url(${background_jpg})`;
+        background.style.width = '100%';
+        background.style.height = '100%';
+        this._background = background;
         this._moveBackgroundAngle = 1.2;
         this._moveBackground();
-        gameField.style.backgroundImage = 'url(' + background_jpg + ')';
+        gameFieldWrapper.appendChild(background);
+
+        const gameField = document.createElement('div');
+        gameField.style.height = '100vh';
+        gameField.classList.add('fullscreen');
         gameFieldWrapper.appendChild(gameField);
+
+        const glow = document.createElement('div');
+        glow.classList.add('fullscreen');
+        glow.style.position = 'absolute';
+        glow.style.top = '0';
+        glow.style.left = '0';
+        glow.style.background = 'linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 50%)';
+        glow.style.width = '100%';
+        glow.style.height = '100%';
+        this._glow = glow;
+        this._glowProgress = -200;
+        this._doGlow('0');
+        this.serviceLocator.eventBus.subscribeOn('game_health_block_beat_player_left',
+            () => this._startGlow('90'), this);
+        this.serviceLocator.eventBus.subscribeOn('game_health_block_beat_player_right',
+            () => this._startGlow('-90'), this);
+        gameFieldWrapper.appendChild(glow);
 
         this.gameField = gameField;
         return gameField;
@@ -78,10 +106,10 @@ export default class GameView extends View {
             if (backgroundHeight > backgroundWidth) {
                 backgroundWidth = backgroundHeight / 800 * 1280;
             }
-            this.gameField.style.backgroundSize = `${backgroundWidth}px ${backgroundHeight}px`;
+            this._background.style.backgroundSize = `${backgroundWidth}px ${backgroundHeight}px`;
 
-            this.gameField.style.backgroundPositionX = `${Math.cos(this._moveBackgroundAngle) * 150 - 150}px`;
-            this.gameField.style.backgroundPositionY = `${-Math.sin(this._moveBackgroundAngle) * 150 - 150}px`;
+            this._background.style.backgroundPositionX = `${Math.cos(this._moveBackgroundAngle) * 150 - 150}px`;
+            this._background.style.backgroundPositionY = `${-Math.sin(this._moveBackgroundAngle) * 150 - 150}px`;
 
             this._moveBackgroundAngle += 0.005;
             if (this._moveBackgroundAngle > 6.28) {
@@ -91,24 +119,48 @@ export default class GameView extends View {
         }, 25);
     }
 
+    _startGlow(deg) {
+        this._glowProgress = -150;
+        this._doGlow(deg);
+    }
+
+    _doGlow(deg) {
+        clearTimeout(this._glowTimeout);
+        this._glowTimeout = setTimeout(() => {
+            this._glow.style.background = `linear-gradient(${deg}deg,
+                                                           rgba(160, 255, 255, 0),
+                                                           rgba(160, 255, 255, 0) ${this._glowProgress}%,
+                                                           rgba(160, 255, 255, 0.2) ${this._glowProgress + 50}%,
+                                                           rgba(160, 255, 255, 0.2) ${this._glowProgress + 100}%,
+                                                           rgba(160, 255, 255, 0) ${this._glowProgress + 150}%)`;
+
+            this._glowProgress += 10;
+            if (this._glowProgress > 300) {
+                this._glowProgress = -150;
+                return;
+            }
+            this._doGlow(deg);
+        }, 25);
+    }
+
     toggleFullScreen() {
-    if (!document.fullscreenElement &&    // alternative standard method
-        !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-                }
-            } else {
-                if (document.cancelFullScreen) {
-                    document.cancelFullScreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitCancelFullScreen) {
-                    document.webkitCancelFullScreen();
-                }
+        if (!document.fullscreenElement &&    // alternative standard method
+            !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
         }
     }
 

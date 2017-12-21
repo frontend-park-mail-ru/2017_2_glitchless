@@ -88,8 +88,22 @@ export default class GameManager {
 
         EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
+        EventBus.subscribeOn('hpblock_hit', this.onHpBlockLoss, this);
         EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
         EventBus.subscribeOn('player_won', this.onGameEnd, this);
+    }
+
+    onHpBlockLoss(blockLaserTuple) {
+        console.log(111, blockLaserTuple);
+        const playerNum = blockLaserTuple[0].playerNumber;
+        switch (playerNum) {
+            case 0:
+                this.serviceLocator.eventBus.emitEvent('game_health_block_beat_player_left');
+                break;
+            case 1:
+                this.serviceLocator.eventBus.emitEvent('game_health_block_beat_player_right');
+                break;
+        }
     }
 
     onGameEnd() {
