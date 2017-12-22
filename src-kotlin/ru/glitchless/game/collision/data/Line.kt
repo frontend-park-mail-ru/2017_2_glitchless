@@ -186,7 +186,7 @@ class Line(val A: Double,
 
         fun fromSlopeAndPoint(slope: Double, point: CollisionPoint, isVector: Boolean = true): Line {
             val A = 1.0;
-            val B = -1 / tan(slope);
+            val B = -1.0 / tan(slope);
             val C = -(point.x + B * point.y);
             var vectorDirectionByX: Boolean = false;
             var vectorDirectionByY: Boolean = false;
@@ -196,11 +196,11 @@ class Line(val A: Double,
                 vectorDirectionByY = slope >= -PI / 2 && slope < PI / 2;
             }
 
-            var incrementX: Int;
+            var incrementX: Float;
             if (vectorDirectionByX) {
-                incrementX = 1;
+                incrementX = 1.0;
             } else {
-                incrementX = -1;
+                incrementX = -1.0;
             }
 
             return Line(A, B, C, arrayOf(point, CollisionPoint(point.x + incrementX, (point.y - B * incrementX).toFloat())), isVector);

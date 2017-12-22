@@ -4,6 +4,7 @@ import RouterLinksViewMixin from '../../mixins/RouterLinksViewMixin';
 import ModalShadeViewMixin from '../../mixins/ModalShadeViewMixin';
 import template from './template.pug';
 import './style.scss';
+import UserModel from '../../../models/UserModel';
 
 class LobbyView extends View {
     open(root, data) {
@@ -28,6 +29,9 @@ class LobbyView extends View {
         this.serviceLocator.magicTransport.eventBus.subscribeOn('ws_error', this.onError, this);
         this.serviceLocator.magicTransport.eventBus.subscribeOn('GameInitState', this.onNewSocketMessage, this);
         this.serviceLocator.magicTransport.eventBus.subscribeOn('FullSwapScene', this._onOpenGame, this);
+        this.serviceLocator.magicTransport.eventBus.subscribeOn('AuthMessage', (authData) => {
+            UserModel.fromApiJson({login: authData.login, email: 'anon@anon.anon'}).saveInLocalStorage();
+        });
         this.linkElem.addEventListener('click', () => this._copyToClipboard(this.linkElem));
     }
 

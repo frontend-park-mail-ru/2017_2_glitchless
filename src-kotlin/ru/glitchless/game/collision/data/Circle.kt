@@ -44,10 +44,10 @@ open class Circle(public val radius: Double,
             val ma = (point2.y - point1.y) / (point2.x - point1.x);
             val mb = (point3.y - point2.y) / (point3.x - point2.x);
             val centerX = (ma * mb * (point1.y - point3.y) + mb * (point1.x + point2.x) -
-                    ma * (point2.x + point3.x)) / (2 * (mb - ma));
-            val centerY = (-centerX + (point1.x + point2.x) / 2) / ma + (point1.y + point2.y) / 2;
+                    ma * (point2.x + point3.x)) / (2.0 * (mb - ma));
+            val centerY = (-centerX + (point1.x + point2.x) / 2.0) / ma + (point1.y + point2.y) / 2;
 
-            val radius = sqrt((centerX - point1.x).pow(2) + (centerY - point1.y).pow(2));
+            val radius = sqrt((centerX - point1.x).pow(2.0) + (centerY - point1.y).pow(2));
             return Circle(radius.toDouble(), CollisionPoint(centerX, centerY));
         }
     }
