@@ -8,9 +8,9 @@ import MultiplayerStrategy from './strategy/MultiplayerStrategy';
 import ScoreManager from './ScoreManager';
 
 export default class GameManager {
-    constructor(serviceLocator, gameRestartFunc, newWindowSizeCalcFunc) {
+    constructor(serviceLocator, gameRestartFunc, newWindowSizeCalcFunc, gameWinFunc, gameLostFunc) {
         this.serviceLocator = serviceLocator;
-        this.scene = new GameScene(this);
+        this.scene = new GameScene(this, gameWinFunc, gameLostFunc);
         this.eventBus = EventBus;
         this.scoreManager = new ScoreManager(this);
         this.restart = gameRestartFunc;

@@ -5,6 +5,9 @@ import Constants from '../../../utils/Constants';
 import './style.scss';
 import background_jpg from '../../images/background.jpg';
 
+import game_lost_png from '../../images/game_over_splash_lost.png';
+import game_won_png from '../../images/game_over_splash_won.png';
+
 export default class GameView extends View {
     open(root, data = null) {
         this.root = root;
@@ -115,6 +118,28 @@ export default class GameView extends View {
         return gameField;
     }
 
+    _displayWinMessage() {
+        const centeredBlock = this._createCenteredImage();
+        centeredBlock.style.background = `url(${game_won_png})`;
+        centeredBlock.style.backgroundSize = 'cover';
+    }
+
+    _displayLoseMessage() {
+        const centeredBlock = this._createCenteredImage();
+        centeredBlock.style.background = `url(${game_lost_png})`;
+        centeredBlock.style.backgroundSize = 'cover';
+    }
+
+    _createCenteredImage() {
+        const centeredBlock = document.createElement('div');
+        centeredBlock.style.position = 'fixed';
+        centeredBlock.style.width = '90%';
+        centeredBlock.style.height = '30.515625%';
+        centeredBlock.style.zIndex = '50';
+        this.root.appendChild(centeredBlock);
+        return centeredBlock;
+    }
+
     _moveBackground() {
         clearTimeout(this._backgroundTimeout);
         this._backgroundTimeout = setTimeout(() => {
@@ -196,7 +221,7 @@ export default class GameView extends View {
 
     _setupGameManager(gameField, appWidth, appHeight) {
         this.gameManager = new GameManager(this.serviceLocator, this.addRestartButton.bind(this),
-            this._findAppWidthHeight);
+            this._findAppWidthHeight, this._displayWinMessage.bind(this), this._displayLoseMessage.bind(this));
         this.gameManager.setGameField(gameField);
         this.gameManager.setResolution([appWidth, appHeight]);
     }

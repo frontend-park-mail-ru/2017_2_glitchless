@@ -22,7 +22,7 @@ const loseText = new PIXI.Sprite.fromImage(game_over_splash_lost_png);
 const winText = new PIXI.Sprite.fromImage(game_over_splash_won_png);
 
 export default class GameScene {
-    constructor(gameManager) {
+    constructor(gameManager, gameWinFunc, gameLostFunc) {
         this.gameManager = gameManager;
         this.field = null;
         this.stage = null;
@@ -37,6 +37,8 @@ export default class GameScene {
         this.scoreMarginY = 100;
         this.loader = new PIXI.loaders.Loader();
         this.visualEffectsManager = new VisualEffectsManager();
+        this.displayWinMessage = gameWinFunc;
+        this.displayLoseMessage = gameLostFunc;
     }
 
     setRenderer(renderer) {
@@ -52,15 +54,15 @@ export default class GameScene {
         }
     }
 
-    displayWinMessage() {
-        this.prepareCentralText(winText);
-        this.addObject(winText);
-    }
+    // displayWinMessage() {
+    //     this.prepareCentralText(winText);
+    //     this.addObject(winText);
+    // }
 
-    displayLoseMessage() {
-        this.prepareCentralText(loseText);
-        this.addObject(loseText);
-    }
+    // displayLoseMessage() {
+    //     this.prepareCentralText(loseText);
+    //     this.addObject(loseText);
+    // }
 
     prepareCentralText(textSprite) {
         textSprite.anchor.set(0.5);
