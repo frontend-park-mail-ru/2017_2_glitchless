@@ -105,6 +105,7 @@ class LobbyView extends View {
         const isInput = elem.tagName === 'INPUT' || elem.tagName === 'TEXTAREA';
         let origSelectionStart;
         let origSelectionEnd;
+        let target;
         if (isInput) {
             // can just use the original source element for the selection and copy
             target = elem;
@@ -114,7 +115,7 @@ class LobbyView extends View {
             // must use a temporary form element for the selection and copy
             target = document.getElementById(targetId);
             if (!target) {
-                const target = document.createElement('textarea');
+                target = document.createElement('textarea');
                 target.style.position = 'absolute';
                 target.style.left = '-9999px';
                 target.style.top = '0';
