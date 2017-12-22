@@ -89,6 +89,8 @@ export default class SinglePlayerStrategy extends GameStrategy {
         const laser = blockAndLaser[1];
         const playerNum = hpblock.playerNumber;
 
+        hpblock.destroy();
+
         if (Constants.GAME_DEBUG) {
             console.log(playerNum);
         }

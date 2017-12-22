@@ -91,7 +91,6 @@ fun findIntersection(lineInput: Line, circle: Circle): Array<CollisionPoint> {
 @JsName("checkCollision")
 fun checkCollision(point: CollisionPoint, vector: CollisionPoint, arc: Arc, elapsedMS: Double,
                    fullCircle: Boolean = false, isRay: Boolean = false): Array<Any>? {
-    val speed = vector.getLength();
     val initialPoint = point.copy();
     val tmpPoint = point.copy();
 

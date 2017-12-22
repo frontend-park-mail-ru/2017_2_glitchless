@@ -42,8 +42,8 @@ export default class SyncDelegate {
             this.applyLightServerSwapCommit(data);
         }, this);
 
-        this.magicTransport.eventBus.subscribeOn('CreateObjectMessage', (data) => {
-            this.createObjectEvent(data);
+        this.magicTransport.eventBus.subscribeOn('LaserCreate', (data) => {
+            this.onLaserCreate(data);
         }, this);
 
         this.magicTransport.eventBus.subscribeOn('DestroyObject', (data) => {
@@ -61,6 +61,29 @@ export default class SyncDelegate {
         this.magicTransport.eventBus.subscribeOn('EndGameMessage', (data) => {
             this.onGameEnd(data);
         }, this);
+
+        this.magicTransport.eventBus.subscribeOn('LaserDump', (data) => {
+            this.onLaserChange(data);
+        }, this);
+    }
+
+    public onLaserCreate(data) {
+        const entity = new Laser(this.physicContext);
+        entity.setSpriteSize(Constants.GAME_LASER_SIZE, this.physicContext.gameManager);
+        this.physicContext.gameManager.addObject('laser', entity);
+
+        entity.multiplayerId = data.objectId;
+        this.idToObject[data.objectId] = entity;
+
+        entity.setSpeed(data.speed);
+        entity.setCoords(this.physicContext._getCenterPoint(), this.physicContext);
+    }
+
+    public onLaserChange(data) {
+        const object = this.idToObject[data.objectId];
+        const newPoint = new Point(data.coord.posX, data.coord.posY);
+        object.setCoords(newPoint, this.physicContext);
+        object.setSpeed(data.speed);
     }
 
     public onChangeDirection(platformDirectionSnap) {
@@ -74,14 +97,8 @@ export default class SyncDelegate {
 
     public applyServerSwapCommit(data) {
         const object = this.idToObject[data.objectId];
-        const newPoint = new Point(data.coord.posX, data.coord.posY);
-        object.setCoords(newPoint, this.physicContext);
         object.setRotation(data.rotation, this.physicContext);
         object.setRotationSpeed(data.rotationSpeed);
-
-        if (data.speed !== null) {
-            object.setSpeed(data.speed);
-        }
     }
 
     public syncShield(data) {
@@ -95,8 +112,6 @@ export default class SyncDelegate {
         const commitId = Math.max(data.commitId, this.firstExistCommit);
 
         const object = this.idToObject[data.objectId];
-        const newPoint = new Point(data.coord.posX, data.coord.posY);
-        object.setCoords(newPoint, this.physicContext);
         object.setRotation(data.rotation, this.physicContext);
 
         for (let i = commitId; i < this.counter - 1; i++) {
@@ -145,26 +160,6 @@ export default class SyncDelegate {
         object.setRotationSpeed(swap.rotationspeed);
     }
 
-    public createObjectEvent(data) {
-        let entity;
-        switch (data.objectType) {
-            case 'Laser': {
-                entity = new Laser(this.physicContext);
-                entity.setSpriteSize(Constants.GAME_LASER_SIZE, this.physicContext.gameManager);
-                this.physicContext.gameManager.addObject('laser', entity);
-                break;
-            }
-            default: {
-                console.log(data);
-            }
-        }
-
-        entity.multiplayerId = data.objectId;
-        this.idToObject[data.objectId] = entity;
-
-        this.applyServerSwapCommit(data);
-    }
-
     public onGameEnd(data) {
         const currentPlayerWin = data.winnerLogin === UserModel.loadCurrentSyncronized().login;
         // 0 если выйграл
@@ -179,7 +174,7 @@ export default class SyncDelegate {
         if (this.idToObject[data.id] === null) {
             return;
         }
-        this.idToObject[data.id].forDestroy = true;
+        this.idToObject[data.id].destroy();
         this.idToObject[data.id] = null;
     }
 
