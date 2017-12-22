@@ -52,7 +52,7 @@ export default class MultiplayerStrategy extends GameStrategy {
         const platformRight = fullSwap.platform_2;
 
         this.currentUserIsLeft = platformLeft.data === UserModel.loadCurrentSyncronized().login;
-        this.syncDelegate = new SyncDelegate(this.magicTransport, physicContext);
+        this.syncDelegate = new SyncDelegate(this.magicTransport, physicContext, this);
         this.userPlatform = this.currentUserIsLeft
             ? physicContext.spriteStorage.userPlatform
             : physicContext.spriteStorage.enemyPlatform;
@@ -102,6 +102,16 @@ export default class MultiplayerStrategy extends GameStrategy {
         return;
     }
 
+    public setShield(physicContext, player, playerNum, newShieldVal) {
+        player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
+        this.updateBar(playerNum, (player.shield / player.maxShield) * 100);
+        if (player.shield / player.maxShield > Constants.SHIELD_ACTIVATION_PERCENT / 100) {
+            physicContext.physicObjects.forcefield[playerNum].onEnable();
+        } else {
+            physicContext.physicObjects.forcefield[playerNum].onChargeEnd();
+        }
+    }
+
     private processControls() {
         const oldDirection = this.userPlatform.getDirection();
         const newDirection = this.getPlatformDirection();
@@ -134,15 +144,11 @@ export default class MultiplayerStrategy extends GameStrategy {
     private replenishShields(physicContext, elapsedMS: number) {
         this.players.forEach(function (player, playerNum) {
             const newShieldVal = player.shield + Constants.SHIELD_REGEN_RATIO * elapsedMS / 1000;
-            player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
-            this.updateBar(playerNum, (player.shield / player.maxShield) * 100);
-            if (player.shield / player.maxShield > Constants.SHIELD_ACTIVATION_PERCENT / 100) {
-                physicContext.physicObjects.forcefield[playerNum].onEnable();
-            }
+            this.setShield(physicContext, player, playerNum, newShieldVal);
         }, this);
     }
 
-    public updateBar(num: number, percent: number) {
+    private updateBar(num: number, percent: number) {
         this.forceFieldBars[num].height = this.scene.scaleLength(Constants.GAME_FORCEFIELD_BAR_SIZE[1]) * percent / 100;
     }
 }

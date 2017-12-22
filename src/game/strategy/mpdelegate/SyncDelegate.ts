@@ -2,16 +2,19 @@ import Constants from '../../../utils/Constants';
 import GameEventBus from '../../GameEventBus';
 import MagicTransport from '../../io/MagicTransport';
 import {Direction} from '../../physics/object/Direction';
+import ForceField from '../../physics/object/ForceField';
 import Laser from '../../physics/object/Laser';
 import Platform from '../../physics/object/Platform';
 import PhysicsObject from '../../physics/object/primitive/PhysicsObject.js';
 import Point from '../../physics/object/primitive/Point.js';
+import MultiplayerStrategy from '../MultiplayerStrategy';
 
 export default class SyncDelegate {
     private magicTransport: MagicTransport;
     private idToObject = {};
     private physicContext;
     private pendingProcessToSend = {};
+    private strategy: MultiplayerStrategy;
 
     // Last commit id - counter
     private counter: number = 0;
@@ -20,9 +23,11 @@ export default class SyncDelegate {
     // {'id', 'speed', 'timestamp_start', 'timestamp_end'}
     private commits = {};
 
-    constructor(magicTransport: MagicTransport, physicContext) {
+    constructor(magicTransport: MagicTransport, physicContext, strategy: MultiplayerStrategy) {
         this.magicTransport = magicTransport;
         this.physicContext = physicContext;
+        this.strategy = strategy;
+
         GameEventBus.subscribeOn('change_direction', (data) => {
             this.onChangeDirection(data);
         }, this);
@@ -46,6 +51,10 @@ export default class SyncDelegate {
         this.magicTransport.eventBus.subscribeOn('SingleSnapObject', (data) => {
             this.applySingleSwap(data);
         }, this);
+
+        this.magicTransport.eventBus.subscribeOn('SyncShield', (data) => {
+            this.syncShield(data);
+        }, this);
     }
 
     public onChangeDirection(platformDirectionSnap) {
@@ -67,6 +76,13 @@ export default class SyncDelegate {
         if (data.speed !== null) {
             object.setSpeed(data.speed);
         }
+    }
+
+    public syncShield(data) {
+        const object: ForceField = this.idToObject[data.objectId];
+        const player = this.strategy.players[object.playerNumber];
+
+        this.strategy.setShield(this.physicContext, player, object.playerNumber, data.shieldVal);
     }
 
     public applyLightServerSwapCommit(data) {
