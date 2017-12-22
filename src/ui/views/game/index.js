@@ -24,8 +24,6 @@ export default class GameView extends View {
             }
         }.bind(this);
 
-        this._displayLoseMessage();
-
         this.gameCanvas = document.querySelector('canvas');
 
         this.gameCanvas.style.display = 'block';
