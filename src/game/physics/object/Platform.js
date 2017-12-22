@@ -2,15 +2,17 @@ import * as PIXI from 'pixi.js';
 import PhysicsEntitiy from './primitive/PhysicsEntity';
 import Constants from '../../../utils/Constants';
 import Point from './primitive/Point';
-
-import platform_png from '../../../ui/images/platform.png';
 import {Direction} from './Direction';
 
-const basicPlatformTexture = PIXI.Texture.fromImage(platform_png);
+import platform_cyan_png from '../../../ui/images/platform_v2_cyan.png';
+import platform_red_png from '../../../ui/images/platform_red.png';
+
+const platform1Texture = PIXI.Texture.fromImage(platform_cyan_png);
+const platform2Texture = PIXI.Texture.fromImage(platform_red_png);
 
 export default class Platform extends PhysicsEntitiy {
     constructor(context, circle, playerNum) {
-        const basicPlatformSprite = new PIXI.Sprite(basicPlatformTexture);
+        const basicPlatformSprite = new PIXI.Sprite(playerNum === 0 ? platform1Texture : platform2Texture);
         super(basicPlatformSprite, context);
         this.circle = circle;
         this.direction = 0;
