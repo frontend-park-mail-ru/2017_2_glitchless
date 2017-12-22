@@ -198,12 +198,12 @@ class Line(val A: Double,
 
             var incrementX: Float;
             if (vectorDirectionByX) {
-                incrementX = 1.0;
+                incrementX = 1.0f;
             } else {
-                incrementX = -1.0;
+                incrementX = -1.0f;
             }
 
-            return Line(A, B, C, arrayOf(point, CollisionPoint(point.x + incrementX, (point.y - B * incrementX).toFloat())), isVector);
+            return Line(A, B, C, arrayOf(point, CollisionPoint(point.x.toFloat() + incrementX, (point.y - B * incrementX).toFloat())), isVector);
         }
     }
 }
