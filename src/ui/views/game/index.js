@@ -12,6 +12,10 @@ export default class GameView extends View {
     open(root, data = null) {
         this.root = root;
 
+        if (data !== null && data.type === 'FullSwapScene') {
+            this.addRestartButton = function(){};
+        }
+
         const {appWidth, appHeight} = this._findAppWidthHeight();
         const gameField = this._setupAppCanvas(appWidth, appHeight);
         this._setupGameManager(gameField, appWidth, appHeight);
