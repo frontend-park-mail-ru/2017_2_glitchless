@@ -38,6 +38,14 @@ export default class SyncDelegate {
         this.magicTransport.eventBus.subscribeOn('CreateObjectMessage', (data) => {
             this.createObjectEvent(data);
         }, this);
+
+        this.magicTransport.eventBus.subscribeOn('DestroyObject', (data) => {
+            this.onDestroyObject(data);
+        }, this);
+
+        this.magicTransport.eventBus.subscribeOn('SingleSnapObject', (data) => {
+            this.applySingleSwap(data);
+        }, this);
     }
 
     public onChangeDirection(platformDirectionSnap) {
@@ -84,6 +92,17 @@ export default class SyncDelegate {
         this.applyToObject(object, lastCommit);
     }
 
+    public applySingleSwap(data) {
+        const snap = data.singleSnapObject;
+
+        const object = this.idToObject[snap.objectId];
+        if (snap === null) {
+            return;
+        }
+
+        this.applySwapSnapshot(object, snap);
+    }
+
     public applySwapSnapshot(object: PhysicsObject, swap) {
         object.multiplayerId = swap.objectId;
         this.idToObject[swap.objectId] = object;
@@ -94,6 +113,8 @@ export default class SyncDelegate {
         if (object.isStatic) {
             return;
         }
+
+        object.forDestroy = swap.isDestroyed;
 
         if (swap.speed !== null) {
             object.setSpeed(swap.speed);
@@ -120,6 +141,14 @@ export default class SyncDelegate {
         this.idToObject[data.objectId] = entity;
 
         this.applyServerSwapCommit(data);
+    }
+
+    public onDestroyObject(data) {
+        if (this.idToObject[data.id] === null) {
+            return;
+        }
+        this.idToObject[data.id].forDestroy = true;
+        this.idToObject[data.id] = null;
     }
 
     /**

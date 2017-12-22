@@ -11,6 +11,8 @@ import PlatformCircle from './physics/object/PlatformKirkle';
 import Constants from '../utils/Constants';
 import Point from './physics/object/primitive/Point';
 
+import VisualEffectsManager from './VisualEffectsManager';
+
 import game_over_splash_lost_png from '../ui/images/game_over_splash_lost.png';
 import game_over_splash_won_png from '../ui/images/game_over_splash_won.png';
 
@@ -20,7 +22,8 @@ const loseText = new PIXI.Sprite.fromImage(game_over_splash_lost_png);
 const winText = new PIXI.Sprite.fromImage(game_over_splash_won_png);
 
 export default class GameScene {
-    constructor() {
+    constructor(gameManager) {
+        this.gameManager = gameManager;
         this.field = null;
         this.stage = null;
         this.fontStyle = new PIXI.TextStyle({
@@ -33,6 +36,7 @@ export default class GameScene {
         this.scoreMarginX = 100;
         this.scoreMarginY = 100;
         this.loader = new PIXI.loaders.Loader();
+        this.visualEffectsManager = new VisualEffectsManager();
     }
 
     setRenderer(renderer) {
@@ -70,8 +74,18 @@ export default class GameScene {
 
     initContainer() {
         this.container = new PIXI.Container();
+        this.visualEffectsManager.initContainer(this.container);
         this.stage.addChild(this.container);
         this.mainScene = this.container;
+    }
+
+    initVisualEffectsManager() {
+        this.visualEffectsManager.initHealthStatusFunc(() => {
+            const player = this.gameManager.gameStrategy.players[0];
+            const healthCoef = player.health / 5;
+            const shieldCoef = player.shield / player.maxShield;
+            return (3 * healthCoef + shieldCoef) / 4;
+        });
     }
 
     initBackground(app) {
@@ -79,12 +93,13 @@ export default class GameScene {
         this.initialHeight = this.oldHeight = this.height;
     }
 
-    Tick() {
+    tick(dt) {
         this.container.scale.x *= this.height / this.oldHeight;
         this.container.scale.y *= this.width / this.oldWidth;
         this.container.y = (this.renderer.height - this.container.height) / 2;
         this.oldWidth = this.width;
         this.oldHeight = this.height;
+        this.visualEffectsManager.tick(dt);
     }
 
     initField(physicContext) {
@@ -257,7 +272,6 @@ export default class GameScene {
      * @param {Sprite} sprite Object's sprite
      */
     addObject(sprite) {
-        console.log(this.mainScene);
         this.mainScene.addChild(sprite);
     }
 }

@@ -5,6 +5,7 @@
     border: none;
     min-width: 150px;
     transition: .5s;
+    z-index: 99;
 
     color: white;
     text-decoration: none;
@@ -21,8 +22,7 @@
 }
 
 .game-background {
-    background: no-repeat center center; 
-    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .fullscreen {

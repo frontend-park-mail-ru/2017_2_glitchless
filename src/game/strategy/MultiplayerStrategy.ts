@@ -94,6 +94,7 @@ export default class MultiplayerStrategy extends GameStrategy {
 
     public gameplayTick(physicContext, elapsedMS) {
         this.processControls();
+        this.replenishShields(physicContext, elapsedMS);
     }
 
     public onHpLoss(hpblock) {
@@ -128,5 +129,20 @@ export default class MultiplayerStrategy extends GameStrategy {
             scene.addObject(forceFieldBar);
             this.forceFieldBars.push(forceFieldBar);
         }, this);
+    }
+
+    private replenishShields(physicContext, elapsedMS: number) {
+        this.players.forEach(function (player, playerNum) {
+            const newShieldVal = player.shield + Constants.SHIELD_REGEN_RATIO * elapsedMS / 1000;
+            player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
+            this.updateBar(playerNum, (player.shield / player.maxShield) * 100);
+            if (player.shield / player.maxShield > Constants.SHIELD_ACTIVATION_PERCENT / 100) {
+                physicContext.physicObjects.forcefield[playerNum].onEnable();
+            }
+        }, this);
+    }
+
+    public updateBar(num: number, percent: number) {
+        this.forceFieldBars[num].height = this.scene.scaleLength(Constants.GAME_FORCEFIELD_BAR_SIZE[1]) * percent / 100;
     }
 }

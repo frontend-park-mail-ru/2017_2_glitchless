@@ -28,7 +28,9 @@ export default class PhysicsObject {
     }
 
     onDestroy() {
-        this.sprite.parent.removeChild(this.sprite);
+        if (this.sprite.parent !== null) {
+            this.sprite.parent.removeChild(this.sprite);
+        }
     }
 
     /**

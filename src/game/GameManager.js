@@ -10,7 +10,7 @@ import ScoreManager from './ScoreManager';
 export default class GameManager {
     constructor(serviceLocator, gameRestartFunc, newWindowSizeCalcFunc) {
         this.serviceLocator = serviceLocator;
-        this.scene = new GameScene();
+        this.scene = new GameScene(this);
         this.eventBus = EventBus;
         this.scoreManager = new ScoreManager(this);
         this.restart = gameRestartFunc;
@@ -43,6 +43,7 @@ export default class GameManager {
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
         this.scene.initContainer();
+        this.scene.initVisualEffectsManager();
 
         console.log(window.devicePixelRatio);
         this.scene.initBackground(this.app);
@@ -69,7 +70,7 @@ export default class GameManager {
         }
         this.gameStrategy.gameplayTick(this.loopObj, elapsedMS);
         this.loopObj._mainTick(deltaTime);
-        this.scene.Tick();
+        this.scene.tick(deltaTime);
     }
 
     _initStrategy(physicObject, data) {
@@ -83,8 +84,21 @@ export default class GameManager {
 
         EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
+        EventBus.subscribeOn('hpblock_hit', this.onHpBlockLoss, this);
         EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
         EventBus.subscribeOn('player_won', this.onGameEnd, this);
+    }
+
+    onHpBlockLoss(blockLaserTuple) {
+        const playerNum = blockLaserTuple[0].playerNumber;
+        switch (playerNum) {
+            case 0:
+                this.serviceLocator.eventBus.emitEvent('game_health_block_beat_player_left');
+                break;
+            case 1:
+                this.serviceLocator.eventBus.emitEvent('game_health_block_beat_player_right');
+                break;
+        }
     }
 
     onGameEnd() {

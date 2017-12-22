@@ -48,6 +48,14 @@ export default class ForceField extends PhysicsObject {
 
     onCollision(collision) {
         EventBus.emitEvent('forcefield_hit', this);
+
+        this.sprite.alpha = 0;
+        setTimeout(() => {
+            if (this.off) {
+                return;
+            }
+            this.sprite.alpha = 1;
+        }, 250);
     }
 
     onChargeEnd() {
