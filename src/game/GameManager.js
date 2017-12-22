@@ -111,6 +111,7 @@ export default class GameManager {
     destroy() {
         this.gameStrategy.destroy();
         this.app.destroy(true);
+        this.eventBus.clear();
     }
 
     addObject(tag, physicObject) {

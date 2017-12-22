@@ -75,4 +75,8 @@ export default class EventBus {
             it[0] !== callback || it[1] !== context
         ));
     }
+
+    clear() {
+        this.events = {};
+    }
 }
