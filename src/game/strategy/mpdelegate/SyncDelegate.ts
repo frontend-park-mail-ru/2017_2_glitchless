@@ -1,5 +1,7 @@
+import UserModel from '../../../models/UserModel.js';
 import Constants from '../../../utils/Constants';
 import GameEventBus from '../../GameEventBus';
+import EventBus from '../../GameEventBus';
 import MagicTransport from '../../io/MagicTransport';
 import {Direction} from '../../physics/object/Direction';
 import ForceField from '../../physics/object/ForceField';
@@ -54,6 +56,10 @@ export default class SyncDelegate {
 
         this.magicTransport.eventBus.subscribeOn('SyncShield', (data) => {
             this.syncShield(data);
+        }, this);
+
+        this.magicTransport.eventBus.subscribeOn('EndGameMessage', (data) => {
+            this.onGameEnd(data);
         }, this);
     }
 
@@ -157,6 +163,16 @@ export default class SyncDelegate {
         this.idToObject[data.objectId] = entity;
 
         this.applyServerSwapCommit(data);
+    }
+
+    public onGameEnd(data) {
+        const currentPlayerWin = data.winnerLogin === UserModel.loadCurrentSyncronized().login;
+        // 0 если выйграл
+        if (currentPlayerWin) {
+            EventBus.emitEvent('player_won', 0);
+            return;
+        }
+        EventBus.emitEvent('player_won', 1);
     }
 
     public onDestroyObject(data) {
