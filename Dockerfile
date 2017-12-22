@@ -1,4 +1,4 @@
-FROM nginx
+FROM debian:stretch-slim
 
 RUN apt-get update -qq && \
     apt-get install -qq -y build-essential gnupg curl wget && \
@@ -27,6 +27,14 @@ COPY webpack webpack
 COPY webpack.*.js ./
 COPY ts*.json ./
 COPY typing.d.ts .
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+RUN npm run lint
 RUN npm run build
+
+
+FROM nginx:1.13-alpine
+
+WORKDIR /app
+
+COPY --from=0 /app/dist .
+COPY nginx.conf /etc/nginx/conf.d/default.conf
