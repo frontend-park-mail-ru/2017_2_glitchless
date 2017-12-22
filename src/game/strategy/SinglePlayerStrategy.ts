@@ -198,6 +198,10 @@ export default class SinglePlayerStrategy extends GameStrategy {
             return;
         }
 
+        if (Math.random() < Constants.BOT_ERROR_RATE) {
+            return;
+        }
+
         if (dangerPoint.y > platformCoords.y) {
             enemyPlatform.setMoveDirection(Direction.LEFT);
         } else {
@@ -218,7 +222,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
 
     private processLaserCreate(physicContext, elapsedMS: number) {
         this.counter += elapsedMS;
-        if (this.counter > 700) {
+        if (this.counter > 800) {
             this.counter = 0;
             const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-4);
             const laser = new Laser(physicContext);

@@ -85,6 +85,8 @@ export default class GameManager {
         EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.onHpBlockLoss, this);
+        EventBus.subscribeOn('hpblock_hit',
+            this.scene.visualEffectsManager.doSuperFlicker, this.scene.visualEffectsManager);
         EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
         EventBus.subscribeOn('player_won', this.onGameEnd, this);
     }

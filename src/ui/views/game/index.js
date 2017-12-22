@@ -80,7 +80,7 @@ export default class GameView extends View {
         this._moveBackground();
         gameFieldWrapper.appendChild(background);
 
-        const versionNumber = 'v0.8.3'; //change this if you're not sure if your changes are passing through
+        const versionNumber = 'v0.8.4'; //change this if you're not sure if your changes are passing through
         const versionDisplay = document.createElement('div');
         versionDisplay.style.position = 'fixed';
         versionDisplay.style.zIndex = '10';
@@ -192,11 +192,11 @@ export default class GameView extends View {
         clearTimeout(this._glowTimeout);
         this._glowTimeout = setTimeout(() => {
             this._glow.style.background = `linear-gradient(${deg}deg,
-                                                           rgba(155, 255, 255, 0),
-                                                           rgba(155, 255, 255, 0) ${this._glowProgress}%,
-                                                           rgba(155, 255, 255, 0.3) ${this._glowProgress + 50}%,
-                                                           rgba(155, 255, 255, 0.3) ${this._glowProgress + 100}%,
-                                                           rgba(155, 255, 255, 0) ${this._glowProgress + 150}%)`;
+                                                           rgba(55, 255, 255, 0),
+                                                           rgba(55, 255, 255, 0) ${this._glowProgress}%,
+                                                           rgba(55, 255, 255, 0.3) ${this._glowProgress + 50}%,
+                                                           rgba(55, 255, 255, 0.3) ${this._glowProgress + 100}%,
+                                                           rgba(55, 255, 255, 0) ${this._glowProgress + 150}%)`;
 
             this._glowProgress += 10;
             if (this._glowProgress > 300) {
