@@ -48,7 +48,7 @@ open class Circle(public val radius: Double,
             val centerY = (-centerX + (point1.x + point2.x) / 2.0) / ma + (point1.y + point2.y) / 2;
 
             val radius = sqrt((centerX - point1.x).pow(2.0) + (centerY - point1.y).pow(2));
-            return Circle(radius.toDouble(), CollisionPoint(centerX, centerY));
+            return Circle(radius.toDouble(), CollisionPoint(centerX.toFloat(), centerY.toFloat()));
         }
     }
 }
