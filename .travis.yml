@@ -4,7 +4,7 @@ services:
   - docker
 
 addons:
-  ssh_known_hosts: 54.36.181.198
+  ssh_known_hosts: 194.67.211.202
 
 script:
   - docker build -t frontend .
@@ -15,7 +15,7 @@ deploy:
       - docker login https://registry.glitchless.ru -u null -p null &&
             docker tag frontend registry.glitchless.ru/rhythm_blast/frontend:latest &&
             docker push registry.glitchless.ru/rhythm_blast/frontend:latest &&
-            ssh ansible@54.36.181.198 "cd ansible && ansible-playbook playbook.yml"
+            ssh ansible@194.67.211.202 "cd ansible && ansible-playbook playbook.yml"
     on:
       branch: site-base
 
