@@ -213,16 +213,15 @@ export default class SinglePlayerStrategy extends GameStrategy {
 
     private processLaserCreate(physicContext, elapsedMS: number) {
         this.counter += elapsedMS;
-        if (this.counter > 1000) {
+        if (this.counter > 500) {
             this.counter = 0;
-            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-2);
+            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-4);
             const laser = new Laser(physicContext);
             laser.setCoords(physicContext._getCenterPoint(), physicContext);
             laser.setSpriteSize(Constants.GAME_LASER_SIZE, physicContext.gameManager);
             laser.setSpeed(laserSpeed);
             physicContext.gameManager.addObject('laser', laser);
-            this.angleCounter++;
+            this.angleCounter += Math.floor(Math.random() * 4 + 1);
         }
-
     }
 }

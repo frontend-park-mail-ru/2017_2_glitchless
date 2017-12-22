@@ -8,7 +8,7 @@ export default {
     GAME_ALIEN_SIZE: [100, 100],
     GAME_BOUNDER_SIZE: [219, 131].map((x) => x * 0.4),
     GAME_PLATFORM_SIZE: [105, 36],
-    GAME_LASER_SIZE: [20, 10],
+    GAME_LASER_SIZE: [30, 10],
     GAME_HEALTHBLOCK_SIZE: [252, 64],
     GAME_FORCEFIELD_SIZE: [1000, 1000].map((x) => x * 1.1),
     GAME_TEXT_SIZE: [1500, 750],
