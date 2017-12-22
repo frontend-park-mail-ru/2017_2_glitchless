@@ -191,9 +191,12 @@ export default class SinglePlayerStrategy extends GameStrategy {
             return; // No lasers are going for our half of the field, who are we to complain? Just chillax.
         }
 
-        if (dangerPoint.y * 1
-            / Math.sin(Constants.GAME_FORCEFIELD_RADIUS / Constants.GAME_CIRCLE1_RADIUS * dangerPoint.y)
-            > platformCoords.y) {
+        if (Math.abs(dangerPoint.y - platformCoords.y) < Constants.GAME_PLATFORM_SIZE[0] / 4) {
+            enemyPlatform.setMoveDirection(Direction.NONE);
+            return;
+        }
+
+        if (dangerPoint.y > platformCoords.y) {
             enemyPlatform.setMoveDirection(Direction.LEFT);
         } else {
             enemyPlatform.setMoveDirection(Direction.RIGHT);
@@ -213,7 +216,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
 
     private processLaserCreate(physicContext, elapsedMS: number) {
         this.counter += elapsedMS;
-        if (this.counter > 500) {
+        if (this.counter > 700) {
             this.counter = 0;
             const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-4);
             const laser = new Laser(physicContext);
@@ -221,7 +224,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
             laser.setSpriteSize(Constants.GAME_LASER_SIZE, physicContext.gameManager);
             laser.setSpeed(laserSpeed);
             physicContext.gameManager.addObject('laser', laser);
-            this.angleCounter += Math.floor(Math.random() * 4 + 1);
+            this.angleCounter += Math.floor(Math.random() * 3 + 1);
         }
     }
 }

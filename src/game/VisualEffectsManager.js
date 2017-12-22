@@ -24,8 +24,8 @@ export default class VisualEffectsManager {
             return;
         }
 
-        const additionalShift = Math.pow(2, (1 - this.healthStatusFunc()) * 4);
-        const amplitude = 1 + (1 - this.healthStatusFunc()) * 7;
+        const additionalShift = Math.pow(1.8, (1 - this.healthStatusFunc()) * 4);
+        const amplitude = 1 + (1 - this.healthStatusFunc()) * 8;
         this.rgbFilter.red[0] = Math.random() * amplitude + additionalShift;
         this.rgbFilter.red[1] = -2 - additionalShift / 2;
         this.rgbFilter.blue[0] = Math.random() * -amplitude - additionalShift / 2;

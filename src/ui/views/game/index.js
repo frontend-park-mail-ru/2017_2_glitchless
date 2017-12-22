@@ -158,11 +158,11 @@ export default class GameView extends View {
         clearTimeout(this._glowTimeout);
         this._glowTimeout = setTimeout(() => {
             this._glow.style.background = `linear-gradient(${deg}deg,
-                                                           rgba(160, 255, 255, 0),
-                                                           rgba(160, 255, 255, 0) ${this._glowProgress}%,
-                                                           rgba(160, 255, 255, 0.2) ${this._glowProgress + 50}%,
-                                                           rgba(160, 255, 255, 0.2) ${this._glowProgress + 100}%,
-                                                           rgba(160, 255, 255, 0) ${this._glowProgress + 150}%)`;
+                                                           rgba(155, 255, 255, 0),
+                                                           rgba(155, 255, 255, 0) ${this._glowProgress}%,
+                                                           rgba(155, 255, 255, 0.3) ${this._glowProgress + 50}%,
+                                                           rgba(155, 255, 255, 0.3) ${this._glowProgress + 100}%,
+                                                           rgba(155, 255, 255, 0) ${this._glowProgress + 150}%)`;
 
             this._glowProgress += 10;
             if (this._glowProgress > 300) {

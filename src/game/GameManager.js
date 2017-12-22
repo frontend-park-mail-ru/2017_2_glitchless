@@ -90,7 +90,6 @@ export default class GameManager {
     }
 
     onHpBlockLoss(blockLaserTuple) {
-        console.log(111, blockLaserTuple);
         const playerNum = blockLaserTuple[0].playerNumber;
         switch (playerNum) {
             case 0:
