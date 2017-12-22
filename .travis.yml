@@ -8,7 +8,6 @@ addons:
 
 script:
   - docker build -t frontend .
-  - docker run --rm frontend npm run lint
 
 deploy:
   - provider: script
