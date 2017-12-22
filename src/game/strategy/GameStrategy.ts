@@ -62,4 +62,5 @@ export default abstract class GameStrategy {
             return Direction.NONE;
         }
     }
+
 }

@@ -87,7 +87,6 @@ export default class PhysicVectorLoop {
             }
         });
 
-        //TODO: Absorbing lasers that hit forcefields, depleting forcefields
         context.physicObjects.forcefield.forEach((forcefield) => {
             if (forcefield.off) {
                 return;
@@ -110,7 +109,7 @@ export default class PhysicVectorLoop {
                 }.bind(context));
             }
         });
-        //TODO: depleting health
+
         context.physicObjects.hpblock.forEach((hpblock) => {
             context.physicObjects.laser.forEach((laser) => {
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
