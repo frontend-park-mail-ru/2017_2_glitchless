@@ -12,6 +12,10 @@ export default class GameView extends View {
     open(root, data = null) {
         this.root = root;
 
+        if (data !== null && data.type === 'FullSwapScene') {
+            this.addRestartButton = function() {/*placeholder func*/};
+        }
+
         const {appWidth, appHeight} = this._findAppWidthHeight();
         const gameField = this._setupAppCanvas(appWidth, appHeight);
         this._setupGameManager(gameField, appWidth, appHeight);
@@ -229,7 +233,7 @@ export default class GameView extends View {
     }
 
     _setupGameManager(gameField, appWidth, appHeight) {
-        this.gameManager = new GameManager(this.serviceLocator, this.addRestartButton.bind(this),
+        this.gameManager = new GameManager(this.serviceLocator, this.addEndGameButtons.bind(this),
             this._findAppWidthHeight, this._displayWinMessage.bind(this), this._displayLoseMessage.bind(this));
         this.gameManager.setGameField(gameField);
         this.gameManager.setResolution([appWidth, appHeight]);
@@ -239,7 +243,7 @@ export default class GameView extends View {
         if (!this.serviceLocator.gameRefreshed) {
             const currentUrlPath = location.pathname;
             console.log(currentUrlPath);
-            serviceLocator.router.changePage('/');
+            this.serviceLocator.router.changePage('/');
             this.serviceLocator.router.changePage(currentUrlPath);
         } else {
             location.reload();
@@ -248,10 +252,27 @@ export default class GameView extends View {
         this.serviceLocator.gameRefreshed = !this.serviceLocator.gameRefreshed;
     }
 
+    addEndGameButtons() {
+        this.addMenuButton();
+        this.addRestartButton();
+    }
+
+    addMenuButton() {
+        const backToMenuButton = document.createElement('button');
+        backToMenuButton.innerHTML = 'Back to menu';
+        backToMenuButton.classList.add('endgame-button');
+        backToMenuButton.onclick = this.serviceLocator.router.changePage
+            .bind(this.serviceLocator.router,'/');
+
+        backToMenuButton.style.position = 'absolute';
+        backToMenuButton.style.top = '66%';
+        document.body.appendChild(backToMenuButton);
+    }
+
     addRestartButton() {
         const restartButton = document.createElement('button');
         restartButton.innerHTML = 'Restart the game';
-        restartButton.classList.add('restart-button');
+        restartButton.classList.add('endgame-button');
         restartButton.onclick = this.refresh.bind(this);
         restartButton.style.position = 'absolute';
         restartButton.style.top = '70%';
