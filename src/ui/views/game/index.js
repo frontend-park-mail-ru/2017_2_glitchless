@@ -116,13 +116,9 @@ export default class GameView extends View {
     }
 
     _moveBackground() {
-        setTimeout(() => {
-            let backgroundWidth = window.innerWidth + 300;
-            const backgroundHeight = window.innerHeight + 300;
-            if (backgroundHeight > backgroundWidth) {
-                backgroundWidth = backgroundHeight / 800 * 1280;
-            }
-            this._background.style.backgroundSize = `${backgroundWidth}px ${backgroundHeight}px`;
+        clearTimeout(this._backgroundTimeout);
+        this._backgroundTimeout = setTimeout(() => {
+            this._fixResizeBackground();
 
             this._background.style.backgroundPositionX = `${Math.cos(this._moveBackgroundAngle) * 150 - 150}px`;
             this._background.style.backgroundPositionY = `${-Math.sin(this._moveBackgroundAngle) * 150 - 150}px`;
@@ -133,6 +129,24 @@ export default class GameView extends View {
             }
             this._moveBackground();
         }, 25);
+    }
+
+    _fixResizeBackground() {
+        if (this._prevWindowWidth === window.innerWidth) {
+            return;
+        }
+        if (this._prevWindowHeight === window.innerHeight) {
+            return;
+        }
+        this._prevWindowWidth = window.innerWidth;
+        this._prevWindowHeight = window.innerHeight;
+
+        let backgroundWidth = window.innerWidth + 300;
+        const backgroundHeight = window.innerHeight + 300;
+        if (backgroundHeight > backgroundWidth) {
+            backgroundWidth = backgroundHeight / 800 * 1280;
+        }
+        this._background.style.backgroundSize = `${backgroundWidth}px ${backgroundHeight}px`;
     }
 
     _startGlow(deg) {
