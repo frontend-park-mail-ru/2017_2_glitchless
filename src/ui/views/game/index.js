@@ -24,6 +24,13 @@ export default class GameView extends View {
             }
         }.bind(this);
 
+        this._displayLoseMessage();
+
+        this.gameCanvas = document.querySelector('canvas');
+
+        this.gameCanvas.style.display = 'block';
+        this.gameCanvas.style.margin = 'auto';
+
         // document.body.style.overflow = 'hidden';
         document.addEventListener('keydown', this.fullScreenOpener, false);
     }
@@ -121,13 +128,17 @@ export default class GameView extends View {
     _displayWinMessage() {
         const centeredBlock = this._createCenteredImage();
         centeredBlock.style.background = `url(${game_won_png})`;
-        centeredBlock.style.backgroundSize = 'cover';
+        centeredBlock.style.backgroundSize = 'contain';
+        centeredBlock.style.backgroundRepeat = 'no-repeat';
+        centeredBlock.style.backgroundPosition = 'center center';
     }
 
     _displayLoseMessage() {
         const centeredBlock = this._createCenteredImage();
         centeredBlock.style.background = `url(${game_lost_png})`;
-        centeredBlock.style.backgroundSize = 'cover';
+        centeredBlock.style.backgroundSize = 'contain';
+        centeredBlock.style.backgroundRepeat = 'no-repeat';
+        centeredBlock.style.backgroundPosition = 'center center';
     }
 
     _createCenteredImage() {

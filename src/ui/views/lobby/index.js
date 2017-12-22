@@ -23,8 +23,6 @@ class LobbyView extends View {
         this.linkElem = root.getElementsByClassName('lobby__linktext').item(0);
         this.isGameAborted = false;
 
-        this.serviceLocator.magicTransport.openSocket();
-        this.serviceLocator.magicTransport.send({type: 'WantPlayMessage', state: 1, data});
         this.serviceLocator.magicTransport.eventBus.subscribeOn('ws_close', this.onClose, this);
         this.serviceLocator.magicTransport.eventBus.subscribeOn('ws_error', this.onError, this);
         this.serviceLocator.magicTransport.eventBus.subscribeOn('GameInitState', this.onNewSocketMessage, this);
@@ -33,10 +31,17 @@ class LobbyView extends View {
             UserModel.fromApiJson({login: authData.login, email: 'anon@anon.anon'}).saveInLocalStorage();
         });
         this.linkElem.addEventListener('click', () => this._copyToClipboard(this.linkElem));
+
+        this.sendMessage(data);
     }
 
     get template() {
         return template;
+    }
+
+    sendMessage(data) {
+        this.serviceLocator.magicTransport.openSocket();
+        this.serviceLocator.magicTransport.send({type: 'WantPlayMessage', state: 1, data});
     }
 
     onNewSocketMessage(data) {
