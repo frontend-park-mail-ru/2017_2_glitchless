@@ -4,9 +4,8 @@
 
 Игра: https://glitchless.ru
 
-## Технологии
 
-Гитхаб с бекендом: https://github.com/java-park-mail-ru/Glitchless-09-2017
+## Технологии
 
 - Kotlin, TypeScript, Babel
 - Pixi.js
@@ -14,14 +13,20 @@
 - Docker
 - Ansible, Docker registry, Travis CI
 
+Гитхаб с бекендом: https://github.com/java-park-mail-ru/Glitchless-09-2017
+
+
 ## Инструкции по запуску
+
 ```sh
 docker built -t glitchless .
 docker run --rm -it -p 1337:80 glitchless
 # можно будет зайти в браузере по ссылке http://localhost:1337
 ```
 
+
 ## Команда Glitchless
+
 - [Михаил Волынов](https://github.com/StealthTech)
 - [Никита Куликов](https://github.com/LionZXY)
 - [Олег Морозенков](https://github.com/reo7sp)
