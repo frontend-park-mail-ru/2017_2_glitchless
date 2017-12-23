@@ -88,7 +88,7 @@ export default class GameView extends View {
         this._moveBackground();
         gameFieldWrapper.appendChild(background);
 
-        const versionNumber = 'v0.8.4'; //change this if you're not sure if your changes are passing through
+        const versionNumber = 'v1.0.0'; //change this if you're not sure if your changes are passing through
         const versionDisplay = document.createElement('div');
         versionDisplay.style.position = 'fixed';
         versionDisplay.style.zIndex = '10';
