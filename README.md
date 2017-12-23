@@ -1,4 +1,4 @@
-# Rhythm Blast
+# Rhythm Blast [![Build Status](https://travis-ci.org/frontend-park-mail-ru/2017_2_glitchless.svg?branch=site-base)](https://travis-ci.org/frontend-park-mail-ru/2017_2_glitchless)
 
 Арканоид на стероидах <s>и на котлине</s>.
 
