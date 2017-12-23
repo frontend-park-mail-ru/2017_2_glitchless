@@ -41,7 +41,7 @@ export default class VisualEffectsManager {
         }
 
         const additionalShift = Math.pow(1.8, (1 - this.healthStatusFunc()) * 4.2);
-        let amplitude = 1 + (1 - this.healthStatusFunc()) * 2;
+        let amplitude = 1 + (1 - this.healthStatusFunc()) * 3;
         if (this.ticksToSuperFlicker > 0) {
             amplitude += this.ticksToSuperFlicker * 2;
         }
