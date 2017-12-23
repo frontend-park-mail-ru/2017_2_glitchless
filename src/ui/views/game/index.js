@@ -30,7 +30,12 @@ export default class GameView extends View {
 
         this.gameCanvas = document.querySelector('canvas');
 
+        this.endGameWrapper = document.createElement('div');
+        this.endGameWrapper.classList.add('endgame-wrapper');
+        this.root.appendChild(this.endGameWrapper);
+
         this._displayLoseMessage();
+        this.addEndGameButtons();
 
         this.gameCanvas.style.display = 'block';
         this.gameCanvas.style.margin = 'auto';
@@ -147,11 +152,11 @@ export default class GameView extends View {
 
     _createCenteredImage() {
         const centeredBlock = document.createElement('div');
-        centeredBlock.style.position = 'fixed';
+        // centeredBlock.style.position = 'fixed';
         centeredBlock.style.width = '90%';
         centeredBlock.style.height = '30.515625%';
         centeredBlock.style.zIndex = '50';
-        this.root.appendChild(centeredBlock);
+        this.endGameWrapper.appendChild(centeredBlock);
         return centeredBlock;
     }
 
@@ -267,8 +272,9 @@ export default class GameView extends View {
             .bind(this.serviceLocator.router, '/');
 
         backToMenuButton.style.position = 'absolute';
-        backToMenuButton.style.top = '66%';
-        document.body.appendChild(backToMenuButton);
+        backToMenuButton.style.padding = '0.5em';
+        backToMenuButton.style.top = '60%';
+        this.endGameWrapper.appendChild(backToMenuButton);
     }
 
     addRestartButton() {
@@ -276,8 +282,10 @@ export default class GameView extends View {
         restartButton.innerHTML = 'Restart the game';
         restartButton.classList.add('endgame-button');
         restartButton.onclick = this.refresh.bind(this);
+
         restartButton.style.position = 'absolute';
+        restartButton.style.padding = '0.5em';
         restartButton.style.top = '70%';
-        document.body.appendChild(restartButton);
+        this.endGameWrapper.appendChild(restartButton);
     }
 }

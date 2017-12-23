@@ -39,6 +39,17 @@
     right: 0;
 }
 
+.endgame-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10%;
+    bottom: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 canvas {
     position: absolute;
     margin-right: auto;
