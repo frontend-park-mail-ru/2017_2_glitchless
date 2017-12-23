@@ -8,6 +8,21 @@ import UserModel from '../../../models/UserModel';
 
 class LobbyView extends View {
     open(root, data) {
+        this.progressTextElem = root.getElementsByClassName('lobby__progresstext').item(0);
+        this.waitingLabelElem = root.getElementsByClassName('lobby__waitinglabel').item(0);
+        this.returnButtonElem = root.getElementsByClassName('modal-control').item(0);
+        this.loaderSpinner = root.getElementsByClassName('lobby__loader').item(0);
+        this.linkElem = root.getElementsByClassName('lobby__linktext').item(0);
+        this.linkElem.addEventListener('click', () => this._copyToClipboard(this.linkElem));
+        this.isGameAborted = false;
+
+        if (data === null) {
+            this._openMainMenu(root);
+            return;
+        }
+
+        this._closeMenu(root);
+
         if (data !== null) {
             console.log('Your invite code: ' + data);
             if (data === 'ref') {
@@ -16,12 +31,6 @@ class LobbyView extends View {
                 data = 'ref:' + data;
             }
         }
-        this.progressTextElem = root.getElementsByClassName('lobby__progresstext').item(0);
-        this.waitingLabelElem = root.getElementsByClassName('lobby__waitinglabel').item(0);
-        this.returnButtonElem = root.getElementsByClassName('modal-control').item(0);
-        this.loaderSpinner = root.getElementsByClassName('lobby__loader').item(0);
-        this.linkElem = root.getElementsByClassName('lobby__linktext').item(0);
-        this.isGameAborted = false;
 
         this.serviceLocator.magicTransport.eventBus.subscribeOn('ws_close', this.onClose, this);
         this.serviceLocator.magicTransport.eventBus.subscribeOn('ws_error', this.onError, this);
@@ -30,9 +39,44 @@ class LobbyView extends View {
         this.serviceLocator.magicTransport.eventBus.subscribeOn('AuthMessage', (authData) => {
             UserModel.fromApiJson({login: authData.login, email: 'anon@anon.anon'}).saveInLocalStorage();
         });
-        this.linkElem.addEventListener('click', () => this._copyToClipboard(this.linkElem));
 
         this.sendMessage(data);
+    }
+
+    _closeMenu(root) {
+        document.getElementById('invite_button').style.display = 'none';
+        document.getElementById('random_button').style.display = 'none';
+        document.getElementById('return_button').style.display = 'none';
+    }
+
+    _openMainMenu(root) {
+        const invite = document.getElementById('invite_button');
+        const random = document.getElementById('random_button');
+        const returnBtn = document.getElementById('return_button');
+
+        invite.style.display = 'block';
+        random.style.display = 'block';
+        returnBtn.style.display = 'block';
+
+        root.getElementsByClassName('lobby__waitinglabel')[0].style.display = 'none';
+
+        root.getElementsByClassName('lobby__progresstext')[0].style.display = 'none';
+
+        root.getElementsByClassName('lobby__linktext')[0].style.display = 'none';
+
+        root.getElementsByClassName('lobby__loader')[0].style.display = 'none';
+
+        returnBtn.addEventListener('click', (event) => {
+            this.serviceLocator.router.changePage('/');
+        });
+
+        random.addEventListener('click', (event) => {
+            this.serviceLocator.router.changePage('/lobby/multiplayer');
+        });
+
+        invite.addEventListener('click', (event) => {
+            this.serviceLocator.router.changePage('/lobby/ref');
+        });
     }
 
     get template() {

@@ -32,13 +32,16 @@
 
   &__initial {
   	display: flex;
-  	flex-direction: row;
+  	flex-direction: column;
   	align-items: center;
   	
   	&__button {
 	    background: rgba(255, 255, 255, .2);
 	    box-shadow: 3px 3px  rgba(0, 0, 0, .1);
 	    border-radius: 1px;
+        margin-top: 7px;
+        margin-bottom: 7px;
+        width: 20em;
 	    padding: 10px;
 	    border: none;
 	    min-width: 150px;
