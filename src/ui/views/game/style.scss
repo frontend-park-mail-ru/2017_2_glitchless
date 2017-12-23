@@ -28,6 +28,10 @@
 
 
 .fullscreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
     position: fixed;
     top: 0;
     bottom: 0;

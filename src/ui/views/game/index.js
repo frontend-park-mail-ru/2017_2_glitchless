@@ -30,6 +30,8 @@ export default class GameView extends View {
 
         this.gameCanvas = document.querySelector('canvas');
 
+        this._displayLoseMessage();
+
         this.gameCanvas.style.display = 'block';
         this.gameCanvas.style.margin = 'auto';
 

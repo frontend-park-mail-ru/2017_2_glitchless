@@ -29,6 +29,38 @@
     padding-top: 3px;
     cursor: pointer;
   }
+
+  &__initial {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	
+  	&__button {
+	    background: rgba(255, 255, 255, .2);
+	    box-shadow: 3px 3px  rgba(0, 0, 0, .1);
+	    border-radius: 1px;
+	    padding: 10px;
+	    border: none;
+	    min-width: 150px;
+	    transition: .5s;
+	    z-index: 99;
+	
+		text-align: center;
+
+	    color: white;
+	    text-decoration: none;
+
+	    &:hover {
+	        background: rgba(255, 255, 255, .4);
+	        box-shadow: 3px 3px  rgba(0, 0, 0, .1);
+	    }
+
+	    &:active {
+	        background: rgba(255, 255, 255, .1);
+	        box-shadow: none;
+	    }
+  	}
+  }
 }
 
 @keyframes spin {
