@@ -19,7 +19,7 @@
 ## Инструкции по запуску
 
 ```sh
-docker built -t glitchless .
+docker build -t glitchless .
 docker run --rm -it -p 1337:80 glitchless
 # можно будет зайти в браузере по ссылке http://localhost:1337
 ```
