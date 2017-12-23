@@ -262,7 +262,7 @@ export default class GameView extends View {
         backToMenuButton.innerHTML = 'Back to menu';
         backToMenuButton.classList.add('endgame-button');
         backToMenuButton.onclick = this.serviceLocator.router.changePage
-            .bind(this.serviceLocator.router,'/');
+            .bind(this.serviceLocator.router, '/');
 
         backToMenuButton.style.position = 'absolute';
         backToMenuButton.style.top = '66%';

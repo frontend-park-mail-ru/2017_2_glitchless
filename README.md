@@ -13,7 +13,7 @@
 - Docker
 - Ansible, Docker registry, Travis CI
 
-Гитхаб с бекендом: https://github.com/java-park-mail-ru/Glitchless-09-2017
+Гитхаб с бекендом: https://github.com/java-park-mail-ru/Glitchless-09-2017/tree/dev
 
 
 ## Инструкции по запуску
