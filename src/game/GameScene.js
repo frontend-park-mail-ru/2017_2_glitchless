@@ -1,3 +1,4 @@
+import * as kt from 'kotlinApp';
 import * as PIXI from 'pixi.js';
 
 import Alien from './physics/object/Alien';
@@ -7,21 +8,22 @@ import ForceField from './physics/object/ForceField';
 import Bounder from './physics/object/Bounder';
 import PlatformCircle from './physics/object/PlatformKirkle';
 
-import {Circle} from './physics/PhysicPrimitives';
-
-import GameUtils from '../utils/GameUtils';
 import Constants from '../utils/Constants';
 import Point from './physics/object/primitive/Point';
 
+import VisualEffectsManager from './VisualEffectsManager';
+
 import game_over_splash_lost_png from '../ui/images/game_over_splash_lost.png';
 import game_over_splash_won_png from '../ui/images/game_over_splash_won.png';
-import background_png from '../ui/images/background.png';
+
+const Circle = kt.ru.glitchless.game.collision.data.Circle;
 
 const loseText = new PIXI.Sprite.fromImage(game_over_splash_lost_png);
 const winText = new PIXI.Sprite.fromImage(game_over_splash_won_png);
 
 export default class GameScene {
-    constructor() {
+    constructor(gameManager, gameWinFunc, gameLostFunc) {
+        this.gameManager = gameManager;
         this.field = null;
         this.stage = null;
         this.fontStyle = new PIXI.TextStyle({
@@ -33,6 +35,14 @@ export default class GameScene {
         });
         this.scoreMarginX = 100;
         this.scoreMarginY = 100;
+        this.loader = new PIXI.loaders.Loader();
+        this.visualEffectsManager = new VisualEffectsManager();
+        this.displayWinMessage = gameWinFunc;
+        this.displayLoseMessage = gameLostFunc;
+    }
+
+    setRenderer(renderer) {
+        this.renderer = renderer;
     }
 
     displayEndResult(winner) {
@@ -44,15 +54,15 @@ export default class GameScene {
         }
     }
 
-    displayWinMessage() {
-        this.prepareCentralText(winText);
-        this.addObject(winText);
-    }
+    // displayWinMessage() {
+    //     this.prepareCentralText(winText);
+    //     this.addObject(winText);
+    // }
 
-    displayLoseMessage() {
-        this.prepareCentralText(loseText);
-        this.addObject(loseText);
-    }
+    // displayLoseMessage() {
+    //     this.prepareCentralText(loseText);
+    //     this.addObject(loseText);
+    // }
 
     prepareCentralText(textSprite) {
         textSprite.anchor.set(0.5);
@@ -64,18 +74,34 @@ export default class GameScene {
         textSprite.y = center.y;
     }
 
-    initBackground(app) {
-        const bgSize = {x: this.width, y: this.height};
+    initContainer() {
+        this.container = new PIXI.Container();
+        this.visualEffectsManager.initContainer(this.container);
+        this.stage.addChild(this.container);
+        this.mainScene = this.container;
+    }
 
-        const container = new PIXI.Container();
-
-        app.stage.addChild(container);
-
-        PIXI.loader.add('./images/background.png').load(function() {
-            const slide = GameUtils.makeBackgroundCoverWithSprite(
-                bgSize, PIXI.Sprite.fromImage(background_png), 'cover');
-            container.addChild(slide);
+    initVisualEffectsManager() {
+        this.visualEffectsManager.initHealthStatusFunc(() => {
+            const player = this.gameManager.gameStrategy.players[0];
+            const healthCoef = player.health / 5;
+            const shieldCoef = player.shield / player.maxShield;
+            return (3 * healthCoef + shieldCoef) / 4;
         });
+    }
+
+    initBackground(app) {
+        this.initialWidth = this.oldWidth = this.width;
+        this.initialHeight = this.oldHeight = this.height;
+    }
+
+    tick(dt) {
+        this.container.scale.x *= this.height / this.oldHeight;
+        this.container.scale.y *= this.width / this.oldWidth;
+        this.container.y = (this.renderer.height - this.container.height) / 2;
+        this.oldWidth = this.width;
+        this.oldHeight = this.height;
+        this.visualEffectsManager.tick(dt);
     }
 
     initField(physicContext) {
@@ -83,12 +109,14 @@ export default class GameScene {
 
         const alien = new Alien(physicContext, center);
         alien.setSpriteSize(Constants.GAME_ALIEN_SIZE, physicContext.gameManager);
-        physicContext.gameManager.addObject('alien', alien);
         physicContext.spriteStorage.alien = alien;
+        physicContext.gameManager.addObject('alien', alien);
 
         const PlatformCircle1 = new PlatformCircle(physicContext, Constants.GAME_CIRCLE1_RADIUS, center, 0);
         physicContext.gameManager.addObject('circle', PlatformCircle1);
         physicContext.spriteStorage.circle = PlatformCircle1;
+
+        let hpBlockArray = [];
 
         for (let i = 0; i < Constants.HP_COUNT * 2; i++) {
             const playerNum = i < Constants.HP_COUNT ? 0 : 1;
@@ -98,28 +126,35 @@ export default class GameScene {
             hpblock.setSpriteSize(Constants.GAME_HEALTHBLOCK_SIZE, physicContext.gameManager);
             hpblock.setRotation(i * Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) +
                 Constants.FULL_CIRCLE_DEGREES / (Constants.HP_COUNT * 2) / 2, physicContext);
+            hpBlockArray.push(hpblock);
             physicContext.gameManager.addObject('hpblock', hpblock);
         }
 
+        physicContext.spriteStorage.setHpBlockArray(hpBlockArray);
+        let fieldArray = [];
+
         for (let i = 0; i < 2; i++) {
             const forceField = new ForceField(physicContext,
-                    new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
-                    new Circle(Constants.GAME_FORCEFIELD_RADIUS, center), i);
+                new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                new Circle(Constants.GAME_FORCEFIELD_RADIUS, center), i);
             forceField.setSpriteSize(Constants.GAME_FORCEFIELD_SIZE, physicContext.gameManager);
             forceField.setRotation(90 + i * 180, physicContext);
             const coords = forceField.getCoords();
-            forceField.setCoords(new Point(coords.x, coords.y - i * 1), physicContext);
+            forceField.setCoords(new Point(coords.x, coords.y - i), physicContext);
+            fieldArray.push(forceField);
             physicContext.gameManager.addObject('forcefield', forceField);
         }
 
+        physicContext.spriteStorage.setFieldArrayBlock(fieldArray);
+
         for (let i = 0; i < 2; i++) {
             const bounder = new Bounder(physicContext,
-                    new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
-                    new Circle(Constants.GAME_FORCEFIELD_RADIUS, center));
+                new Point(center.x + Constants.GAME_CIRCLE1_RADIUS * 1.1, center.y),
+                new Circle(Constants.GAME_FORCEFIELD_RADIUS, center));
             bounder.setSpriteSize(Constants.GAME_BOUNDER_SIZE, physicContext.gameManager);
             bounder.setRotation(i * 180, physicContext);
             const coords = bounder.getCoords();
-            bounder.setCoords(new Point(coords.x, coords.y - i * 1), physicContext);
+            bounder.setCoords(new Point(coords.x, coords.y - i), physicContext);
             physicContext.gameManager.addObject('bounder', bounder);
         }
 
@@ -198,6 +233,16 @@ export default class GameScene {
         return [Math.round(x * xScale), Math.round(y * yScale)];
     }
 
+    scaleStaticCoords(coords, initialRes = Constants.INITIAL_RES) {
+        const x = coords[0];
+        const y = coords[1];
+
+        const xScale = this.initialWidth / initialRes[0];
+        const yScale = this.initialHeight / initialRes[1];
+
+        return [Math.round(x * xScale), Math.round(y * yScale)];
+    }
+
     /**
      * Scales coordinates from initial to final resolution, rounding to the nearest whole number
      *
@@ -213,6 +258,12 @@ export default class GameScene {
         return new Point(Math.round(point.x * xScale), Math.round(point.y * yScale));
     }
 
+    scaleStaticPoint(point, initialRes = Constants.INITIAL_RES) {
+        const xScale = this.initialWidth / initialRes[0];
+        const yScale = this.initialHeight / initialRes[1];
+        return new Point(Math.round(point.x * xScale), Math.round(point.y * yScale));
+    }
+
     getCenterPoint() {
         return new Point(this.width / 2, this.height / 2);
     }
@@ -223,6 +274,6 @@ export default class GameScene {
      * @param {Sprite} sprite Object's sprite
      */
     addObject(sprite) {
-        this.stage.addChild(sprite);
+        this.mainScene.addChild(sprite);
     }
 }

@@ -4,13 +4,16 @@ import RouterLinksViewMixin from '../../mixins/RouterLinksViewMixin';
 import ModalShadeViewMixin from '../../mixins/ModalShadeViewMixin';
 import template from './template.pug';
 import './style.scss';
-import { initDisplayErrorsForm, displayErrors, displayServerError } from '../../../utils/formDisplayErrors';
+import { displayErrors, displayServerError } from '../../../utils/formDisplayErrors';
 import LoginForm from '../../../models/LoginForm';
 import UserModel from '../../../models/UserModel';
 
 class LoginModalView extends View {
     open() {
         this.loginForm = document.getElementById('login-form');
+
+        this._validateSubmitWithContext = this._validateSubmit.bind(this);
+
         this._initForm();
         if (this._savedModel) {
             this._fillForm(this._savedModel);
@@ -18,7 +21,11 @@ class LoginModalView extends View {
     }
 
     close() {
+        this.loginForm.removeEventListener('submit', this._validateSubmitWithContext);
         this._savedModel = this._createModel();
+        Array.prototype.forEach.call(this.loginForm.elements, (element) => {
+            element.oninput = null;
+        });
     }
 
     get template() {
@@ -26,37 +33,65 @@ class LoginModalView extends View {
     }
 
     _initForm() {
-        initDisplayErrorsForm(this.loginForm);
+        this._initiateEmptyErrors();
 
-        this.loginForm.addEventListener('submit', (event) => {
-            event.preventDefault();
+        this._initiateOnInputChecks();
 
-            const model = this._createModel();
+        this.loginForm.addEventListener('submit', this._validateSubmitWithContext);
+    }
 
-            const validationResult = model.validate();
-            if (!validationResult.ok) {
-                displayErrors(this.loginForm, validationResult.errors);
-                return;
-            }
-            model.send()
-                .then((res) => res.json())
-                .then((json) => {
-                    if (!json.successful) {
-                        const serverErrorField = document.getElementById('login-form__server-errors');
-                        displayServerError(serverErrorField, json.message);
-                        return;
-                    }
-                    this.serviceLocator.user = UserModel.fromApiJson(json.message);
-                    this.serviceLocator.user.saveInLocalStorage();
-                    this.serviceLocator.router.changePage('/');
-                    this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
-                })
-                .catch((res) => {
-                    const errorElem = document.getElementById('login-form-server-error');
-                    errorElem.classList.remove('hidden');
-                    errorElem.textContent = 'Cannot connect to auth server';
+    _validateSubmit(event) {
+        event.preventDefault();
+
+        const model = this._createModel();
+
+        const validationResult = model.validate();
+        if (!validationResult.ok) {
+            displayErrors(this.loginForm, validationResult.errors);
+            return;
+        }
+        model.send()
+            .then((res) => res.json())
+            .catch((res) => res.json())
+            .then((json) => {
+                if (!json.successful) {
+                    const serverErrorField = document.getElementById('login-form-server-error');
+                    displayServerError(serverErrorField, json.message);
+                    return;
+                }
+                this.serviceLocator.user = UserModel.fromApiJson(json.message);
+                this.serviceLocator.user.saveInLocalStorage();
+                this.serviceLocator.router.changePage('/');
+                this.serviceLocator.eventBus.emitEvent('auth', this.serviceLocator.user);
+            });
+    }
+
+    /**
+     * Initiate empty field errors (so you can't submit an empty form)
+     */
+    _initiateEmptyErrors() {
+        const model = this._createModel(this.loginForm);
+        const validationResult = model.validate();
+        if (!validationResult.ok) {
+            displayErrors(this.loginForm, validationResult.errors);
+        }
+    }
+
+    _initiateOnInputChecks() {
+        Array.prototype.forEach.call(this.loginForm.elements, function(element) {
+            element.oninput = function(event) {
+                const model = this._createModel(this.loginForm);
+                Array.prototype.forEach.call(this.loginForm.elements, (elem) => {
+                    elem.setCustomValidity('');
                 });
-        });
+
+                const validationResult = model.validate();
+                if (!validationResult.ok) {
+                    displayErrors(this.loginForm, validationResult.errors);
+                    return;
+                }
+            }.bind(this);
+        }.bind(this));
     }
 
     _createModel() {

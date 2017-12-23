@@ -1,23 +1,12 @@
 import * as PIXI from 'pixi.js';
 
-import Alien from './object/Alien';
-import Platform from './object/Platform';
-import Laser from './object/Laser';
-import HealthBlock from './object/HealthBlock';
-import ForceField from './object/ForceField';
-import Bounder from './object/Bounder';
-import PlatformCircle from './object/PlatformKirkle';
-
 import SpriteStorage from './delegates/SpriteStorage';
 import Constants from '../../utils/Constants';
-import utils from '../../utils/GameUtils';
 
 import VectorToPointLoop from './delegates/VectorToPointLoop';
 import PhysicVectorLoop from './delegates/PhysicVectorLoop';
 
 import Point from './object/primitive/Point';
-import CollisionManager from './CollisionManager';
-import { Arc, Circle } from './PhysicPrimitives';
 
 export default class PhysicLoop {
     constructor(gameManager) {
@@ -44,16 +33,6 @@ export default class PhysicLoop {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.gameManager.app.ticker.speed;
-        this.timeSum += elapsedMS;
-        if (this.timeSum > 1000) {
-            this.timeSum = 0;
-            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-2);
-            const laser = new Laser(laserSpeed, this);
-            laser.setCoords(this._getCenterPoint(), this);
-            laser.setSpriteSize(Constants.GAME_LASER_SIZE, this.gameManager);
-            this.gameManager.addObject('laser', laser);
-            this.angleCounter++;
-        }
 
         this.physicDelegate.processPhysicLoop(this, elapsedMS);
         this.vectorToPointDelegate.processVector(this.physicEntities, this, elapsedMS);

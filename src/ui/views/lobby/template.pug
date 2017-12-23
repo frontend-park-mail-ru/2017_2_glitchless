@@ -2,10 +2,15 @@ include ../../abstractViews/modal/template
 
 +modal('Initializing game')
     .bumber-top &nbsp;
-
-    .lobby__waitinglabel Waiting...
-    .lobby__progresstext Wait resource loading
-
+    .lobby
+        .lobby__initial
+            .lobby__initial__button#invite_button Invite a friend
+            .lobby__initial__button#random_button Matchmaking
+            .lobby__initial__button#return_button Return
+        .lobby__loader
+        .lobby__waitinglabel Waiting...
+        .lobby__progresstext Wait for player2 to connect...
+        .lobby__linktext(alt='Click to copy') https://glitchless.ru/
     .bumber-bottom &nbsp;
 
     .modal-control.modal-control__wrapper.hidden

@@ -1,18 +1,13 @@
+import * as kt from 'kotlinApp';
+const Arc = kt.ru.glitchless.game.collision.data.Arc;
+const CollisionManager = kt.ru.glitchless.game.collision;
+
 import * as PIXI from 'pixi.js';
 import ButtonHandler from '../helpers/ButtonHandler';
 import Constants from '../../../utils/Constants';
-import CollisionManager from '../CollisionManager';
-import GameEventBus from '../../GameEventBus';
-import {Arc, Circle} from '../PhysicPrimitives';
 
 export default class PhysicVectorLoop {
     constructor() {
-        this.leftButton = new ButtonHandler(Constants.CONTROL_PLATFORM_LEFT);
-        this.upButton = new ButtonHandler(Constants.CONTROL_PLATFORM_UP);
-        this.qButton = new ButtonHandler(Constants.CONTROL_PLATFORM_Q);
-        this.eButton = new ButtonHandler(Constants.CONTROL_PLATFORM_E);
-        this.rightButton = new ButtonHandler(Constants.CONTROL_PLATFORM_RIGHT);
-        this.downButton = new ButtonHandler(Constants.CONTROL_PLATFORM_DOWN);
         if (Constants.COLLISION_DEBUG) {
             this.graphics = new PIXI.Graphics();
         }
@@ -20,7 +15,7 @@ export default class PhysicVectorLoop {
 
     processPhysicLoop(context, elapsedMS) {
         context.spriteStorage.needUpdatePlatorm.forEach(
-            (item) => this._processPlatformLogic(item)
+            (item) => this._processPlatformLogic(item),
         );
         this._processCollisions(context, elapsedMS);
     }
@@ -43,26 +38,22 @@ export default class PhysicVectorLoop {
         }
 
         platform.setRotationSpeed(newRotationSpeed);
-
-        if (newRotationSpeed !== currentSpeed) {
-            GameEventBus.emitEvent('change_platform_speed', platform);
-        }
     }
 
     _processCollisions(context, elapsedMS) {
+        const graphics = this.graphics;
         if (Constants.COLLISION_DEBUG) {
-            var graphics = this.graphics;
             graphics.clear();
         }
 
         //Reflecting lasers from platform
         context.physicObjects.platform.forEach((platform) => {
-            const platformArc = Arc.fromPoints(...(platform.getEdgePoints()), platform.getCoords());
+            const platformArc = Arc.Companion.fromPoints(...platform.getEdgePoints());
 
             if (Constants.COLLISION_DEBUG) {
-                const points = [...platform.getEdgePoints(), platform.getCoords()];
+                const points = platform.getEdgePoints();
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function (physicPoint) {
+                points.forEach(function(physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
@@ -96,7 +87,6 @@ export default class PhysicVectorLoop {
             }
         });
 
-        //TODO: Absorbing lasers that hit forcefields, depleting forcefields
         context.physicObjects.forcefield.forEach((forcefield) => {
             if (forcefield.off) {
                 return;
@@ -111,15 +101,15 @@ export default class PhysicVectorLoop {
             });
 
             if (Constants.COLLISION_DEBUG) {
-                const points = [...forcefield.getEdgePoints(), forcefield.getCoords()];
+                const points = forcefield.getEdgePoints();
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function (physicPoint) {
+                points.forEach(function(physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));
             }
         });
-        //TODO: depleting health
+
         context.physicObjects.hpblock.forEach((hpblock) => {
             context.physicObjects.laser.forEach((laser) => {
                 const collision = CollisionManager.checkCollision(laser.getCoords(),
@@ -131,9 +121,9 @@ export default class PhysicVectorLoop {
             });
 
             if (Constants.COLLISION_DEBUG) {
-                const points = [...hpblock.getEdgePoints(), hpblock.getCoords()];
+                const points = hpblock.getEdgePoints();
                 graphics.lineStyle(2, Constants.GAME_CIRCLE_COLOR);
-                points.forEach(function (physicPoint) {
+                points.forEach(function(physicPoint) {
                     const point = this.gameManager.scene.scalePoint(physicPoint);
                     graphics.drawCircle(point.x, point.y, 3);
                 }.bind(context));

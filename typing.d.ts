@@ -1,6 +1,10 @@
 declare module '*.png';
 declare module '*.scss';
 
+declare module 'kotlinApp' {
+    export const ru;
+}
+
 declare const ENV_PRODUCTION;
 declare const ENV_API_BASE_URL;
 declare const ENV_API_WS_URL;

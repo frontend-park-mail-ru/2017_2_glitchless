@@ -1,5 +1,6 @@
 import UserModel from '../../models/UserModel.js';
 import Constants from '../../utils/Constants';
+import GameEventBus from '../GameEventBus';
 import GameScene from '../GameScene';
 import MagicTransport from '../io/MagicTransport';
 import Platform from '../physics/object/Platform';
@@ -51,7 +52,7 @@ export default class MultiplayerStrategy extends GameStrategy {
         const platformRight = fullSwap.platform_2;
 
         this.currentUserIsLeft = platformLeft.data === UserModel.loadCurrentSyncronized().login;
-        this.syncDelegate = new SyncDelegate(this.magicTransport, physicContext);
+        this.syncDelegate = new SyncDelegate(this.magicTransport, physicContext, this);
         this.userPlatform = this.currentUserIsLeft
             ? physicContext.spriteStorage.userPlatform
             : physicContext.spriteStorage.enemyPlatform;
@@ -60,6 +61,29 @@ export default class MultiplayerStrategy extends GameStrategy {
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.userPlatform, platformLeft);
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.enemyPlatform, platformRight);
         this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.circle, circle);
+        this.syncDelegate.applySwapSnapshot(physicContext.spriteStorage.alien, fullSwap.alien);
+
+        const hpBlockArray = fullSwap.hpblock;
+        const gameHpArray = physicContext.spriteStorage.sortedHpBlock;
+
+        const fieldBlockArray = fullSwap.forceFields;
+        const gameFieldArray = physicContext.spriteStorage.sortedFieldBlock;
+
+        if (hpBlockArray.length !== gameHpArray.length) {
+            throw TypeError('Wrong lenght');
+        }
+
+        if (fieldBlockArray.length !== gameFieldArray.length) {
+            throw TypeError('Wrong lenght');
+        }
+
+        for (let i = 0; i < hpBlockArray.length; i++) {
+            this.syncDelegate.applySwapSnapshot(gameHpArray[i], hpBlockArray[i]);
+        }
+
+        for (let i = 0; i < fieldBlockArray.length; i++) {
+            this.syncDelegate.applySwapSnapshot(gameFieldArray[i], fieldBlockArray[i]);
+        }
 
         return;
     }
@@ -70,7 +94,7 @@ export default class MultiplayerStrategy extends GameStrategy {
 
     public gameplayTick(physicContext, elapsedMS) {
         this.processControls();
-        this.syncDelegate.sync();
+        this.replenishShields(physicContext, elapsedMS);
     }
 
     public onHpLoss(hpblock) {
@@ -78,13 +102,24 @@ export default class MultiplayerStrategy extends GameStrategy {
         return;
     }
 
-    private processControls() {
-        if (this.leftButton.isDown || this.qButton.isDown) {
-            this.userPlatform.setMoveDirection('left');
-        } else if (this.rightButton.isDown || this.eButton.isDown) {
-            this.userPlatform.setMoveDirection('right');
+    public setShield(physicContext, player, playerNum, newShieldVal) {
+        player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
+        this.updateBar(playerNum, (player.shield / player.maxShield) * 100);
+        if (player.shield / player.maxShield > Constants.SHIELD_ACTIVATION_PERCENT / 100) {
+            physicContext.physicObjects.forcefield[playerNum].onEnable();
         } else {
-            this.userPlatform.setMoveDirection('none');
+            physicContext.physicObjects.forcefield[playerNum].onChargeEnd();
+        }
+    }
+
+    private processControls() {
+        const oldDirection = this.userPlatform.getDirection();
+        const newDirection = this.getPlatformDirection();
+
+        this.userPlatform.setMoveDirection(newDirection);
+
+        if (newDirection !== oldDirection) {
+            GameEventBus.emitEvent('change_direction', {platform: this.userPlatform, direction: newDirection});
         }
     }
 
@@ -104,5 +139,16 @@ export default class MultiplayerStrategy extends GameStrategy {
             scene.addObject(forceFieldBar);
             this.forceFieldBars.push(forceFieldBar);
         }, this);
+    }
+
+    private replenishShields(physicContext, elapsedMS: number) {
+        this.players.forEach(function (player, playerNum) {
+            const newShieldVal = player.shield + Constants.SHIELD_REGEN_RATIO * elapsedMS / 1000;
+            this.setShield(physicContext, player, playerNum, newShieldVal);
+        }, this);
+    }
+
+    private updateBar(num: number, percent: number) {
+        this.forceFieldBars[num].height = this.scene.scaleLength(Constants.GAME_FORCEFIELD_BAR_SIZE[1]) * percent / 100;
     }
 }

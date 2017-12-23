@@ -1,18 +1,4 @@
 /**
- * Registers necessary listeners on form.
- *
- * @param form {Node} DOM node of form
- */
-export function initDisplayErrorsForm(form) {
-    for (let i = 0; i < form.elements.length; i++) {
-        const node = form.elements.item(i);
-        node.oninput = (event) => {
-            event.target.setCustomValidity('');
-        };
-    }
-}
-
-/**
  * Shows server response-related errors on form.
  *
  * @param errorField {Node} DOM node of error field
@@ -20,7 +6,7 @@ export function initDisplayErrorsForm(form) {
  */
 export function displayServerError(errorField, error) {
     errorField.innerText = error;
-    errorField.style.visibility = 'visible';
+    errorField.classList.remove('hidden');
 }
 
 /**

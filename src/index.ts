@@ -1,5 +1,4 @@
 import 'babel-polyfill';
-
 import './ui/global.scss';
 
 import ServiceLocator from './services/ServiceLocator';

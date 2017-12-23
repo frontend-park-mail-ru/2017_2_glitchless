@@ -1,8 +1,10 @@
+import * as kt from 'kotlinApp';
+const Arc = kt.ru.glitchless.game.collision.data.Arc;
+
 import PhysicsObject from './primitive/PhysicsObject.js';
 import * as PIXI from 'pixi.js';
 import Point from './primitive/Point.js';
 import Constants from '../../../utils/Constants';
-import { Arc, Circle } from '../PhysicPrimitives.js';
 import EventBus from '../../GameEventBus';
 
 import energy_block_png from '../../../ui/images/energy_block.png';
@@ -18,12 +20,11 @@ export default class HealthBlock extends PhysicsObject {
     }
 
     refreshCollisionArc() {
-        this.collisionArc = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
+        this.collisionArc = Arc.Companion.fromPoints(...this.getEdgePoints());
     }
 
     onCollision(laser) {
         EventBus.emitEvent('hpblock_hit', [this, laser]);
-        this.destroy();
     }
 
     getEdgePoints() {
@@ -41,12 +42,12 @@ export default class HealthBlock extends PhysicsObject {
         const pointRight = new Point(coord.x + deltaXRight,
             coord.y + deltaYRight);
 
-        return [pointLeft, pointRight];
+        return [pointLeft, pointRight, coord];
     }
 
     setRotation(rotation, context) {
         super.setRotation(rotation, context);
-        const radius = this.circle.R - Constants.GAME_PLATFORM_SIZE[0] / 4;
+        const radius = this.circle.radius - Constants.GAME_PLATFORM_SIZE[0] / 4;
         const rotationRadian = rotation / Constants.GAME_ROTATION_COEFFICIENT;
         const deltaX = radius * Math.sin(rotationRadian);
         const deltaY = radius * Math.cos(rotationRadian);

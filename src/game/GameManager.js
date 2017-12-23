@@ -8,11 +8,14 @@ import MultiplayerStrategy from './strategy/MultiplayerStrategy';
 import ScoreManager from './ScoreManager';
 
 export default class GameManager {
-    constructor(serviceLocator) {
+    constructor(serviceLocator, gameRestartFunc, newWindowSizeCalcFunc, gameWinFunc, gameLostFunc) {
         this.serviceLocator = serviceLocator;
-        this.scene = new GameScene();
+        this.scene = new GameScene(this, gameWinFunc, gameLostFunc);
         this.eventBus = EventBus;
         this.scoreManager = new ScoreManager(this);
+        this.restart = gameRestartFunc;
+        this.findNewWindowSize = newWindowSizeCalcFunc;
+        // PIXI.settings.RESOLUTION = window.devicePixelRatio;
     }
 
     /**
@@ -26,16 +29,23 @@ export default class GameManager {
      * @param {Number[]} resolution Resolution in which the game will be rendered.
      */
     setResolution(resolution) {
-        this.scene.width = resolution[0];
-        this.scene.height = resolution[1];
+        this.scene.width = resolution[0] / PIXI.settings.RESOLUTION;
+        this.scene.height = resolution[1] / PIXI.settings.RESOLUTION;
     }
 
     initiateGame(data) {
-        this.app = new PIXI.Application(this.scene.width, this.scene.height, {backgroundColor: 0xFFFFFF});
+
+        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+        this.app = new PIXI.Application(this.scene.width,
+            this.scene.height, {transparent: true});
+
+        this.scene.setRenderer(this.app.renderer);
         this.scene.field.appendChild(this.app.view);
         this.scene.stage = this.app.stage;
+        this.scene.initContainer();
+        this.scene.initVisualEffectsManager();
 
-        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+        console.log(window.devicePixelRatio);
         this.scene.initBackground(this.app);
 
         this.loopObj = new PhysicLoop(this);
@@ -45,14 +55,22 @@ export default class GameManager {
         this.gameStrategy.initUI(this.loopObj);
 
         this.app.ticker.add(this._onTick, this);
+        console.log(PIXI.settings.SCALE_MODE);
+        console.log(PIXI.settings.RESOLUTION);
     }
 
     _onTick(deltaTime) {
         let elapsedMS = deltaTime /
             PIXI.settings.TARGET_FPMS /
             this.app.ticker.speed;
+        if (!this.disableResize) {
+            const {appWidth, appHeight} = this.findNewWindowSize();
+            this.setResolution([appWidth, appHeight]);
+            this.app.renderer.resize(appWidth, window.innerHeight);
+        }
         this.gameStrategy.gameplayTick(this.loopObj, elapsedMS);
         this.loopObj._mainTick(deltaTime);
+        this.scene.tick(deltaTime);
     }
 
     _initStrategy(physicObject, data) {
@@ -66,23 +84,43 @@ export default class GameManager {
 
         EventBus.subscribeOn('forcefield_hit', this.gameStrategy.onForceFieldDepletion, this.gameStrategy);
         EventBus.subscribeOn('hpblock_hit', this.gameStrategy.onHpLoss, this.gameStrategy);
+        EventBus.subscribeOn('hpblock_hit', this.onHpBlockLoss, this);
+        EventBus.subscribeOn('hpblock_hit',
+            this.scene.visualEffectsManager.doSuperFlicker, this.scene.visualEffectsManager);
         EventBus.subscribeOn('player_won', this.scene.displayEndResult, this.scene);
         EventBus.subscribeOn('player_won', this.onGameEnd, this);
+    }
+
+    onHpBlockLoss(blockLaserTuple) {
+        const playerNum = blockLaserTuple[0].playerNumber;
+        switch (playerNum) {
+            case 0:
+                this.serviceLocator.eventBus.emitEvent('game_health_block_beat_player_left');
+                break;
+            case 1:
+                this.serviceLocator.eventBus.emitEvent('game_health_block_beat_player_right');
+                break;
+        }
     }
 
     onGameEnd() {
         setTimeout(function() {
             this.app.ticker.stop();
+            this.restart();
         }.bind(this), 1000);
     }
 
     destroy() {
+        this.gameStrategy.destroy();
         this.app.destroy(true);
+        this.eventBus.clear();
     }
 
     addObject(tag, physicObject) {
         this.loopObj.addObjectToPhysic(tag, physicObject);
-        physicObject.onDraw(this.app.stage);
+        physicObject.initialWidth = this.scene.width;
+        physicObject.initialHeight = this.scene.height;
+        physicObject.onDraw(this.scene.mainScene);
         physicObject.subscribeToDestroy((item) => {
             item.onDestroy();
         });

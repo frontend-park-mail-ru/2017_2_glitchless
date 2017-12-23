@@ -31,4 +31,16 @@ export default class PhysicsEntity extends PhysicsObject {
     setRotationSpeed(rotationSpeed) {
         this.rotationSpeed = rotationSpeed;
     }
+
+    setCoords(point, context) {
+        if (Constants.DEBUG_INPUT_CHECK) {
+            if (isNaN(point.x) || isNaN(point.y)) {
+                throw new TypeError();
+            }
+        }
+        this.physicCoords = point;
+        const newPoint = context.gameManager.scene.scaleStaticPoint(point);
+        this.sprite.x = newPoint.x;
+        this.sprite.y = newPoint.y;
+    }
 }

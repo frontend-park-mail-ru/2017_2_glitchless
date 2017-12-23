@@ -1,8 +1,10 @@
+import * as kt from 'kotlinApp';
+const Arc = kt.ru.glitchless.game.collision.data.Arc;
+
 import PhysicsObject from './primitive/PhysicsObject';
 import * as PIXI from 'pixi.js';
 import Point from './primitive/Point.js';
 import Constants from '../../../utils/Constants';
-import { Arc } from '../PhysicPrimitives.js';
 import EventBus from '../../GameEventBus';
 
 import shield_cyan_png from '../../../ui/images/shield_cyan.png';
@@ -17,7 +19,7 @@ export default class ForceField extends PhysicsObject {
         super(basicForceFieldSprite, context, coords);
         this.playerNumber = id;
         this.circle = alignmentCircle;
-        this.collisionArc = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
+        this.collisionArc = Arc.Companion.fromPoints(...this.getEdgePoints());
         this.off = false;
     }
 
@@ -26,7 +28,7 @@ export default class ForceField extends PhysicsObject {
         const rotation = this.sprite.rotation;
         const angle = 0.79; //empric number
         const lengthHypotenuse = Math.sqrt(Math.pow(Constants.GAME_FORCEFIELD_SIZE[0], 2)
-         + Math.pow(Constants.GAME_FORCEFIELD_SIZE[1], 2)) / 2.15; //empiric coefficient
+            + Math.pow(Constants.GAME_FORCEFIELD_SIZE[1], 2)) / 2.15; //empiric coefficient
 
         const deltaXLeft = lengthHypotenuse * Math.cos(rotation + angle);
         const deltaYLeft = lengthHypotenuse * Math.sin(rotation + angle);
@@ -37,15 +39,23 @@ export default class ForceField extends PhysicsObject {
             coord.y - deltaYLeft);
         const pointRight = new Point(coord.x + deltaXRight,
             coord.y + deltaYRight);
-        return [pointLeft, pointRight];
+        return [pointLeft, pointRight, coord];
     }
 
     refreshCollisionArc() {
-        this.collisionArc = Arc.fromPoints(...this.getEdgePoints(), this.getCoords());
+        this.collisionArc = Arc.Companion.fromPoints(...this.getEdgePoints());
     }
 
     onCollision(collision) {
         EventBus.emitEvent('forcefield_hit', this);
+
+        this.sprite.alpha = 0;
+        setTimeout(() => {
+            if (this.off) {
+                return;
+            }
+            this.sprite.alpha = 1;
+        }, 250);
     }
 
     onChargeEnd() {
@@ -60,7 +70,7 @@ export default class ForceField extends PhysicsObject {
 
     setRotation(rotation, context) {
         super.setRotation(rotation, context);
-        const radius = this.circle.R - Constants.GAME_PLATFORM_SIZE[0] / 4;
+        const radius = this.circle.radius - Constants.GAME_PLATFORM_SIZE[0] / 4;
         const rotationRadian = rotation / Constants.GAME_ROTATION_COEFFICIENT;
         const deltaX = radius * Math.sin(rotationRadian);
         const deltaY = radius * Math.cos(rotationRadian);

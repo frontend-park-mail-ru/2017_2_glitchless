@@ -1,17 +1,21 @@
+import * as kt from 'kotlinApp';
 import Constants from '../../utils/Constants';
 import EventBus from '../GameEventBus';
 import GameScene from '../GameScene';
 import GameStrategy from './GameStrategy';
 
-import CollisionManager from '../physics/CollisionManager';
 import ForceField from '../physics/object/ForceField';
 import Platform from '../physics/object/Platform';
 import Point from '../physics/object/primitive/Point';
 
+import Laser from '../physics/object/Laser';
 import Player from '../Player';
 
 import * as shield_gui_background_png from '../../ui/images/shield_gui_background.png';
 import * as shield_gui_status_png from '../../ui/images/shield_gui_status.png';
+import {Direction} from '../physics/object/Direction';
+
+const checkCollision = kt.ru.glitchless.game.collision.checkCollision;
 
 const forceFieldBarTexture = PIXI.Texture.fromImage(shield_gui_status_png);
 const forceFieldBarBackgroundTexture = PIXI.Texture.fromImage(shield_gui_background_png);
@@ -23,6 +27,10 @@ export default class SinglePlayerStrategy extends GameStrategy {
     public botPlatform: Platform;
     private laserDamage: number;
     private scene: GameScene;
+    private anglePoints = [new Point(0.1, -0.05), new Point(0, -0.1), new Point(0.05, -0.1), new Point(0.1, -0.1),
+        new Point(0.1, -0.05), new Point(0.1, 0), new Point(0.1, 0.05), new Point(0.1, 0.1)];
+    private angleCounter = 0;
+    private counter = 0;
 
     constructor(scene) {
         super();
@@ -47,11 +55,12 @@ export default class SinglePlayerStrategy extends GameStrategy {
         physicContext.spriteStorage.needUpdatePlatorm.push(physicContext.spriteStorage.enemyPlatform);
 
         this.scene.initScores();
-       }
+    }
 
     public gameplayTick(physicContext, elapsedMS: number) {
         this.processBotLogic(physicContext);
         this.replenishShields(physicContext, elapsedMS);
+        this.processLaserCreate(physicContext, elapsedMS);
         this.processControls(physicContext, physicContext.spriteStorage.userPlatform);
     }
 
@@ -79,6 +88,8 @@ export default class SinglePlayerStrategy extends GameStrategy {
         const hpblock = blockAndLaser[0];
         const laser = blockAndLaser[1];
         const playerNum = hpblock.playerNumber;
+
+        hpblock.destroy();
 
         if (Constants.GAME_DEBUG) {
             console.log(playerNum);
@@ -116,7 +127,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
     }
 
     private _drawForceFieldBars(scene) {
-        this.forceFieldBarPos.forEach(function(position) {
+        this.forceFieldBarPos.forEach(function (position) {
             const forceFieldBar = new PIXI.Sprite(forceFieldBarTexture);
             const forceFieldBarBackground = new PIXI.Sprite(forceFieldBarBackgroundTexture);
             forceFieldBar.anchor.set(1);
@@ -134,14 +145,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
     }
 
     private processControls(context, platform) {
-
-        if (this.leftButton.isDown || this.qButton.isDown) {
-            platform.setMoveDirection('left');
-        } else if (this.rightButton.isDown || this.eButton.isDown) {
-            platform.setMoveDirection('right');
-        } else {
-            platform.setMoveDirection('none');
-        }
+        platform.setMoveDirection(this.getPlatformDirection());
     }
 
     private processBotLogic(physicContext) {
@@ -152,11 +156,11 @@ export default class SinglePlayerStrategy extends GameStrategy {
         const mapCenter = physicContext._getCenterPoint();
         const platformRotation = enemyPlatform.getRotation();
         if (platformRotation < 90 || platformRotation > 358) {
-            enemyPlatform.setMoveDirection('right');
+            enemyPlatform.setMoveDirection(Direction.RIGHT);
             return;
         }
         if (platformRotation < 181) {
-            enemyPlatform.setMoveDirection('left');
+            enemyPlatform.setMoveDirection(Direction.LEFT);
             return;
         }
 
@@ -164,7 +168,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
         let closestLaser;
         let dangerPoint;
         lasers.forEach((laser) => {
-            const collision = CollisionManager.checkCollision(
+            const collision = checkCollision(
                 laser.getCoords(), laser.getSpeed(), forcefield.collisionArc,
                 0, false, true);
             if (!collision) {
@@ -185,21 +189,28 @@ export default class SinglePlayerStrategy extends GameStrategy {
         });
 
         if (!closestLaser) {
-            enemyPlatform.setMoveDirection('none');
+            enemyPlatform.setMoveDirection(Direction.NONE);
             return; // No lasers are going for our half of the field, who are we to complain? Just chillax.
         }
 
-        if (dangerPoint.y * 1
-            / Math.sin(Constants.GAME_FORCEFIELD_RADIUS / Constants.GAME_CIRCLE1_RADIUS * dangerPoint.y)
-            > platformCoords.y) {
-            enemyPlatform.setMoveDirection('left');
+        if (Math.abs(dangerPoint.y - platformCoords.y) < Constants.GAME_PLATFORM_SIZE[0] / 4) {
+            enemyPlatform.setMoveDirection(Direction.NONE);
+            return;
+        }
+
+        if (Math.random() < Constants.BOT_ERROR_RATE) {
+            return;
+        }
+
+        if (dangerPoint.y > platformCoords.y) {
+            enemyPlatform.setMoveDirection(Direction.LEFT);
         } else {
-            enemyPlatform.setMoveDirection('right');
+            enemyPlatform.setMoveDirection(Direction.RIGHT);
         }
     }
 
     private replenishShields(physicContext, elapsedMS: number) {
-        this.players.forEach(function(player, playerNum) {
+        this.players.forEach(function (player, playerNum) {
             const newShieldVal = player.shield + Constants.SHIELD_REGEN_RATIO * elapsedMS / 1000;
             player.shield = newShieldVal < player.maxShield ? newShieldVal : player.maxShield;
             this.updateBar(playerNum, (player.shield / player.maxShield) * 100);
@@ -207,5 +218,20 @@ export default class SinglePlayerStrategy extends GameStrategy {
                 physicContext.physicObjects.forcefield[playerNum].onEnable();
             }
         }, this);
+    }
+
+    private processLaserCreate(physicContext, elapsedMS: number) {
+        const hardness = this.players.map((p) => 5 - p.health).reduce((a, b) => a + b);
+        this.counter += elapsedMS;
+        if (this.counter > 800 - hardness * 40) {
+            this.counter = 0;
+            const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-4);
+            const laser = new Laser(physicContext);
+            laser.setCoords(physicContext._getCenterPoint(), physicContext);
+            laser.setSpriteSize(Constants.GAME_LASER_SIZE, physicContext.gameManager);
+            laser.setSpeed(laserSpeed);
+            physicContext.gameManager.addObject('laser', laser);
+            this.angleCounter += Math.floor(Math.random() * 3 + 1);
+        }
     }
 }

@@ -1,16 +1,17 @@
 import * as PIXI from 'pixi.js';
 import PhysicsEntity from './primitive/PhysicsEntity';
 import utils from '../../../utils/GameUtils';
+import * as kt from 'kotlinApp';
+const CollisionPoint = kt.ru.glitchless.game.collision.data.CollisionPoint;
 
-import laser_small_png from '../../../ui/images/laser_small.png';
+import laser_small_png from '../../../ui/images/laser_red.png';
 
 const basicLaserTexture = PIXI.Texture.fromImage(laser_small_png);
 
 export default class Laser extends PhysicsEntity {
-    constructor(speed, context) {
+    constructor(context) {
         const basicLaserSprite = new PIXI.Sprite(basicLaserTexture);
         super(basicLaserSprite, context);
-        this.setSpeed(speed);
     }
 
     onCollision(collision, platform) {
@@ -20,7 +21,7 @@ export default class Laser extends PhysicsEntity {
     }
 
     setSpeed(speed) {
-        super.setSpeed(speed);
+        super.setSpeed(new CollisionPoint(speed.x, speed.y));
         this.setRotation(utils.degrees(Math.atan2(speed.y, speed.x)));
     }
 }
