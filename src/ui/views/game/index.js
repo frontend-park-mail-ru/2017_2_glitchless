@@ -34,9 +34,6 @@ export default class GameView extends View {
         this.endGameWrapper.classList.add('endgame-wrapper');
         this.root.appendChild(this.endGameWrapper);
 
-        this._displayLoseMessage();
-        this.addEndGameButtons();
-
         this.gameCanvas.style.display = 'block';
         this.gameCanvas.style.margin = 'auto';
 
