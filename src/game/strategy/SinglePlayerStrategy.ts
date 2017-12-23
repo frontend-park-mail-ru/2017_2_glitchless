@@ -223,7 +223,7 @@ export default class SinglePlayerStrategy extends GameStrategy {
     private processLaserCreate(physicContext, elapsedMS: number) {
         const hardness = this.players.map((p) => 5 - p.health).reduce((a, b) => a + b);
         this.counter += elapsedMS;
-        if (this.counter > 900 - hardness * 50) {
+        if (this.counter > 800 - hardness * 40) {
             this.counter = 0;
             const laserSpeed = this.anglePoints[this.angleCounter % this.anglePoints.length].mult(-1).copy().mult(-4);
             const laser = new Laser(physicContext);
