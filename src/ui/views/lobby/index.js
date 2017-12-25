@@ -23,7 +23,7 @@ class LobbyView extends View {
 
         this._closeMenu(root);
 
-        if (data !== null) {
+        if (data !== null && data !== 'multiplayer') {
             console.log('Your invite code: ' + data);
             if (data === 'ref') {
                 data = 'ref';
