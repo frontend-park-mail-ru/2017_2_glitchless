@@ -67,4 +67,7 @@ typings/
 # SASS cache files
 .sass-cache/
 
+# Kotlin
+kotlin/
+
 public/*
