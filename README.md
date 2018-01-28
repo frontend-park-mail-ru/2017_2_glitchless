@@ -4,6 +4,8 @@
 
 Игра: https://glitchless.ru
 
+Фоллбек, если не работает: https://glitchless.surge.sh
+
 
 ## Технологии
 
