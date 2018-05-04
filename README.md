@@ -6,6 +6,10 @@
 
 Фоллбек, если не работает: https://glitchless.surge.sh
 
+Презентация: https://promo.glitchless.ru
+
+Выступление: https://youtu.be/vwdLFMBApPI?t=1h37m32s (1:37:32)
+
 
 ## Технологии
 
