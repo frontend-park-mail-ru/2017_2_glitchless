@@ -2,9 +2,7 @@
 
 Арканоид на стероидах <s>и на котлине</s>.
 
-Игра: https://glitchless.ru
-
-Фоллбек, если не работает: https://glitchless.surge.sh
+Игра: https://glitchless.ru (если упало, то: https://glitchless.surge.sh)
 
 Презентация: https://promo.glitchless.ru
 
@@ -21,6 +19,8 @@
 
 Гитхаб с бекендом: https://github.com/java-park-mail-ru/Glitchless-09-2017/tree/dev
 
+Гитхаб с девопсом: https://github.com/reo7sp/glitchless-serv
+
 
 ## Инструкции по запуску
 
@@ -31,7 +31,7 @@ docker run --rm -it -p 1337:80 glitchless
 ```
 
 
-## Команда Glitchless
+## Команда _Glitchless_
 
 - [Михаил Волынов](https://github.com/StealthTech)
 - [Никита Куликов](https://github.com/LionZXY)
