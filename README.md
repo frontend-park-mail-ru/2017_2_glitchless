@@ -2,11 +2,11 @@
 
 Арканоид на стероидах <s>и на котлине</s>.
 
-Игра: https://glitchless.ru (если упало, то: https://glitchless.surge.sh)
+🎮 Игра: https://glitchless.ru (если отвалилось, то: https://glitchless.surge.sh)
 
-Презентация: https://promo.glitchless.ru
+💈 Презентация: https://promo.glitchless.ru
 
-Выступление: https://youtu.be/vwdLFMBApPI?t=1h37m32s (1:37:32)
+🚀 Выступление: https://youtu.be/vwdLFMBApPI?t=1h37m32s (1:37:32)
 
 
 ## Технологии
@@ -17,9 +17,9 @@
 - Docker
 - Ansible, Docker registry, Travis CI
 
-Гитхаб с бекендом: https://github.com/java-park-mail-ru/Glitchless-09-2017/tree/dev
+🛠 Гитхаб с бекендом: https://github.com/java-park-mail-ru/Glitchless-09-2017/tree/dev
 
-Гитхаб с девопсом: https://github.com/reo7sp/glitchless-serv
+🎻 Гитхаб с девопсом: https://github.com/reo7sp/glitchless-serv
 
 
 ## Инструкции по запуску
