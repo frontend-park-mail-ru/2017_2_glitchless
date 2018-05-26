@@ -13,6 +13,7 @@
 
 - Kotlin, TypeScript, Babel
 - Pixi.js
+- Шейдеры
 - Webpack
 - Docker
 - Ansible, Docker registry, Travis CI
