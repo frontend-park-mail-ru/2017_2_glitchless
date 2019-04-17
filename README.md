@@ -4,7 +4,7 @@
 
 🎮 Игра: https://glitchless.ru (если отвалилось, то: https://glitchless.surge.sh)
 
-💈 Презентация: https://promo.glitchless.ru
+💈 Презентация: https://promo.glitchless.ru (если отвалилось, то: http://glitchless-promo.surge.sh/alt.html)
 
 🚀 Выступление: https://youtu.be/vwdLFMBApPI?t=1h37m32s (1:37:32)
 
