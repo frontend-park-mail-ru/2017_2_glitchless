@@ -51,7 +51,7 @@
     "normalize.css": "^7.0.0",
     "postcss-loader": "^2.0.9",
     "pre-commit": "^1.2.2",
-    "pug": "^2.0.0-rc.4",
+    "pug": "^3.0.1",
     "pug-loader": "^2.3.0",
     "resolve-url-loader": "^2.2.0",
     "rubik-font": "0.0.3",
